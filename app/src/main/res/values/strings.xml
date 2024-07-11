@@ -48,4 +48,10 @@
     <string name="navigation_drawer_close" />
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="request_for_article_scan">Prosim skeniraj QR kodo</string>
+    <string name="rack_label">regal</string>
+    <string name="warehouse_label">skladišče\n</string>
+    <string name="article_minimum">Minimalna zaloga</string>
+    <string name="stock_label">Zaloga</string>
+    <string name="enter_id">Vnesi ID\n</string>
 </resources>
