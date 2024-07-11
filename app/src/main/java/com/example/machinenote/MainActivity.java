@@ -63,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+            binding.drawerLayout.closeDrawer(binding.navView);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 }
