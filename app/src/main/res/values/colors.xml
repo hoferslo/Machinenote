@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor_200">#FFBB86FC</color>
-    <color name="primaryColor_500">#FF6299EE</color>
-    <color name="primaryColor_700">#FF3700B3</color>
+
+    <color name="primaryColor_50">#F0FFF8</color>
+    <color name="primaryColor_100">#FFE2FFF2</color>
+    <color name="primaryColor_200">#a3f6Ff</color>
+    <color name="primaryColor_500">#FFA2E0FF</color>
+    <color name="primaryColor_700">#FF76D0FF</color>
     <color name="secondaryColor_200">#FF03DAC5</color>
     <color name="secondaryColor_700">#FF018786</color>
     <color name="black">#FF000000</color>
