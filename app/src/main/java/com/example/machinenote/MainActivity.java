@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        loadFragment(DashboardFragment.newInstance(), false);
+        loadFragment(DashboardFragment.newInstance(this));
 
 
     }
@@ -54,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
         fragmentTransaction.commit();
     }
+
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(binding.fragmentContainer.getId(), fragment);
+        fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
+        fragmentTransaction.commit();
+    }
+
 
 
 }

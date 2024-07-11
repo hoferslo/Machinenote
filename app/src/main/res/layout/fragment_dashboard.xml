@@ -24,10 +24,11 @@
                 android:padding="8dp">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/knjizenje"
                     android:text="Knjiženje"
                     style="@style/materialButtonDashboard"/>
                 <com.google.android.material.button.MaterialButton
-                    android:layout_height="match_parent"
+                    android:id="@+id/zastoji"
                     android:text="Zastoji"
                     style="@style/materialButtonDashboard"/>
             </LinearLayout>

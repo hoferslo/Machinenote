@@ -1,5 +1,6 @@
 package com.example.machinenote;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +18,15 @@ import com.example.machinenote.databinding.FragmentDashboardBinding;
 public class DashboardFragment extends Fragment {
 
     FragmentDashboardBinding binding;
+    Context context;
 
     public DashboardFragment() {
         // Required empty public constructor
     }
 
-    public static DashboardFragment newInstance() {
+    public static DashboardFragment newInstance(Context context) {
         DashboardFragment fragment = new DashboardFragment();
+        fragment.context = context;
         return fragment;
     }
 
@@ -39,6 +42,14 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
 
         binding = FragmentDashboardBinding.inflate(getLayoutInflater());
+
+        binding.knjizenje.setOnClickListener(view -> {
+            // Handle button click here
+            // Example: Launch another activity or perform an action
+            binding.zastoji.setText("prejsnji fragment");
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.loadFragment(DashboardFragment.newInstance(context));
+        });
 
         return binding.getRoot();
     }
