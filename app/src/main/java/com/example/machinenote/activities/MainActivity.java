@@ -1,4 +1,4 @@
-package com.example.machinenote;
+package com.example.machinenote.activities;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.example.machinenote.fragments.DashboardFragment;
+import com.example.machinenote.R;
 import com.example.machinenote.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(binding.fragmentContainer.getId(), fragment);
+        fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
         fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
         fragmentTransaction.commit();
     }

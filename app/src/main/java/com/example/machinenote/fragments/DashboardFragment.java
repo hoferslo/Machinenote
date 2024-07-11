@@ -1,4 +1,4 @@
-package com.example.machinenote;
+package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
 
 /**
@@ -44,11 +45,9 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(getLayoutInflater());
 
         binding.knjizenje.setOnClickListener(view -> {
-            // Handle button click here
-            // Example: Launch another activity or perform an action
-            binding.zastoji.setText("prejsnji fragment");
+
             MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(DashboardFragment.newInstance(context));
+            mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
         });
 
         return binding.getRoot();
