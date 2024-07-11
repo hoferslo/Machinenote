@@ -37,6 +37,7 @@
         android:id="@+id/drawer_layout"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/fragment_container"
                 android:layout_width="match_parent"

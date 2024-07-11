@@ -2,18 +2,12 @@ package com.example.machinenote;
 
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.machinenote.databinding.ActivityMainBinding;
 
@@ -21,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-
-
-        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -44,6 +35,24 @@ public class MainActivity extends AppCompatActivity {
             binding.drawerLayout.closeDrawer(binding.navView);
             return true;
         });
+
+
+        loadFragment(DashboardFragment.newInstance(), false);
+
+
+    }
+
+    public void loadFragment(Fragment fragment, boolean replace) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (replace) {
+            fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
+        } else {
+            fragmentTransaction.add(binding.fragmentContainer.getId(), fragment);
+        }
+
+        fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
+        fragmentTransaction.commit();
     }
 
 

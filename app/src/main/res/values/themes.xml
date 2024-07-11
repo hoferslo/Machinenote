@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.MachineNote" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/primaryColor_500</item>
+        <item name="colorPrimaryVariant">@color/primaryColor_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondary">@color/secondaryColor_200</item>
+        <item name="colorSecondaryVariant">@color/secondaryColor_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
@@ -18,4 +18,20 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+
+    <style name="materialButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/primaryColor_500</item>
+        <!-- Button corner radius -->
+        <item name="cornerRadius">4dp</item>
+    </style>
+
+    <style name="materialButtonDashboard" parent="materialButton">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">0.5</item>
+
+    </style>
+
 </resources>
