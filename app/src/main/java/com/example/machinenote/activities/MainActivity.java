@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.databinding.ActivityMainBinding;
 import com.example.machinenote.fragments.DashboardFragment;
 
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         loadFragment(DashboardFragment.newInstance(this));
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
+
+        // Save a string value
+
 
 
     }
