@@ -22,4 +22,7 @@
     <string name="name_of_line">Izberi ime linije</string>
     <string name="reason_for_stoppage">Razlog za zaustavitev stroja</string>
     <string name="note_for_stoppage">Opomba</string>
+    <string name="tab_for_inserting_data">Vnos</string>
+    <string name="tab_for_pictures">Slike</string>
+    <string name="tab_for_info">Info</string>
 </resources>

@@ -13,206 +13,241 @@
         android:background="@drawable/background_corners_25">
 
         <TextView
+            android:id="@+id/tabStoppage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:textSize="20sp"
+            android:padding="8dp"
             android:gravity="center"
-            android:textSize="24sp"
-
+            android:hint="@string/tab_for_inserting_data"
+            android:background="@color/primaryColor_500"
             />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:background="@drawable/background_corners_25">
-        
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:id="@+id/listViewStoppages"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/background_corners_500">
-
         <LinearLayout
-            android:id="@+id/sendGmail"
-            android:layout_width="wrap_content"
+            android:layout_width="2dp"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:clickable="true"
+            android:background="@color/primaryColor_700"/>
+        <TextView
+            android:id="@+id/tabPictures"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textSize="20sp"
+            android:padding="8dp"
             android:gravity="center"
-            android:layout_marginStart="16dp"
+            android:hint="@string/tab_for_pictures"
+            android:background="@color/primaryColor_500"
+            />
 
-            android:visibility="gone"
-            android:focusable="true">
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/primaryColor_700"/>
 
-            <ImageView
+        <TextView
+            android:id="@+id/tabInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:hint="@string/tab_for_info"
+            android:background="@color/primaryColor_500"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:padding="8dp"
+            android:background="@drawable/background_corners_25">
+
+            <ListView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
+                android:layout_height="30dp"
+                android:id="@+id/listViewStoppages"
                 />
 
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_marginBottom="16dp"
-        android:paddingVertical="16dp"
-        android:layout_weight="1"
-        android:background="@drawable/background_corners_500"
-        >
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/background_corners_500">
 
             <LinearLayout
-                android:id="@+id/allDataSv"
-                android:layout_width="match_parent"
+                android:id="@+id/sendGmail"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                >
-                <Button
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_marginStart="16dp"
+
+                android:visibility="gone"
+                android:focusable="true">
+
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:text="Šifrant"
-                    style="@style/materialButton"
+
                     />
 
-                <EditText
-                    android:id="@+id/ime_delavca"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_weight="0.8"
-                    android:textSize="20sp"
-                    android:padding="4dp"
-                    android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/name_of_worker"
-                    android:background="@drawable/background_corners_25"
-                    />
+            </LinearLayout>
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/razlog_zaustavitve_stroja"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:paddingVertical="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_corners_500"
+            >
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/allDataSv"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_weight="0.8"
-                    android:textSize="20sp"
-                    android:padding="4dp"
-                    android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/reason_for_stoppage"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    >
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:padding="8dp"
+                        android:textColor="@color/black"
+                        android:text="Šifrant"
+                        style="@style/materialButton"
+                        />
+
+                    <EditText
+                        android:id="@+id/ime_delavca"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_weight="0.8"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:hint="@string/name_of_worker"
+                        android:background="@drawable/background_corners_25"
+                        />
+
+                    <EditText
+                        android:id="@+id/razlog_zaustavitve_stroja"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_weight="0.8"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:hint="@string/reason_for_stoppage"
+                        android:background="@drawable/background_corners_25"
+                        />
+                    <EditText
+                        android:id="@+id/opomba"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_weight="0.8"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:hint="@string/note_for_stoppage"
+                        android:background="@drawable/background_corners_25"
+                        />
+
+                </LinearLayout>
+
+
+
+            </ScrollView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="16dp"
+            android:padding="8dp"
+            android:background="@drawable/background_corners_500">
+
+            <EditText
+                android:id="@+id/idOfArticleEt"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="0.8"
+                android:textSize="24sp"
+                android:layout_marginEnd="8dp"
+                android:padding="4dp"
+                android:hint="@string/enter_id"
+                android:inputType="number"
+                android:background="@drawable/background_corners_25"
+                />
+
+
+            <LinearLayout
+                android:id="@+id/getArticelDataBtn"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginEnd="8dp"
+                >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:src="?attr/homeAsUpIndicator"
+                    android:rotation="180"
                     android:background="@drawable/background_corners_25"
                     />
-                <EditText
-                    android:id="@+id/opomba"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/scanQR"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_weight="0.8"
-                    android:textSize="20sp"
-                    android:padding="4dp"
-                    android:gravity="center"
-                    android:hint="@string/note_for_stoppage"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/background_corners_25"
+                    android:src="@mipmap/photo_camera"
                     />
 
             </LinearLayout>
 
-
-
-        </ScrollView>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:background="@drawable/background_corners_500">
-
-        <EditText
-            android:id="@+id/idOfArticleEt"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="0.8"
-            android:textSize="24sp"
-            android:layout_marginEnd="8dp"
-            android:padding="4dp"
-            android:hint="@string/enter_id"
-            android:inputType="number"
-            android:background="@drawable/background_corners_25"
-            />
-
-
-        <LinearLayout
-            android:id="@+id/getArticelDataBtn"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:src="?attr/homeAsUpIndicator"
-                android:rotation="180"
-                android:background="@drawable/background_corners_25"
-                />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/scanQR"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/background_corners_25"
-                android:src="@mipmap/photo_camera"
-                />
-
-        </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>
