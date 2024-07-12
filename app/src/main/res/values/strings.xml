@@ -18,4 +18,8 @@
     <string name="article_minimum">Minimalna zaloga</string>
     <string name="stock_label">Zaloga</string>
     <string name="enter_id">Vnesi ID</string>
+    <string name="name_of_worker">Ime delavca</string>
+    <string name="name_of_line">Izberi ime linije</string>
+    <string name="reason_for_stoppage">Razlog za zaustavitev stroja</string>
+    <string name="note_for_stoppage">Opomba</string>
 </resources>

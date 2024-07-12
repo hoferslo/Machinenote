@@ -22,9 +22,10 @@
     </style>
 
     <style name="materialButton" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/primaryColor_500</item>
+        <item name="backgroundTint">@color/primaryColor_200</item>
         <!-- Button corner radius -->
         <item name="cornerRadius">4dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="materialButtonDashboard" parent="materialButton">
