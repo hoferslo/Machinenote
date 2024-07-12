@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     public boolean navigationForDrawerShown = true;
     private Drawable originalNavigationIcon;
+    public boolean onDashboard = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
         if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);
         } else {
-            super.onBackPressed();
+            if (!onDashboard) {
+                super.onBackPressed();
+            }
         }
     }
 
