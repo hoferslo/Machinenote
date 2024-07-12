@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             if (!onDashboard) {
                 super.onBackPressed();
+            } else {
+                binding.drawerLayout.openDrawer(binding.navView);
             }
         }
     }

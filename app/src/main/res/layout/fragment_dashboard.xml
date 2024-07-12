@@ -32,6 +32,51 @@
                     android:text="Zastoji"
                     style="@style/materialButtonDashboard"/>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/rezervniDeli"
+                    android:text="Rezervni deli"
+                    style="@style/materialButtonDashboard"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/preventivniPregledi"
+                    android:text="Preventivni pregledi"
+                    style="@style/materialButtonDashboard"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/imenik"
+                    android:text="Imenik"
+                    style="@style/materialButtonDashboard"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/naloge"
+                    android:text="Naloge"
+                    style="@style/materialButtonDashboard"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/remonti"
+                    android:text="Remonti"
+                    style="@style/materialButtonDashboard"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/orodja"
+                    android:text="Orodja"
+                    style="@style/materialButtonDashboard"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
