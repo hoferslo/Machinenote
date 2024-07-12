@@ -1,5 +1,6 @@
 package com.example.machinenote.activities;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     public ActivityMainBinding binding;
     ActionBarDrawerToggle toggle;
     public boolean navigationForDrawerShown = true;
+    private Drawable originalNavigationIcon;
+    public boolean onDashboard = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         setSupportActionBar(binding.toolbar);
+
+        originalNavigationIcon = binding.toolbar.getNavigationIcon();
 
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -65,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.fragment_slide_in_from_right,  // Enter animation
+                R.anim.fragment_slide_out_to_left,    // Exit animation
+                R.anim.fragment_slide_in_from_left,   // Pop enter animation
+                R.anim.fragment_slide_out_to_right    // Pop exit animation
+        );
         fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
         fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
         fragmentTransaction.commit();
@@ -76,25 +87,24 @@ public class MainActivity extends AppCompatActivity {
         if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);
         } else {
-            super.onBackPressed();
+            if (!onDashboard) {
+                super.onBackPressed();
+            }
         }
     }
 
 
 
-    private void showDrawerIcon() {
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
+    public void showDrawerIcon() {
+        binding.toolbar.setNavigationIcon(originalNavigationIcon);
+        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        binding.drawerLayout.addDrawerListener(toggle);
+        binding.toolbar.setTitle("");
     }
 
     public void showBackArrow() {
-
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show back button
-
+        binding.toolbar.setNavigationIcon(R.mipmap.arrow_back);
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed()); // Handle back button click
-
     }
 
 }
