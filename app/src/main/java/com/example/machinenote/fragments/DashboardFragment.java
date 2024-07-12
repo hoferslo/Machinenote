@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.machinenote.BaseFragment;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
 
@@ -16,8 +17,9 @@ import com.example.machinenote.databinding.FragmentDashboardBinding;
  * Use the {@link DashboardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends BaseFragment {
 
+    public String TAG = "Glavna stran";
     FragmentDashboardBinding binding;
     Context context;
 
@@ -51,5 +53,22 @@ public class DashboardFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.binding.toolbarTitle.setText(TAG);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
+
     }
 }

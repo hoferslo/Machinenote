@@ -6,13 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
-
+import com.example.machinenote.BaseFragment;
+import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentKnjizenjeBinding;
 
 
-public class KnjizenjeFragment extends Fragment {
+public class KnjizenjeFragment extends BaseFragment {
 
+    public String TAG = "Knjiženje";
     FragmentKnjizenjeBinding binding;
     Context context;
 
@@ -35,9 +36,17 @@ public class KnjizenjeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         binding = FragmentKnjizenjeBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.binding.toolbarTitle.setText(TAG);
     }
 }

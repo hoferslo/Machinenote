@@ -11,13 +11,14 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-
+        <item name="android:textColor">@android:color/black</item>
         <!-- Customize your theme here. -->
     </style>
     <!-- Base application theme. -->
     <style name="Base.Theme.MachineNote" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="materialButton" parent="Widget.MaterialComponents.Button">

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primaryColor_50">#F0FFF8</color>
-    <color name="primaryColor_100">#FFE2FFF2</color>
-    <color name="primaryColor_200">#a3f6Ff</color>
-    <color name="primaryColor_500">#FFA2E0FF</color>
-    <color name="primaryColor_700">#FF76D0FF</color>
+    <color name="primaryColor_25">#D8F8FD</color>
+    <color name="primaryColor_50">#D4F7FD</color>
+    <color name="primaryColor_100">#CDF5FD</color>
+    <color name="primaryColor_200">#A0E9FF</color>
+    <color name="primaryColor_500">#89CFF3</color>
+    <color name="primaryColor_700">#20A9FF</color>
+    <color name="primaryColor_900">#05507E</color>
+    <color name="transparent">#00000000</color>
     <color name="secondaryColor_200">#FF03DAC5</color>
     <color name="secondaryColor_700">#FF018786</color>
     <color name="black">#FF000000</color>

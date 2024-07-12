@@ -4,19 +4,22 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
-import com.example.machinenote.fragments.DashboardFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.databinding.ActivityMainBinding;
+import com.example.machinenote.fragments.DashboardFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+    public ActivityMainBinding binding;
+    ActionBarDrawerToggle toggle;
+    public boolean navigationForDrawerShown = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        setSupportActionBar(binding.toolbar);
 
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -44,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void loadFragment(Fragment fragment, boolean replace) {
+
+/*    public void loadFragment(Fragment fragment, boolean replace) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (replace) {
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
         fragmentTransaction.commit();
-    }
+    }*/
 
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
         fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
         fragmentTransaction.commit();
+
     }
 
     @Override
@@ -72,6 +78,23 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+
+
+    private void showDrawerIcon() {
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+    }
+
+    public void showBackArrow() {
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show back button
+
+        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed()); // Handle back button click
+
     }
 
 }
