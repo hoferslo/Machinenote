@@ -69,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.fragment_slide_in_from_right,  // Enter animation
+                R.anim.fragment_slide_out_to_left,    // Exit animation
+                R.anim.fragment_slide_in_from_left,   // Pop enter animation
+                R.anim.fragment_slide_out_to_right    // Pop exit animation
+        );
         fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
         fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
         fragmentTransaction.commit();
@@ -90,12 +96,12 @@ public class MainActivity extends AppCompatActivity {
         binding.toolbar.setNavigationIcon(originalNavigationIcon);
         toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
+        binding.toolbar.setTitle("");
     }
 
     public void showBackArrow() {
         binding.toolbar.setNavigationIcon(R.mipmap.arrow_back);
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed()); // Handle back button click
-
     }
 
 }
