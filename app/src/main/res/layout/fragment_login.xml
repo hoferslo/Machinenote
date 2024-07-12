@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context=".fragments.LoginFragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="@color/white"
+>
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:background="@color/white"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/primaryColor_500"
+                android:layout_gravity="center_horizontal"
+                android:padding="24dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/username"
+                    android:background="@drawable/background_corners_100"
+                    android:drawableLeft="@mipmap/person"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/username"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="15dp"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/password"
+                    android:background="@drawable/background_corners_100"
+                    android:drawableLeft="@mipmap/lock"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/password"
+                    android:padding="8dp"
+                    android:layout_marginBottom="16dp"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:id="@+id/Login"
+                    android:text="Login"
+                    android:textColor="@color/black"
+                    style="@style/materialButton"
+                    />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Niste registrirani? poklici mateja"
+            android:textAlignment="center"
+            android:id="@+id/signupText"
+            android:textColor="@color/primaryColor_700"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

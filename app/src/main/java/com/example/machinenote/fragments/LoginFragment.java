@@ -8,23 +8,28 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.activities.MainActivity;
-import com.example.machinenote.databinding.FragmentZastojiBinding;
+import com.example.machinenote.databinding.FragmentLoginBinding;
 
-public class ZastojiFragment extends BaseFragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link LoginFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class LoginFragment extends BaseFragment {
 
-    public String TAG = "Zastoji";
-    FragmentZastojiBinding binding;
+    public String TAG = "Login";
+    FragmentLoginBinding binding;
     Context context;
 
-    public ZastojiFragment() {
+    public LoginFragment() {
         // Required empty public constructor
     }
 
-
-    public static ZastojiFragment newInstance(Context context) {
-        ZastojiFragment fragment = new ZastojiFragment();
+    public static LoginFragment newInstance(Context context) {
+        LoginFragment fragment = new LoginFragment();
         fragment.context = context;
         return fragment;
     }
@@ -39,7 +44,7 @@ public class ZastojiFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentZastojiBinding.inflate(getLayoutInflater());
+        binding = FragmentLoginBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
     }
