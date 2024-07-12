@@ -1,5 +1,6 @@
 package com.example.machinenote.activities;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public ActivityMainBinding binding;
     ActionBarDrawerToggle toggle;
     public boolean navigationForDrawerShown = true;
+    private Drawable originalNavigationIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         setSupportActionBar(binding.toolbar);
+
+        originalNavigationIcon = binding.toolbar.getNavigationIcon();
 
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -82,17 +86,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void showDrawerIcon() {
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
+    public void showDrawerIcon() {
+        binding.toolbar.setNavigationIcon(originalNavigationIcon);
+        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        binding.drawerLayout.addDrawerListener(toggle);
     }
 
     public void showBackArrow() {
-
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show back button
-
+        binding.toolbar.setNavigationIcon(R.mipmap.arrow_back);
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed()); // Handle back button click
 
     }
