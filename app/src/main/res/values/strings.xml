@@ -28,4 +28,10 @@
     <string name="username">Uporabniško ime</string>
     <string name="password">Geslo</string>
     <string name="changed_parts">Zamenjani deli</string>
+    <string name="name_of_shipper">Ime: </string>
+    <string name="name_of_company">Ime podjetja: </string>
+    <string name="gmail_of_shipper">Gmail: </string>
+    <string name="GSM">GSM: </string>
+    <string name="telephone_number">Telefonska številka: </string>
+    <string name="enter_name">Vnesi ime</string>
 </resources>
