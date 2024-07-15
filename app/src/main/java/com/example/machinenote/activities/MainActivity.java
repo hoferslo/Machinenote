@@ -2,6 +2,9 @@ package com.example.machinenote.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +17,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.databinding.ActivityMainBinding;
+import com.example.machinenote.databinding.FragmentDashboardBinding;
 import com.example.machinenote.fragments.DashboardFragment;
+import com.example.machinenote.fragments.KnjizenjeFragment;
+import com.example.machinenote.fragments.LoginFragment;
+import com.example.machinenote.fragments.ZastojiFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 

@@ -2,29 +2,27 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.activities.MainActivity;
-import com.example.machinenote.databinding.FragmentZastojiBinding;
+import com.example.machinenote.databinding.FragmentImenikBinding;
 
-public class ZastojiFragment extends BaseFragment {
 
-    public String TAG = "Zastoji";
-    FragmentZastojiBinding binding;
+public class ImenikFragment extends BaseFragment {
+
+    public String TAG = "Knjiženje";
+    FragmentImenikBinding binding;
     Context context;
 
-    public ZastojiFragment() {
+    public ImenikFragment() {
         // Required empty public constructor
     }
 
-
-    public static ZastojiFragment newInstance(Context context) {
-        ZastojiFragment fragment = new ZastojiFragment();
+    public static ImenikFragment newInstance(Context context) {
+        ImenikFragment fragment = new ImenikFragment();
         fragment.context = context;
         return fragment;
     }
@@ -38,12 +36,9 @@ public class ZastojiFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        binding = FragmentZastojiBinding.inflate(getLayoutInflater());
-
-        binding.cancelButton.setOnClickListener(view -> {
-
-        });
+        binding = FragmentImenikBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
     }

@@ -58,10 +58,16 @@ public class DashboardFragment extends BaseFragment {
             mainActivity.loadFragment(ZastojiFragment.newInstance(context));
         });
 
+        binding.remonti.setOnClickListener(view -> {
+
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.loadFragment(RemontiFragment.newInstance(context));
+        });
+
         binding.imenik.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(LoginFragment.newInstance(context));
+            mainActivity.loadFragment(ImenikFragment.newInstance(context));
         });
 
         return binding.getRoot();

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.ZastojiFragment">
+    tools:context=".fragments.RemontiFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,47 +61,47 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="16dp"
-            android:padding="8dp"
-            android:background="@drawable/background_corners_25">
+            android:background="@drawable/background_corners_25"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ListView
+                android:id="@+id/listViewRemonti"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/listViewStoppages"
-                />
+                android:layout_height="30dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/background_corners_500">
+            android:background="@drawable/background_corners_500"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/sendGmail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:clickable="true"
-                android:gravity="center"
                 android:layout_marginStart="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
 
-                android:visibility="gone"
-                android:focusable="true">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -115,12 +115,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
             android:layout_marginBottom="16dp"
-            android:paddingVertical="16dp"
             android:layout_weight="1"
             android:background="@drawable/background_corners_500"
-            >
+            android:orientation="vertical"
+            android:paddingVertical="16dp">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -132,55 +131,52 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    >
+                    android:paddingHorizontal="16dp">
+
                     <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:gravity="center"
-                        android:layout_marginBottom="8dp"
-                        android:padding="8dp"
-                        android:textColor="@color/black"
-                        android:text="Šifrant"
                         style="@style/materialButton"
-                        />
-
-                    <EditText
-                        android:id="@+id/ime_delavca"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
-                        android:layout_weight="0.8"
-                        android:textSize="20sp"
-                        android:padding="4dp"
-                        android:gravity="center"
                         android:layout_marginBottom="8dp"
-                        android:hint="@string/name_of_worker"
-                        android:background="@drawable/background_corners_25"
-                        />
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Izberi Linijo"
+                        android:textColor="@color/black" />
 
-                    <EditText
-                        android:id="@+id/razlog_zaustavitve_stroja"
+                    <Button
+                        style="@style/materialButton"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
-                        android:layout_weight="0.8"
-                        android:textSize="20sp"
-                        android:padding="4dp"
-                        android:gravity="center"
                         android:layout_marginBottom="8dp"
-                        android:hint="@string/reason_for_stoppage"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Izberi Sklop Linije"
+                        android:textColor="@color/black" />
+
+
+                    <EditText
+                        android:id="@+id/zamenjani_deli"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="0.8"
                         android:background="@drawable/background_corners_25"
-                        />
+                        android:gravity="center"
+                        android:hint="@string/changed_parts"
+                        android:padding="4dp"
+                        android:textSize="20sp" />
+
+
                     <EditText
                         android:id="@+id/opomba"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:layout_weight="0.8"
-                        android:textSize="20sp"
-                        android:padding="4dp"
+                        android:background="@drawable/background_corners_25"
                         android:gravity="center"
                         android:hint="@string/note_for_stoppage"
-                        android:background="@drawable/background_corners_25"
-                        />
+                        android:padding="4dp"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 
@@ -191,46 +187,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="bottom"
             android:layout_marginBottom="16dp"
+            android:background="@drawable/background_corners_500"
+            android:orientation="horizontal"
             android:padding="8dp"
-            android:background="@drawable/background_corners_500">
-
-            <LinearLayout
-                android:id="@+id/idOfLineBtn"
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginEnd="8dp"
-                >
-
-                <Button
-                    android:id="@+id/idOfLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/black"
-                    android:text="Linija"
-                    style="@style/materialButton"
-                    />
-            </LinearLayout>
+            android:gravity="center_horizontal">
 
 
             <LinearLayout
                 android:id="@+id/scanQR"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="96dp"
                     android:layout_height="64dp"
-                    android:layout_gravity="center_vertical"
                     android:background="@drawable/background_corners_25"
-                    android:src="@mipmap/photo_camera"
-                    />
+                    android:src="@mipmap/add_a_photo" />
 
             </LinearLayout>
 
