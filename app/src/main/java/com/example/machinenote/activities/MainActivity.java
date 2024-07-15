@@ -56,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-
+        binding.logout.setOnClickListener(view -> {
+            // Switch to the LogoutFragment
+            loadFragment(new LoginFragment());
+        });
         loadFragment(DashboardFragment.newInstance(this));
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
 
