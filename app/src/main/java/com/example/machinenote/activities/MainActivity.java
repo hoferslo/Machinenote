@@ -57,9 +57,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.logout.setOnClickListener(view -> {
-            // Switch to the LogoutFragment
-            loadFragment(new LoginFragment());
+            // Check if the current fragment is not DashboardFragment
+            Fragment currentFragment = getCurrentFragment();
+            if (!(currentFragment instanceof DashboardFragment)) {
+                // Clear the last fragment from the back stack
+                clearLastFragmentFromBackStack();
+                // Navigate to LoginFragment
+                loadFragment(new LoginFragment());
+            } else {
+                loadFragment(new LoginFragment());
+            }
         });
+
         loadFragment(DashboardFragment.newInstance(this));
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
 
@@ -111,8 +120,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     public void showDrawerIcon() {
         binding.toolbar.setNavigationIcon(originalNavigationIcon);
         toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -123,6 +130,16 @@ public class MainActivity extends AppCompatActivity {
     public void showBackArrow() {
         binding.toolbar.setNavigationIcon(R.mipmap.arrow_back);
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed()); // Handle back button click
+    }
+
+    public Fragment getCurrentFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        return fragmentManager.findFragmentById(binding.fragmentContainer.getId());
+    }
+
+    public void clearLastFragmentFromBackStack() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStackImmediate();
     }
 
 }
