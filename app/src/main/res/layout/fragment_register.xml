@@ -76,7 +76,8 @@
                         android:hint="@string/role_name"
                         android:padding="8dp"
                         android:textColor="@color/black"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"/>
                     
                     <ScrollView
                         android:layout_width="match_parent"
@@ -95,40 +96,49 @@
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxKnjizenje"
                                 android:text="Knjiženje"
                                 />
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxZastoji"
                                 android:text="Zastoji"
                                 />
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxRezervniDelo"
                                 android:text="Rezervni deli"/>
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxPreventivniPregledi"
                                 android:text="Preventivni pregledi"/>
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxImenik"
                                 android:text="Imenik"/>
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxNaloge"
                                 android:text="Naloge"/>
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxRemonti"
                                 android:text="Remonti"/>
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxOrodja"
                                 android:text="Orodja"/>
                             <CheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/checkBoxRegister"
                                 android:text="Register"/>
                         </GridLayout>
                     </ScrollView>
@@ -136,8 +146,8 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:id="@+id/register"
-                    android:text="Register"
+                    android:id="@+id/registerButton"
+                    android:text="@string/register_button"
                     android:textColor="@color/black"
                     style="@style/materialButton"
 
