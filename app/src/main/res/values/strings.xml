@@ -34,4 +34,5 @@
     <string name="GSM">GSM: </string>
     <string name="telephone_number">Telefonska številka: </string>
     <string name="enter_name">Vnesi ime</string>
+    <string name="role_name">Ime role</string>
 </resources>

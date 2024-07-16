@@ -70,6 +70,12 @@ public class DashboardFragment extends BaseFragment {
             mainActivity.loadFragment(ImenikFragment.newInstance(context));
         });
 
+        binding.naloge.setOnClickListener(view -> {
+
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.loadFragment(RegisterFragment.newInstance(context));
+        });
+
         return binding.getRoot();
     }
 

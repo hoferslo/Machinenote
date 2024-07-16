@@ -31,7 +31,7 @@ android:background="@color/white"
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="64dp"
                     android:id="@+id/username"
                     android:background="@drawable/background_corners_100"
                     android:drawableLeft="@mipmap/person"
@@ -39,10 +39,10 @@ android:background="@color/white"
                     android:hint="@string/username"
                     android:padding="8dp"
                     android:textColor="@color/black"
-                    android:layout_marginBottom="15dp"/>
+                    android:layout_marginBottom="16dp"/>
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="64dp"
                     android:id="@+id/password"
                     android:background="@drawable/background_corners_100"
                     android:drawableLeft="@mipmap/lock"
