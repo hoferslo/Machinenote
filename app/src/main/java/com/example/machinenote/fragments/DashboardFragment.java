@@ -82,8 +82,11 @@ public class DashboardFragment extends BaseFragment {
             mainActivity.loadFragment(OrodjaFragment.newInstance(context));
         });
 
+        binding.rezervniDeli.setOnClickListener(view -> {
 
-
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.loadFragment(RezervniDeliFragment.newInstance(context));
+        });
 
         return binding.getRoot();
     }

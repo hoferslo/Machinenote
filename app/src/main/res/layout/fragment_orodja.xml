@@ -4,77 +4,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.OrodjaFragment">
+    tools:context=".fragments.OrodjaFragment"
+    android:gravity="center_vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_corners_500"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:paddingVertical="16dp">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/background_corners_500"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:paddingVertical="16dp">
+            android:scrollbars="none"
+            android:layout_gravity="center_vertical">
 
-            <ScrollView
+            <LinearLayout
+                android:id="@+id/allDataSv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
                 android:layout_gravity="center_vertical">
 
-                <LinearLayout
-                    android:id="@+id/allDataSv"
+                <Button
+                    style="@style/materialButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    android:layout_gravity="center_vertical">
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Slike Linij"
+                    android:textColor="@color/black" />
 
-                    <Button
-                        style="@style/materialButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="Slike Linij"
-                        android:textColor="@color/black" />
+                <Button
+                    style="@style/materialButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Navodila linij"
+                    android:textColor="@color/black" />
 
-                    <Button
-                        style="@style/materialButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="Navodila linij"
-                        android:textColor="@color/black" />
+                <Button
+                    style="@style/materialButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Varnostni listi"
+                    android:textColor="@color/black" />
 
-                    <Button
-                        style="@style/materialButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="Varnostni listi"
-                        android:textColor="@color/black" />
+                <Button
+                    style="@style/materialButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Filmi"
+                    android:textColor="@color/black" />
 
-                    <Button
-                        style="@style/materialButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="Filmi"
-                        android:textColor="@color/black" />
-
-
-                </LinearLayout>
-
-            </ScrollView>
-        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>
