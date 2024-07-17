@@ -8,21 +8,21 @@ import android.view.ViewGroup;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.activities.MainActivity;
-import com.example.machinenote.databinding.FragmentImenikBinding;
+import com.example.machinenote.databinding.FragmentOrodjaBinding;
 
 
-public class ImenikFragment extends BaseFragment {
+public class OrodjaFragment extends BaseFragment {
 
-    public String TAG = "Imenik";
-    FragmentImenikBinding binding;
+    public String TAG = "Orodja";
+    FragmentOrodjaBinding binding;
     Context context;
 
-    public ImenikFragment() {
+    public OrodjaFragment() {
         // Required empty public constructor
     }
 
-    public static ImenikFragment newInstance(Context context) {
-        ImenikFragment fragment = new ImenikFragment();
+    public static OrodjaFragment newInstance(Context context) {
+        OrodjaFragment fragment = new OrodjaFragment();
         fragment.context = context;
         return fragment;
     }
@@ -38,7 +38,7 @@ public class ImenikFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        binding = FragmentImenikBinding.inflate(getLayoutInflater());
+        binding = FragmentOrodjaBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
     }

@@ -73,8 +73,17 @@ public class DashboardFragment extends BaseFragment {
         binding.naloge.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(RegisterFragment.newInstance(context));
+            mainActivity.loadFragment(NalogeFragment.newInstance(context));
         });
+
+        binding.orodja.setOnClickListener(view -> {
+
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.loadFragment(OrodjaFragment.newInstance(context));
+        });
+
+
+
 
         return binding.getRoot();
     }

@@ -5,8 +5,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
-    tools:context=".fragments.ImenikFragment">
+    tools:context=".fragments.NalogeFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_corners_25">
 
+        <TextView
+            android:id="@+id/tabStoppage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:hint="Pregled"
+            android:background="@color/primaryColor_500"
+            />
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/primaryColor_700"/>
+        <TextView
+            android:id="@+id/tabPictures"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:hint="@string/tab_for_pictures"
+            android:background="@color/primaryColor_500"
+            />
+
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/primaryColor_700"/>
+
+        <TextView
+            android:id="@+id/dodajNalogo"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:hint="Nova naloga"
+            android:background="@color/primaryColor_500"
+            />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,10 +91,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
-                    android:text="@string/name_of_company"/>
+                    android:text="Ime Naloge"/>
 
                 <TextView
-                    android:id="@+id/companyName"
+                    android:id="@+id/dutyName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -63,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
 
-                    android:text="@string/name_of_shipper"/>
+                    android:text="Opis"/>
 
                 <TextView
                     android:id="@+id/nameOfShipper"
@@ -90,10 +144,10 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
 
-                    android:text="@string/gmail_of_shipper"/>
+                    android:text="Rok za izvedbo"/>
 
                 <TextView
-                    android:id="@+id/gmail"
+                    android:id="@+id/dateOfDeadline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -117,10 +171,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
-                    android:text="@string/GSM"/>
+                    android:text="Datum zaključka"/>
 
                 <TextView
-                    android:id="@+id/GSM"
+                    android:id="@+id/dateOfEnd"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -144,10 +198,10 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
 
-                    android:text="@string/telephone_number"/>
+                    android:text="Komentar"/>
 
                 <TextView
-                    android:id="@+id/telephoneNumber"
+                    android:id="@+id/comment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -155,9 +209,8 @@
                     android:textAlignment="textEnd"/>
 
             </LinearLayout>
+
         </LinearLayout>
-
-
 
         <LinearLayout
             android:id="@+id/sendGmail"
@@ -198,7 +251,7 @@
             android:padding="4dp"
             android:drawableLeft="@mipmap/search"
             android:drawablePadding="8dp"
-            android:hint="Poišči številko"
+            android:hint="Poišči nalogo"
             android:background="@drawable/background_corners_25"
             />
 
@@ -221,7 +274,7 @@
             android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/dataOfImenik"
+                android:id="@+id/dataOfDuty"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -230,7 +283,7 @@
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/listViewImenik"
+                    android:id="@+id/listViewDuty"
                     android:background="@drawable/background_corners_100"
                     />
 
@@ -239,47 +292,6 @@
         </ScrollView>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:background="@drawable/background_corners_500">
 
-        <EditText
-            android:id="@+id/idOfName"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="0.8"
-            android:textSize="24sp"
-            android:layout_marginEnd="8dp"
-            android:padding="4dp"
-            android:hint="@string/enter_name"
-            android:background="@drawable/background_corners_25"
-            />
-
-
-        <LinearLayout
-            android:id="@+id/getNameData"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:src="?attr/homeAsUpIndicator"
-                android:rotation="180"
-                android:background="@drawable/background_corners_25"
-                />
-        </LinearLayout>
-
-    </LinearLayout>
 
 </LinearLayout>
