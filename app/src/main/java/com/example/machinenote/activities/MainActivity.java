@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     public boolean navigationForDrawerShown = true;
     private Drawable originalNavigationIcon;
+    SharedPreferencesHelper sharedPreferencesHelper;
 
 
     @Override
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
+        sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
 
         toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
@@ -59,22 +60,15 @@ public class MainActivity extends AppCompatActivity {
 
         loadFragment(LoginFragment.newInstance(this));
 
+        initDrawerInfo();
         // Save a string value
 
     }
 
-/*    public void loadFragment(Fragment fragment, boolean replace) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (replace) {
-            fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
-        } else {
-            fragmentTransaction.add(binding.fragmentContainer.getId(), fragment);
-        }
-
-        fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
-        fragmentTransaction.commit();
-    }*/
+    public void initDrawerInfo() {
+        binding.drawerUserNameTv.setText(sharedPreferencesHelper.getString("Username", "Ni povezave"));
+        binding.drawerUserRoleTv.setText(sharedPreferencesHelper.getRole().getRole());
+    }
 
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();

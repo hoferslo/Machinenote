@@ -3,6 +3,10 @@ package com.example.machinenote.Utility;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.machinenote.models.Role;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class SharedPreferencesHelper {
 
     private static final String PREFERENCES_FILE = "com.example.machinenote.PREFERENCES";
@@ -12,15 +16,17 @@ public class SharedPreferencesHelper {
     public static final String Username = "Username";
     public static final String Password = "Password";
     public static final String Token = "Token";
-
+    public static final String Role = "Role";
 
     private static SharedPreferencesHelper instance;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private Gson gson;
 
     private SharedPreferencesHelper(Context context) {
         sharedPreferences = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+        gson = new GsonBuilder().setLenient().create();
     }
 
     public static synchronized SharedPreferencesHelper getInstance(Context context) {
@@ -61,6 +67,19 @@ public class SharedPreferencesHelper {
     // Method to get a boolean value
     public boolean getBoolean(String key, boolean defaultValue) {
         return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    // Method to save a Role object
+    public void putRole(Role role) {
+        String roleJson = gson.toJson(role);
+        editor.putString(Role, roleJson);
+        editor.apply();
+    }
+
+    // Method to get a Role object
+    public Role getRole() {
+        String roleJson = sharedPreferences.getString(Role, null);
+        return gson.fromJson(roleJson, Role.class);
     }
 
     // Method to remove a specific key

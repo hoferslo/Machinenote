@@ -62,7 +62,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/accountNameTv"
+                        android:id="@+id/drawerUserNameTv"
                         android:text="@string/username"
                         android:gravity="center_vertical"
                         android:textSize="18sp"
@@ -80,7 +80,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/accountRoleTv"
+                        android:id="@+id/drawerUserRoleTv"
                         android:text="Rola"
                         android:gravity="center_vertical"
                         android:textColor="@color/cardview_dark_background"

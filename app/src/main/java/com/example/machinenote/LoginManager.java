@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
+import com.example.machinenote.models.Role;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,28 +20,34 @@ public class LoginManager {
     }
 
     public void login(String username, String password, LoginCallback callback) {
+
+
         LoginRequest loginRequest = new LoginRequest(username, password);
         Call<LoginResponse> call = apiService.login(loginRequest);
 
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                Log.d("json", response.message());
                 if (response.isSuccessful() && response.body() != null) {
-                    String apiKey = response.body().getApiKey();
+                    LoginResponse loginResponse = response.body();
+                    String apiKey = loginResponse.getApiKey();
+                    Role role = loginResponse.getRole();
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Token, apiKey);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Username, username);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Password, password);
+                    sharedPreferencesHelper.putRole(role);
                     Log.d("success", "Logged in with user " + username);
                     callback.onSuccess();
                 } else {
-                    Log.e("error", String.valueOf(response.body()));
+                    Log.e("error onResponse", String.valueOf(response.body()));
                     callback.onFailure("Login failed");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.e("error", String.valueOf(t));
+                Log.e("error onFailure", String.valueOf(t));
                 callback.onFailure(t.getMessage());
             }
         });
