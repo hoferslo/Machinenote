@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
         loadFragment(LoginFragment.newInstance(this));
 
-        initDrawerInfo();
         // Save a string value
 
     }
