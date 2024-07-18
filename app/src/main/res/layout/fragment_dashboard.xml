@@ -12,101 +12,16 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
         <LinearLayout
+            android:id="@+id/scrollViewLl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="8dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/knjizenjeDashBtn"
-                    android:text="Knjiženje"
-                    style="@style/materialButtonDashboard"/>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/zastojiDashBtn"
-                    android:text="Zastoji"
-                    style="@style/materialButtonDashboard"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/rezervniDeliDashBtn"
-                    android:text="Rezervni deli"
-                    style="@style/materialButtonDashboard"/>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/preventivniPreglediDashBtn"
-                    android:text="Preventivni pregledi"
-                    style="@style/materialButtonDashboard"
-
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/imenikDashBtn"
-                    android:text="Imenik"
-                    style="@style/materialButtonDashboard"/>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/nalogeDashBtn"
-                    android:text="Naloge"
-                    style="@style/materialButtonDashboard"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/remontiDashBtn"
-                    android:text="Remonti"
-                    style="@style/materialButtonDashboard"/>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/orodjaDashBtn"
-                    android:text="Orodja"
-                    style="@style/materialButtonDashboard"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/registerDashBtn"
-                    android:text="Register"
-                    style="@style/materialButtonDashboard"/>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/testDashBtn"
-                    android:text="test"
-                    style="@style/materialButtonDashboard"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

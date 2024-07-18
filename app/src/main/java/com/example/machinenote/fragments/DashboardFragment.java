@@ -2,17 +2,23 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
 import com.example.machinenote.models.Role;
+import com.google.android.material.button.MaterialButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,77 +54,165 @@ public class DashboardFragment extends BaseFragment {
 
         binding = FragmentDashboardBinding.inflate(getLayoutInflater());
 
-        binding.knjizenjeDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
-        });
-
-        binding.zastojiDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(ZastojiFragment.newInstance(context));
-        });
-
-        binding.remontiDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(RemontiFragment.newInstance(context));
-        });
-
-        binding.imenikDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(ImenikFragment.newInstance(context));
-        });
-
-        binding.nalogeDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(NalogeFragment.newInstance(context));
-        });
-
-        binding.orodjaDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(OrodjaFragment.newInstance(context));
-        });
-
-        binding.rezervniDeliDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(RezervniDeliFragment.newInstance(context));
-        });
-        binding.registerDashBtn.setOnClickListener(view -> {
-
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.loadFragment(RegisterFragment.newInstance(context));
-        });
-
-        SharedPreferencesHelper sharedPreferencesHelper =  SharedPreferencesHelper.getInstance(context);
-        Role role = sharedPreferencesHelper.getRole();
-        initRoleLogic(role);
+        initButtons();
 
         return binding.getRoot();
     }
 
-    public void initRoleLogic(Role role) {
-        binding.knjizenjeDashBtn.setVisibility(getVisibility(role.isKnjizenje()));
-        binding.imenikDashBtn.setVisibility(getVisibility(role.isImenik()));
-        binding.nalogeDashBtn.setVisibility(getVisibility(role.isNaloge()));
-        binding.orodjaDashBtn.setVisibility(getVisibility(role.isOrodja()));
-        binding.registerDashBtn.setVisibility(getVisibility(role.isRegister()));
-        binding.remontiDashBtn.setVisibility(getVisibility(role.isRemonti()));
-        binding.rezervniDeliDashBtn.setVisibility(getVisibility(role.isRezervniDeli()));
-        binding.zastojiDashBtn.setVisibility(getVisibility(role.isZastoji()));
-        binding.preventivniPreglediDashBtn.setVisibility(getVisibility(role.isPreventivniPregledi()));
+    public void initButtons() {
+        SharedPreferencesHelper sharedPreferencesHelper =  SharedPreferencesHelper.getInstance(context);
+        Role role = sharedPreferencesHelper.getRole();
 
-
+        {
+            if (role.isKnjizenje()) {
+                MaterialButton btn = addButtonToLayout("Knjiženje");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isZastoji()) {
+                MaterialButton btn = addButtonToLayout("Zastoji");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(ZastojiFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isRemonti()) {
+                MaterialButton btn = addButtonToLayout("Remonti");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(RemontiFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isImenik()) {
+                MaterialButton btn = addButtonToLayout("Imenik");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(ImenikFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isNaloge()) {
+                MaterialButton btn = addButtonToLayout("Naloge");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(NalogeFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isPreventivniPregledi()) {
+                MaterialButton btn = addButtonToLayout("Preventivni pregledi");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    //mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isOrodja()) {
+                MaterialButton btn = addButtonToLayout("Orodja");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(OrodjaFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isRezervniDeli()) {
+                MaterialButton btn = addButtonToLayout("Rezervni deli");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(RezervniDeliFragment.newInstance(context));
+                });
+            }
+        }
+        {
+            if (role.isRegister()) {
+                MaterialButton btn = addButtonToLayout("Registracija");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(RegisterFragment.newInstance(context));
+                });
+            }
+        }
 
     }
 
-    public int getVisibility(boolean state) {
-        if (state) { return View.VISIBLE; } else { return View.GONE; }
+
+    private MaterialButton addButtonToLayout(String name) {
+        // Check if the current LinearLayout has exactly two buttons
+
+        if (binding.scrollViewLl.getChildCount() == 0 || getLastLinearLayout().getChildCount() == 2) {
+            // Create a new LinearLayout to hold buttons
+            LinearLayout newLinearLayout = createNewLinearLayout();
+
+            binding.scrollViewLl.addView(newLinearLayout);
+        }
+
+        // Add buttons to the last LinearLayout in scrollViewLl
+        MaterialButton button = createButton(name);
+        getLastLinearLayout().addView(button);
+        return button;
+    }
+
+    private LinearLayout createNewLinearLayout() {
+        LinearLayout newLinearLayout = new LinearLayout(context);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        newLinearLayout.setLayoutParams(layoutParams);
+        newLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        newLinearLayout.setGravity(Gravity.CENTER);
+        return newLinearLayout;
+    }
+
+    private MaterialButton createButton(String text) {
+        MaterialButton button = new MaterialButton(context);
+
+        // Set text
+        button.setText(text);
+
+        // Set text size
+        button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+        // Set text color
+        button.setTextColor(ContextCompat.getColor(context, R.color.black));
+
+        // Set margins and width/weight
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                0, // width (0 means MATCH_PARENT based on weight)
+                (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 120,
+                        context.getResources().getDisplayMetrics()),
+                1 // weight (1 for equal distribution)
+        );
+        layoutParams.setMarginStart((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 8,
+                context.getResources().getDisplayMetrics()
+        ));
+        layoutParams.setMarginEnd((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 8,
+                context.getResources().getDisplayMetrics()
+        ));
+        button.setLayoutParams(layoutParams);
+
+        return button;
+    }
+
+
+
+    private LinearLayout getLastLinearLayout() {
+        return (LinearLayout) binding.scrollViewLl.getChildAt(binding.scrollViewLl.getChildCount() - 1);
     }
 
     @Override
