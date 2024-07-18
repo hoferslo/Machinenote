@@ -25,11 +25,11 @@
                 >
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/knjizenje"
+                    android:id="@+id/knjizenjeDashBtn"
                     android:text="Knjiženje"
                     style="@style/materialButtonDashboard"/>
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/zastoji"
+                    android:id="@+id/zastojiDashBtn"
                     android:text="Zastoji"
                     style="@style/materialButtonDashboard"/>
             </LinearLayout>
@@ -41,11 +41,11 @@
                 >
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/rezervniDeli"
+                    android:id="@+id/rezervniDeliDashBtn"
                     android:text="Rezervni deli"
                     style="@style/materialButtonDashboard"/>
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/preventivniPregledi"
+                    android:id="@+id/preventivniPreglediDashBtn"
                     android:text="Preventivni pregledi"
                     style="@style/materialButtonDashboard"
 
@@ -59,11 +59,11 @@
                 >
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/imenik"
+                    android:id="@+id/imenikDashBtn"
                     android:text="Imenik"
                     style="@style/materialButtonDashboard"/>
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/naloge"
+                    android:id="@+id/nalogeDashBtn"
                     android:text="Naloge"
                     style="@style/materialButtonDashboard"/>
             </LinearLayout>
@@ -75,11 +75,11 @@
                 >
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/remonti"
+                    android:id="@+id/remontiDashBtn"
                     android:text="Remonti"
                     style="@style/materialButtonDashboard"/>
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/orodja"
+                    android:id="@+id/orodjaDashBtn"
                     android:text="Orodja"
                     style="@style/materialButtonDashboard"/>
             </LinearLayout>
@@ -92,11 +92,11 @@
                 >
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/register"
+                    android:id="@+id/registerDashBtn"
                     android:text="Register"
                     style="@style/materialButtonDashboard"/>
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/test"
+                    android:id="@+id/testDashBtn"
                     android:text="test"
                     style="@style/materialButtonDashboard"/>
             </LinearLayout>

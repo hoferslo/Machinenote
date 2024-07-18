@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
+import com.example.machinenote.models.Role;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,54 +48,67 @@ public class DashboardFragment extends BaseFragment {
 
         binding = FragmentDashboardBinding.inflate(getLayoutInflater());
 
-        binding.knjizenje.setOnClickListener(view -> {
+        binding.knjizenjeDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
         });
 
-        binding.zastoji.setOnClickListener(view -> {
+        binding.zastojiDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(ZastojiFragment.newInstance(context));
         });
 
-        binding.remonti.setOnClickListener(view -> {
+        binding.remontiDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(RemontiFragment.newInstance(context));
         });
 
-        binding.imenik.setOnClickListener(view -> {
+        binding.imenikDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(ImenikFragment.newInstance(context));
         });
 
-        binding.naloge.setOnClickListener(view -> {
+        binding.nalogeDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(NalogeFragment.newInstance(context));
         });
 
-        binding.orodja.setOnClickListener(view -> {
+        binding.orodjaDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(OrodjaFragment.newInstance(context));
         });
 
-        binding.rezervniDeli.setOnClickListener(view -> {
+        binding.rezervniDeliDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(RezervniDeliFragment.newInstance(context));
         });
-        binding.register.setOnClickListener(view -> {
+        binding.registerDashBtn.setOnClickListener(view -> {
 
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.loadFragment(RegisterFragment.newInstance(context));
         });
 
+        SharedPreferencesHelper sharedPreferencesHelper =  SharedPreferencesHelper.getInstance(context);
+        Role role = sharedPreferencesHelper.getRole();
+        initRoleLogic(role);
+
         return binding.getRoot();
+    }
+
+    public void initRoleLogic(Role role) {
+        binding.knjizenjeDashBtn.setVisibility(getVisibility(role.isKnjizenje()));
+
+    }
+
+    public int getVisibility(boolean state) {
+        if (state) { return View.VISIBLE; } else { return View.GONE; }
     }
 
     @Override
