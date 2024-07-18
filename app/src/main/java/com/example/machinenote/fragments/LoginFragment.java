@@ -2,14 +2,15 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.LoginManager;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
 
@@ -23,6 +24,7 @@ public class LoginFragment extends BaseFragment {
     public String TAG = "Login";
     FragmentLoginBinding binding;
     Context context;
+    private LoginManager loginManager;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -45,6 +47,25 @@ public class LoginFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(getLayoutInflater());
+
+        loginManager = new LoginManager(context);
+
+        binding.loginBtn.setOnClickListener(v -> {
+            String username = binding.username.getText().toString().trim();
+            String password = binding.password.getText().toString().trim();
+            loginManager.login(username, password, new LoginManager.LoginCallback() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
+                    // Navigate to the next screen
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Toast.makeText(context, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
 
         return binding.getRoot();
     }
