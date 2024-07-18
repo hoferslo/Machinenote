@@ -104,6 +104,16 @@ public class DashboardFragment extends BaseFragment {
 
     public void initRoleLogic(Role role) {
         binding.knjizenjeDashBtn.setVisibility(getVisibility(role.isKnjizenje()));
+        binding.imenikDashBtn.setVisibility(getVisibility(role.isImenik()));
+        binding.nalogeDashBtn.setVisibility(getVisibility(role.isNaloge()));
+        binding.orodjaDashBtn.setVisibility(getVisibility(role.isOrodja()));
+        binding.registerDashBtn.setVisibility(getVisibility(role.isRegister()));
+        binding.remontiDashBtn.setVisibility(getVisibility(role.isRemonti()));
+        binding.rezervniDeliDashBtn.setVisibility(getVisibility(role.isRezervniDeli()));
+        binding.zastojiDashBtn.setVisibility(getVisibility(role.isZastoji()));
+        binding.preventivniPreglediDashBtn.setVisibility(getVisibility(role.isPreventivniPregledi()));
+
+
 
     }
 

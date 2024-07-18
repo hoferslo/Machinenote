@@ -11,8 +11,9 @@ public class Role {
     private boolean naloge;
     private boolean remonti;
     private boolean orodja;
+    private boolean register;
 
-    public Role(int roleId, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean remonti, boolean orodja) {
+    public Role(int roleId, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean remonti, boolean orodja, boolean register) {
         this.roleId = roleId;
         this.role = role;
         this.knjizenje = knjizenje;
@@ -23,6 +24,7 @@ public class Role {
         this.naloge = naloge;
         this.remonti = remonti;
         this.orodja = orodja;
+        this.register = register;
     }
 
     // Getters and Setters
@@ -104,5 +106,12 @@ public class Role {
 
     public void setOrodja(boolean orodja) {
         this.orodja = orodja;
+    }
+    public boolean isRegister() {
+        return register;
+    }
+
+    public void setRegister(boolean register) {
+        this.register = register;
     }
 }

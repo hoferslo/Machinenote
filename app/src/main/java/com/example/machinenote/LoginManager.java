@@ -21,7 +21,6 @@ public class LoginManager {
 
     public void login(String username, String password, LoginCallback callback) {
 
-
         LoginRequest loginRequest = new LoginRequest(username, password);
         Call<LoginResponse> call = apiService.login(loginRequest);
 
