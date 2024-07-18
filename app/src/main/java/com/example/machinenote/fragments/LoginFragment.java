@@ -12,9 +12,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.LoginManager;
+import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +30,7 @@ public class LoginFragment extends BaseFragment {
     FragmentLoginBinding binding;
     Context context;
     private LoginManager loginManager;
+    private boolean isPasswordVisible = false;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -56,6 +60,18 @@ public class LoginFragment extends BaseFragment {
             String username = binding.username.getText().toString().trim();
             String password = binding.password.getText().toString().trim();
             login(username, password);
+        });
+
+        binding.togglePasswordVisibility.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                binding.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                binding.togglePasswordVisibility.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.visibility_off, 0);
+            } else {
+                binding.password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                binding.togglePasswordVisibility.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.visibility, 0);
+            }
+            isPasswordVisible = !isPasswordVisible;
+            binding.password.setSelection(binding.password.length()); // Move cursor to the end
         });
 
         return binding.getRoot();

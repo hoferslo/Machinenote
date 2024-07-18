@@ -40,16 +40,35 @@ android:background="@color/white"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:layout_marginBottom="16dp"/>
-                <EditText
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:id="@+id/password"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/background_corners_100"
-                    android:drawableLeft="@mipmap/lock"
-                    android:drawablePadding="8dp"
-                    android:hint="@string/password"
-                    android:padding="8dp"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_height="64dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:id="@+id/password"
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@mipmap/lock"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/password"
+                        android:padding="8dp"
+                        android:inputType="textPassword"/>
+
+                    <TextView
+                        android:id="@+id/togglePasswordVisibility"
+                        android:drawableRight="@mipmap/visibility_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:padding="8dp" />
+
+                </LinearLayout>
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
