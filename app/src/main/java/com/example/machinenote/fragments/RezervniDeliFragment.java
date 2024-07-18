@@ -13,7 +13,7 @@ import com.example.machinenote.databinding.FragmentRezervniDeliBinding;
 
 public class RezervniDeliFragment extends BaseFragment {
 
-    public String TAG = "Imenik";
+    public String TAG = "Rezervni deli";
     FragmentRezervniDeliBinding binding;
     Context context;
 
