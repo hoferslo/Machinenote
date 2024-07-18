@@ -54,6 +54,42 @@
                 android:background="@color/primaryColor_50">
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_corners_200"
+                    android:layout_margin="8dp"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/accountNameTv"
+                        android:text="@string/username"
+                        android:gravity="center_vertical"
+                        android:textSize="18sp"
+                        android:drawableLeft="@mipmap/person"
+                        android:drawableTint="@color/cardview_dark_background"
+                        android:drawablePadding="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/cardview_dark_background"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/cardview_dark_background"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/accountRoleTv"
+                        android:text="Rola"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/cardview_dark_background"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <View
