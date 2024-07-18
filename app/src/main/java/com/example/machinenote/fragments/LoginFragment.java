@@ -82,6 +82,7 @@ public class LoginFragment extends BaseFragment {
                     MainActivity mainActivity = (MainActivity) requireActivity();
                     mainActivity.clearAllFragmentFromBackStack();
                     mainActivity.loadFragment(DashboardFragment.newInstance(context));
+                    mainActivity.initDrawerInfo();
                 }
             }
 

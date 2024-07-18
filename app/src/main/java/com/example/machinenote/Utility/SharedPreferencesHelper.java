@@ -26,7 +26,7 @@ public class SharedPreferencesHelper {
     private SharedPreferencesHelper(Context context) {
         sharedPreferences = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        gson = new GsonBuilder().setLenient().create();
+        gson = new GsonBuilder().create();
     }
 
     public static synchronized SharedPreferencesHelper getInstance(Context context) {
