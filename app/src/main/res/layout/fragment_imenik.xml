@@ -173,9 +173,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
     </LinearLayout>
@@ -202,7 +200,6 @@
             android:background="@drawable/background_corners_25"
             />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -212,8 +209,7 @@
         android:layout_marginBottom="16dp"
         android:paddingVertical="8dp"
         android:layout_weight="1"
-        android:background="@drawable/background_corners_500"
-        >
+        android:background="@drawable/background_corners_500">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -237,48 +233,6 @@
             </LinearLayout>
 
         </ScrollView>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:background="@drawable/background_corners_500">
-
-        <EditText
-            android:id="@+id/idOfName"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="0.8"
-            android:textSize="24sp"
-            android:layout_marginEnd="8dp"
-            android:padding="4dp"
-            android:hint="@string/enter_name"
-            android:background="@drawable/background_corners_25"
-            />
-
-
-        <LinearLayout
-            android:id="@+id/getNameData"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:src="?attr/homeAsUpIndicator"
-                android:rotation="180"
-                android:background="@drawable/background_corners_25"
-                />
-        </LinearLayout>
 
     </LinearLayout>
 
