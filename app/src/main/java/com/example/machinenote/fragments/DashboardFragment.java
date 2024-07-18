@@ -205,7 +205,7 @@ public class DashboardFragment extends BaseFragment {
                 context.getResources().getDisplayMetrics()
         ));
         button.setLayoutParams(layoutParams);
-
+        //button.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_button));
         return button;
     }
 
