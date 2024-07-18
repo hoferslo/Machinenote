@@ -1,6 +1,7 @@
 package com.example.machinenote;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 
@@ -29,14 +30,17 @@ public class LoginManager {
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Token, apiKey);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Username, username);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Password, password);
+                    Log.d("success", "Logged in with user " + username);
                     callback.onSuccess();
                 } else {
+                    Log.e("error", String.valueOf(response.body()));
                     callback.onFailure("Login failed");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.e("error", String.valueOf(t));
                 callback.onFailure(t.getMessage());
             }
         });

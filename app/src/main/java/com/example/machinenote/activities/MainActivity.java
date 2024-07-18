@@ -2,9 +2,6 @@ package com.example.machinenote.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.databinding.ActivityMainBinding;
-import com.example.machinenote.databinding.FragmentDashboardBinding;
-import com.example.machinenote.fragments.DashboardFragment;
-import com.example.machinenote.fragments.KnjizenjeFragment;
 import com.example.machinenote.fragments.LoginFragment;
-import com.example.machinenote.fragments.ZastojiFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     public boolean navigationForDrawerShown = true;
     private Drawable originalNavigationIcon;
-    public boolean onDashboard = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
 
         toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
@@ -57,27 +52,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.logout.setOnClickListener(view -> {
-            // Check if the current fragment is not DashboardFragment
-            Fragment currentFragment = getCurrentFragment();
-            if (!(currentFragment instanceof DashboardFragment)) {
-                // Clear the last fragment from the back stack
-                clearLastFragmentFromBackStack();
-                // Navigate to LoginFragment
-                loadFragment(new LoginFragment());
-            } else {
-                loadFragment(new LoginFragment());
-            }
+            clearAllFragmentFromBackStack();
+            sharedPreferencesHelper.clear();
+            loadFragment(LoginFragment.newInstance(this));
         });
 
-        loadFragment(DashboardFragment.newInstance(this));
-        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
+        loadFragment(LoginFragment.newInstance(this));
 
         // Save a string value
 
-
-
     }
-
 
 /*    public void loadFragment(Fragment fragment, boolean replace) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -101,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 R.anim.fragment_slide_in_from_left,   // Pop enter animation
                 R.anim.fragment_slide_out_to_right    // Pop exit animation
         );
+
         fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
         fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
         fragmentTransaction.commit();
@@ -112,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);
         } else {
-            if (!onDashboard) {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                 super.onBackPressed();
             } else {
                 binding.drawerLayout.openDrawer(binding.navView);
@@ -140,6 +125,13 @@ public class MainActivity extends AppCompatActivity {
     public void clearLastFragmentFromBackStack() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate();
+    }
+
+    public void clearAllFragmentFromBackStack() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+        }
     }
 
 }

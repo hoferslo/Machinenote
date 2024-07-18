@@ -2,6 +2,7 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.LoginManager;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
 
@@ -53,18 +55,7 @@ public class LoginFragment extends BaseFragment {
         binding.loginBtn.setOnClickListener(v -> {
             String username = binding.username.getText().toString().trim();
             String password = binding.password.getText().toString().trim();
-            loginManager.login(username, password, new LoginManager.LoginCallback() {
-                @Override
-                public void onSuccess() {
-                    Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
-                    // Navigate to the next screen
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    Toast.makeText(context, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            });
+            login(username, password);
         });
 
         return binding.getRoot();
@@ -75,5 +66,30 @@ public class LoginFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
+
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
+        String username = sharedPreferencesHelper.getString("Username", "");
+        String password = sharedPreferencesHelper.getString("Password", "");
+        login(username, password);
+    }
+
+    public void login(String username, String password) {
+        loginManager.login(username, password, new LoginManager.LoginCallback() {
+            @Override
+            public void onSuccess() {
+                if (isAdded()) {
+                    Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.clearAllFragmentFromBackStack();
+                    mainActivity.loadFragment(DashboardFragment.newInstance(context));
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(context, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Log.e("error", errorMessage);
+            }
+        });
     }
 }

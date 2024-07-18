@@ -102,7 +102,6 @@ public class DashboardFragment extends BaseFragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
         mainActivity.showDrawerIcon();
-        mainActivity.onDashboard = true;
     }
 
     @Override
@@ -111,6 +110,5 @@ public class DashboardFragment extends BaseFragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
         mainActivity.showBackArrow();
-        mainActivity.onDashboard = false;
     }
 }
