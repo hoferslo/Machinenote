@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentRezervniDeliBinding;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 
 
 public class RezervniDeliFragment extends BaseFragment {
@@ -40,8 +41,24 @@ public class RezervniDeliFragment extends BaseFragment {
         // Inflate the layout for this fragment
         binding = FragmentRezervniDeliBinding.inflate(getLayoutInflater());
 
+        binding.switchTabs.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                // Handle button checked/unchecked
+                if (isChecked) {
+                    // Respond to the button being checked
+
+                } else {
+                    // Respond to the button being unchecked
+
+                }
+            }
+        });
+
         return binding.getRoot();
     }
+
+
 
     @Override
     public void onResume() {
