@@ -2,11 +2,14 @@ package com.example.machinenote.Utility;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.example.machinenote.R;
 
@@ -38,11 +41,24 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
 
         textViewItem.setText(item.getName());
 
+        Drawable drawable;
         if (item.isCompleted()) {
             textViewItem.setTextColor(Color.GREEN);
+            drawable = ContextCompat.getDrawable(context, R.mipmap.check_circle);
+            if (drawable != null) {
+                drawable.setColorFilter(ContextCompat.getColor(context, R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
         } else {
             textViewItem.setTextColor(Color.RED);
+            drawable = ContextCompat.getDrawable(context, R.mipmap.error);
+            if (drawable != null) {
+                drawable.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
         }
+
+        // Set the drawable on the left
+        textViewItem.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+
         return convertView;
     }
 
@@ -72,5 +88,4 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
         }
         sortList();
     }
-
 }
