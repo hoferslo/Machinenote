@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.example.machinenote.R;
+import com.example.machinenote.models.ListViewItem;
 
 import java.util.Collections;
 import java.util.Comparator;

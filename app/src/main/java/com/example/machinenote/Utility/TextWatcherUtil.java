@@ -3,7 +3,10 @@ package com.example.machinenote.Utility;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.machinenote.models.ListViewItem;
 
 import java.util.List;
 
@@ -29,4 +32,5 @@ public class TextWatcherUtil {
             }
         });
     }
+
 }

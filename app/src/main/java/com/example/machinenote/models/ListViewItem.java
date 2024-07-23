@@ -1,6 +1,4 @@
-package com.example.machinenote.Utility;
-
-import android.util.Log;
+package com.example.machinenote.models;
 
 public class ListViewItem {
     private String name;

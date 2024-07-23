@@ -2,15 +2,16 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.fragment.app.Fragment;
+import android.widget.Toast;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
-import com.example.machinenote.Utility.ListViewItem;
+import com.example.machinenote.Utility.DataPickerDialog;
+import com.example.machinenote.models.ListViewItem;
 import com.example.machinenote.Utility.ListViewAdapter;
 import com.example.machinenote.Utility.TextWatcherUtil;
 import com.example.machinenote.activities.MainActivity;
@@ -22,8 +23,12 @@ import java.util.List;
 public class ZastojiFragment extends BaseFragment {
 
     public String TAG = "Zastoji";
+    private String[] linijaStringCache = {"Linija 1", "Linija 2", "Linija 3", "Linija 4"};
+    private String[] sifrantStringCache = {"Šifrant 1", "Šifrant 2", "Šifrant 3", "Šifrant 4"};
+    private String[] dataNames = {"Šifrant", "Ime delavca", "Razlog za zaustavitev stroja", "Opomba", "Linija"};
     private FragmentZastojiBinding binding;
     private Context context;
+    private String idOfLine, sifrant;
     private List<ListViewItem> data;
     private ListViewAdapter adapter;
 
@@ -50,23 +55,33 @@ public class ZastojiFragment extends BaseFragment {
 
         // Initialize the data list
         data = new ArrayList<>();
-        data.add(new ListViewItem("Ime delavca", false, 1));
-        data.add(new ListViewItem("Razlog za zaustavitev stroja", false, 2));
-        data.add(new ListViewItem("Opomba", false, 3));
+        for(int i = 0; i < 5; i++){
+            data.add(new ListViewItem(dataNames[i], false, i+1));
+        }
 
         // Initialize the adapter
         adapter = new ListViewAdapter(requireContext(), R.layout.custom_listview_item, data);
-
-        // Set the adapter to the ListView
         binding.listViewStoppages.setAdapter(adapter);
 
         // Set up TextWatchers
-        TextWatcherUtil.addTextWatcherToEditText(context, binding.imeDelavca, data, 1, adapter);
-        TextWatcherUtil.addTextWatcherToEditText(context, binding.razlogZaustavitveStroja, data, 2, adapter);
-        TextWatcherUtil.addTextWatcherToEditText(context, binding.opomba, data, 3, adapter);
+        TextWatcherUtil.addTextWatcherToEditText(context, binding.imeDelavca, data, 2, adapter); //textWatcher
+        TextWatcherUtil.addTextWatcherToEditText(context, binding.razlogZaustavitveStroja, data, 3, adapter);
+        TextWatcherUtil.addTextWatcherToEditText(context, binding.opomba, data, 4, adapter);
 
-        binding.cancelButton.setOnClickListener(view -> {
-            // Handle cancel button click
+        binding.idOfLineBtn.setOnClickListener(view -> {
+
+            int tmp = DataPickerDialog.showDialog(view, "Izberi Linijo!", linijaStringCache, requireContext(), binding.idOfLineBtn, adapter, 5);
+            if (tmp != -1) {
+                idOfLine = linijaStringCache[tmp];
+            }
+            //Log.d(TAG, String.valueOf(whichStringCache));
+        });
+
+        binding.sifrantBtn.setOnClickListener(view -> {
+            int tmp = DataPickerDialog.showDialog(view, "Izberi Šifrant", sifrantStringCache, requireContext(), binding.sifrantBtn, adapter, 1);
+            if(tmp != -1){
+                sifrant = sifrantStringCache[tmp];
+            }
         });
 
         return binding.getRoot();

@@ -92,7 +92,7 @@
                         android:textColor="@color/black"
                         android:text="Šifrant"
                         style="@style/materialButton"
-                        android:id="@id/sifrantBtn"
+                        android:id="@+id/sifrantBtn"
                         />
 
                     <EditText
@@ -148,7 +148,6 @@
             android:background="@drawable/background_corners_500">
 
             <LinearLayout
-                android:id="@+id/idOfLineBtn"
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:layout_height="match_parent"
@@ -157,7 +156,7 @@
                 >
 
                 <Button
-                    android:id="@+id/idOfLine"
+                    android:id="@+id/idOfLineBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/black"
