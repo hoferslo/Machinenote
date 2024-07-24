@@ -2,8 +2,8 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="?attr/colorControlHighlight">
 
-    <!-- Default state -->
-    <item>
+    <!-- Pressed state -->
+    <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/primaryColor_900" />
             <corners android:radius="8dp" />
@@ -11,12 +11,12 @@
         </shape>
     </item>
 
-    <!-- Pressed state -->
-    <item android:state_pressed="true">
+    <!-- Default state -->
+    <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/primaryColor_200" />
             <corners android:radius="8dp" />
-            <stroke android:width="1dp" android:color="@color/black" />
+            <stroke android:width="1dp" android:color="@color/cardview_shadow_start_color" />
         </shape>
     </item>
 
