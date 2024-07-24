@@ -22,9 +22,12 @@
     </style>
 
     <style name="materialButton" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/primaryColor_200</item>
+        <item name="android:background">@drawable/custom_button</item>
+        <item name="backgroundTint">@null</item> <!-- Set to null to avoid tinting issues -->
         <item name="cornerRadius">4dp</item>
         <item name="android:textSize">20sp</item>
+        <item name="elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="materialButtonToggle" parent="Widget.MaterialComponents.Button.OutlinedButton">
