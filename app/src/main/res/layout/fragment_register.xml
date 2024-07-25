@@ -64,7 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:id="@+id/addARole"
-                        android:background="@drawable/background_corners_100"
+                        android:background="@drawable/background_corners_25"
                         android:drawableLeft="@mipmap/settings"
                         android:drawablePadding="8dp"
                         android:hint="@string/role_name"

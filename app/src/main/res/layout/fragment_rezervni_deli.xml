@@ -281,7 +281,7 @@
         android:layout_marginBottom="8dp"
         android:paddingVertical="16dp"
         android:layout_weight="1"
-        android:background="@drawable/background_corners_50">
+        android:background="@drawable/background_corners_100">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -293,10 +293,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+                android:paddingHorizontal="8dp">
                 
                 <ListView
                     android:layout_width="match_parent"
+                    android:background="@drawable/background_corners_25"
                     android:layout_height="match_parent"
                     android:id="@+id/allDataRezervniDeliListView"/>
 
