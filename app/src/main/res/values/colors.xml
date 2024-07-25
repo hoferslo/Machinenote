@@ -5,6 +5,7 @@
     <color name="primaryColor_25">#FFFFFF</color>
     <color name="primaryColor_50">#EEF8FF</color>
     <color name="primaryColor_100">#C3E6FF</color>
+    <color name="primaryColor_150">#62BEFF</color>
     <color name="primaryColor_200">#0095FF</color>
 
     <color name="primaryColor_25_old">#D8F8FD</color>
