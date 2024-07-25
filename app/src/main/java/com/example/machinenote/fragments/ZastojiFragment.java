@@ -2,7 +2,6 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +92,6 @@ public class ZastojiFragment extends BaseFragment {
                         binding.stoppagesLl.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         int height = binding.stoppagesLl.getHeight();
 
-                        Log.d("mhm", height + ", " + binding.stoppagesLl.getMinimumHeight());
                         if (height < binding.stoppagesLl.getMinimumHeight()) {
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
