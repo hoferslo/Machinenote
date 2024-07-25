@@ -1,16 +1,38 @@
 package com.example.machinenote;
 
+import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Role;
+import com.example.machinenote.models.Zastoj;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("users.php/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+
+    @Headers("Content-Type: application/json")
+    @GET("zastoji.php")  // Update with the correct endpoint
+    Call<List<Zastoj>> getZastoji();
+
+    @Headers("Content-Type: application/json")
+    @POST("zastoji.php")
+    Call<Void> createZastoj(@Body Zastoj zastoj);
+
+    @Headers("Content-Type: application/json")
+    @GET("linije.php")
+    Call<List<Linija>> getLinije();
+
+    @Headers("Content-Type: application/json")
+    @GET("linije.php/{id}")
+    Call<Linija> getLinijaById(@Path("id") int id);
 }
 
 class LoginRequest {

@@ -2,6 +2,8 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +12,12 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
-import com.example.machinenote.LoginManager;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +29,7 @@ public class LoginFragment extends BaseFragment {
     public String TAG = "Login";
     FragmentLoginBinding binding;
     Context context;
-    private LoginManager loginManager;
+    private ApiManager apiManager;
     private boolean isPasswordVisible = false;
 
     public LoginFragment() {
@@ -54,7 +54,7 @@ public class LoginFragment extends BaseFragment {
         // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(getLayoutInflater());
 
-        loginManager = new LoginManager(context);
+        apiManager = new ApiManager(context);
 
         binding.loginBtn.setOnClickListener(v -> {
             String username = binding.username.getText().toString().trim();
@@ -90,7 +90,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     public void login(String username, String password) {
-        loginManager.login(username, password, new LoginManager.LoginCallback() {
+        apiManager.login(username, password, new ApiManager.LoginCallback() {
             @Override
             public void onSuccess() {
                 if (isAdded()) {
