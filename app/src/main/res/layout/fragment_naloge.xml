@@ -204,7 +204,7 @@
                 android:drawableLeft="@mipmap/search"
                 android:drawablePadding="8dp"
                 android:hint="Poišči nalogo"
-                android:background="@drawable/customborder"
+                android:background="@drawable/customborder_25"
                 />
 
 

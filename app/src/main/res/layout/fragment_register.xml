@@ -37,7 +37,7 @@
                         android:layout_height="64dp"
                         android:id="@+id/usernameNew"
 
-                        android:background="@drawable/background_corners_25"
+                        android:background="@drawable/customborder_25"
                         android:drawableLeft="@mipmap/person"
                         android:drawablePadding="8dp"
                         android:hint="@string/username"
@@ -48,7 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:id="@+id/passwordNew"
-                        android:background="@drawable/background_corners_25"
+                        android:background="@drawable/customborder_25"
                         android:drawableLeft="@mipmap/lock"
                         android:drawablePadding="8dp"
                         android:hint="@string/password"
@@ -58,13 +58,13 @@
                         android:layout_width="match_parent"
                         android:id="@+id/roleSpinner"
                         android:layout_height="64dp"
-                        android:background="@drawable/background_corners_25"
+                        android:background="@drawable/customborder_25"
                         />
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:id="@+id/addARole"
-                        android:background="@drawable/background_corners_25"
+                        android:background="@drawable/customborder_25"
                         android:drawableLeft="@mipmap/settings"
                         android:drawablePadding="8dp"
                         android:hint="@string/role_name"

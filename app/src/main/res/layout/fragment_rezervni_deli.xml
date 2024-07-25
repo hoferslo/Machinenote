@@ -255,7 +255,8 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
         android:padding="0dp"
-        android:background="@drawable/background_corners_25">
+        android:background="@drawable/customborder_25"
+        >
 
         <EditText
             android:id="@+id/idOfDuty"
@@ -267,8 +268,7 @@
             android:drawableLeft="@mipmap/search"
             android:drawablePadding="8dp"
             android:hint="Poišči rezervni del"
-            android:background="@drawable/customborder"
-
+            android:background="@color/transparent"
             />
 
 

@@ -76,7 +76,7 @@
                         android:layout_marginBottom="8dp"
                         android:hint="@string/name_of_worker"
                         android:fontFamily="@font/nunito_semibold"
-                        android:background="@drawable/customborder" />
+                        android:background="@drawable/customborder_25" />
 
                     <EditText
                         android:id="@+id/razlog_zaustavitve_stroja"
@@ -88,7 +88,7 @@
                         android:layout_marginBottom="8dp"
                         android:fontFamily="@font/nunito_semibold"
                         android:hint="@string/reason_for_stoppage"
-                        android:background="@drawable/customborder" />
+                        android:background="@drawable/customborder_25" />
 
                     <EditText
                         android:id="@+id/opomba"
@@ -99,7 +99,7 @@
                         android:gravity="center"
                         android:hint="@string/note_for_stoppage"
                         android:fontFamily="@font/nunito_semibold"
-                        android:background="@drawable/customborder" />
+                        android:background="@drawable/customborder_25" />
 
                     <!-- Repeat EditTexts as needed -->
 
