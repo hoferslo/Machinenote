@@ -91,8 +91,6 @@ public class ZastojiFragment extends BaseFragment {
                     public void onGlobalLayout() {
                         // Remove the listener to avoid multiple calls
                         binding.stoppagesLl.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                        // Now you can get the height of the view
                         int height = binding.stoppagesLl.getHeight();
 
                         Log.d("mhm", height + ", " + binding.stoppagesLl.getMinimumHeight());
@@ -104,9 +102,7 @@ public class ZastojiFragment extends BaseFragment {
                             int marginBottom = (int) (16 * getResources().getDisplayMetrics().density); // Convert 16dp to pixels
                             layoutParams.setMargins(0, 0, 0, marginBottom);
                             binding.stoppagesLl.setLayoutParams(layoutParams);
-
                         }
-
                     }
                 }
         );
