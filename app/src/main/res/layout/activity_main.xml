@@ -104,8 +104,8 @@
                         style="@style/materialButton"
                         android:drawableLeft="@mipmap/logout"
                         android:drawablePadding="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_margin="8dp"
+
                         />
 
                 </LinearLayout>

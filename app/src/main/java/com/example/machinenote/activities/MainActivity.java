@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -55,16 +56,27 @@ public class MainActivity extends AppCompatActivity {
         binding.logout.setOnClickListener(view -> {
             clearAllFragmentFromBackStack();
             sharedPreferencesHelper.clear();
+            disableDrawer();
             loadFragment(LoginFragment.newInstance(this));
         });
-
+        disableDrawer();
         loadFragment(LoginFragment.newInstance(this));
 
         // Save a string value
 
     }
 
+    private void disableDrawer() {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    // Method to enable the drawer
+    private void enableDrawer() {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
     public void initDrawerInfo() {
+        enableDrawer();
         binding.drawerUserNameTv.setText(sharedPreferencesHelper.getString("Username", "Ni povezave"));
         binding.drawerUserRoleTv.setText(sharedPreferencesHelper.getRole().getRole());
     }
