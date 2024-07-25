@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/background_corners_500">
+            android:background="@drawable/background_corners_100">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -191,8 +191,8 @@
             android:orientation="horizontal"
             android:layout_gravity="bottom"
             android:layout_marginBottom="16dp"
-            android:padding="8dp"
-            android:background="@drawable/background_corners_500">
+            android:padding="0dp"
+            android:background="@drawable/background_corners_25">
 
             <EditText
                 android:id="@+id/idOfDuty"
@@ -200,11 +200,11 @@
                 android:layout_height="64dp"
                 android:layout_weight="0.8"
                 android:textSize="24sp"
-                android:padding="4dp"
+                android:padding="8dp"
                 android:drawableLeft="@mipmap/search"
                 android:drawablePadding="8dp"
                 android:hint="Poišči nalogo"
-                android:background="@drawable/background_corners_25"
+                android:background="@drawable/customborder"
                 />
 
 
@@ -217,7 +217,7 @@
             android:layout_marginBottom="8dp"
             android:paddingVertical="8dp"
             android:layout_weight="1"
-            android:background="@drawable/background_corners_500"
+            android:background="@drawable/background_corners_100"
             >
 
             <ScrollView
@@ -236,7 +236,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/listViewDuty"
-                        android:background="@drawable/background_corners_100"
+                        android:background="@drawable/background_corners_25"
                         />
 
                 </LinearLayout>

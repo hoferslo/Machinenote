@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/primaryColor_25"
     tools:context=".fragments.KnjizenjeFragment">
 
 
@@ -20,7 +21,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/background_corners_500">
+            android:background="@drawable/background_corners_100">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -213,7 +214,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/background_corners_100"
+        android:background="@drawable/background_corners_50"
+        android:padding="0dp"
         >
 
         <TextView
@@ -240,7 +242,7 @@
                 android:layout_margin="8dp"
                 android:padding="8dp"
                 android:text="100"
-                android:background="@drawable/background_corners_200"
+                android:background="@drawable/background_corners_100"
                 />
         </LinearLayout>
 
@@ -252,8 +254,8 @@
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:background="@drawable/background_corners_500">
+        android:padding="0dp"
+        android:background="@drawable/background_corners_25">
 
         <EditText
             android:id="@+id/idOfDuty"
@@ -265,7 +267,8 @@
             android:drawableLeft="@mipmap/search"
             android:drawablePadding="8dp"
             android:hint="Poišči rezervni del"
-            android:background="@drawable/background_corners_25"
+            android:background="@drawable/customborder"
+
             />
 
 
@@ -278,7 +281,7 @@
         android:layout_marginBottom="8dp"
         android:paddingVertical="16dp"
         android:layout_weight="1"
-        android:background="@drawable/background_corners_500">
+        android:background="@drawable/background_corners_50">
 
         <ScrollView
             android:layout_width="match_parent"

@@ -14,7 +14,8 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="fontFamily">@font/nunito_semibold</item>
-        <!-- Customize your theme here. -->
+        <item name="background">@color/primaryColor_50</item>
+        <!-- Customize your theme here. TODO: ne dela background niti font -->
     </style>
     <!-- Base application theme. -->
     <style name="Base.Theme.MachineNote" parent="Theme.Material3.DayNight.NoActionBar">

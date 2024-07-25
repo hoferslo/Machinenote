@@ -31,7 +31,7 @@
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/background_corners_500">
+                    android:background="@drawable/background_corners_100">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -145,7 +145,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/background_corners_100"
+                    android:background="@drawable/customborder"
+                    android:padding="0dp"
                     >
 
                     <TextView
@@ -172,7 +173,7 @@
                             android:layout_margin="8dp"
                             android:padding="8dp"
                             android:text="100"
-                            android:background="@drawable/background_corners_200"
+                            android:background="@drawable/background_corners_100"
                             />
                     </LinearLayout>
 
@@ -185,7 +186,7 @@
                     android:layout_marginBottom="16dp"
                     android:paddingVertical="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/background_corners_500"
+                    android:background="@drawable/background_corners_100"
                     >
 
                     <ScrollView
@@ -198,7 +199,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:paddingHorizontal="16dp"/>
+                            android:paddingHorizontal="16dp"
+                            android:background="@drawable/background_corners_25"/>
 
                     </ScrollView>
 
@@ -243,12 +245,16 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:layout_marginEnd="8dp"
-                        android:background="@drawable/background_corners_200">
+                        android:background="@drawable/background_corners_50"
+                        >
 
                         <EditText
                             android:id="@+id/valueOfDesiredStockChange"
+
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@drawable/customborder"
+                            android:padding="0dp"
                             android:textSize="32sp"
                             android:gravity="center"
                             android:text="1"
@@ -287,7 +293,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="16dp"
                     android:padding="8dp"
-                    android:background="@drawable/background_corners_500">
+                    android:background="@drawable/background_corners_100">
 
                     <EditText
                         android:id="@+id/idOfArticleEt"

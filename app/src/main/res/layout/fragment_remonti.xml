@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/primaryColor_50"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.RemontiFragment">
 
@@ -35,10 +36,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/background_corners_500"
+            android:background="@drawable/customborder"
             android:orientation="vertical"
             android:paddingVertical="16dp">
 
@@ -51,8 +51,7 @@
                     android:id="@+id/allDataSv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp">
+                    android:orientation="vertical">
 
                     <Button
                         style="@style/materialButton"
@@ -79,7 +78,7 @@
                         android:layout_height="64dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.8"
-                        android:background="@drawable/background_corners_25"
+                        android:background="@drawable/customborder"
                         android:gravity="center"
                         android:hint="@string/changed_parts"
                         android:padding="4dp"
@@ -91,11 +90,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:layout_weight="0.8"
-                        android:background="@drawable/background_corners_25"
+                        android:background="@drawable/customborder"
                         android:gravity="center"
                         android:hint="@string/note_for_stoppage"
                         android:padding="4dp"
                         android:textSize="20sp" />
+
 
                 </LinearLayout>
 
@@ -123,7 +123,8 @@
                 <ImageView
                     android:layout_width="96dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/background_corners_25"
+                    android:background="@drawable/customborder"
+                    android:backgroundTint="@color/primaryColor_50"
                     android:src="@mipmap/add_a_photo" />
 
             </LinearLayout>
@@ -141,7 +142,7 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
         android:padding="8dp"
-        android:background="@drawable/background_corners_500">
+        android:background="@drawable/background_corners_100">
 
         <LinearLayout
             android:id="@+id/cancelBtn"
@@ -156,7 +157,6 @@
                 android:id="@+id/cancelButton"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:textColor="@color/black"
                 android:text="Prekliči"
                 style="@style/materialButton"
                 />
@@ -176,7 +176,6 @@
                 android:id="@+id/sendButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/black"
                 android:text="pošlji"
                 style="@style/materialButton"
                 />
