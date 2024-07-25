@@ -61,8 +61,7 @@
                         android:layout_marginBottom="8dp"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Izberi Linijo"
-                        android:textColor="@color/black" />
+                        android:text="Izberi Linijo" />
 
                     <Button
                         style="@style/materialButton"
@@ -71,8 +70,7 @@
                         android:layout_marginBottom="8dp"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Izberi Sklop Linije"
-                        android:textColor="@color/black" />
+                        android:text="Izberi Sklop Linije" />
 
 
                     <EditText

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primaryColor_25">#D8F8FD</color>
-    <color name="primaryColor_50">#D4F7FD</color>
-    <color name="primaryColor_100">#CDF5FD</color>
-    <color name="primaryColor_200">#A0E9FF</color>
+
+    <color name="primaryColor_25">#FFFFFF</color>
+    <color name="primaryColor_50">#EEF8FF</color>
+    <color name="primaryColor_100">#C3E6FF</color>
+    <color name="primaryColor_200">#0095FF</color>
+
+    <color name="primaryColor_25_old">#D8F8FD</color>
+    <color name="primaryColor_50_old">#D4F7FD</color>
+    <color name="primaryColor_100_old">#CDF5FD</color>
+    <color name="primaryColor_200_old">#A0E9FF</color>
     <color name="primaryColor_500">#89CFF3</color>
     <color name="primaryColor_700">#20A9FF</color>
     <color name="primaryColor_900">#05507E</color>

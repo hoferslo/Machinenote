@@ -4,43 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/primaryColor_50"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ZastojiFragment">
 
-
     <LinearLayout
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp">
+
+        <!-- Container LinearLayout to manage weight and minHeight -->
         <LinearLayout
+            android:id="@+id/stoppagesLl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_marginBottom="16dp"
             android:padding="8dp"
+            android:minHeight="80dp"
             android:background="@drawable/background_corners_25">
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:id="@+id/listViewStoppages"
-                />
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/listViewStoppages" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="16dp"
             android:paddingVertical="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/background_corners_500"
-            >
+            android:background="@drawable/customborder">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -50,112 +54,141 @@
                 <LinearLayout
                     android:id="@+id/allDataSv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    >
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:gravity="center"
                         android:layout_marginBottom="8dp"
                         android:padding="8dp"
-                        android:textColor="@color/black"
                         android:text="Šifrant"
                         style="@style/materialButton"
-                        android:id="@+id/sifrantBtn"
-                        />
+                        android:id="@+id/sifrantBtn" />
 
                     <EditText
                         android:id="@+id/ime_delavca"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
-                        android:layout_weight="0.8"
                         android:textSize="20sp"
                         android:padding="4dp"
                         android:gravity="center"
                         android:layout_marginBottom="8dp"
                         android:hint="@string/name_of_worker"
-                        android:background="@drawable/background_corners_25"
-                        />
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder" />
 
                     <EditText
                         android:id="@+id/razlog_zaustavitve_stroja"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
-                        android:layout_weight="0.8"
                         android:textSize="20sp"
                         android:padding="4dp"
                         android:gravity="center"
                         android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/nunito_semibold"
                         android:hint="@string/reason_for_stoppage"
-                        android:background="@drawable/background_corners_25"
-                        />
+                        android:background="@drawable/customborder" />
+
                     <EditText
                         android:id="@+id/opomba"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
-                        android:layout_weight="0.8"
                         android:textSize="20sp"
                         android:padding="4dp"
                         android:gravity="center"
                         android:hint="@string/note_for_stoppage"
-                        android:background="@drawable/background_corners_25"
-                        />
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder" />
+                    <EditText
 
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:hint="@string/note_for_stoppage"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder" />
+                    <EditText
+
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:hint="@string/note_for_stoppage"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder" />
+                    <EditText
+
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:hint="@string/note_for_stoppage"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder" />
+                    <EditText
+
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:hint="@string/note_for_stoppage"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder" />
+                    <EditText
+
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:textSize="20sp"
+                        android:padding="4dp"
+                        android:gravity="center"
+                        android:hint="@string/note_for_stoppage"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder" />
+
+                    <!-- Repeat EditTexts as needed -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:background="@drawable/background_corners_100">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="0.3"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginEnd="8dp">
+
+                            <Button
+                                android:id="@+id/idOfLineBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="Linija"
+                                style="@style/materialButton" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="96dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/customborder"
+                            android:src="@mipmap/photo_camera"
+                            android:backgroundTint="@color/primaryColor_50" />
+                    </LinearLayout>
                 </LinearLayout>
-
             </ScrollView>
         </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="16dp"
-            android:padding="8dp"
-            android:background="@drawable/background_corners_500">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginEnd="8dp"
-                >
-
-                <Button
-                    android:id="@+id/idOfLineBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/black"
-                    android:text="Linija"
-                    style="@style/materialButton"
-                    />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/scanQR"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
-
-                <ImageView
-                    android:layout_width="96dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/background_corners_25"
-                    android:src="@mipmap/photo_camera"
-                    />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -167,75 +200,67 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
         android:padding="8dp"
-        android:background="@drawable/background_corners_500">
+        android:background="@drawable/background_corners_100">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            >
+            android:layout_marginEnd="8dp">
 
             <Button
                 android:id="@+id/cancelBtn"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:textColor="@color/black"
                 android:text="Prekliči"
-                style="@style/materialButton"
-                />
+                style="@style/materialButton" />
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            >
+            android:layout_marginEnd="8dp">
 
             <Button
                 android:id="@+id/sendBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/black"
                 android:text="pošlji"
-                style="@style/materialButton"
-                />
+                style="@style/materialButton" />
         </LinearLayout>
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:singleSelection="true">
+
             <Button
                 android:id="@+id/tabStoppage"
                 android:gravity="center"
                 android:text="@string/tab_for_inserting_data"
-                style="@style/materialButtonToggle"
-                />
+                style="@style/materialButtonToggle" />
 
             <Button
                 android:id="@+id/tabPictures"
                 android:gravity="center"
                 android:text="@string/tab_for_pictures"
-                style="@style/materialButtonToggle"
-                />
+                style="@style/materialButtonToggle" />
 
             <Button
                 android:id="@+id/tabInfo"
                 android:layout_width="0dp"
                 android:gravity="center"
                 android:text="@string/tab_for_info"
-                style="@style/materialButtonToggle"
-                />
+                style="@style/materialButtonToggle" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </LinearLayout>
 </LinearLayout>

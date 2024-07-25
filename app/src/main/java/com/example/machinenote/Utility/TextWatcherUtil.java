@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TextWatcherUtil {
 
-    public static void addTextWatcherToEditText(Context context, EditText editText, List<ListViewItem> data, int number, ListViewAdapter adapter) {
+    public static void addTextWatcherToEditText(EditText editText, int number, ListViewAdapter adapter) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

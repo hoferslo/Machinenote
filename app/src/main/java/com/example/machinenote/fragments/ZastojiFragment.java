@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.machinenote.BaseFragment;
@@ -64,9 +65,9 @@ public class ZastojiFragment extends BaseFragment {
         binding.listViewStoppages.setAdapter(adapter);
 
         // Set up TextWatchers
-        TextWatcherUtil.addTextWatcherToEditText(context, binding.imeDelavca, data, 2, adapter); //textWatcher
-        TextWatcherUtil.addTextWatcherToEditText(context, binding.razlogZaustavitveStroja, data, 3, adapter);
-        TextWatcherUtil.addTextWatcherToEditText(context, binding.opomba, data, 4, adapter);
+        TextWatcherUtil.addTextWatcherToEditText(binding.imeDelavca,2, adapter); //textWatcher
+        TextWatcherUtil.addTextWatcherToEditText(binding.razlogZaustavitveStroja, 3, adapter);
+        TextWatcherUtil.addTextWatcherToEditText(binding.opomba, 4, adapter);
 
         binding.idOfLineBtn.setOnClickListener(view -> {
 
@@ -85,6 +86,23 @@ public class ZastojiFragment extends BaseFragment {
         });
 
         return binding.getRoot();
+    }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (binding.stoppagesLl.getHeight() < binding.stoppagesLl.getMinimumHeight()) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    (int) (80 * getResources().getDisplayMetrics().density) // Convert 64dp to pixels
+            );
+            int marginBottom = (int) (16 * getResources().getDisplayMetrics().density); // Convert 16dp to pixels
+            layoutParams.setMargins(0, 0, 0, marginBottom);
+            binding.stoppagesLl.setLayoutParams(layoutParams);
+
+        }
     }
 
     @Override
