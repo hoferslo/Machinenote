@@ -145,6 +145,12 @@ public class DashboardFragment extends BaseFragment {
             }
         }
 
+        if (getLastLinearLayout().getChildCount() == 1) {
+            MaterialButton button = createButton("invisibleBtn");
+            getLastLinearLayout().addView(button);
+            button.setVisibility(View.INVISIBLE);
+        }
+
     }
 
 
