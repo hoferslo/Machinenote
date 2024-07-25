@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MachineNote" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor_500</item>
-        <item name="colorPrimaryVariant">@color/primaryColor_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor_200</item>
-        <item name="colorSecondaryVariant">@color/secondaryColor_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="android:textColor">@android:color/black</item>
-        <!-- Customize your theme here. -->
+    <style name="Theme.MachineNote" parent="Base.Theme.MachineNote">
+
     </style>
 </resources>
