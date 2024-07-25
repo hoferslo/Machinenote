@@ -54,5 +54,13 @@
         <item name="android:layout_weight">1</item>
 
     </style>
+
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/primaryColor_25</item> <!-- Change accent color -->
+        <item name="android:windowBackground">@drawable/customborder_25</item> <!-- Custom background drawable -->
+        <item name="android:padding">8dp</item> <!-- Padding inside the dialog -->
+        <item name="android:textColorAlertDialogListItem">@color/black</item>
+    </style>
+
 </resources>
 
