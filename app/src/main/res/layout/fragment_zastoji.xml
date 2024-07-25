@@ -30,7 +30,6 @@
             android:minHeight="80dp"
             android:background="@drawable/background_corners_25">
 
-
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -102,7 +101,6 @@
                         android:fontFamily="@font/nunito_semibold"
                         android:background="@drawable/customborder" />
                     
-
                     <!-- Repeat EditTexts as needed -->
 
                     <LinearLayout

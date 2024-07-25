@@ -6,17 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.DataPickerDialog;
-import com.example.machinenote.models.ListViewItem;
 import com.example.machinenote.Utility.ListViewAdapter;
 import com.example.machinenote.Utility.TextWatcherUtil;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentZastojiBinding;
+import com.example.machinenote.models.ListViewItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,24 +85,33 @@ public class ZastojiFragment extends BaseFragment {
             }
         });
 
+        binding.stoppagesLl.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        // Remove the listener to avoid multiple calls
+                        binding.stoppagesLl.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                        // Now you can get the height of the view
+                        int height = binding.stoppagesLl.getHeight();
+
+                        Log.d("mhm", height + ", " + binding.stoppagesLl.getMinimumHeight());
+                        if (height < binding.stoppagesLl.getMinimumHeight()) {
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    (int) (80 * getResources().getDisplayMetrics().density) // Convert 64dp to pixels
+                            );
+                            int marginBottom = (int) (16 * getResources().getDisplayMetrics().density); // Convert 16dp to pixels
+                            layoutParams.setMargins(0, 0, 0, marginBottom);
+                            binding.stoppagesLl.setLayoutParams(layoutParams);
+
+                        }
+
+                    }
+                }
+        );
+
         return binding.getRoot();
-    }
-
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (binding.stoppagesLl.getHeight() < binding.stoppagesLl.getMinimumHeight()) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    (int) (80 * getResources().getDisplayMetrics().density) // Convert 64dp to pixels
-            );
-            int marginBottom = (int) (16 * getResources().getDisplayMetrics().density); // Convert 16dp to pixels
-            layoutParams.setMargins(0, 0, 0, marginBottom);
-            binding.stoppagesLl.setLayoutParams(layoutParams);
-
-        }
     }
 
     @Override
@@ -110,5 +119,6 @@ public class ZastojiFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
+
     }
 }
