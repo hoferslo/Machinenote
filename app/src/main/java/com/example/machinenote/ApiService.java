@@ -2,6 +2,7 @@ package com.example.machinenote;
 
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Role;
+import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.Zastoj;
 
 import java.util.List;
@@ -33,6 +34,15 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("linije.php/{id}")
     Call<Linija> getLinijaById(@Path("id") int id);
+
+
+    @Headers("Content-Type: application/json")
+    @GET("sifrant.php")
+    Call<List<Sifrant>> getSifrants();
+
+    @Headers("Content-Type: application/json")
+    @GET("sifrant.php/{id}")
+    Call<Sifrant> getSifrantById(@Path("id") int id);
 }
 
 class LoginRequest {

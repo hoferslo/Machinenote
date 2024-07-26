@@ -63,6 +63,15 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
         return convertView;
     }
 
+    public boolean areAllItemsComplete() {
+        for (ListViewItem item: items) {
+            if(!item.isCompleted()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void sortList() {
         Collections.sort(items, new Comparator<ListViewItem>() {
             @Override

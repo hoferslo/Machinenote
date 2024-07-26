@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Role;
+import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.Zastoj;
 
 import java.util.List;
@@ -139,6 +140,47 @@ public class ApiManager {
         });
     }
 
+    public void fetchSifrants(SifrantCallback callback) {
+        Call<List<Sifrant>> call = apiService.getSifrants();
+
+        call.enqueue(new Callback<List<Sifrant>>() {
+            @Override
+            public void onResponse(Call<List<Sifrant>> call, Response<List<Sifrant>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch sifrants");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Sifrant>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    // Fetch sifrant by ID
+    public void fetchSifrantById(int id, SifrantByIdCallback callback) {
+        Call<Sifrant> call = apiService.getSifrantById(id);
+
+        call.enqueue(new Callback<Sifrant>() {
+            @Override
+            public void onResponse(Call<Sifrant> call, Response<Sifrant> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch sifrant");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Sifrant> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
     public interface LinijeCallback {
         void onSuccess(List<Linija> linije);
         void onFailure(String errorMessage);
@@ -156,6 +198,19 @@ public class ApiManager {
 
     public interface ZastojiCallback {
         void onSuccess(List<Zastoj> zastoji);
+        void onFailure(String errorMessage);
+    }
+
+
+    // SifrantCallback.java
+    public interface SifrantCallback {
+        void onSuccess(List<Sifrant> sifrants);
+        void onFailure(String errorMessage);
+    }
+
+    // SifrantByIdCallback.java
+    public interface SifrantByIdCallback {
+        void onSuccess(Sifrant sifrant);
         void onFailure(String errorMessage);
     }
 

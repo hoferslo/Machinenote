@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
 
@@ -59,11 +58,14 @@ public class MainActivity extends AppCompatActivity {
             disableDrawer();
             loadFragment(LoginFragment.newInstance(this));
         });
+        // Save a string value
         disableDrawer();
         loadFragment(LoginFragment.newInstance(this));
 
-        // Save a string value
+    }
 
+    private boolean isUserLoggedIn() {
+        return !sharedPreferencesHelper.getString(SharedPreferencesHelper.Username, null).isEmpty();
     }
 
     private void disableDrawer() {
@@ -83,29 +85,40 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(
-                R.anim.fragment_slide_in_from_right,  // Enter animation
-                R.anim.fragment_slide_out_to_left,    // Exit animation
-                R.anim.fragment_slide_in_from_left,   // Pop enter animation
-                R.anim.fragment_slide_out_to_right    // Pop exit animation
-        );
+        Fragment existingFragment = fragmentManager.findFragmentByTag(fragment.getClass().getName());
 
-        fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment);
-        fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
-        fragmentTransaction.commit();
+        if (existingFragment == null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(
+                    R.anim.fragment_slide_in_from_right,  // Enter animation
+                    R.anim.fragment_slide_out_to_left,    // Exit animation
+                    R.anim.fragment_slide_in_from_left,   // Pop enter animation
+                    R.anim.fragment_slide_out_to_right    // Pop exit animation
+            );
 
+            fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName());
+            fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
-            binding.drawerLayout.closeDrawer(binding.navView);
+        if (binding.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+            if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+                binding.drawerLayout.closeDrawer(binding.navView);
+            } else {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                    super.onBackPressed();
+                } else {
+                    binding.drawerLayout.openDrawer(binding.navView);
+                }
+            }
         } else {
             if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                 super.onBackPressed();
             } else {
-                binding.drawerLayout.openDrawer(binding.navView);
+                finish();
             }
         }
     }
