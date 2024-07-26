@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,9 @@ import com.example.machinenote.models.ListViewItem;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.Zastoj;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,21 +217,53 @@ public class ZastojiFragment extends BaseFragment {
         );
     }
 
+    private List<File> getImagesFromLayout() {
+        List<File> imageFiles = new ArrayList<>();
+        int childCount = binding.imagesLlInSv.getChildCount();
+
+        for (int i = 0; i < childCount; i++) {
+            View view = binding.imagesLlInSv.getChildAt(i);
+            if (view instanceof ImageView) {
+                ImageView imageView = (ImageView) view;
+                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                File file = bitmapToFile(bitmap, "image_" + i + ".jpg");
+                imageFiles.add(file);
+            }
+        }
+
+        return imageFiles;
+    }
+
+    private File bitmapToFile(Bitmap bitmap, String fileName) {
+        File file = new File(requireContext().getCacheDir(), fileName);
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+
     private void sendZastoj(){
         if (adapter.areAllItemsComplete()) {
-            apiManager.sendZastoj(zastoj, new Callback<Void>() {
+            List<File> imageFiles = getImagesFromLayout();
+
+            // Call sendZastojWithImages
+            apiManager.sendZastojWithImages(zastoj, imageFiles, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(context, "Poslano!" , Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "error: " + response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "error: " + response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(context, "error: " + t, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

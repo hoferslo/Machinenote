@@ -7,11 +7,15 @@ import com.example.machinenote.models.Zastoj;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -26,6 +30,13 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("zastoji.php")
     Call<Void> createZastoj(@Body Zastoj zastoj);
+
+    @Multipart
+    @POST("upload/zastoj") //figure this out
+    Call<Void> sendZastojWithImages(
+            @Part("zastoj") RequestBody zastoj,
+            @Part List<MultipartBody.Part> images
+    );
 
     @Headers("Content-Type: application/json")
     @GET("linije.php")

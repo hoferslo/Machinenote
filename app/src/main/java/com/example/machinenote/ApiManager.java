@@ -8,9 +8,15 @@ import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.Zastoj;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -99,6 +105,41 @@ public class ApiManager {
             }
         });
     }
+
+    public void sendZastojWithImages(Zastoj zastoj, List<File> imageFiles, final Callback<Void> callback) {
+        // Convert Zastoj to RequestBody
+        RequestBody zastojBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(zastoj));
+
+        // Convert image files to MultipartBody.Part
+        List<MultipartBody.Part> imageParts = new ArrayList<>();
+        for (File file : imageFiles) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("images[]", file.getName(), requestFile);
+            imageParts.add(body);
+        }
+
+        // Call the API
+        Call<Void> call = apiService.sendZastojWithImages(zastojBody, imageParts);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ApiManager", "Zastoj and images sent successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ApiManager", "Failed to send Zastoj and images: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ApiManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
 
     public void fetchLinije(LinijeCallback callback) {
         Call<List<Linija>> call = apiService.getLinije();
