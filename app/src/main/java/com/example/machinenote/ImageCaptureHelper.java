@@ -37,6 +37,11 @@ public class ImageCaptureHelper {
         this.cameraLauncher = cameraLauncher;
     }
 
+    public ImageCaptureHelper(Context context) {
+        this.context = context;
+
+    }
+
     public void setImageCaptureCallback(ImageCaptureCallback callback) {
         this.callback = callback;
     }
@@ -83,6 +88,25 @@ public class ImageCaptureHelper {
             }
         } else {
             if (callback != null) callback.onError("Image capture failed or canceled");
+        }
+    }
+
+    public void deleteAllImages() {
+        File storageDir = context.getFilesDir();
+        if (storageDir.isDirectory()) {
+            File[] files = storageDir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().endsWith(".jpg")) {
+                        boolean deleted = file.delete();
+                        if (!deleted) {
+                            Log.e(TAG, "Failed to delete file: " + file.getAbsolutePath());
+                        }
+                    }
+                }
+            }
+        } else {
+            Log.e(TAG, "The specified directory is not a directory or does not exist.");
         }
     }
 }

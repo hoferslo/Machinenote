@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.ImageCaptureHelper;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
@@ -63,9 +64,10 @@ public class LoginFragment extends BaseFragment {
 
         apiManager = new ApiManager(context);
 
-        binding.loginBtn.setOnClickListener(v -> {
-            loginUsingTextviewUsernameAndPassword();
-        });
+        ImageCaptureHelper imageCaptureHelper = new ImageCaptureHelper(context);
+        imageCaptureHelper.deleteAllImages();
+
+        binding.loginBtn.setOnClickListener(v -> loginUsingTextviewUsernameAndPassword());
 
         binding.togglePasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
