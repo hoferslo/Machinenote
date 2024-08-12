@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
@@ -24,19 +25,29 @@ import com.example.machinenote.ImageCaptureHelper;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.DataPickerDialog;
 import com.example.machinenote.Utility.ListViewAdapter;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.TextWatcherUtil;
+import com.example.machinenote.Utility.TimeDifferenceCalculator;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentZastojiBinding;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.ListViewItem;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.Zastoj;
+import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +57,7 @@ public class ZastojiFragment extends BaseFragment {
 
     public String TAG = "Zastoji";
     private List<Linija> linije;
+    private Linija linija;
     private List<Sifrant> sifranti;
     private Zastoj zastoj;
     private FragmentZastojiBinding binding;
@@ -87,7 +99,7 @@ public class ZastojiFragment extends BaseFragment {
 
         apiManager = new ApiManager(context);
 
-        String[] dataNames = {"Šifrant", "Ime delavca", "Razlog za zaustavitev stroja", "Opomba", "Linija"};
+        String[] dataNames = {"Šifrant", "Ime delavca", "Razlog za zaustavitev stroja", "Opomba", "Linija", "Začetni čas", "Končni čas"};
 
         data = new ArrayList<>();
         for (int i = 0; i < dataNames.length; i++) {
@@ -103,21 +115,33 @@ public class ZastojiFragment extends BaseFragment {
         TextWatcherUtil.addTextWatcherToEditText(binding.razlogZaustavitveStroja, 3, adapter);
         TextWatcherUtil.addTextWatcherToEditText(binding.opomba, 4, adapter);
 
+
         binding.idOfLineBtn.setOnClickListener(view -> {
-            int tmp = DataPickerDialog.showDialog(view, "Izberi Linijo!",
-                    linije.stream().map(Linija::getLinija_SAP).toArray(String[]::new),
-                    requireContext(), binding.idOfLineBtn, adapter, 5);
-            if (tmp != -1) {
-                idOfLine = linije.get(tmp).getLinija_SAP();
-            }
+            DataPickerDialog.showDialog(view, "Izberi Linijo!",
+                    linije.stream().map(Linija::getLinijeSapAndNames).toArray(String[]::new),
+                    requireContext(), binding.idOfLineBtn, adapter, 5, selectedIndex -> {
+                        if (selectedIndex != -1) {
+                            linija = linije.get(selectedIndex);
+                            idOfLine = linije.get(selectedIndex).getLinija_SAP();
+                        } else {
+                            Log.d("mhm2", "Selection was canceled or invalid");
+                        }
+                    });
         });
 
+
         binding.sifrantBtn.setOnClickListener(view -> {
-            int tmp = DataPickerDialog.showDialog(view, "Izberi Šifrant", sifranti.stream().map(Sifrant::getNaziv).toArray(String[]::new), requireContext(), binding.sifrantBtn, adapter, 1);
-            if (tmp != -1) {
-                sifrant = sifranti.get(tmp).getNaziv();
-            }
+            DataPickerDialog.showDialog(view, "Izberi Šifrant",
+                    sifranti.stream().map(Sifrant::getNaziv).toArray(String[]::new),
+                    requireContext(), binding.sifrantBtn, adapter, 1, selectedIndex -> {
+                        if (selectedIndex != -1) {
+                            sifrant = sifranti.get(selectedIndex).getNaziv();
+                        } else {
+                            Log.d("mhm2", "Selection was canceled or invalid");
+                        }
+                    });
         });
+
 
         binding.cancelBtn.setOnClickListener(view -> {
             MainActivity mainActivity = (MainActivity) requireActivity();
@@ -128,7 +152,14 @@ public class ZastojiFragment extends BaseFragment {
 
         apiCalls();
 
-        binding.sendBtn.setOnClickListener(v -> sendZastoj());
+        binding.sendBtn.setOnClickListener(v -> {
+            try {
+                sendZastoj();
+            } catch (ParseException e) {
+                Log.e("error", e.getMessage());
+                ((MainActivity) context).showLoadingBar(false);
+            }
+        });
 
         binding.tabEntryBtn.setOnClickListener(v -> handleTabPress(1));
         binding.tabPicturesBtn.setOnClickListener(v -> handleTabPress(2));
@@ -151,10 +182,78 @@ public class ZastojiFragment extends BaseFragment {
 
 
         binding.cameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
+        binding.ImagesCameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
 
+        setupTimePickers();
+
+        TextWatcherUtil.addTextWatcherToTextView(binding.textBeforeTime, 6, adapter);
+        TextWatcherUtil.addTextWatcherToTextView(binding.textAfterTime, 7, adapter);
+        adapter.updateItemStatus(6, false);
+        adapter.updateItemStatus(7, false);
+
+        binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(binding.dezurstvoCheckBox.isChecked() ? false : true));
 
         return binding.getRoot();
     }
+
+    private void setupTimePickers() {
+        binding.analogClockBefore.setOnClickListener(v -> showDateTimePicker(true));
+
+        binding.textBeforeTime.setOnClickListener(v -> showDateTimePicker(true));
+
+        binding.analogClockAfter.setOnClickListener(v -> showDateTimePicker(false));
+        binding.textAfterTime.setOnClickListener(v -> showDateTimePicker(false));
+    }
+
+    private void showDateTimePicker(boolean isBeforeTime) {
+        // Create a new instance of SwitchDateTimeDialogFragment
+        SwitchDateTimeDialogFragment dateTimeDialogFragment = SwitchDateTimeDialogFragment.newInstance(
+                isBeforeTime ? "Select Before Time" : "Select After Time",
+                "OK",
+                "Cancel"
+        );
+
+        // Set 24-hour mode
+        dateTimeDialogFragment.set24HoursMode(true);
+
+        // Optionally set default date/time
+        dateTimeDialogFragment.setDefaultDateTime(new GregorianCalendar().getTime());
+
+        // Define the format for date and time
+        try {
+            dateTimeDialogFragment.setSimpleDateMonthAndDayFormat(new SimpleDateFormat("dd MMMM", Locale.getDefault()));
+        } catch (SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        // Set up button click listeners
+        dateTimeDialogFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Date date) {
+                SimpleDateFormat timeFormat = new SimpleDateFormat(TimeDifferenceCalculator.pattern, Locale.getDefault());
+                String time = timeFormat.format(date);
+
+                if (isBeforeTime) {
+                    binding.textBeforeTime.setText(time);
+                    binding.analogClockBefore.setTime(date.getHours(), date.getMinutes(), date.getSeconds());
+                    // Update AnalogClock or other UI elements here if needed
+                } else {
+                    binding.textAfterTime.setText(time);
+                    binding.analogClockAfter.setTime(date.getHours(), date.getMinutes(), date.getSeconds());
+                    // Update AnalogClock or other UI elements here if needed
+                }
+            }
+
+            @Override
+            public void onNegativeButtonClick(Date date) {
+                // Handle negative button click if needed
+            }
+        });
+
+        // Show the dialog
+        dateTimeDialogFragment.show(((MainActivity) context).getSupportFragmentManager(), "dialog_time");
+    }
+
 
     private void handleImage(Bitmap bitmap) {
         ImageView imageView = new ImageView(requireContext());
@@ -208,7 +307,7 @@ public class ZastojiFragment extends BaseFragment {
                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                     (int) (80 * getResources().getDisplayMetrics().density) // Convert 64dp to pixels
                             );
-                            int marginBottom = (int) (16 * getResources().getDisplayMetrics().density); // Convert 16dp to pixels
+                            int marginBottom = (int) (8 * getResources().getDisplayMetrics().density); // Convert 16dp to pixels
                             layoutParams.setMargins(0, 0, 0, marginBottom);
                             binding.stoppagesLl.setLayoutParams(layoutParams);
                         }
@@ -237,7 +336,7 @@ public class ZastojiFragment extends BaseFragment {
     private File bitmapToFile(Bitmap bitmap, String fileName) {
         File file = new File(requireContext().getCacheDir(), fileName);
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos); //todo maybe put settings for this
             fos.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -245,29 +344,65 @@ public class ZastojiFragment extends BaseFragment {
         return file;
     }
 
+    private Zastoj createZastoj() throws ParseException {
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
+        String user = sharedPreferencesHelper.getString("Username", "invalid user");
 
-    private void sendZastoj(){
+        return new Zastoj(
+                user,
+                String.valueOf(linija.getNaziv_linije()),
+                String.valueOf(binding.sifrantBtn.getText()),
+                String.valueOf(binding.opomba.getText()),
+                String.valueOf(binding.razlogZaustavitveStroja.getText()),
+                String.valueOf(binding.textBeforeTime.getText()),
+                String.valueOf(binding.textAfterTime.getText()),
+                String.valueOf(binding.imeDelavca.getText()),
+                String.valueOf(linija.getLinija_SAP()),
+                "",
+                getDezurstvo(),
+                TimeDifferenceCalculator.getMinutesBetweenDates(binding.textBeforeTime.getText().toString(), binding.textAfterTime.getText().toString()),
+                TimeDifferenceCalculator.getYearFromDateString(binding.textBeforeTime.getText().toString()), //a sploh hocem to
+                TimeDifferenceCalculator.getMonthFromDateString(binding.textBeforeTime.getText().toString()),
+                "qr koda");
+    }
+
+    private String getDezurstvo() {
+        if (binding.dezurstvoCheckBox.isChecked()) {
+            return "DA";
+        } else {
+            return "NE";
+        }
+    }
+
+    private void sendZastoj() throws ParseException {
         if (adapter.areAllItemsComplete()) {
             List<File> imageFiles = getImagesFromLayout();
 
+            zastoj = createZastoj();
+            ((MainActivity) context).showLoadingBar(true);
             // Call sendZastojWithImages
             apiManager.sendZastojWithImages(zastoj, imageFiles, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(context, "Poslano!" , Toast.LENGTH_SHORT).show();
+                        ((MainActivity) context).clearLastFragmentFromBackStack();
+                        ((MainActivity) context).showLoadingBar(false);
                     } else {
                         Toast.makeText(context, "error: " + response.message(), Toast.LENGTH_SHORT).show();
+                        ((MainActivity) context).showLoadingBar(false);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(context, "error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    ((MainActivity) context).showLoadingBar(false);
                 }
             });
         } else {
             Toast.makeText(context, "Izpolni vsa polja", Toast.LENGTH_SHORT).show();
+            ((MainActivity) context).showLoadingBar(false);
         }
     }
 
@@ -332,8 +467,7 @@ public class ZastojiFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.binding.toolbarTitle.setText(TAG);
+        ((MainActivity) context).binding.toolbarTitle.setText(TAG);
 
     }
 }

@@ -31,6 +31,10 @@ public class Linija {
         return linija_SAP;
     }
 
+    public String getLinijeSapAndNames() {
+        return linija_SAP + " : " + naziv_linije;
+    }
+
     public void setLinija_SAP(String linija_SAP) {
         this.linija_SAP = linija_SAP;
     }

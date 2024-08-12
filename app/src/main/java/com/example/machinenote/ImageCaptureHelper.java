@@ -42,6 +42,7 @@ public class ImageCaptureHelper {
     }
 
     public void captureImage() {
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
             File photoFile = null;

@@ -32,7 +32,7 @@ public interface ApiService {
     Call<Void> createZastoj(@Body Zastoj zastoj);
 
     @Multipart
-    @POST("upload/zastoj") //figure this out
+    @POST("zastoji.php") //figure this out
     Call<Void> sendZastojWithImages(
             @Part("zastoj") RequestBody zastoj,
             @Part List<MultipartBody.Part> images

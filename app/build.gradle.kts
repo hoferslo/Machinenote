@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    // Add other plugins if needed
 }
 
 android {
@@ -25,18 +26,20 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
 
 dependencies {
-    implementation (libs.logging.interceptor)
-    implementation (libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.converter.gson)
     implementation(libs.retrofit)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -47,4 +50,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+
+    implementation ("com.github.leondzn:simple-analog-clock:1.0.1")
+    implementation ("com.github.Kunzisoft:Android-SwitchDateTimePicker:2.1")
 }

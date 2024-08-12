@@ -11,11 +11,11 @@ public class DataPickerDialog {
 
     private static int whichStringCache;
 
-    public static int showDialog(View view, String title, String[] items, Context context, Button button) {
-        return showDialog(view, title, items, context, button, null, -1);
+    public static int showDialog(View view, String title, String[] items, Context context, Button button, OnItemSelectedListener listener) {
+        return showDialog(view, title, items, context, button, null, -1, listener);
     }
 
-    public static int showDialog(View view, String title, String[] items, Context context, Button button, ListViewAdapter adapter, int whichListItem) {
+    public static int showDialog(View view, String title, String[] items, Context context, Button button, ListViewAdapter adapter, int whichListItem, OnItemSelectedListener listener) {
         whichStringCache = -1;
 
 
@@ -27,11 +27,16 @@ public class DataPickerDialog {
                     whichStringCache = which;
                     if (adapter != null && whichListItem != -1) {
                         adapter.updateItemStatus(whichListItem, true);
+                        listener.onItemSelected(whichListItem);
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
         return whichStringCache;
+    }
+
+    public interface OnItemSelectedListener {
+        void onItemSelected(int selectedIndex);
     }
 }

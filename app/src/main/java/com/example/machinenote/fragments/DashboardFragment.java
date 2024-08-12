@@ -1,14 +1,19 @@
 package com.example.machinenote.fragments;
 
 import android.content.Context;
+import android.graphics.text.LineBreaker;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -182,17 +187,13 @@ public class DashboardFragment extends BaseFragment {
         return newLinearLayout;
     }
 
+
     private MaterialButton createButton(String text) {
-        MaterialButton button = new MaterialButton(context);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.materialButtonDashboard);
+        MaterialButton button = new MaterialButton(contextThemeWrapper);
 
         // Set text
         button.setText(text);
-
-        // Set text size
-        button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-
-        // Set text color
-        button.setTextColor(ContextCompat.getColor(context, R.color.black));
 
         // Set margins and width/weight
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -211,6 +212,8 @@ public class DashboardFragment extends BaseFragment {
                 context.getResources().getDisplayMetrics()
         ));
         button.setLayoutParams(layoutParams);
+
+        button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         //button.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_button));
         return button;
     }

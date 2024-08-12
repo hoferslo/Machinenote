@@ -1,10 +1,16 @@
 package com.example.machinenote.activities;
 
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -42,6 +48,60 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         setSupportActionBar(binding.toolbar);
 
+        //backwards press logic
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 33+
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                    OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                    () -> {
+                        if (binding.loadingLl.getVisibility() != View.VISIBLE) {
+                            if (binding.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+                                if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+                                    binding.drawerLayout.closeDrawer(binding.navView);
+                                } else {
+                                    if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                                        clearLastFragmentFromBackStack();
+                                    } else {
+                                        binding.drawerLayout.openDrawer(binding.navView);
+                                    }
+                                }
+                            } else {
+                                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                                    clearLastFragmentFromBackStack();
+                                } else {
+                                    finish();
+                                }
+                            }
+                        }
+                    }
+            );
+        } else {
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    if (binding.loadingLl.getVisibility() != View.VISIBLE) {
+                        if (binding.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+                            if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+                                binding.drawerLayout.closeDrawer(binding.navView);
+                            } else {
+                                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                                    clearLastFragmentFromBackStack();
+                                } else {
+                                    binding.drawerLayout.openDrawer(binding.navView);
+                                }
+                            }
+                        } else {
+                            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                                clearLastFragmentFromBackStack();
+                            } else {
+                                finish();
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
         originalNavigationIcon = binding.toolbar.getNavigationIcon();
 
         binding.navView.setNavigationItemSelectedListener(item -> {
@@ -61,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
         // Save a string value
         disableDrawer();
         loadFragment(LoginFragment.newInstance(this));
+
+    }
+
+    public void showLoadingBar(boolean b) {
+        binding.loadingLl.setVisibility(b ? View.VISIBLE : View.GONE);
 
     }
 
@@ -102,26 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (binding.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
-            if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
-                binding.drawerLayout.closeDrawer(binding.navView);
-            } else {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    super.onBackPressed();
-                } else {
-                    binding.drawerLayout.openDrawer(binding.navView);
-                }
-            }
-        } else {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                super.onBackPressed();
-            } else {
-                finish();
-            }
-        }
-    }
+
 
     public void showDrawerIcon() {
         binding.toolbar.setNavigationIcon(originalNavigationIcon);
