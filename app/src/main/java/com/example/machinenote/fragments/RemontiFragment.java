@@ -114,6 +114,7 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
                             Log.d("nekejnkeje", "linija index: " + selectedIndex);
                             setLinija(linije.get(selectedIndex));
                             qrKoda = getString(R.string.QR_koda_value_negative);
+                            TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
                         }
                     });
         });
@@ -124,7 +125,7 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
                 DataPickerDialog.showDialog(view, getString(R.string.pick_sklop_linije),
                         sklopiLinijGledeNaIzbranoLinijo.stream().map(SklopLinije::getSklopLinije).toArray(String[]::new),
                         requireContext(), binding.sklopLinijeBtn, adapter, 1, selectedIndex -> {
-
+                            TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
                         });
             } else {
                 Toast.makeText(context, R.string.najprej_izberi_linijo, Toast.LENGTH_SHORT).show();
@@ -136,8 +137,6 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.onBackPressed();
         });
-
-        TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 
         apiCalls();
 
@@ -182,6 +181,8 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
         adapter.updateItemStatus(5, false);
 
         binding.scanBtn.setOnClickListener(v -> startQRCodeScanner());
+
+        TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 
         return binding.getRoot();
     }

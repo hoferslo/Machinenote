@@ -111,6 +111,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
                         if (selectedIndex != -1) {
                             setLinija(linije.get(selectedIndex));
                             qrKoda = getString(R.string.QR_koda_value_negative);
+                            TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
                         }
                     });
         });
@@ -120,7 +121,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
             DataPickerDialog.showDialog(view, getString(R.string.pick_sifrant),
                     sifranti.stream().map(Sifrant::getNaziv).toArray(String[]::new),
                     requireContext(), binding.sifrantBtn, adapter, 1, selectedIndex -> {
-
+                        TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
                     });
         });
 
@@ -129,8 +130,6 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.onBackPressed();
         });
-
-        TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 
         apiCalls();
 
@@ -177,6 +176,8 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(!binding.dezurstvoCheckBox.isChecked()));
 
         binding.scanBtn.setOnClickListener(v -> startQRCodeScanner());
+
+        TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 
         return binding.getRoot();
     }

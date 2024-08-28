@@ -57,7 +57,7 @@ public class TextWatcherUtil {
                         if (height < Ll.getMinimumHeight()) {
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
-                                    (int) (80 * context.getResources().getDisplayMetrics().density) // Convert 64dp to pixels
+                                    (int) (100 * context.getResources().getDisplayMetrics().density) // Convert 64dp to pixels
                             );
                             int marginBottom = (int) (8 * context.getResources().getDisplayMetrics().density); // Convert 16dp to pixels
                             layoutParams.setMargins(0, 0, 0, marginBottom);

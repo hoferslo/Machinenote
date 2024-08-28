@@ -7,14 +7,14 @@
 
     <TextView
         android:id="@+id/customTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@android:color/black"
         android:drawableLeft="@mipmap/error"
         android:drawableTint="@color/red"
         android:drawablePadding="8dp"
-        android:textStyle="italic"/>
-        
+        android:textStyle="italic" />
+
 
 </LinearLayout>

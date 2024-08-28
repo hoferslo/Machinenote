@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
-                android:minHeight="80dp"
+                android:minHeight="100dp"
                 android:background="@drawable/background_corners_25">
 
                 <ListView
