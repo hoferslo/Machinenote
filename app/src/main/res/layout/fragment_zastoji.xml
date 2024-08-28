@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
     android:orientation="vertical"
+    android:clickable="true"
     android:background="@color/primaryColor_50"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ZastojiFragment">
@@ -19,41 +21,38 @@
 
         <LinearLayout
             android:id="@+id/entryLl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <!-- Container LinearLayout to manage weight and minHeight -->
-        <LinearLayout
-            android:id="@+id/stoppagesLl"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginBottom="8dp"
-            android:padding="8dp"
-            android:minHeight="80dp"
-            android:background="@drawable/background_corners_25">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Container LinearLayout to manage weight and minHeight -->
+            <LinearLayout
+                android:id="@+id/requiredItemsLl"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"
+                android:padding="8dp"
+                android:minHeight="80dp"
+                android:background="@drawable/background_corners_25">
 
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/listViewStoppages" />
+                    android:id="@+id/requiredItemsLv"
+                    android:scrollbars="none" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="8dp"
-            android:background="@drawable/customborder">
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:paddingVertical="8dp"
+                android:background="@drawable/customborder">
 
                 <LinearLayout
                     android:id="@+id/allDataSv"
@@ -67,7 +66,7 @@
                         android:gravity="center"
                         android:layout_marginBottom="8dp"
                         android:padding="8dp"
-                        android:text="Šifrant"
+                        android:text="@string/sifrant"
                         style="@style/materialButton"
                         android:id="@+id/sifrantBtn" />
 
@@ -102,33 +101,53 @@
                         android:textSize="20sp"
                         android:padding="16dp"
                         android:gravity="center"
-                        android:hint="@string/note_for_stoppage"
+                        android:hint="@string/opomba"
                         android:fontFamily="@font/nunito_semibold"
                         android:background="@drawable/customborder_25" />
 
                     <!-- Repeat EditTexts as needed -->
 
-                    <Button
-                        android:id="@+id/idOfLineBtn"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_gravity="bottom"
                         android:layout_marginTop="8dp"
                         android:padding="8dp"
-                        android:text="Linija"
-                        style="@style/materialButton" />
+                        android:gravity="center"
+                        android:background="@drawable/background_corners_100">
 
+                        <Button
+                            android:id="@+id/idOfLineBtn"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:gravity="center"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/line"
+                            style="@style/materialButton" />
+
+                        <ImageButton
+                            android:id="@+id/scanBtn"
+                            android:layout_width="92dp"
+                            android:layout_height="64dp"
+                            android:gravity="end"
+                            android:scaleType="fitCenter"
+                            android:padding="4dp"
+                            android:src="@mipmap/qr_code_scanner"
+                            style="@style/materialButton"
+                            app:tint="@android:color/white" />
+
+                    </LinearLayout>
 
 
                     <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
 
                         android:layout_marginTop="8dp"
-                        android:padding="4dp"
+                        android:padding="8dp"
                         android:background="@drawable/background_corners_100">
 
                         <LinearLayout
@@ -137,37 +156,41 @@
                             android:padding="4dp"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
-                        <CheckBox
-                            android:id="@+id/dezurstvoCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:buttonTint="@color/primaryColor_900"
-                            android:scaleX="1.5"
-                            android:scaleY="1.5"
-                            />
-                        <TextView
-                            android:id="@+id/dezurstvoTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:textSize="20sp"
-                            android:text="Dežurstvo"/>
+
+                            <CheckBox
+                                android:id="@+id/dezurstvoCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:buttonTint="@color/primaryColor_900"
+                                android:scaleX="1.5"
+                                android:scaleY="1.5" />
+
+                            <TextView
+                                android:id="@+id/dezurstvoTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:textSize="20sp"
+                                android:text="@string/dezurstvo" />
                         </LinearLayout>
 
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/cameraBtn"
-                            android:layout_width="96dp"
+                            android:layout_width="92dp"
                             android:layout_height="64dp"
+                            android:contentDescription="@string/photo_button"
                             android:gravity="end"
-                            android:background="@drawable/customborder_25"
                             android:padding="4dp"
-                            android:src="@mipmap/photo_camera" />
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/photo_camera"
+                            style="@style/materialButton"
+                            app:tint="@android:color/white" />
                     </LinearLayout>
 
                     <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:baselineAligned="false"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
                         android:layout_marginTop="8dp"
@@ -189,8 +212,7 @@
                                 android:layout_gravity="center_horizontal"
                                 app:secondTint="@color/transparent"
                                 app:hourTint="@color/primaryColor_500"
-                                app:minuteTint="@color/primaryColor_900"
-                                />
+                                app:minuteTint="@color/primaryColor_900" />
 
                             <TextView
                                 android:id="@+id/textBeforeTime"
@@ -198,9 +220,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
 
-                                android:hint="Before Time"
+                                android:hint="@string/start_time"
                                 android:textSize="16sp"
-                                android:textColor="@android:color/black"/>
+                                android:textColor="@android:color/black" />
 
                         </LinearLayout>
 
@@ -218,16 +240,16 @@
                                 android:layout_gravity="center_horizontal"
                                 app:secondTint="@color/transparent"
                                 app:hourTint="@color/primaryColor_500"
-                                app:minuteTint="@color/primaryColor_900"/>
+                                app:minuteTint="@color/primaryColor_900" />
 
                             <TextView
                                 android:id="@+id/textAfterTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:hint="After Time"
+                                android:hint="@string/end_time"
                                 android:textSize="16sp"
-                                android:textColor="@android:color/black"/>
+                                android:textColor="@android:color/black" />
 
                         </LinearLayout>
 
@@ -236,8 +258,9 @@
 
                 </LinearLayout>
             </ScrollView>
+
+
         </LinearLayout>
-    </LinearLayout>
 
         <LinearLayout
             android:id="@+id/imagesLl"
@@ -245,6 +268,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -257,19 +281,21 @@
                     android:id="@+id/imagesLlInSv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:orientation="vertical"></LinearLayout>
             </ScrollView>
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/ImagesCameraBtn"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/customborder_25"
+                android:contentDescription="@string/photo_button"
                 android:padding="4dp"
                 android:layout_marginTop="8dp"
-                android:src="@mipmap/photo_camera" />
+                android:scaleType="fitCenter"
+                android:src="@mipmap/photo_camera"
+                style="@style/materialButton"
+                app:tint="@android:color/white" />
 
         </LinearLayout>
 
@@ -278,8 +304,7 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
 
     </FrameLayout>
 
@@ -289,6 +314,7 @@
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:layout_marginBottom="8dp"
@@ -305,8 +331,8 @@
             <Button
                 android:id="@+id/cancelBtn"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:text="Prekliči"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
                 style="@style/materialButton" />
         </LinearLayout>
 
@@ -320,8 +346,8 @@
             <Button
                 android:id="@+id/sendBtn"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="pošlji"
+                android:layout_height="wrap_content"
+                android:text="@string/send"
                 style="@style/materialButton" />
         </LinearLayout>
     </LinearLayout>
@@ -336,8 +362,7 @@
             android:layout_height="match_parent"
             app:singleSelection="true"
             app:selectionRequired="true"
-            app:checkedButton="@+id/tabEntryBtn"
-            >
+            app:checkedButton="@+id/tabEntryBtn">
 
             <Button
                 android:id="@+id/tabEntryBtn"
@@ -355,6 +380,7 @@
                 android:id="@+id/tabInfoBtn"
                 android:layout_width="0dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/tab_for_info"
                 style="@style/materialButtonToggle" />
         </com.google.android.material.button.MaterialButtonToggleGroup>

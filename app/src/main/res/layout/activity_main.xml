@@ -13,120 +13,135 @@
         android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:orientation="horizontal"
-            android:background="@color/primaryColor_100">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Title"
-                android:gravity="center"
-                android:textSize="24sp"
-                android:paddingHorizontal="8dp" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:background="@color/primaryColor_100">
 
-        </com.google.android.material.appbar.MaterialToolbar>
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:paddingHorizontal="8dp" />
+
+                <ImageButton
+                    android:id="@+id/noWifiBtn"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:layout_margin="4dp"
+                    android:src="@mipmap/signal_wifi_bad"
+                    style="@style/materialButton"
+                    app:tint="@android:color/white" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
 
-        <androidx.drawerlayout.widget.DrawerLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/drawer_layout"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/fragment_container"
+            <androidx.drawerlayout.widget.DrawerLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                />
+                android:id="@+id/drawer_layout"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
 
-            <com.google.android.material.navigation.NavigationView
-                android:id="@+id/nav_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:background="@color/primaryColor_50">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_corners_100"
-                    android:layout_margin="8dp"
-                    android:padding="16dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/drawerUserNameTv"
-                        android:text="@string/username"
-                        android:gravity="center_vertical"
-                        android:textSize="18sp"
-                        android:drawableLeft="@mipmap/person"
-                        android:drawableTint="@color/cardview_dark_background"
-                        android:drawablePadding="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:textColor="@color/cardview_dark_background"
-                        />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/cardview_dark_background"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/drawerUserRoleTv"
-                        android:text="Rola"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/cardview_dark_background"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
+                <FrameLayout
+                    android:id="@+id/fragment_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <View
+                    android:orientation="vertical" />
+
+                <com.google.android.material.navigation.NavigationView
+                    android:id="@+id/nav_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:background="@color/primaryColor_50">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:id="@+id/logout"
-                        android:text="Logout"
-                        style="@style/materialButton"
-                        android:drawableLeft="@mipmap/logout"
-                        android:drawablePadding="8dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_corners_100"
                         android:layout_margin="8dp"
+                        android:padding="16dp"
+                        android:orientation="vertical">
 
-                        />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/drawerUserNameTv"
+                            android:text="@string/username"
+                            android:gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:drawableLeft="@mipmap/person"
+                            android:drawableTint="@color/cardview_dark_background"
+                            android:drawablePadding="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:textColor="@color/cardview_dark_background" />
 
-                </LinearLayout>
-                
-            </com.google.android.material.navigation.NavigationView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@color/cardview_dark_background" />
 
-        </androidx.drawerlayout.widget.DrawerLayout >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/drawerUserRoleTv"
+                            android:text="Rola"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/cardview_dark_background" />
 
-    </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:id="@+id/logout"
+                            android:text="Logout"
+                            style="@style/materialButton"
+                            android:drawableLeft="@mipmap/logout"
+                            android:drawablePadding="8dp"
+                            android:layout_margin="8dp"
+
+                            />
+
+                    </LinearLayout>
+
+                </com.google.android.material.navigation.NavigationView>
+
+            </androidx.drawerlayout.widget.DrawerLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/loadingLl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="gone"
+            android:orientation="vertical"
+            android:visibility="invisible"
             android:background="@color/primaryColor_100"
             android:alpha="0.6"
             android:focusable="true"
@@ -140,8 +155,16 @@
                 android:indeterminate="true"
                 android:layout_gravity="center"
                 app:indicatorColor="@color/primaryColor_900"
-                android:visibility="visible"
-                 />
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="Loading" />
+
 
         </LinearLayout>
 

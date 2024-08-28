@@ -5,8 +5,11 @@ import android.util.Log;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.Remont;
+import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
+import com.example.machinenote.models.SklopLinije;
 import com.example.machinenote.models.Zastoj;
 import com.google.gson.Gson;
 
@@ -22,11 +25,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApiManager {
-    private ApiService apiService;
-    private SharedPreferencesHelper sharedPreferencesHelper;
+    private final ApiService apiService;
+    private final SharedPreferencesHelper sharedPreferencesHelper;
 
     public ApiManager(Context context) {
         apiService = ApiClient.getClient().create(ApiService.class);
+        sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
+    }
+
+    public ApiManager(Context context, int milliseconds) {
+        apiService = ApiClient.getClient(milliseconds).create(ApiService.class);
         sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
     }
 
@@ -140,6 +148,123 @@ public class ApiManager {
         });
     }
 
+    public void sendRemontWithImages(Remont remont, List<File> imageFiles, final Callback<Void> callback) {
+        // Convert Zastoj to RequestBody
+        RequestBody remontBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(remont));
+
+        // Convert image files to MultipartBody.Part
+        List<MultipartBody.Part> imageParts = new ArrayList<>();
+        for (File file : imageFiles) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("images[]", file.getName(), requestFile);
+            imageParts.add(body);
+        }
+
+        // Call the API
+        Call<Void> call = apiService.sendRemontWithImages(remontBody, imageParts);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ApiManager", "Remont and images sent successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ApiManager", "Failed to send Remont and images: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ApiManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void getRezervniDeli(RezervniDeliCallback callback) {
+        Call<List<RezervniDel>> call = apiService.getRezervniDel();
+        call.enqueue(new Callback<List<RezervniDel>>() {
+            @Override
+            public void onResponse(Call<List<RezervniDel>> call, Response<List<RezervniDel>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<RezervniDel> rezervniDeliList = response.body();
+                    callback.onSuccess(rezervniDeliList);
+                } else {
+                    callback.onFailure("Failed to retrieve rezervni deli");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RezervniDel>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void createRezervniDeli(RezervniDel rezervniDel, final Callback<Void> callback) {
+        Call<Void> call = apiService.createRezervniDeli(rezervniDel);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("RezervniDeliManager", "Rezervni Deli created successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("RezervniDeliManager", "Failed to create Rezervni Deli: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("RezervniDeliManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void updateRezervniDeli(int id, RezervniDel rezervniDel, final Callback<Void> callback) {
+        Call<Void> call = apiService.updateRezervniDel(id, rezervniDel);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("RezervniDeliManager", "Rezervni Deli updated successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("RezervniDeliManager", "Failed to update Rezervni Deli: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("RezervniDeliManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void fetchRezervniDeliById(int id, RezervniDeliByIdCallback callback) {
+        Call<RezervniDel> call = apiService.getRezervniDelById(id);
+
+        call.enqueue(new Callback<RezervniDel>() {
+            @Override
+            public void onResponse(Call<RezervniDel> call, Response<RezervniDel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch rezervni deli");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RezervniDel> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
 
     public void fetchLinije(LinijeCallback callback) {
         Call<List<Linija>> call = apiService.getLinije();
@@ -201,6 +326,26 @@ public class ApiManager {
         });
     }
 
+    public void fetchSklopeLinij(SklopLinijeCallback callback) {
+        Call<List<SklopLinije>> call = apiService.getSklopeLinij();
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<SklopLinije>> call, Response<List<SklopLinije>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch sklope linij");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SklopLinije>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
     // Fetch sifrant by ID
     public void fetchSifrantById(int id, SifrantByIdCallback callback) {
         Call<Sifrant> call = apiService.getSifrantById(id);
@@ -222,23 +367,81 @@ public class ApiManager {
         });
     }
 
+    public void checkServerConnection(final ConnectionCallback callback) {
+        Call<ServerResponse> call = apiService.checkConnection(); // Define this endpoint in ApiService
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                if (response.isSuccessful()) {
+                    ServerResponse serverResponse = response.body();
+                    if (serverResponse != null && "ok".equals(serverResponse.getStatus())) {
+                        callback.onSuccess();
+                    } else {
+                        callback.onFailure("Unexpected status: " + (serverResponse != null ? serverResponse.getStatus() : "null"));
+                    }
+                } else {
+                    callback.onFailure("Connection failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void adjustStock(int id, int amount, final StockAdjustmentCallback callback) {
+        StockAdjustmentRequest request = new StockAdjustmentRequest(amount);
+        Call<Void> call = apiService.adjustStock(id, request);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ApiManager", "Stock adjusted successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ApiManager", "Failed to adjust stock: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ApiManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    // Callback interface for connection checking
+    public interface ConnectionCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
+    }
+
     public interface LinijeCallback {
         void onSuccess(List<Linija> linije);
+
         void onFailure(String errorMessage);
     }
 
     public interface LinijaCallback {
         void onSuccess(Linija linija);
+
         void onFailure(String errorMessage);
     }
 
     public interface LoginCallback {
         void onSuccess();
+
         void onFailure(String errorMessage);
     }
 
     public interface ZastojiCallback {
         void onSuccess(List<Zastoj> zastoji);
+
         void onFailure(String errorMessage);
     }
 
@@ -246,13 +449,41 @@ public class ApiManager {
     // SifrantCallback.java
     public interface SifrantCallback {
         void onSuccess(List<Sifrant> sifrants);
+
+        void onFailure(String errorMessage);
+    }
+
+    public interface SklopLinijeCallback {
+        void onSuccess(List<SklopLinije> sklopiLinij);
+
         void onFailure(String errorMessage);
     }
 
     // SifrantByIdCallback.java
     public interface SifrantByIdCallback {
         void onSuccess(Sifrant sifrant);
+
         void onFailure(String errorMessage);
+    }
+
+    public interface RezervniDeliCallback {
+        void onSuccess(List<RezervniDel> rezervniDeliList);
+
+        void onFailure(String errorMessage);
+    }
+
+    public interface RezervniDeliByIdCallback {
+        void onSuccess(RezervniDel rezervniDel);
+
+        void onFailure(String errorMessage);
+    }
+
+    // Define callback interface for stock adjustment
+    public interface StockAdjustmentCallback {
+
+        void onFailure(Call<Void> call, Throwable throwable);
+
+        void onResponse(Call<Void> call, Response<Void> response);
     }
 
 }

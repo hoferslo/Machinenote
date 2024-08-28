@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.MachineNote" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -15,6 +15,11 @@
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="fontFamily">@font/nunito_semibold</item>
         <item name="android:windowBackground">@color/primaryColor_50</item>
+
+    </style>
+
+    <style name="textViewTheme">
+        <item name="android:background">@drawable/background_corners_50</item>
 
     </style>
 
@@ -56,16 +61,19 @@
 
     <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/primaryColor_25</item> <!-- Change accent color -->
-        <item name="android:windowBackground">@drawable/customborder_25</item> <!-- Custom background drawable -->
+        <item name="android:windowBackground">@drawable/customborder_25
+        </item> <!-- Custom background drawable -->
 
         <item name="android:textColorAlertDialogListItem">@color/black</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/primaryColor_700</item>
+        <item name="colorControlActivated">@color/primaryColor_900</item>
+    </style>
     <!-- res/values/styles.xml -->
 
-        <!-- Custom style for SwitchDateTimeDialogFragment -->
-
-
+    <!-- Custom style for SwitchDateTimeDialogFragment -->
 
 
 </resources>

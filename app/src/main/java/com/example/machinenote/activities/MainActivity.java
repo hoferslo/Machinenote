@@ -3,14 +3,16 @@ package com.example.machinenote.activities;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -19,12 +21,16 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.ConnectionChecker;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.databinding.ActivityMainBinding;
 import com.example.machinenote.fragments.LoginFragment;
+import com.example.machinenote.fragments.QRCodeScannerFragment;
+
+import java.time.LocalDateTime;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements QRCodeScannerFragment.QRCodeScannerListener {
 
     private AppBarConfiguration appBarConfiguration;
     public ActivityMainBinding binding;
@@ -32,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean navigationForDrawerShown = true;
     private Drawable originalNavigationIcon;
     SharedPreferencesHelper sharedPreferencesHelper;
+    private ConnectionChecker connectionChecker;
+    public boolean serverConnection = true;
 
 
     @Override
@@ -118,15 +126,69 @@ public class MainActivity extends AppCompatActivity {
             disableDrawer();
             loadFragment(LoginFragment.newInstance(this));
         });
+
+        binding.noWifiBtn.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle(R.string.no_connection);
+            builder.setMessage(getString(R.string.no_connection_explanation));
+
+            // Optionally add an OK button to dismiss the dialog
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                dialog.dismiss();
+            });
+
+            // Create and show the dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
         // Save a string value
         disableDrawer();
         loadFragment(LoginFragment.newInstance(this));
 
+        connectionChecker = new ConnectionChecker(this, new ConnectionChecker.ConnectionCallback() {
+            @Override
+            public void onSuccess() {
+                // Handle successful connection
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Log.d("ConnectionChecker", "Server is reachable: " + LocalDateTime.now());
+                }
+                //showLoadingBar(false, "");
+                showNoWifiBtn(false);
+                // Create a Handler to post the delayed task
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(() -> new Thread(connectionChecker).start(), 1500);
+                if (!serverConnection) {
+                    serverConnection = true;
+                    triggerOnResumeOnLastFragment();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Handle connection failure
+                Log.e("ConnectionChecker", "Server is not reachable: " + errorMessage);
+                //showLoadingBar(true, "Ni povezave do strežnika, preveri wifi");
+                showNoWifiBtn(true);
+                new Thread(connectionChecker).start();
+                if (serverConnection) {
+                    serverConnection = false;
+                    triggerOnResumeOnLastFragment();
+                }
+            }
+        });
+
+        // Start checking the connection
+        new Thread(connectionChecker).start();
+
     }
 
-    public void showLoadingBar(boolean b) {
+    public void showLoadingBar(boolean b, String text) {
         binding.loadingLl.setVisibility(b ? View.VISIBLE : View.GONE);
 
+    }
+
+    public void showNoWifiBtn(boolean b) {
+        binding.noWifiBtn.setVisibility(b ? View.VISIBLE : View.GONE);
     }
 
     private boolean isUserLoggedIn() {
@@ -160,14 +222,21 @@ public class MainActivity extends AppCompatActivity {
                     R.anim.fragment_slide_in_from_left,   // Pop enter animation
                     R.anim.fragment_slide_out_to_right    // Pop exit animation
             );
-
-            fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName());
+            if (!fragmentManager.getFragments().isEmpty()) {
+                fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1).onPause();
+            }
+            fragmentTransaction.add(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName());
             fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
             fragmentTransaction.commit();
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Stop checking when the activity is destroyed
+        //connectionChecker.stopChecking();
+    }
 
     public void showDrawerIcon() {
         binding.toolbar.setNavigationIcon(originalNavigationIcon);
@@ -189,6 +258,14 @@ public class MainActivity extends AppCompatActivity {
     public void clearLastFragmentFromBackStack() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate();
+        triggerOnResumeOnLastFragment();
+    }
+
+    public void triggerOnResumeOnLastFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (!fragmentManager.getFragments().isEmpty()) {
+            fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1).onResume();
+        }
     }
 
     public void clearAllFragmentFromBackStack() {
@@ -198,4 +275,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onQRCodeScanned(String result) {
+
+    }
+
+    @Override
+    public void onScanCancelled() {
+
+    }
 }

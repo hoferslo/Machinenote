@@ -1,29 +1,26 @@
 package com.example.machinenote.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
-import com.example.machinenote.ImageCaptureHelper;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.CustomDateTimePicker;
 import com.example.machinenote.Utility.DataPickerDialog;
+import com.example.machinenote.Utility.HandleQRCode;
+import com.example.machinenote.Utility.ImageCaptureHelper;
+import com.example.machinenote.Utility.ImageHelper;
 import com.example.machinenote.Utility.ListViewAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.TextWatcherUtil;
@@ -34,39 +31,29 @@ import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.ListViewItem;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.Zastoj;
-import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
-
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ZastojiFragment extends BaseFragment {
+public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragment.QRCodeScanCallback {
 
-    public String TAG = "Zastoji";
     private List<Linija> linije;
     private Linija linija;
     private List<Sifrant> sifranti;
     private Zastoj zastoj;
     private FragmentZastojiBinding binding;
     private Context context;
-    private String idOfLine, sifrant;
     private List<ListViewItem> data;
     private ListViewAdapter adapter;
     ApiManager apiManager;
     private ImageCaptureHelper imageCaptureHelper;
+    private String qrKoda = "NE";
 
     public ZastojiFragment() {
         // Required empty public constructor
@@ -75,6 +62,7 @@ public class ZastojiFragment extends BaseFragment {
     public static ZastojiFragment newInstance(Context context) {
         ZastojiFragment fragment = new ZastojiFragment();
         fragment.context = context;
+        fragment.TAG = context.getString(R.string.tag_zastoji);
         return fragment;
     }
 
@@ -99,7 +87,7 @@ public class ZastojiFragment extends BaseFragment {
 
         apiManager = new ApiManager(context);
 
-        String[] dataNames = {"Šifrant", "Ime delavca", "Razlog za zaustavitev stroja", "Opomba", "Linija", "Začetni čas", "Končni čas"};
+        String[] dataNames = {getString(R.string.sifrant), getString(R.string.name_of_worker), getString(R.string.reason_for_stoppage), getString(R.string.opomba), getString(R.string.line), getString(R.string.start_time), getString(R.string.end_time)};
 
         data = new ArrayList<>();
         for (int i = 0; i < dataNames.length; i++) {
@@ -108,7 +96,7 @@ public class ZastojiFragment extends BaseFragment {
 
         // Initialize the adapter
         adapter = new ListViewAdapter(requireContext(), R.layout.custom_listview_item, data);
-        binding.listViewStoppages.setAdapter(adapter);
+        binding.requiredItemsLv.setAdapter(adapter);
 
         // Set up TextWatchers
         TextWatcherUtil.addTextWatcherToEditText(binding.imeDelavca, 2, adapter); //textWatcher
@@ -117,28 +105,22 @@ public class ZastojiFragment extends BaseFragment {
 
 
         binding.idOfLineBtn.setOnClickListener(view -> {
-            DataPickerDialog.showDialog(view, "Izberi Linijo!",
+            DataPickerDialog.showDialog(view, getString(R.string.pick_line),
                     linije.stream().map(Linija::getLinijeSapAndNames).toArray(String[]::new),
                     requireContext(), binding.idOfLineBtn, adapter, 5, selectedIndex -> {
                         if (selectedIndex != -1) {
-                            linija = linije.get(selectedIndex);
-                            idOfLine = linije.get(selectedIndex).getLinija_SAP();
-                        } else {
-                            Log.d("mhm2", "Selection was canceled or invalid");
+                            setLinija(linije.get(selectedIndex));
+                            qrKoda = getString(R.string.QR_koda_value_negative);
                         }
                     });
         });
 
 
         binding.sifrantBtn.setOnClickListener(view -> {
-            DataPickerDialog.showDialog(view, "Izberi Šifrant",
+            DataPickerDialog.showDialog(view, getString(R.string.pick_sifrant),
                     sifranti.stream().map(Sifrant::getNaziv).toArray(String[]::new),
                     requireContext(), binding.sifrantBtn, adapter, 1, selectedIndex -> {
-                        if (selectedIndex != -1) {
-                            sifrant = sifranti.get(selectedIndex).getNaziv();
-                        } else {
-                            Log.d("mhm2", "Selection was canceled or invalid");
-                        }
+
                     });
         });
 
@@ -148,7 +130,7 @@ public class ZastojiFragment extends BaseFragment {
             mainActivity.onBackPressed();
         });
 
-        handleHeightOfStoppages();
+        TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 
         apiCalls();
 
@@ -157,7 +139,7 @@ public class ZastojiFragment extends BaseFragment {
                 sendZastoj();
             } catch (ParseException e) {
                 Log.e("error", e.getMessage());
-                ((MainActivity) context).showLoadingBar(false);
+                ((MainActivity) context).showLoadingBar(false, "");
             }
         });
 
@@ -170,7 +152,7 @@ public class ZastojiFragment extends BaseFragment {
             @Override
             public void onImageCaptured(Bitmap bitmap) {
                 Log.d(TAG, "Image captured successfully.");
-                handleImage(bitmap);
+                ImageHelper.handleImage(context, bitmap, binding.imagesLlInSv);
             }
 
             @Override
@@ -184,164 +166,27 @@ public class ZastojiFragment extends BaseFragment {
         binding.cameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
         binding.ImagesCameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
 
-        setupTimePickers();
+        CustomDateTimePicker.newInstance(context, binding.textBeforeTime, binding.analogClockBefore);
+        CustomDateTimePicker.newInstance(context, binding.textAfterTime, binding.analogClockAfter);
 
         TextWatcherUtil.addTextWatcherToTextView(binding.textBeforeTime, 6, adapter);
         TextWatcherUtil.addTextWatcherToTextView(binding.textAfterTime, 7, adapter);
         adapter.updateItemStatus(6, false);
         adapter.updateItemStatus(7, false);
 
-        binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(binding.dezurstvoCheckBox.isChecked() ? false : true));
+        binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(!binding.dezurstvoCheckBox.isChecked()));
+
+        binding.scanBtn.setOnClickListener(v -> startQRCodeScanner());
 
         return binding.getRoot();
     }
 
-    private void setupTimePickers() {
-        binding.analogClockBefore.setOnClickListener(v -> showDateTimePicker(true));
-
-        binding.textBeforeTime.setOnClickListener(v -> showDateTimePicker(true));
-
-        binding.analogClockAfter.setOnClickListener(v -> showDateTimePicker(false));
-        binding.textAfterTime.setOnClickListener(v -> showDateTimePicker(false));
+    private void startQRCodeScanner() {
+        ((MainActivity) context).loadFragment(QRCodeScannerFragment.newInstance(context, this));
     }
 
-    private void showDateTimePicker(boolean isBeforeTime) {
-        // Create a new instance of SwitchDateTimeDialogFragment
-        SwitchDateTimeDialogFragment dateTimeDialogFragment = SwitchDateTimeDialogFragment.newInstance(
-                isBeforeTime ? "Select Before Time" : "Select After Time",
-                "OK",
-                "Cancel"
-        );
-
-        // Set 24-hour mode
-        dateTimeDialogFragment.set24HoursMode(true);
-
-        // Optionally set default date/time
-        dateTimeDialogFragment.setDefaultDateTime(new GregorianCalendar().getTime());
-
-        // Define the format for date and time
-        try {
-            dateTimeDialogFragment.setSimpleDateMonthAndDayFormat(new SimpleDateFormat("dd MMMM", Locale.getDefault()));
-        } catch (SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        // Set up button click listeners
-        dateTimeDialogFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonClickListener() {
-            @Override
-            public void onPositiveButtonClick(Date date) {
-                SimpleDateFormat timeFormat = new SimpleDateFormat(TimeDifferenceCalculator.pattern, Locale.getDefault());
-                String time = timeFormat.format(date);
-
-                if (isBeforeTime) {
-                    binding.textBeforeTime.setText(time);
-                    binding.analogClockBefore.setTime(date.getHours(), date.getMinutes(), date.getSeconds());
-                    // Update AnalogClock or other UI elements here if needed
-                } else {
-                    binding.textAfterTime.setText(time);
-                    binding.analogClockAfter.setTime(date.getHours(), date.getMinutes(), date.getSeconds());
-                    // Update AnalogClock or other UI elements here if needed
-                }
-            }
-
-            @Override
-            public void onNegativeButtonClick(Date date) {
-                // Handle negative button click if needed
-            }
-        });
-
-        // Show the dialog
-        dateTimeDialogFragment.show(((MainActivity) context).getSupportFragmentManager(), "dialog_time");
-    }
-
-
-    private void handleImage(Bitmap bitmap) {
-        ImageView imageView = new ImageView(requireContext());
-        imageView.setImageBitmap(bitmap);
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        int imageWidth = bitmap.getWidth();
-        int imageHeight = bitmap.getHeight();
-        float aspectRatio = (float) imageHeight / imageWidth;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        int maxWidth = getResources().getDisplayMetrics().widthPixels; // Width of the screen or parent
-        params.height = (int) (maxWidth * aspectRatio); // Height adjusted by aspect ratio
-        imageView.setLayoutParams(params);
-        imageView.setPadding(0, 0, 0, 0);
-
-        imageView.setOnClickListener(v -> showDeleteConfirmationDialog(imageView, bitmap));
-
-        binding.imagesLlInSv.addView(imageView);
-
-    }
-
-    private void showDeleteConfirmationDialog(ImageView imageView, Bitmap bitmap) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Delete Image")
-                .setMessage("Are you sure you want to delete this image?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    // Remove the image from the layout
-                    binding.imagesLlInSv.removeView(imageView);
-                    // Optionally, you can also recycle the bitmap if it's no longer needed
-                    bitmap.recycle();
-                })
-                .setNegativeButton("No", null)
-                .show();
-    }
-
-
-    private void handleHeightOfStoppages() {
-        binding.stoppagesLl.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        // Remove the listener to avoid multiple calls
-                        binding.stoppagesLl.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        int height = binding.stoppagesLl.getHeight();
-
-                        if (height < binding.stoppagesLl.getMinimumHeight()) {
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    (int) (80 * getResources().getDisplayMetrics().density) // Convert 64dp to pixels
-                            );
-                            int marginBottom = (int) (8 * getResources().getDisplayMetrics().density); // Convert 16dp to pixels
-                            layoutParams.setMargins(0, 0, 0, marginBottom);
-                            binding.stoppagesLl.setLayoutParams(layoutParams);
-                        }
-                    }
-                }
-        );
-    }
-
-    private List<File> getImagesFromLayout() {
-        List<File> imageFiles = new ArrayList<>();
-        int childCount = binding.imagesLlInSv.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-            View view = binding.imagesLlInSv.getChildAt(i);
-            if (view instanceof ImageView) {
-                ImageView imageView = (ImageView) view;
-                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                File file = bitmapToFile(bitmap, "image_" + i + ".jpg");
-                imageFiles.add(file);
-            }
-        }
-
-        return imageFiles;
-    }
-
-    private File bitmapToFile(Bitmap bitmap, String fileName) {
-        File file = new File(requireContext().getCacheDir(), fileName);
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos); //todo maybe put settings for this
-            fos.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
+    public void setLinija(Linija l) {
+        linija = l;
     }
 
     private Zastoj createZastoj() throws ParseException {
@@ -363,46 +208,46 @@ public class ZastojiFragment extends BaseFragment {
                 TimeDifferenceCalculator.getMinutesBetweenDates(binding.textBeforeTime.getText().toString(), binding.textAfterTime.getText().toString()),
                 TimeDifferenceCalculator.getYearFromDateString(binding.textBeforeTime.getText().toString()), //a sploh hocem to
                 TimeDifferenceCalculator.getMonthFromDateString(binding.textBeforeTime.getText().toString()),
-                "qr koda");
+                qrKoda);
     }
 
     private String getDezurstvo() {
         if (binding.dezurstvoCheckBox.isChecked()) {
-            return "DA";
+            return getString(R.string.dezurstvo_value_positive);
         } else {
-            return "NE";
+            return getString(R.string.dezurstvo_value_negative);
         }
     }
 
     private void sendZastoj() throws ParseException {
         if (adapter.areAllItemsComplete()) {
-            List<File> imageFiles = getImagesFromLayout();
+            List<File> imageFiles = ImageHelper.getImagesFromLayout(context, binding.imagesLlInSv);
 
             zastoj = createZastoj();
-            ((MainActivity) context).showLoadingBar(true);
+            ((MainActivity) context).showLoadingBar(true, getString(R.string.sending_stoppage));
             // Call sendZastojWithImages
             apiManager.sendZastojWithImages(zastoj, imageFiles, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(context, "Poslano!" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.sent), Toast.LENGTH_SHORT).show();
                         ((MainActivity) context).clearLastFragmentFromBackStack();
-                        ((MainActivity) context).showLoadingBar(false);
+                        ((MainActivity) context).showLoadingBar(false, "");
                     } else {
-                        Toast.makeText(context, "error: " + response.message(), Toast.LENGTH_SHORT).show();
-                        ((MainActivity) context).showLoadingBar(false);
+                        Toast.makeText(context, getString(R.string.error) + response.message(), Toast.LENGTH_SHORT).show();
+                        ((MainActivity) context).showLoadingBar(false, "");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(context, "error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    ((MainActivity) context).showLoadingBar(false);
+                    Toast.makeText(context, getString(R.string.error) + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    ((MainActivity) context).showLoadingBar(false, "");
                 }
             });
         } else {
-            Toast.makeText(context, "Izpolni vsa polja", Toast.LENGTH_SHORT).show();
-            ((MainActivity) context).showLoadingBar(false);
+            Toast.makeText(context, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
+            ((MainActivity) context).showLoadingBar(false, "");
         }
     }
 
@@ -420,21 +265,19 @@ public class ZastojiFragment extends BaseFragment {
                 }
             });
         }
+        /**
+         {
+         // Fetch zastoji data
+         apiManager.getZastoji(new ApiManager.ZastojiCallback() {
+        @Override public void onSuccess(List<Zastoj> zastoji) {
 
-        {
-            // Fetch zastoji data
-            apiManager.getZastoji(new ApiManager.ZastojiCallback() {
-                @Override
-                public void onSuccess(List<Zastoj> zastoji) {
-
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    Toast.makeText(context, "Failed to fetch zastoji: " + errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            });
         }
+
+        @Override public void onFailure(String errorMessage) {
+        Toast.makeText(context, getString(R.string.fetch_stoppages_failed) + errorMessage, Toast.LENGTH_SHORT).show();
+        }
+        });
+         }*/
 
         {
             apiManager.fetchLinije(new ApiManager.LinijeCallback() {
@@ -445,7 +288,7 @@ public class ZastojiFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(String errorMessage) {
-                    System.err.println("Error: " + errorMessage);
+                    System.err.println(getString(R.string.error) + errorMessage);
                 }
             });
         }
@@ -468,6 +311,31 @@ public class ZastojiFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         ((MainActivity) context).binding.toolbarTitle.setText(TAG);
+    }
 
+    @Override
+    public void onQRCodeScanned(String qrCode) {
+        requireActivity().runOnUiThread(() -> {
+            boolean success = false;
+            String linijaSap = HandleQRCode.getLinijaSapFromQR(qrCode);
+            for (Linija l : linije) {
+                if (l.getLinija_SAP().equals(linijaSap)) {
+                    setLinija(l);
+                    binding.idOfLineBtn.setText(linija.getLinijeSapAndNames());
+                    adapter.updateItemStatus(5, true);
+                    success = true;
+                    qrKoda = getString(R.string.QR_koda_value_positive);
+                    break;
+                }
+            }
+            if (!success) {
+                Toast.makeText(context, getString(R.string.line_not_exist), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onScanCancelled() {
+        Toast.makeText(getContext(), getString(R.string.scan_cancelled), Toast.LENGTH_LONG).show();
     }
 }

@@ -28,8 +28,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -47,11 +47,15 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.activity)
+    implementation(libs.camera.view)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation (libs.barcode.scanning)
 
+    implementation (libs.camera.lifecycle)
+    implementation (libs.camera.core)
+    implementation (libs.camera.camera2)
 
     implementation ("com.github.leondzn:simple-analog-clock:1.0.1")
-    implementation ("com.github.Kunzisoft:Android-SwitchDateTimePicker:2.1")
 }

@@ -19,8 +19,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
-import com.example.machinenote.ImageCaptureHelper;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.ImageCaptureHelper;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
@@ -98,8 +98,12 @@ public class LoginFragment extends BaseFragment {
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
         String username = sharedPreferencesHelper.getString("Username", "");
         String password = sharedPreferencesHelper.getString("Password", "");
+        binding.username.setText(username);
+        binding.password.setText(password);
         if (areCameraPermissionsGranted) {
-            login(username, password);
+            if (!username.isEmpty() && !password.isEmpty()) {
+                loginUsingTextviewUsernameAndPassword();
+            }
         } else {
             requestCameraPermission();
         }
@@ -110,8 +114,11 @@ public class LoginFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
-
-        loginUsingSharedPrefsUsernameAndPassword();
+        if (binding.username.getText().toString().isEmpty()) {
+            loginUsingSharedPrefsUsernameAndPassword();
+        } else {
+            loginUsingTextviewUsernameAndPassword();
+        }
 
     }
 

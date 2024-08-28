@@ -1,8 +1,6 @@
 package com.example.machinenote.fragments;
 
 import android.content.Context;
-import android.graphics.text.LineBreaker;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.TypedValue;
@@ -13,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
@@ -24,6 +22,10 @@ import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
 import com.example.machinenote.models.Role;
 import com.google.android.material.button.MaterialButton;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +37,7 @@ public class DashboardFragment extends BaseFragment {
     public String TAG = "Glavna stran";
     FragmentDashboardBinding binding;
     Context context;
+    private final List<MaterialButton> buttonList = new ArrayList<>();
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -65,7 +68,7 @@ public class DashboardFragment extends BaseFragment {
     }
 
     public void initButtons() {
-        SharedPreferencesHelper sharedPreferencesHelper =  SharedPreferencesHelper.getInstance(context);
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
         Role role = sharedPreferencesHelper.getRole();
 
         {
@@ -119,6 +122,8 @@ public class DashboardFragment extends BaseFragment {
                 btn.setOnClickListener(view -> {
                     MainActivity mainActivity = (MainActivity) requireActivity();
                     //mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
+
+
                 });
             }
         }
@@ -172,6 +177,7 @@ public class DashboardFragment extends BaseFragment {
         // Add buttons to the last LinearLayout in scrollViewLl
         MaterialButton button = createButton(name);
         getLastLinearLayout().addView(button);
+
         return button;
     }
 
@@ -189,7 +195,7 @@ public class DashboardFragment extends BaseFragment {
 
 
     private MaterialButton createButton(String text) {
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.materialButtonDashboard);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.materialButton);
         MaterialButton button = new MaterialButton(contextThemeWrapper);
 
         // Set text
@@ -203,21 +209,24 @@ public class DashboardFragment extends BaseFragment {
                         context.getResources().getDisplayMetrics()),
                 1 // weight (1 for equal distribution)
         );
-        layoutParams.setMarginStart((int) TypedValue.applyDimension(
+
+        int margins = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 8,
                 context.getResources().getDisplayMetrics()
-        ));
-        layoutParams.setMarginEnd((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 8,
-                context.getResources().getDisplayMetrics()
-        ));
+        );
+        layoutParams.setMargins(margins, margins, margins, margins);
+
+        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.background_corners_200)));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primaryColor_200));
+
         button.setLayoutParams(layoutParams);
 
         button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+
+        buttonList.add(button);
         //button.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_button));
         return button;
     }
-
 
 
     private LinearLayout getLastLinearLayout() {
@@ -229,7 +238,29 @@ public class DashboardFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
-        mainActivity.showDrawerIcon();
+        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        if (fragmentManager.getFragments().size() < 2) {
+            mainActivity.showDrawerIcon();
+        }
+        makeOnline(mainActivity.serverConnection);
+    }
+
+    public void makeOnline(boolean online) {
+        buttonList.forEach(button -> {
+            if (button != null) {
+                switch (button.getText().toString()) {
+                    case "Zastoji", "Knjiženje", "Remonti", "Preventivni pregledi", "Naloge",
+                         "Registracija" -> makeButtonOnline(online, button);
+                }
+            }
+        });
+    }
+
+    private void makeButtonOnline(boolean online, MaterialButton button) {
+        button.setClickable(online);
+        button.setIcon(online ? null : ContextCompat.getDrawable(context, R.mipmap.signal_wifi_bad));
+        button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
+        button.setBackgroundTintList(online ? ContextCompat.getColorStateList(context, R.color.primaryColor_200) : ContextCompat.getColorStateList(context, R.color.primaryColor_100));
     }
 
     @Override

@@ -1,18 +1,15 @@
 <resources>
     <string name="app_name">Machine note</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="next">Naslednji</string>
+    <string name="previous">Prejšnji</string>
 
-    <string name="nav_open">Open</string>
-    <string name="nav_close">Close</string>
-    <string name="navigation_drawer_open" />
-    <string name="navigation_drawer_close" />
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="request_for_article_scan">Prosim skeniraj QR kodo</string>
+    <string name="nav_open">Odpri</string>
+    <string name="nav_close">Zapri</string>
+    <string name="navigation_drawer_open">Odpri navigacijski predal</string>
+    <string name="navigation_drawer_close">Zapri navigacijski predal</string>
+
+    <string name="hello_blank_fragment">Pozdravljen prazni fragment</string>
+    <string name="request_for_article_scan">Prosim, skeniraj QR kodo</string>
     <string name="rack_label">Regal</string>
     <string name="warehouse_label">Skladišče</string>
     <string name="article_minimum">Minimalna zaloga</string>
@@ -20,20 +17,84 @@
     <string name="enter_id">Vnesi ID</string>
     <string name="name_of_worker">Ime delavca</string>
     <string name="name_of_line">Izberi ime linije</string>
+    <string name="line">Linija</string>
     <string name="reason_for_stoppage">Razlog za zaustavitev stroja</string>
-    <string name="note_for_stoppage">Opomba</string>
+    <string name="opomba">Opomba</string>
     <string name="tab_for_inserting_data">Vnos</string>
     <string name="tab_for_pictures">Slike</string>
-    <string name="tab_for_info">Info</string>
+    <string name="tab_for_info">Informacije</string>
     <string name="username">Uporabniško ime</string>
+    <string name="vzdrzevalec">Vzdrževalec</string>
     <string name="password">Geslo</string>
     <string name="changed_parts">Zamenjani deli</string>
-    <string name="name_of_shipper">Ime: </string>
-    <string name="name_of_company">Ime podjetja: </string>
-    <string name="gmail_of_shipper">Gmail: </string>
-    <string name="GSM">GSM: </string>
-    <string name="telephone_number">Telefonska številka: </string>
+    <string name="name_of_shipper">Ime:</string>
+    <string name="name_of_company">Ime podjetja:</string>
+    <string name="gmail_of_shipper">Gmail:</string>
+    <string name="GSM">GSM:</string>
+    <string name="telephone_number">Telefonska številka:</string>
     <string name="enter_name">Vnesi ime</string>
     <string name="role_name">Ime role</string>
-    <string name="register_button">Register</string>
+    <string name="register_button">Registracija</string>
+
+    <string name="line_not_exist">Ta linija ne obstaja</string>
+    <string name="scan_cancelled">Skeniranje preklicano</string>
+    <string name="sending_stoppage">Pošiljanje Zastoja, prosim počakajte</string>
+    <string name="sent">Poslano!</string>
+    <string name="fill_all_fields">Izpolni vsa polja</string>
+    <string name="delete_image">Izbriši sliko</string>
+    <string name="confirm_delete_image">Ali res želite izbrisati to sliko?</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="pick_line">Izberi Linijo!</string>
+    <string name="pick_sklop_linije">Izberi Sklop Linije!</string>
+    <string name="pick_sifrant">Izberi Šifrant</string>
+    <string name="cancel">Prekliči</string>
+    <string name="error">Napaka: </string>
+    <string name="no_connection_explanation">Videti je, da ni povezave do strežnika. Prosim, preverite nastavitve Wi-Fi in poskusite znova.</string>
+    <string name="no_connection">Ni povezave do strežnika</string>
+
+    <string name="error_with_getting_rezervni_del">Napaka pri pridobivanju rezervnega dela!</string>
+    <string name="image_capture_error">Napaka pri zajemu slike: </string>
+    <string name="fetch_sifrant_failed">Pridobivanje šifranta ni uspelo</string>
+    <string name="fetch_stoppages_failed">Pridobivanje zastojev ni uspelo</string>
+    <string name="fetch_lines_failed">Pridobivanje linij ni uspelo</string>
+    <string name="invalid_user">Neveljaven uporabnik</string>
+
+    <!-- Button and Tab Titles -->
+    <string name="scan_qr_code">Skeniraj QR kodo</string>
+    <string name="send">Pošlji</string>
+    <string name="camera">Kamera</string>
+    <string name="id_of_line">ID linije</string>
+    <string name="sifrant">Šifrant</string>
+    <string name="note">Opomba</string>
+    <string name="start_time">Začetni čas</string>
+    <string name="end_time">Končni čas</string>
+
+    <string name="tag_zastoji">Zastoji</string>
+    <string name="tag_knjizenje">Knjiženje</string>
+    <string name="QR_koda_value_negative">NE</string>
+    <string name="QR_koda_value_positive">DA</string>
+    <string name="dezurstvo_value_negative">NE</string>
+    <string name="dezurstvo">Dežurstvo</string>
+    <string name="dezurstvo_value_positive">DA</string>
+    <string name="photo_button">photo button</string>
+
+    <string name="field_id">ID</string>
+    <string name="field_skladisce">Skladišče</string>
+    <string name="field_regal">Regal</string>
+    <string name="field_artikel">Artikel</string>
+    <string name="field_znaki">Znaki</string>
+    <string name="field_artikel_dolgi_text">Artikel Dolgi Text</string>
+    <string name="field_proizvajalec">Proizvajalec</string>
+    <string name="field_dobavitelj">Dobavitelj</string>
+    <string name="field_znesek">Znesek</string>
+    <string name="field_minimalna_zaloga">Minimalna Zaloga</string>
+    <string name="field_dobava">Dobava</string>
+    <string name="field_poraba">Poraba</string>
+    <string name="field_inventura">Inventura</string>
+    <string name="wrong_qr_code">Napačna QR koda!</string>
+    <string name="sklop_linije">sklop linije</string>
+    <string name="zamenjani_deli">Zamenjani deli</string>
+    <string name="tag_remonti">Remonti</string>
+    <string name="najprej_izberi_linijo">Najprej izberi linijo!</string>
 </resources>

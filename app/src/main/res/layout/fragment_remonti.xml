@@ -3,214 +3,342 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
     android:orientation="vertical"
+    android:clickable="true"
     android:background="@color/primaryColor_50"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.RemontiFragment">
 
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingTop="8dp"
-        >
+        android:paddingTop="8dp">
 
         <LinearLayout
+            android:id="@+id/entryLl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/background_corners_25"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/listViewRemonti"
+            <!-- Container LinearLayout to manage weight and minHeight -->
+            <LinearLayout
+                android:id="@+id/requiredItemsLl"
                 android:layout_width="match_parent"
-                android:layout_height="64dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"
+                android:padding="8dp"
+                android:minHeight="80dp"
+                android:background="@drawable/background_corners_25">
 
-        </LinearLayout>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/requiredItemsLv"
+                    android:scrollbars="none" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/customborder"
-            android:orientation="vertical"
-            android:paddingVertical="16dp">
+            </LinearLayout>
+
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:paddingVertical="8dp"
+                android:background="@drawable/customborder">
 
                 <LinearLayout
                     android:id="@+id/allDataSv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <Button
-                        style="@style/materialButton"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_marginBottom="8dp"
-                        android:gravity="center"
                         android:padding="8dp"
-                        android:text="Izberi Linijo" />
+                        android:gravity="center"
+                        android:background="@drawable/background_corners_100">
+
+                        <Button
+                            android:id="@+id/idOfLineBtn"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:gravity="center"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/line"
+                            style="@style/materialButton" />
+
+                        <ImageButton
+                            android:id="@+id/scanBtn"
+                            android:layout_width="92dp"
+                            android:layout_height="64dp"
+                            android:gravity="end"
+                            android:scaleType="fitCenter"
+                            android:padding="4dp"
+                            android:src="@mipmap/qr_code_scanner"
+                            style="@style/materialButton"
+                            app:tint="@android:color/white" />
+
+                    </LinearLayout>
 
                     <Button
-                        style="@style/materialButton"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_marginBottom="8dp"
                         android:padding="8dp"
-                        android:text="Izberi Sklop Linije" />
-
+                        android:text="@string/sklop_linije"
+                        style="@style/materialButton"
+                        android:id="@+id/sklopLinijeBtn" />
 
                     <EditText
                         android:id="@+id/zamenjani_deli"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/customborder_25"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:padding="16dp"
                         android:gravity="center"
-                        android:hint="@string/changed_parts"
-                        android:padding="4dp"
-                        android:textSize="20sp" />
-
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:hint="@string/zamenjani_deli"
+                        android:background="@drawable/customborder_25" />
 
                     <EditText
                         android:id="@+id/opomba"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/customborder_25"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:padding="16dp"
                         android:gravity="center"
-                        android:hint="@string/note_for_stoppage"
+                        android:hint="@string/opomba"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/customborder_25" />
+
+                    <!-- Repeat EditTexts as needed -->
+
+
+                    <ImageButton
+                        android:id="@+id/cameraBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/photo_button"
+                        android:gravity="end"
                         android:padding="4dp"
-                        android:textSize="20sp" />
+                        android:layout_marginTop="8dp"
+                        android:scaleType="fitCenter"
+                        android:src="@mipmap/photo_camera"
+                        style="@style/materialButton"
+                        app:tint="@android:color/white" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:background="@drawable/background_corners_100">
+
+                        <!-- Container for Before Time -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <com.leondzn.simpleanalogclock.SimpleAnalogClock
+                                android:id="@+id/analogClockBefore"
+                                android:layout_width="wrap_content"
+                                android:layout_height="128dp"
+                                android:layout_gravity="center_horizontal"
+                                app:secondTint="@color/transparent"
+                                app:hourTint="@color/primaryColor_500"
+                                app:minuteTint="@color/primaryColor_900" />
+
+                            <TextView
+                                android:id="@+id/textBeforeTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+
+                                android:hint="@string/start_time"
+                                android:textSize="16sp"
+                                android:textColor="@android:color/black" />
+
+                        </LinearLayout>
+
+                        <!-- Container for After Time -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.leondzn.simpleanalogclock.SimpleAnalogClock
+                                android:id="@+id/analogClockAfter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="128dp"
+                                android:layout_gravity="center_horizontal"
+                                app:secondTint="@color/transparent"
+                                app:hourTint="@color/primaryColor_500"
+                                app:minuteTint="@color/primaryColor_900" />
+
+                            <TextView
+                                android:id="@+id/textAfterTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:hint="@string/end_time"
+                                android:textSize="16sp"
+                                android:textColor="@android:color/black" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
 
                 </LinearLayout>
-
             </ScrollView>
-        </LinearLayout>
 
+
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/imagesLl"
+            android:visibility="invisible"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/background_corners_100"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:gravity="center_horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scrollbars="none"
+                android:padding="8dp"
+                android:background="@drawable/customborder">
 
-            <LinearLayout
-                android:id="@+id/scanQR"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/imagesLlInSv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+            </ScrollView>
 
-                <ImageView
-                    android:layout_width="96dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/customborder"
-                    android:backgroundTint="@color/primaryColor_50"
-                    android:src="@mipmap/add_a_photo" />
-
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/ImagesCameraBtn"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/photo_button"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/photo_camera"
+                style="@style/materialButton"
+                app:tint="@android:color/white" />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/infoLl"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:padding="8dp"
         android:background="@drawable/background_corners_100">
 
         <LinearLayout
-            android:id="@+id/cancelBtn"
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            >
+            android:layout_marginEnd="8dp">
 
             <Button
-                android:id="@+id/cancelButton"
+                android:id="@+id/cancelBtn"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:text="Prekliči"
-                style="@style/materialButton"
-                />
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                style="@style/materialButton" />
         </LinearLayout>
-
 
         <LinearLayout
-            android:id="@+id/sendBtn"
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            >
+            android:layout_marginEnd="8dp">
 
             <Button
-                android:id="@+id/sendButton"
+                android:id="@+id/sendBtn"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="pošlji"
-                style="@style/materialButton"
-                />
+                android:layout_height="wrap_content"
+                android:text="@string/send"
+                style="@style/materialButton" />
         </LinearLayout>
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:singleSelection="true">
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@+id/tabEntryBtn">
+
             <Button
-                android:id="@+id/tabStoppage"
+                android:id="@+id/tabEntryBtn"
                 android:gravity="center"
                 android:text="@string/tab_for_inserting_data"
-                style="@style/materialButtonToggle"
-                />
+                style="@style/materialButtonToggle" />
 
             <Button
-                android:id="@+id/tabPictures"
+                android:id="@+id/tabPicturesBtn"
                 android:gravity="center"
                 android:text="@string/tab_for_pictures"
-                style="@style/materialButtonToggle"
-                />
+                style="@style/materialButtonToggle" />
 
             <Button
-                android:id="@+id/tabInfo"
+                android:id="@+id/tabInfoBtn"
                 android:layout_width="0dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/tab_for_info"
-                style="@style/materialButtonToggle"
-                />
+                style="@style/materialButtonToggle" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </LinearLayout>
 </LinearLayout>

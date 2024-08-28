@@ -1,4 +1,4 @@
-package com.example.machinenote;
+package com.example.machinenote.Utility;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,13 +22,14 @@ public class ImageCaptureHelper {
 
     private static final String TAG = "ImageCaptureHelper";
 
-    private Context context;
+    private final Context context;
     private ImageCaptureCallback callback;
     private String currentPhotoPath;
     private ActivityResultLauncher<Intent> cameraLauncher;
 
     public interface ImageCaptureCallback {
         void onImageCaptured(Bitmap bitmap);
+
         void onError(String error);
     }
 
@@ -65,7 +66,8 @@ public class ImageCaptureHelper {
                 cameraLauncher.launch(takePictureIntent);
             }
         } else {
-            if (callback != null) callback.onError("No camera activity found to handle the intent.");
+            if (callback != null)
+                callback.onError("No camera activity found to handle the intent.");
         }
     }
 
