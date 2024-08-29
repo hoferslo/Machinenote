@@ -93,13 +93,13 @@ public class ImenikFragment extends BaseFragment implements ImenikAdapter.OnItem
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.onBackPressed();
         });
-
+        //todo eksperimentiraj, kako deluje, če je prepočasno, ko ni interneta, preveri, če je povezava tukaj
         fetchImenik();
 
         return binding.getRoot();
     }
 
-    private void fetchImenik() {
+    private void fetchImenik() { //todo na uspešno pridobitev podatkov jih shrani v datoteko za offline uporabo
         apiManager.getImenik(new ApiManager.ImenikCallback() {
             @Override
             public void onSuccess(List<Imenik> response) {
@@ -108,7 +108,7 @@ public class ImenikFragment extends BaseFragment implements ImenikAdapter.OnItem
             }
 
             @Override
-            public void onFailure(String errorMessage) {
+            public void onFailure(String errorMessage) { //todo to se bo sprožilo, če ni interneta, tukaj naloži shranjeno datoteko, rabim urediti še offline mode, da zaobide login, ali pa mogoče kar ne logina vsakič, samo prvič ko zaženeš aplikacijo
                 // Handle failure
                 Log.e(TAG, "Error: " + errorMessage);
             }
