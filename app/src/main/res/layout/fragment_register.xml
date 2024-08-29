@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -15,16 +14,19 @@
         android:gravity="center"
         android:padding="8dp"
         android:orientation="vertical">
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:gravity="center">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -32,18 +34,20 @@
                     android:background="@drawable/background_corners_100"
                     android:padding="8dp"
                     android:layout_marginBottom="16dp">
+
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:id="@+id/usernameNew"
 
                         android:background="@drawable/customborder_25"
-                        android:drawableLeft="@mipmap/person"
+                        android:drawableStart="@mipmap/person"
                         android:drawablePadding="8dp"
                         android:hint="@string/username"
                         android:padding="8dp"
                         android:textColor="@color/black"
-                        android:layout_marginBottom="16dp"/>
+                        android:layout_marginBottom="16dp" />
+
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
@@ -53,13 +57,14 @@
                         android:drawablePadding="8dp"
                         android:hint="@string/password"
                         android:padding="8dp"
-                        android:layout_marginBottom="16dp"/>
+                        android:layout_marginBottom="16dp" />
+
                     <Spinner
                         android:layout_width="match_parent"
                         android:id="@+id/roleSpinner"
                         android:layout_height="64dp"
-                        android:background="@drawable/customborder_25"
-                        />
+                        android:background="@drawable/customborder_25" />
+
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
@@ -71,8 +76,9 @@
                         android:padding="8dp"
                         android:textColor="@color/black"
                         android:layout_marginTop="16dp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -80,6 +86,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/background_corners_100"
                     android:padding="8dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:id="@+id/showRoleBox"
@@ -112,29 +119,31 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxKnjizenje"
-                                        android:text="Knjiženje"
-                                        />
+                                        android:text="Knjiženje" />
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxZastoji"
-                                        android:text="Zastoji"
-                                        />
+                                        android:text="Zastoji" />
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxRezervniDelo"
-                                        android:text="Rezervni deli"/>
+                                        android:text="Rezervni deli" />
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxPreventivniPregledi"
-                                        android:text="Preventivni pregledi"/>
+                                        android:text="Preventivni pregledi" />
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxImenik"
-                                        android:text="Imenik"/>
+                                        android:text="Imenik" />
 
                                 </LinearLayout>
 
@@ -143,38 +152,42 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:orientation="vertical">
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxNaloge"
-                                        android:text="Naloge"/>
+                                        android:text="Naloge" />
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxRemonti"
-                                        android:text="Remonti"/>
+                                        android:text="Remonti" />
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxOrodja"
-                                        android:text="Orodja"/>
+                                        android:text="Orodja" />
+
                                     <CheckBox
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/checkBoxRegister"
-                                        android:text="Register"/>
+                                        android:text="Register" />
                                 </LinearLayout>
                             </LinearLayout>
                         </ScrollView>
                     </LinearLayout>
+
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:id="@+id/registerButton"
                         android:text="@string/register_button"
                         android:layout_gravity="bottom"
-                        style="@style/materialButton"
-                        />
+                        style="@style/materialButton" />
                 </LinearLayout>
 
             </LinearLayout>

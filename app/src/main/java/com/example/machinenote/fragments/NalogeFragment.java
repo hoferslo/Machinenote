@@ -7,11 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentNalogeBinding;
 
 
-public class NalogeFragment extends BaseFragment {
+public class NalogeFragment extends BaseFragment { //todo naredi naloge, za administrator userja naredi še dodajanje_nalog
 
     public String TAG = "Naloge";
     FragmentNalogeBinding binding;
@@ -39,6 +40,10 @@ public class NalogeFragment extends BaseFragment {
 
         // Inflate the layout for this fragment
         binding = FragmentNalogeBinding.inflate(getLayoutInflater());
+
+        if (!SharedPreferencesHelper.getInstance(context).getRole().isDodajanjeNalog()) {
+            binding.vnosNalogeLl.setVisibility(View.GONE);
+        }
 
         return binding.getRoot();
     }

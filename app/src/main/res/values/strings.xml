@@ -22,6 +22,9 @@
     <string name="opomba">Opomba</string>
     <string name="tab_for_inserting_data">Vnos</string>
     <string name="tab_for_pictures">Slike</string>
+    <string name="naloge">Naloge</string>
+    <string name="vnos_naloge">Vnos naloge</string>
+
     <string name="tab_for_info">Informacije</string>
     <string name="username">Uporabniško ime</string>
     <string name="vzdrzevalec">Vzdrževalec</string>
@@ -47,6 +50,8 @@
     <string name="no">Ne</string>
     <string name="pick_line">Izberi Linijo!</string>
     <string name="pick_sklop_linije">Izberi Sklop Linije!</string>
+    <string name="no_email_address">Ni e-mail naslova!</string>
+    <string name="no_phone_number">Ni telefonske številke!</string>
     <string name="pick_sifrant">Izberi Šifrant</string>
     <string name="cancel">Prekliči</string>
     <string name="error">Napaka: </string>
@@ -72,6 +77,8 @@
 
     <string name="tag_zastoji">Zastoji</string>
     <string name="tag_knjizenje">Knjiženje</string>
+    <string name="tag_imenik">Imenik</string>
+
     <string name="QR_koda_value_negative">NE</string>
     <string name="QR_koda_value_positive">DA</string>
     <string name="dezurstvo_value_negative">NE</string>
@@ -97,4 +104,14 @@
     <string name="zamenjani_deli">Zamenjani deli</string>
     <string name="tag_remonti">Remonti</string>
     <string name="najprej_izberi_linijo">Najprej izberi linijo!</string>
+    <string name="telefonski_kontakti">Telefonski kontakti</string>
+    <string name="ni_telefonske_tevilke">Ni telefonske številke</string>
+    <string name="ni_gsm_tevilke">Ni GSM številke</string>
+    <string name="ni_e_mail_naslova">Ni e-mail naslova</string>
+    <string name="e_posta">E-pošta</string>
+    <string name="ni_kontaktne_osebe">Ni kontaktne osebe</string>
+    <string name="kontaktna_oseba">Kontaktna oseba</string>
+    <string name="ni_imena_podjetja">Ni imena podjetja</string>
+    <string name="isci_nalogo">Išči nalogo</string>
+    <string name="isci_karkoli">Išči karkoli</string>
 </resources>

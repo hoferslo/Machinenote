@@ -182,6 +182,9 @@ public class DashboardFragment extends BaseFragment {
     }
 
     private LinearLayout createNewLinearLayout() {
+        if (context == null) {
+            context = requireContext();
+        }
         LinearLayout newLinearLayout = new LinearLayout(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -254,6 +257,18 @@ public class DashboardFragment extends BaseFragment {
                 }
             }
         });
+
+        buttonList.forEach(button -> {
+            if (button != null) {
+                switch (button.getText().toString()) {
+                    case "Naloge" -> getNalogeCount();
+                }
+            }
+        });
+    }
+
+    private void getNalogeCount() {
+        //todo naredi najprej naloge tab, potem šele to
     }
 
     private void makeButtonOnline(boolean online, MaterialButton button) {

@@ -9,11 +9,13 @@ public class Role {
     private boolean preventivniPregledi;
     private boolean zastoji;
     private boolean naloge;
+    private boolean dodajanjeNalog; // New field
     private boolean remonti;
     private boolean orodja;
     private boolean register;
 
-    public Role(int roleId, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean remonti, boolean orodja, boolean register) {
+    // Updated constructor to include dodajanje_nalog
+    public Role(int roleId, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register) {
         this.roleId = roleId;
         this.role = role;
         this.knjizenje = knjizenje;
@@ -22,6 +24,7 @@ public class Role {
         this.preventivniPregledi = preventivniPregledi;
         this.zastoji = zastoji;
         this.naloge = naloge;
+        this.dodajanjeNalog = dodajanjeNalog;
         this.remonti = remonti;
         this.orodja = orodja;
         this.register = register;
@@ -92,6 +95,14 @@ public class Role {
         this.naloge = naloge;
     }
 
+    public boolean isDodajanjeNalog() {
+        return dodajanjeNalog;
+    }
+
+    public void setDodajanjeNalog(boolean dodajanjeNalog) {
+        this.dodajanjeNalog = dodajanjeNalog;
+    }
+
     public boolean isRemonti() {
         return remonti;
     }
@@ -107,6 +118,7 @@ public class Role {
     public void setOrodja(boolean orodja) {
         this.orodja = orodja;
     }
+
     public boolean isRegister() {
         return register;
     }

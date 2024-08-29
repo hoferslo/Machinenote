@@ -183,7 +183,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="8dp"
             android:scrollbars="none">
 
             <LinearLayout

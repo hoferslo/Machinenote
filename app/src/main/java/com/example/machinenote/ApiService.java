@@ -1,5 +1,6 @@
 package com.example.machinenote;
 
+import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
@@ -13,6 +14,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -95,6 +97,27 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @PUT("rezervni_deli.php/{id}/adjust")
     Call<Void> adjustStock(@Path("id") int id, @Body StockAdjustmentRequest stockAdjustmentRequest);
+
+    // New endpoints for imenik
+    @Headers("Content-Type: application/json")
+    @GET("imenik.php")
+    Call<List<Imenik>> getImenik();
+
+    @Headers("Content-Type: application/json")
+    @POST("imenik.php")
+    Call<Void> createImenik(@Body Imenik imenik);
+
+    @Headers("Content-Type: application/json")
+    @PUT("imenik.php/{id}")
+    Call<Void> updateImenik(@Path("id") int id, @Body Imenik imenik);
+
+    @Headers("Content-Type: application/json")
+    @DELETE("imenik.php/{id}")
+    Call<Void> deleteImenik(@Path("id") int id);
+
+    @Headers("Content-Type: application/json")
+    @GET("imenik.php/{id}")
+    Call<Imenik> getImenikById(@Path("id") int id);
 }
 
 class LoginRequest {

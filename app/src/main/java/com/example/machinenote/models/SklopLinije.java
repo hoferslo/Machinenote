@@ -1,8 +1,6 @@
 package com.example.machinenote.models;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,9 +73,7 @@ public class SklopLinije {
         List<SklopLinije> newSklopLinij = new ArrayList<>();
         for (SklopLinije item : sklopLinij) {
             // Check if the SAP_linije of the current SklopLinije matches the SAP_linije of the provided Linija
-            Log.d("mhm", item.getIdLinije() + " : " + linija.getLinija_SAP());
             if (item.getIdLinije().equals(linija.getLinija_SAP())) {
-
                 // Add to the new list if it matches
                 newSklopLinij.add(item);
             }

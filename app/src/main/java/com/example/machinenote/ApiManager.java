@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
+import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Remont;
 import com.example.machinenote.models.RezervniDel;
@@ -46,7 +47,6 @@ public class ApiManager {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                Log.d("json", response.message());
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
                     String apiKey = loginResponse.getApiKey();
@@ -412,6 +412,120 @@ public class ApiManager {
                 callback.onFailure(call, t);
             }
         });
+    }
+
+    public void getImenik(ImenikCallback callback) {
+        Call<List<Imenik>> call = apiService.getImenik();
+        call.enqueue(new Callback<List<Imenik>>() {
+            @Override
+            public void onResponse(Call<List<Imenik>> call, Response<List<Imenik>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Imenik> imenikList = response.body();
+                    callback.onSuccess(imenikList);
+                } else {
+                    callback.onFailure("Failed to retrieve imenik");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Imenik>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void createImenik(Imenik imenik, final Callback<Void> callback) {
+        Call<Void> call = apiService.createImenik(imenik);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ImenikManager", "Imenik created successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ImenikManager", "Failed to create Imenik: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ImenikManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void updateImenik(int id, Imenik imenik, final Callback<Void> callback) {
+        Call<Void> call = apiService.updateImenik(id, imenik);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ImenikManager", "Imenik updated successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ImenikManager", "Failed to update Imenik: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ImenikManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void deleteImenik(int id, final Callback<Void> callback) {
+        Call<Void> call = apiService.deleteImenik(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ImenikManager", "Imenik deleted successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ImenikManager", "Failed to delete Imenik: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ImenikManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void getImenikById(int id, final ImenikCallback callback) {
+        Call<Imenik> call = apiService.getImenikById(id);
+        call.enqueue(new Callback<Imenik>() {
+            @Override
+            public void onResponse(Call<Imenik> call, Response<Imenik> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Imenik imenik = response.body();
+                    callback.onSuccess(List.of(imenik));
+                } else {
+                    callback.onFailure("Failed to retrieve imenik");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Imenik> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    // Additional methods for other endpoints (e.g., Linije, Sifrant) would follow a similar pattern
+
+    public interface ImenikCallback {
+        void onSuccess(List<Imenik> imenikList);
+
+        void onFailure(String message);
     }
 
     // Callback interface for connection checking

@@ -10,176 +10,6 @@
     android:padding="8dp"
     tools:context=".fragments.ImenikFragment">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:visibility="gone"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/background_corners_100">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="8dp"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal"
-                android:background="@drawable/background_corners_25">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-                    android:text="@string/name_of_company" />
-
-                <TextView
-                    android:id="@+id/companyName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="8dp"
-                android:layout_marginVertical="4dp"
-
-                android:orientation="horizontal"
-                android:background="@drawable/background_corners_25">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-
-                    android:text="@string/name_of_shipper" />
-
-                <TextView
-                    android:id="@+id/nameOfShipper"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lineargmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal"
-                android:background="@drawable/background_corners_25">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-
-                    android:text="@string/gmail_of_shipper" />
-
-                <TextView
-                    android:id="@+id/gmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearGSM"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal"
-                android:background="@drawable/background_corners_25">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-                    android:text="@string/GSM" />
-
-                <TextView
-                    android:id="@+id/GSM"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearTelephoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="8dp"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                android:background="@drawable/background_corners_25">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-
-                    android:text="@string/telephone_number" />
-
-                <TextView
-                    android:id="@+id/telephoneNumber"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/sendGmail"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:clickable="true"
-            android:gravity="center"
-            android:layout_marginStart="16dp"
-
-            android:visibility="gone"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -188,17 +18,14 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/background_corners_25">
 
-        <EditText
+        <SearchView
             android:id="@+id/idOfDuty"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="0.8"
-            android:textSize="24sp"
-            android:padding="8dp"
-            android:drawableLeft="@mipmap/search"
-            android:drawablePadding="8dp"
-            android:hint="Išči karkoli"
-            android:background="@drawable/customborder_25" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="Widget.Material3.SearchBar"
+            android:queryHint="@string/isci_karkoli"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@android:color/transparent" />
 
     </LinearLayout>
 
@@ -217,16 +44,25 @@
             android:scrollbars="none"
             android:paddingHorizontal="8dp">
 
-            
-            <ListView
-                android:id="@+id/ImenikLv"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/scrollLv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_corners_25" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:divider="@null" />
 
 
         </ScrollView>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_marginBottom="8dp"
+        style="@style/materialButton" />
 
 </LinearLayout>
