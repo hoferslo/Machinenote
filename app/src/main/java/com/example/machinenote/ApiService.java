@@ -2,6 +2,7 @@ package com.example.machinenote;
 
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
@@ -118,6 +119,19 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("imenik.php/{id}")
     Call<Imenik> getImenikById(@Path("id") int id);
+
+    // New endpoints for naloge
+    @Headers("Content-Type: application/json")
+    @GET("naloge.php")
+    Call<List<Naloga>> getNaloge();
+
+    @Headers("Content-Type: application/json")
+    @POST("naloge.php")
+    Call<Void> createNaloga(@Body Naloga naloga);
+
+    @Headers("Content-Type: application/json")
+    @PUT("naloge.php/{id}")
+    Call<Void> updateNaloga(@Path("id") int id, @Body Naloga naloga);
 }
 
 class LoginRequest {

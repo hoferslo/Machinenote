@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/background_corners_25">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/naloga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Naslov naloge"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/background_corners_50" />
+
+        <TextView
+            android:id="@+id/vzdrzevalec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:text="vzdrzevalec" />
+
+        <TextView
+            android:id="@+id/rokZaIzvedbo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:text="rokZaIzvedbo" />
+
+        <TextView
+            android:id="@+id/komentar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:text="komentar" />
+
+        <TextView
+            android:id="@+id/izvedeno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:text="izvedeno" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lahk bi biu za editat"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp" />
+</LinearLayout>

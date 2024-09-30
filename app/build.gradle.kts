@@ -51,11 +51,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation (libs.barcode.scanning)
+    implementation(libs.barcode.scanning)
 
-    implementation (libs.camera.lifecycle)
-    implementation (libs.camera.core)
-    implementation (libs.camera.camera2)
-
-    implementation ("com.github.leondzn:simple-analog-clock:1.0.1")
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.picasso)
+    implementation(libs.simple.analog.clock)
 }

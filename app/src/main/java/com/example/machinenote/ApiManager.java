@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.Remont;
 import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
@@ -416,7 +417,7 @@ public class ApiManager {
 
     public void getImenik(ImenikCallback callback) {
         Call<List<Imenik>> call = apiService.getImenik();
-        call.enqueue(new Callback<List<Imenik>>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Imenik>> call, Response<List<Imenik>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -520,10 +521,80 @@ public class ApiManager {
         });
     }
 
+    public void getNaloge(NalogaCallback callback) {
+        Call<List<Naloga>> call = apiService.getNaloge();
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<Naloga>> call, Response<List<Naloga>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Naloga> nalogaList = response.body();
+                    callback.onSuccess(nalogaList);
+                } else {
+                    callback.onFailure("Failed to retrieve naloge");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Naloga>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void createNaloga(Naloga naloga, final Callback<Void> callback) {
+        Call<Void> call = apiService.createNaloga(naloga);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("NalogaManager", "Naloga created successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("NalogaManager", "Failed to create Naloga: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("NalogaManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void updateNaloga(int id, Naloga naloga, final Callback<Void> callback) {
+        Call<Void> call = apiService.updateNaloga(id, naloga);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("NalogaManager", "Naloga updated successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("NalogaManager", "Failed to update Naloga: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("NalogaManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
     // Additional methods for other endpoints (e.g., Linije, Sifrant) would follow a similar pattern
 
     public interface ImenikCallback {
         void onSuccess(List<Imenik> imenikList);
+
+        void onFailure(String message);
+    }
+
+    public interface NalogaCallback {
+        void onSuccess(List<Naloga> nalogaList);
 
         void onFailure(String message);
     }
