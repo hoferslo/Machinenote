@@ -119,7 +119,6 @@ public class LoginFragment extends BaseFragment {
         } else {
             loginUsingTextviewUsernameAndPassword();
         }
-
     }
 
     public void login(String username, String password) {
