@@ -225,9 +225,11 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
             if (!fragmentManager.getFragments().isEmpty()) {
                 fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1).onPause();
             }
-            fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName()); // TODO: replace?
+            fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName());
+            // changed add to replace because of overlying fragments
             fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
             fragmentTransaction.commit();
+
         }
     }
 

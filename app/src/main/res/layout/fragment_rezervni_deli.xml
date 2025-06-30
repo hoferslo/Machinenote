@@ -29,164 +29,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="8dp"
-                >
+                />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_corners_25">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="textStart"
-
-                        android:text="@string/rack_label"/>
-
-                    <TextView
-                        android:id="@+id/article_rack"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textEnd"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_marginVertical="4dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_corners_25">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="textStart"
-
-                        android:text="@string/warehouse_label"/>
-
-                    <TextView
-                        android:id="@+id/article_warehouse"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textEnd"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/articleMinimumLl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_corners_25">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="textStart"
-
-                        android:text="@string/article_minimum"/>
-
-                    <TextView
-                        android:id="@+id/articleMinimumTv"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-                        android:textAlignment="textEnd"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_corners_25">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="textStart"
-
-                        android:text="Proizvajalec"/>
-
-                    <TextView
-                        android:id="@+id/manufacturer"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textEnd"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_corners_25">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="textStart"
-
-                        android:text="Dobavitelj"/>
-
-                    <TextView
-                        android:id="@+id/supplier"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textEnd"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_corners_25">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="textStart"
-                        android:text="Artikel dolgi tekst"/>
-
-                    <TextView
-                        android:id="@+id/articleLongText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textEnd"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/scrollLv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:divider="@null" />
 
             <LinearLayout
                 android:id="@+id/sendGmail"
@@ -258,7 +108,7 @@
         android:background="@drawable/customborder_25"
         >
 
-        <EditText
+        <SearchView
             android:id="@+id/idOfDuty"
             android:layout_width="0dp"
             android:layout_height="64dp"

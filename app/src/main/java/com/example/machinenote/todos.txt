@@ -1,1 +1,5 @@
-make settings for bitmap commpression quality
+- make settings for bitmap commpression quality
+- disable back button on login and main page
+- add Preventivni pregledi, vsa orodja, Naloge (vnos naloge)
+- rezervni deli
+- check za registracijo...

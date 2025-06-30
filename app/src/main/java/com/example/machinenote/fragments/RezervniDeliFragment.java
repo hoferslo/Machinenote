@@ -2,68 +2,155 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.R;
+import com.example.machinenote.Utility.RezervniDelAdapter;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentRezervniDeliBinding;
-import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.example.machinenote.models.RezervniDel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class RezervniDeliFragment extends BaseFragment {
+public class RezervniDeliFragment extends BaseFragment implements RezervniDelAdapter.OnItemClickListener {
 
-    public String TAG = "Rezervni deli";
-    FragmentRezervniDeliBinding binding;
-    Context context;
+    private FragmentRezervniDeliBinding binding;
+    private ApiManager apiManager;
+    private List<RezervniDel> rezervniDelList;
+    private RezervniDelAdapter adapter;
 
-    public RezervniDeliFragment() {
-        // Required empty public constructor
-    }
+    public RezervniDeliFragment() {}
 
     public static RezervniDeliFragment newInstance(Context context) {
         RezervniDeliFragment fragment = new RezervniDeliFragment();
-        fragment.context = context;
+        fragment.apiManager = new ApiManager(context);
+        fragment.TAG = context.getString(R.string.tag_rezervni_deli);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentRezervniDeliBinding.inflate(inflater, container, false);
 
-        // Inflate the layout for this fragment
-        binding = FragmentRezervniDeliBinding.inflate(getLayoutInflater());
+        // Setup RecyclerView
+        RecyclerView recyclerView = binding.scrollLv;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new RezervniDelAdapter(getContext(), new ArrayList<>(), this);
+        recyclerView.setAdapter(adapter);
 
-        binding.switchTabs.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+        // SearchView filter
+        binding.idOfDuty.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                // Handle button checked/unchecked
-                if (isChecked) {
-                    // Respond to the button being checked
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                } else {
-                    // Respond to the button being unchecked
-
-                }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterRezervniDeli(newText);
+                return true;
             }
         });
+
+        // Clear search focus on blur
+        binding.idOfDuty.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                binding.idOfDuty.clearFocus();
+            }
+        });
+
+        fetchRezervniDeli();
 
         return binding.getRoot();
     }
 
+    private void fetchRezervniDeli() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(requireContext());
 
+        if (mainActivity.serverConnection) {
+            apiManager.getRezervniDeli(new ApiManager.RezervniDeliCallback() {
+                @Override
+                public void onSuccess(List<RezervniDel> response) {
+                    rezervniDelList = response;
+                    adapter.updateList(rezervniDelList);
+
+                    String json = new Gson().toJson(rezervniDelList);
+                    sharedPreferencesHelper.putString("RezervniDelList", json);
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Log.e(TAG, "API failure: " + errorMessage);
+                    loadRezervniDeliFromPrefs(sharedPreferencesHelper);
+                }
+            });
+        } else {
+            loadRezervniDeliFromPrefs(sharedPreferencesHelper);
+        }
+    }
+
+    private void loadRezervniDeliFromPrefs(SharedPreferencesHelper prefs) {
+        String json = prefs.getString("RezervniDelList", null);
+        if (json != null) {
+            Type type = new TypeToken<List<RezervniDel>>() {}.getType();
+            rezervniDelList = new Gson().fromJson(json, type);
+            if (rezervniDelList != null) {
+                adapter.updateList(rezervniDelList);
+            } else {
+                Log.e(TAG, "Parsed rezervniDelList is null.");
+            }
+        } else {
+            Log.e(TAG, "No cached data found.");
+        }
+    }
+
+    private void filterRezervniDeli(String query) {
+        if (rezervniDelList != null) {
+            List<RezervniDel> filtered = rezervniDelList.stream()
+                    .filter(d -> query == null || query.isEmpty()
+                            || d.getArtikel().toLowerCase().contains(query.toLowerCase())
+                            || d.getArtikel_dolgi_text().toLowerCase().contains(query.toLowerCase()))
+                    .collect(Collectors.toList());
+            adapter.updateList(filtered);
+        }
+    }
+
+    @Override
+    public void onItemClick(RezervniDel del) {
+        Toast.makeText(getContext(),
+                "Naziv: " + del.getArtikel() + "\nTip: " + del.getId(),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onButtonClick(RezervniDel del) {
+        Toast.makeText(getContext(),
+                "Gumb za: " + del.getArtikel_dolgi_text(),
+                Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.binding.toolbarTitle.setText(TAG);
+        ((MainActivity) requireActivity()).binding.toolbarTitle.setText(TAG);
     }
 }
