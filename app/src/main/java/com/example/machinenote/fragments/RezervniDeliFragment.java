@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
-import com.example.machinenote.Utility.RezervniDelAdapter;
+import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentRezervniDeliBinding;
@@ -29,12 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RezervniDeliFragment extends BaseFragment implements RezervniDelAdapter.OnItemClickListener {
+public class RezervniDeliFragment extends BaseFragment {
 
     private FragmentRezervniDeliBinding binding;
     private ApiManager apiManager;
     private List<RezervniDel> rezervniDelList;
-    private RezervniDelAdapter adapter;
+    private GenericAdapter<RezervniDel> adapter;
 
     public RezervniDeliFragment() {}
 
@@ -50,13 +50,27 @@ public class RezervniDeliFragment extends BaseFragment implements RezervniDelAda
                              Bundle savedInstanceState) {
         binding = FragmentRezervniDeliBinding.inflate(inflater, container, false);
 
-        // Setup RecyclerView
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RezervniDelAdapter(getContext(), new ArrayList<>(), this);
+
+        adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<RezervniDel>() {
+            @Override
+            public void onItemClick(RezervniDel del) {
+                Toast.makeText(getContext(),
+                        "Naziv: " + del.getArtikel() + "\nTip: " + del.getId(),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onButtonClick(RezervniDel del) {
+                Toast.makeText(getContext(),
+                        "Gumb za: " + del.getArtikel_dolgi_text(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
-        // SearchView filter
         binding.idOfDuty.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -70,7 +84,6 @@ public class RezervniDeliFragment extends BaseFragment implements RezervniDelAda
             }
         });
 
-        // Clear search focus on blur
         binding.idOfDuty.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 binding.idOfDuty.clearFocus();
@@ -132,20 +145,6 @@ public class RezervniDeliFragment extends BaseFragment implements RezervniDelAda
                     .collect(Collectors.toList());
             adapter.updateList(filtered);
         }
-    }
-
-    @Override
-    public void onItemClick(RezervniDel del) {
-        Toast.makeText(getContext(),
-                "Naziv: " + del.getArtikel() + "\nTip: " + del.getId(),
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onButtonClick(RezervniDel del) {
-        Toast.makeText(getContext(),
-                "Gumb za: " + del.getArtikel_dolgi_text(),
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override

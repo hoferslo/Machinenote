@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header section with title and action button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <!-- Icon placeholder - lahko dodaš ikono glede na tip -->
+            <View
+                android:id="@+id/iconIndicator"
+                android:layout_width="12dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="12dp"
+                android:backgroundTint="@color/primaryColor_50" />
+
+            <!-- Content container for dynamic fields -->
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" />
+
+            <!-- Action button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAction"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Akcija"
+                android:textSize="12sp"
+                android:textAllCaps="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:minWidth="0dp"
+                app:cornerRadius="18dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/primaryColor_900"
+                android:textColor="@color/primaryColor_500" />
+
+        </LinearLayout>
+
+        <!-- Divider line -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primaryColor_25"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

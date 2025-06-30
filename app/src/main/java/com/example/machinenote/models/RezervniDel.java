@@ -1,7 +1,9 @@
 package com.example.machinenote.models;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class RezervniDel {
+public class RezervniDel implements DisplayableItem{
     private int id;
     private int skladišče;
     private String regal;
@@ -146,5 +148,25 @@ public class RezervniDel {
 
     public void setInventura(int inventura) {
         this.inventura = inventura;
+    }
+
+    @Override
+    public Map<String, String> getDisplayFields() {
+        Map<String, String> fields = new LinkedHashMap<>();
+        fields.put("ID", String.valueOf(id));
+        fields.put("Skladišče", String.valueOf(skladišče));
+        fields.put("Regal", regal);
+        fields.put("Artikel", artikel);
+        fields.put("Znaki", String.valueOf(znaki));
+        fields.put("Dolgi Opis", artikel_dolgi_text);
+        fields.put("Proizvajalec", proizvajalec);
+        fields.put("Dobavitelj", dobavitelj);
+        fields.put("Znesek", String.format("%.2f", znesek));
+        fields.put("Minimalna Zaloga", String.valueOf(minimalna_zaloga));
+        fields.put("Dobava", String.valueOf(dobava));
+        fields.put("Poraba", String.valueOf(poraba));
+        fields.put("Realna Zaloga", String.valueOf(getRealZalogo()));
+        fields.put("Inventura", String.valueOf(inventura));
+        return fields;
     }
 }
