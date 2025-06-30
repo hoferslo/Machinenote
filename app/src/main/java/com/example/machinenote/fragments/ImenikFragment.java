@@ -44,7 +44,7 @@ public class ImenikFragment extends BaseFragment implements ImenikAdapter.OnItem
     public static ImenikFragment newInstance(Context context) {
         ImenikFragment fragment = new ImenikFragment();
         fragment.apiManager = new ApiManager(context);
-        fragment.TAG = context.getString(R.string.tag_knjizenje);
+        fragment.TAG = context.getString(R.string.tag_imenik);
         return fragment;
     }
 
