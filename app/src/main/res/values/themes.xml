@@ -73,6 +73,7 @@
         <item name="colorAccent">@color/primaryColor_700</item>
         <item name="colorControlActivated">@color/primaryColor_900</item>
     </style>
+
     <!-- res/values/styles.xml -->
 
     <!-- Custom style for SwitchDateTimeDialogFragment -->

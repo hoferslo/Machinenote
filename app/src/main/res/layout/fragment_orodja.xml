@@ -5,14 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragments.OrodjaFragment"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    >
 
     <LinearLayout
+        android:background="@drawable/customborderfilled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/customborder"
         android:orientation="vertical"
         android:layout_gravity="center"
         android:paddingVertical="16dp">
