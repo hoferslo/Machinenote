@@ -82,7 +82,7 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
                 textView.setPadding(0, 8, 0, 8);
                 container.addView(textView);
             }
-
+            buttonAction.setVisibility(View.GONE);
             itemView.setOnClickListener(v -> onItemClickListener.onItemClick(item));
             buttonAction.setOnClickListener(v -> onItemClickListener.onButtonClick(item));
         }

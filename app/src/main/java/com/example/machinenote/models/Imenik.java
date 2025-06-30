@@ -1,8 +1,10 @@
 package com.example.machinenote.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class Imenik {
+public class Imenik implements DisplayableItem {
 
     @SerializedName("id")
     private int id;
@@ -95,5 +97,16 @@ public class Imenik {
                 ", gsm='" + gsm + '\'' +
                 ", mail='" + mail + '\'' +
                 '}';
+    }
+
+    @Override
+    public Map<String, String> getDisplayFields() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("Company Name", getNazivPodjetja());
+        map.put("Contact Person", getKontaktnaOseba());
+        map.put("Email", getMail());
+        map.put("Phone", getTelefon());
+        map.put("GSM", getGsm());
+        return map;
     }
 }

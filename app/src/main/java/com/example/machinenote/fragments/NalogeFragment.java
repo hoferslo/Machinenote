@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
-import com.example.machinenote.Utility.NalogaAdapter;
+import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentNalogeBinding;
@@ -22,14 +22,13 @@ import com.example.machinenote.models.Naloga;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class NalogeFragment extends BaseFragment implements NalogaAdapter.OnItemClickListener { //todo naredi naloge, za administrator userja naredi še dodajanje_nalog
+public class NalogeFragment extends BaseFragment {
 
     FragmentNalogeBinding binding;
     Context context;
     private ApiManager apiManager;
     private List<Naloga> nalogaList;
-    private NalogaAdapter adapter;
+    private GenericAdapter<Naloga> adapter;
 
     public NalogeFragment() {
         // Required empty public constructor
@@ -44,16 +43,9 @@ public class NalogeFragment extends BaseFragment implements NalogaAdapter.OnItem
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         binding = FragmentNalogeBinding.inflate(getLayoutInflater());
 
         if (!SharedPreferencesHelper.getInstance(context).getRole().isDodajanjeNalog()) {
@@ -63,7 +55,18 @@ public class NalogeFragment extends BaseFragment implements NalogaAdapter.OnItem
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new NalogaAdapter(getContext(), new ArrayList<>(), this);
+        adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<Naloga>() {
+            @Override
+            public void onItemClick(Naloga item) {
+                // TODO: handle item click if needed
+            }
+
+            @Override
+            public void onButtonClick(Naloga item) {
+                // TODO: handle button click if needed or leave empty
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
         fetchNaloge();
@@ -81,7 +84,7 @@ public class NalogeFragment extends BaseFragment implements NalogaAdapter.OnItem
             @Override
             public void onFailure(String errorMessage) {
                 Log.e(TAG, "Error: " + errorMessage);
-                // Load the saved data from SharedPreferences in case of failure
+                // Optionally load saved data from SharedPreferences here
             }
         });
     }
@@ -91,15 +94,5 @@ public class NalogeFragment extends BaseFragment implements NalogaAdapter.OnItem
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
-    }
-
-    @Override
-    public void onItemClick(Naloga naloga) {
-
-    }
-
-    @Override
-    public void onButtonClick(Naloga naloga) {
-
     }
 }
