@@ -59,6 +59,15 @@
 
     </style>
 
+    <style name="buttonContainer">
+        <item name="android:background">@color/white</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/primaryColor_25</item> <!-- Change accent color -->
         <item name="android:windowBackground">@drawable/customborder_25
