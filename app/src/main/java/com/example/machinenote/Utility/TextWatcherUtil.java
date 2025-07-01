@@ -45,6 +45,39 @@ public class TextWatcherUtil {
         });
     }
 
+    public static void validateTimeOrderWithCalculator(TextView startTimeTextView, TextView endTimeTextView, ListViewAdapter adapter) {
+        // Check time validation and update error visibility
+        String startTime = startTimeTextView.getText().toString().trim();
+        String endTime = endTimeTextView.getText().toString().trim();
+
+        if (!startTime.isEmpty() && !endTime.isEmpty()) {
+            // Use the existing TimeDifferenceCalculator method
+            boolean isValidTimeOrder = TimeDifferenceCalculator.isEndTimeAfterStartTime(startTime, endTime, TimeDifferenceCalculator.pattern);
+
+            // Show error if time order is invalid (start time is after end time)
+            adapter.updateErrorItemVisibility(999, !isValidTimeOrder);
+        } else {
+            // If either time is empty, hide the error
+            adapter.updateErrorItemVisibility(999, false);
+        }
+    }
+
+    // Simplified version of addTextWatcherToTextViewWithTimeValidation
+    public static void addTextWatcherToTextViewWithTimeValidation(TextView textView, int number, ListViewAdapter adapter, TextView startTimeTextView, TextView endTimeTextView) {
+        textView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                String text = textView.getText().toString().trim();
+                boolean isCompleted = !text.isEmpty();
+                adapter.updateItemStatus(number, isCompleted);
+
+                // Use the extracted method for time validation
+                validateTimeOrderWithCalculator(startTimeTextView, endTimeTextView, adapter);
+            }
+        });
+    }
+
     public static void handleHeightOfStoppages(Context context, LinearLayout Ll) {
         Ll.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {

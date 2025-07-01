@@ -29,6 +29,7 @@ public class DataPickerDialog {
                         adapter.updateItemStatus(whichListItem, true);
                         listener.onItemSelected(whichStringCache); //kle je bla napaka,
                         // men se je skor odtrgal, zakva je biu klele whichListItem, enga bom pretepu
+                        // pahahahah no super
                     }
                 });
 

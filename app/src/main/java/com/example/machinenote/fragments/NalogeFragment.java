@@ -58,7 +58,7 @@ public class NalogeFragment extends BaseFragment {
         adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<Naloga>() {
             @Override
             public void onItemClick(Naloga item) {
-                // TODO: handle item click if needed
+
             }
 
             @Override
