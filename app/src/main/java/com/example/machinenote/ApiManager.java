@@ -2,6 +2,7 @@ package com.example.machinenote;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.Imenik;
@@ -583,6 +584,121 @@ public class ApiManager {
                 callback.onFailure(call, t);
             }
         });
+    }
+
+    public void registerUser(RegistrationRequest registrationRequest, RegistrationCallback callback) {
+        // Step 1: Check if role already exists
+        Call<List<Role>> getRolesCall = apiService.getRoles();
+
+        getRolesCall.enqueue(new Callback<List<Role>>() {
+            @Override
+            public void onResponse(Call<List<Role>> call, Response<List<Role>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Role> existingRoles = response.body();
+
+                    // Check if the role already exists
+                    Role existingRole = null;
+                    for (Role role : existingRoles) {
+                        if (role.getRole().equals(registrationRequest.getRole())) {
+                            existingRole = role;
+                            break;
+                        }
+                    }
+
+                    if (existingRole != null) {
+                        // Role exists, proceed to create user
+                        createUser(registrationRequest.getUsername(),
+                                registrationRequest.getPassword(),
+                                existingRole.getRoleId(),
+                                callback);
+                    } else {
+                        // Role doesn't exist, create it first
+                        createRoleAndUser(registrationRequest, callback);
+                    }
+                } else {
+                    Log.e("ApiManager", "Failed to get roles: " + response.message());
+                    callback.onFailure("Failed to check existing roles: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Role>> call, Throwable t) {
+                Log.e("ApiManager", "Error getting roles: " + t.getMessage());
+                callback.onFailure("Error checking roles: " + t.getMessage());
+            }
+        });
+    }
+
+    private void createRoleAndUser(RegistrationRequest registrationRequest, RegistrationCallback callback) {
+        // Step 2a: Create new role
+        RoleRequest roleRequest = new RoleRequest(registrationRequest.getRole(), registrationRequest.getPermissions());
+        Call<RoleResponse> createRoleCall = apiService.createRole(roleRequest);
+
+        createRoleCall.enqueue(new Callback<RoleResponse>() {
+            @Override
+            public void onResponse(Call<RoleResponse> call, Response<RoleResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    RoleResponse roleResponse = response.body();
+                    if (roleResponse.isSuccess()) {
+                        // Role created successfully, now create user
+                        createUser(registrationRequest.getUsername(),
+                                registrationRequest.getPassword(),
+                                roleResponse.getRole_id(),
+                                callback);
+                    } else {
+                        Log.e("ApiManager", "Role creation failed: " + roleResponse.getMessage());
+                        callback.onFailure("Role creation failed: " + roleResponse.getMessage());
+                    }
+                } else {
+                    Log.e("ApiManager", "Role creation failed: " + response.message());
+                    callback.onFailure("Role creation failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoleResponse> call, Throwable t) {
+                Log.e("ApiManager", "Role creation error: " + t.getMessage());
+                callback.onFailure("Role creation error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void createUser(String username, String password, int roleId, RegistrationCallback callback) {
+        // Step 3: Create user with the role_id
+        UserCreationRequest userRequest = new UserCreationRequest(username, password, roleId);
+        Call<RegistrationResponse> createUserCall = apiService.createUser(userRequest);
+
+        createUserCall.enqueue(new Callback<RegistrationResponse>() {
+            @Override
+            public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    RegistrationResponse registrationResponse = response.body();
+                    if (registrationResponse.isSuccess()) {
+                        Log.d("ApiManager", "User registered successfully: " + username);
+                        callback.onSuccess();
+                    } else {
+                        Log.e("ApiManager", "User creation failed: " + registrationResponse.getMessage());
+                        callback.onFailure("User creation failed: " + registrationResponse.getMessage());
+                    }
+                } else {
+                    Log.e("ApiManager", "User creation failed: " + response.message());
+                    callback.onFailure("User creation failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+                Log.e("ApiManager", "User creation error: " + t.getMessage());
+                callback.onFailure("User creation error: " + t.getMessage());
+            }
+        });
+    }
+
+    // Add this callback interface to your ApiManager class
+    public interface RegistrationCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 
     // Additional methods for other endpoints (e.g., Linije, Sifrant) would follow a similar pattern

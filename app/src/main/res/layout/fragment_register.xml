@@ -38,7 +38,7 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
-                        android:id="@+id/usernameNew"
+                        android:id="@+id/editTextUsername"
 
                         android:background="@drawable/customborder_25"
                         android:drawableStart="@mipmap/person"
@@ -51,7 +51,7 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
-                        android:id="@+id/passwordNew"
+                        android:id="@+id/editTextPassword"
                         android:background="@drawable/customborder_25"
                         android:drawableLeft="@mipmap/lock"
                         android:drawablePadding="8dp"

@@ -132,6 +132,20 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @PUT("naloge.php/{id}")
     Call<Void> updateNaloga(@Path("id") int id, @Body Naloga naloga);
+
+    @Headers("Content-Type: application/json")
+    @GET("roles.php")
+    Call<List<Role>> getRoles();
+
+    // Create a new role
+    @Headers("Content-Type: application/json")
+    @POST("roles.php")
+    Call<RoleResponse> createRole(@Body RoleRequest roleRequest);
+
+    // Create a new user (modify existing createUser to accept registration data)
+    @Headers("Content-Type: application/json")
+    @POST("users.php")
+    Call<RegistrationResponse> createUser(@Body UserCreationRequest userRequest);
 }
 
 class LoginRequest {
@@ -210,4 +224,120 @@ class ServerResponse {
     public void setStatus(String status) {
         this.status = status;
     }
+}
+
+class RegistrationResponse {
+    private boolean success;
+    private String message;
+    private int userId;
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+}
+
+class RoleRequest {
+    private String role;
+    private boolean knjizenje;
+    private boolean rezervni_deli;
+    private boolean imenik;
+    private boolean preventivni_pregledi;
+    private boolean zastoji;
+    private boolean naloge;
+    private boolean dodajanje_nalog;
+    private boolean remonti;
+    private boolean orodja;
+    private boolean register;
+
+    public RoleRequest(String role, List<String> permissions) {
+        this.role = role;
+        this.knjizenje = permissions.contains("Knjiženje");
+        this.rezervni_deli = permissions.contains("Rezervni deli");
+        this.imenik = permissions.contains("Imenik");
+        this.preventivni_pregledi = permissions.contains("Preventivni pregledi");
+        this.zastoji = permissions.contains("Zastoji");
+        this.naloge = permissions.contains("Naloge");
+        this.dodajanje_nalog = permissions.contains("Dodajanje nalog");
+        this.remonti = permissions.contains("Remonti");
+        this.orodja = permissions.contains("Orodja");
+        this.register = permissions.contains("Register");
+    }
+
+    // Getters and setters...
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+    public boolean isKnjizenje() { return knjizenje; }
+    public void setKnjizenje(boolean knjizenje) { this.knjizenje = knjizenje; }
+    public boolean isRezeruni_deli() { return rezervni_deli; }
+    public void setRezeruni_deli(boolean rezervni_deli) { this.rezervni_deli = rezervni_deli; }
+    public boolean isImenik() { return imenik; }
+    public void setImenik(boolean imenik) { this.imenik = imenik; }
+    public boolean isPreventivni_pregledi() { return preventivni_pregledi; }
+    public void setPreventivni_pregledi(boolean preventivni_pregledi) { this.preventivni_pregledi = preventivni_pregledi; }
+    public boolean isZastoji() { return zastoji; }
+    public void setZastoji(boolean zastoji) { this.zastoji = zastoji; }
+    public boolean isNaloge() { return naloge; }
+    public void setNaloge(boolean naloge) { this.naloge = naloge; }
+    public boolean isDodajanje_nalog() { return dodajanje_nalog; }
+    public void setDodajanje_nalog(boolean dodajanje_nalog) { this.dodajanje_nalog = dodajanje_nalog; }
+    public boolean isRemonti() { return remonti; }
+    public void setRemonti(boolean remonti) { this.remonti = remonti; }
+    public boolean isOrodja() { return orodja; }
+    public void setOrodja(boolean orodja) { this.orodja = orodja; }
+    public boolean isRegister() { return register; }
+    public void setRegister(boolean register) { this.register = register; }
+}
+
+class UserCreationRequest {
+    private String username;
+    private String password;
+    private int role_id;
+
+    public UserCreationRequest(String username, String password, int roleId) {
+        this.username = username;
+        this.password = password;
+        this.role_id = roleId;
+    }
+
+    // Getters and setters...
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public int getRole_id() { return role_id; }
+    public void setRole_id(int role_id) { this.role_id = role_id; }
+}
+
+class RoleResponse {
+    private boolean success;
+    private String message;
+    private int role_id;
+
+    // Getters and setters...
+    public boolean isSuccess() { return success; }
+    public void setSuccess(boolean success) { this.success = success; }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
+    public int getRole_id() { return role_id; }
+    public void setRole_id(int role_id) { this.role_id = role_id; }
 }
