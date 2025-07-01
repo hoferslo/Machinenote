@@ -105,7 +105,7 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
         }
         return true;
     }
-
+ //
     public void sortList() {
         Collections.sort(visibleItems, new Comparator<ListViewItem>() {
             @Override
