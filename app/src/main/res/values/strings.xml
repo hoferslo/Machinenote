@@ -76,6 +76,8 @@
     <string name="start_time">Začetni čas</string>
     <string name="end_time">Končni čas</string>
 
+    <string name="time_negative_error">Končni čas mora biti po začetnem</string>
+
     <string name="tag_zastoji">Zastoji</string>
     <string name="tag_knjizenje">Knjiženje</string>
     <string name="tag_naloge">Naloge</string>

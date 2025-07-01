@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:visibility="visible"
         android:textColor="@android:color/black"
         android:drawableLeft="@mipmap/error"
         android:drawableTint="@color/red"

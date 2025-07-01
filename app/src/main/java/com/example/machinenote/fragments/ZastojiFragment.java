@@ -93,7 +93,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         for (int i = 0; i < dataNames.length; i++) {
             data.add(new ListViewItem(dataNames[i], false, i + 1));
         }
-
+        data.add(new ListViewItem(getString(R.string.time_negative_error), false, 999));
         // Initialize the adapter
         adapter = new ListViewAdapter(requireContext(), R.layout.custom_listview_item, data);
         binding.requiredItemsLv.setAdapter(adapter);
@@ -125,7 +125,6 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
                     });
         });
 
-
         binding.cancelBtn.setOnClickListener(view -> {
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.onBackPressed();
@@ -135,6 +134,12 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
 
         binding.sendBtn.setOnClickListener(v -> {
             try {
+                /*
+                if(TimeDifferenceCalculator.getMinutesBetweenDates(binding.textBeforeTime.getText().toString(), binding.textAfterTime.getText().toString()) < 0){
+                    Toast.makeText(context, "Čas je narobe nastavljen", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                */
                 sendZastoj();
             } catch (ParseException e) {
                 Log.e("error", e.getMessage());
@@ -165,13 +170,14 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         binding.cameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
         binding.ImagesCameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
 
-        CustomDateTimePicker.newInstance(context, binding.textBeforeTime, binding.analogClockBefore);
-        CustomDateTimePicker.newInstance(context, binding.textAfterTime, binding.analogClockAfter);
+        CustomDateTimePicker.newInstance(context, binding.textBeforeTime, binding.analogClockBefore, adapter, binding.textBeforeTime, binding.textAfterTime);
+        CustomDateTimePicker.newInstance(context, binding.textAfterTime, binding.analogClockAfter, adapter, binding.textBeforeTime, binding.textAfterTime);
 
-        TextWatcherUtil.addTextWatcherToTextView(binding.textBeforeTime, 6, adapter);
-        TextWatcherUtil.addTextWatcherToTextView(binding.textAfterTime, 7, adapter);
+        TextWatcherUtil.addTextWatcherToTextViewWithTimeValidation(binding.textBeforeTime, 6, adapter, binding.textBeforeTime, binding.textAfterTime);
+        TextWatcherUtil.addTextWatcherToTextViewWithTimeValidation(binding.textAfterTime, 7, adapter, binding.textBeforeTime, binding.textAfterTime);
         adapter.updateItemStatus(6, false);
         adapter.updateItemStatus(7, false);
+
 
         binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(!binding.dezurstvoCheckBox.isChecked()));
 
@@ -247,8 +253,9 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
                 }
             });
         } else {
-            Toast.makeText(context, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
-            ((MainActivity) context).showLoadingBar(false, "");
+            //Toast.makeText(context, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
+            //            ((MainActivity) context).showLoadingBar(false, "");
+            // premaknu v ListViewAdapter zarad vec errorjev
         }
     }
 

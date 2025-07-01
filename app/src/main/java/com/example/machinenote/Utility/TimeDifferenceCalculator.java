@@ -60,4 +60,16 @@ public class TimeDifferenceCalculator {
             return -1; // Return a default value in case of error
         }
     }
+
+    public static boolean isEndTimeAfterStartTime(String start, String end, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date startDate = sdf.parse(start);
+            Date endDate = sdf.parse(end);
+            return endDate != null && !endDate.before(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

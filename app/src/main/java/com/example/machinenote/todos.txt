@@ -3,3 +3,4 @@
 - add Preventivni pregledi, vsa orodja, Naloge (vnos naloge)
 - rezervni deli
 - check za registracijo...
+- začetni čas in končni v zastojih in remonti

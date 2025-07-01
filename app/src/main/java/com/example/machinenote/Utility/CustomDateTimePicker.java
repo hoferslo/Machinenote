@@ -28,7 +28,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
     private int selectedHour, selectedMinute;
 
-    public static CustomDateTimePicker newInstance(Context context, TextView textTime, SimpleAnalogClock clock) {
+    public static CustomDateTimePicker newInstance(Context context, TextView textTime, SimpleAnalogClock clock, ListViewAdapter adapter, TextView startTimeTextView, TextView endTimeTextView) {
         CustomDateTimePicker custom = new CustomDateTimePicker(context,
                 new CustomDateTimePicker.ICustomDateTimeListener() {
 
@@ -44,6 +44,11 @@ public class CustomDateTimePicker implements View.OnClickListener {
                         String time = timeFormat.format(date);
                         textTime.setText(time);
                         clock.setTime(date.getHours(), date.getMinutes(), date.getSeconds());
+
+                        // Trigger time validation after setting the time
+                        if (adapter != null && startTimeTextView != null && endTimeTextView != null) {
+                            TextWatcherUtil.validateTimeOrderWithCalculator(startTimeTextView, endTimeTextView, adapter);
+                        }
                     }
 
                     @Override

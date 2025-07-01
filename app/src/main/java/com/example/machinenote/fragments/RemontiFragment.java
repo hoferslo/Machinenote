@@ -97,7 +97,7 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
         for (int i = 0; i < dataNames.length; i++) {
             data.add(new ListViewItem(dataNames[i], false, i));
         }
-
+        data.add(new ListViewItem(getString(R.string.time_negative_error), false, 999));
         // Initialize the adapter
         adapter = new ListViewAdapter(requireContext(), R.layout.custom_listview_item, data);
         binding.requiredItemsLv.setAdapter(adapter);
@@ -172,11 +172,11 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
         binding.cameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
         binding.ImagesCameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
 
-        CustomDateTimePicker.newInstance(context, binding.textBeforeTime, binding.analogClockBefore);
-        CustomDateTimePicker.newInstance(context, binding.textAfterTime, binding.analogClockAfter);
+        CustomDateTimePicker.newInstance(context, binding.textBeforeTime, binding.analogClockBefore, adapter, binding.textBeforeTime, binding.textAfterTime);
+        CustomDateTimePicker.newInstance(context, binding.textAfterTime, binding.analogClockAfter, adapter, binding.textBeforeTime, binding.textAfterTime);
 
-        TextWatcherUtil.addTextWatcherToTextView(binding.textBeforeTime, 4, adapter);
-        TextWatcherUtil.addTextWatcherToTextView(binding.textAfterTime, 5, adapter);
+        TextWatcherUtil.addTextWatcherToTextViewWithTimeValidation(binding.textBeforeTime, 4, adapter, binding.textBeforeTime, binding.textAfterTime);
+        TextWatcherUtil.addTextWatcherToTextViewWithTimeValidation(binding.textAfterTime, 5, adapter, binding.textBeforeTime, binding.textAfterTime);
         adapter.updateItemStatus(4, false);
         adapter.updateItemStatus(5, false);
 
@@ -240,8 +240,11 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
                 }
             });
         } else {
+            /*
             Toast.makeText(context, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
             ((MainActivity) context).showLoadingBar(false, "");
+                // premaknu v ListViewAdapter za lazje handlanje errorjev
+             */
         }
     }
 

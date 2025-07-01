@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.machinenote.R;
+import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.models.ListViewItem;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -22,13 +25,35 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
 
     private int resourceLayout;
     private Context context;
-    private List<ListViewItem> items;
+    private List<ListViewItem> allItems; // Store all items
+    private List<ListViewItem> visibleItems; // Store only visible items
 
     public ListViewAdapter(Context context, int resource, List<ListViewItem> items) {
-        super(context, resource, items);
+        super(context, resource);
         this.resourceLayout = resource;
         this.context = context;
-        this.items = items;
+        this.allItems = items;
+        this.visibleItems = new ArrayList<>();
+        updateVisibleItems();
+    }
+
+    private void updateVisibleItems() {
+        visibleItems.clear();
+        for (ListViewItem item : allItems) {
+            if (item.isVisible()) {
+                visibleItems.add(item);
+            }
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return visibleItems.size();
+    }
+
+    @Override
+    public ListViewItem getItem(int position) {
+        return visibleItems.get(position);
     }
 
     @Override
@@ -64,16 +89,25 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
     }
 
     public boolean areAllItemsComplete() {
-        for (ListViewItem item: items) {
-            if(!item.isCompleted()) {
-                return false;
+        for (ListViewItem item : visibleItems) { // Check only visible items
+            if(item.isVisible()){
+                if (item.getNumber() == 999) {
+                    Toast.makeText(context, context.getString(R.string.time_negative_error), Toast.LENGTH_SHORT).show();
+                    ((MainActivity) context).showLoadingBar(false, "");
+                    return false;
+                }
+                if (!item.isCompleted()) {
+                    Toast.makeText(context, context.getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
+                    ((MainActivity) context).showLoadingBar(false, "");
+                    return false;
+                }
             }
         }
         return true;
     }
 
     public void sortList() {
-        Collections.sort(items, new Comparator<ListViewItem>() {
+        Collections.sort(visibleItems, new Comparator<ListViewItem>() {
             @Override
             public int compare(ListViewItem o1, ListViewItem o2) {
                 // Compare by completion status: Uncompleted items first
@@ -90,12 +124,25 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
     }
 
     public void updateItemStatus(int number, boolean isCompleted) {
-        for (ListViewItem item : items) {
+        for (ListViewItem item : allItems) { // Search in all items
             if (item.getNumber() == number) {
                 item.setCompleted(isCompleted);
                 break;
             }
         }
+        updateVisibleItems(); // Update visible items list
+        sortList();
+    }
+
+    public void updateErrorItemVisibility(int number, boolean showError) {
+        for (ListViewItem item : allItems) { // Search in all items
+            if (item.getNumber() == number) {
+                // Hide item if showError is true, show if false
+                item.setVisible(showError);
+                break;
+            }
+        }
+        updateVisibleItems(); // Update visible items list
         sortList();
     }
 }
