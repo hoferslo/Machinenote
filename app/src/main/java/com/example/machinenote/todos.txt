@@ -4,3 +4,8 @@
 - rezervni deli
 - check za registracijo...
 - qr koda izpolne informacije?
+- upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
+- dodajanje naročil v aplikacijo / matej naredi osnutek
+- optimiziraj kodo za register
+- spremeni barvno paleto in stil oblikovanja
+- spremeni stil registriranja in rol

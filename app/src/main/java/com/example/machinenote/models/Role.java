@@ -1,17 +1,42 @@
 package com.example.machinenote.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Role {
+    @SerializedName("role_id")
     private int roleId;
+
+    @SerializedName("role")
     private String role;
+
+    @SerializedName("knjizenje")
     private boolean knjizenje;
+
+    @SerializedName("rezervni_deli")  // Maps API snake_case to Java camelCase
     private boolean rezervniDeli;
+
+    @SerializedName("imenik")
     private boolean imenik;
+
+    @SerializedName("preventivni_pregledi")  // Maps API snake_case to Java camelCase
     private boolean preventivniPregledi;
+
+    @SerializedName("zastoji")
     private boolean zastoji;
+
+    @SerializedName("naloge")
     private boolean naloge;
-    private boolean dodajanjeNalog; // New field
+
+    @SerializedName("dodajanje_nalog")  // Maps API snake_case to Java camelCase
+    private boolean dodajanjeNalog;
+
+    @SerializedName("remonti")
     private boolean remonti;
+
+    @SerializedName("orodja")
     private boolean orodja;
+
+    @SerializedName("register")
     private boolean register;
 
     // Updated constructor to include dodajanje_nalog
@@ -125,5 +150,23 @@ public class Role {
 
     public void setRegister(boolean register) {
         this.register = register;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", role='" + role + '\'' +
+                ", knjizenje=" + knjizenje +
+                ", rezervniDeli=" + rezervniDeli +
+                ", imenik=" + imenik +
+                ", preventivniPregledi=" + preventivniPregledi +
+                ", zastoji=" + zastoji +
+                ", naloge=" + naloge +
+                ", dodajanjeNalog=" + dodajanjeNalog +
+                ", remonti=" + remonti +
+                ", orodja=" + orodja +
+                ", register=" + register +
+                '}';
     }
 }

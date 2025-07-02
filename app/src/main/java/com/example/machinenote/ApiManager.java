@@ -613,7 +613,7 @@ public class ApiManager {
                                 callback);
                     } else {
                         // Role doesn't exist, create it first
-                        createRoleAndUser(registrationRequest, callback);
+                        //createRoleAndUser(registrationRequest, callback);
                     }
                 } else {
                     Log.e("ApiManager", "Failed to get roles: " + response.message());
@@ -628,7 +628,7 @@ public class ApiManager {
             }
         });
     }
-
+    /*
     private void createRoleAndUser(RegistrationRequest registrationRequest, RegistrationCallback callback) {
         // Step 2a: Create new role
         RoleRequest roleRequest = new RoleRequest(registrationRequest.getRole(), registrationRequest.getPermissions());
@@ -662,7 +662,7 @@ public class ApiManager {
             }
         });
     }
-
+     */
     private void createUser(String username, String password, int roleId, RegistrationCallback callback) {
         // Step 3: Create user with the role_id
         UserCreationRequest userRequest = new UserCreationRequest(username, password, roleId);
@@ -692,6 +692,61 @@ public class ApiManager {
                 callback.onFailure("User creation error: " + t.getMessage());
             }
         });
+    }
+
+    public void getRoles(Callback<List<Role>> callback) {
+        Call<List<Role>> call = apiService.getRoles();
+        call.enqueue(new Callback<List<Role>>() {
+            @Override
+            public void onResponse(Call<List<Role>> call, Response<List<Role>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Role> roles = response.body();
+                    callback.onResponse(call, response);
+                } else {
+                    callback.onFailure(call, new Throwable("Failed to retrieve roles: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Role>> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void createRole(String roleName, List<String> permissions, RoleCreationCallback callback) {
+        RoleRequest roleRequest = new RoleRequest(roleName, permissions);
+        Call<RoleResponse> createRoleCall = apiService.createRole(roleRequest);
+
+        createRoleCall.enqueue(new Callback<RoleResponse>() {
+            @Override
+            public void onResponse(Call<RoleResponse> call, Response<RoleResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    RoleResponse roleResponse = response.body();
+                    if (roleResponse.isSuccess()) {
+                        Log.d("ApiManager", "Role created successfully: " + roleName);
+                        callback.onSuccess();
+                    } else {
+                        Log.e("ApiManager", "Role creation failed: " + roleResponse.getMessage());
+                        callback.onFailure("Role creation failed: " + roleResponse.getMessage());
+                    }
+                } else {
+                    Log.e("ApiManager", "Role creation failed: " + response.message());
+                    callback.onFailure("Role creation failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoleResponse> call, Throwable t) {
+                Log.e("ApiManager", "Role creation error: " + t.getMessage());
+                callback.onFailure("Role creation error: " + t.getMessage());
+            }
+        });
+    }
+
+    public interface RoleCreationCallback {
+        void onSuccess();
+        void onFailure(String errorMessage);
     }
 
     // Add this callback interface to your ApiManager class

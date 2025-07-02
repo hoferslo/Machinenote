@@ -288,8 +288,8 @@ class RoleRequest {
     public void setRole(String role) { this.role = role; }
     public boolean isKnjizenje() { return knjizenje; }
     public void setKnjizenje(boolean knjizenje) { this.knjizenje = knjizenje; }
-    public boolean isRezeruni_deli() { return rezervni_deli; }
-    public void setRezeruni_deli(boolean rezervni_deli) { this.rezervni_deli = rezervni_deli; }
+    public boolean isRezervni_deli() { return rezervni_deli; }
+    public void setRezervni_deli(boolean rezervni_deli) { this.rezervni_deli = rezervni_deli; }
     public boolean isImenik() { return imenik; }
     public void setImenik(boolean imenik) { this.imenik = imenik; }
     public boolean isPreventivni_pregledi() { return preventivni_pregledi; }
