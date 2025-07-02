@@ -35,6 +35,7 @@
     <color name="textPrimary">#374151</color>
     <color name="textSecondary">#6B7280</color>
     <color name="iconTint">#FFFFFF</color>
+    <color name="IconBackgroundTint"></color>
     <color name="clockHourHand">#3B82F6</color>
     <color name="clockMinuteHand">#1E40AF</color>
 

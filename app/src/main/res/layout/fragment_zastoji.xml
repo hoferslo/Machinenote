@@ -69,7 +69,9 @@
                         android:padding="16dp"
                         android:text="@string/sifrant"
                         style="@style/primaryButton"
-                        android:id="@+id/sifrantBtn" />
+                        android:id="@+id/sifrantBtn"
+                        android:background="@drawable/custom_button"
+                        />
 
                     <EditText
                         android:id="@+id/ime_delavca"
@@ -127,7 +129,8 @@
                             android:gravity="center"
                             android:layout_marginEnd="12dp"
                             android:text="@string/line"
-                            style="@style/secondaryButton" />
+                            style="@style/secondaryButton"
+                            />
 
                         <ImageButton
                             android:id="@+id/scanBtn"
@@ -138,8 +141,8 @@
                             android:padding="8dp"
                             android:src="@mipmap/qr_code_scanner"
                             style="@style/iconButton"
-
-                            app:tint="@color/iconTint" />
+                            app:tint="@color/iconTint"
+                            android:background="@drawable/images_background"/>
 
                     </LinearLayout>
 
@@ -189,7 +192,7 @@
                             android:src="@mipmap/photo_camera"
                             app:tint="@color/iconTint"
                             style="@style/largeCameraButton"
-
+                            android:background="@drawable/images_background"
                              />
                     </LinearLayout>
 
@@ -300,7 +303,8 @@
                 android:scaleType="fitCenter"
                 android:src="@mipmap/photo_camera"
                 style="@style/largeCameraButton"
-                app:tint="@color/iconTint" />
+                app:tint="@color/iconTint"
+                android:background="@drawable/images_background"/>
 
         </LinearLayout>
 
