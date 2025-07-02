@@ -24,4 +24,18 @@
     <color name="green">#FF4CAF50</color>
     <color name="red">#FFF44336</color>
 
+    <color name="colorBackground">#F5F7FA</color>
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="inputBackground">#F8FAFC</color>
+    <color name="sectionBackground">#E2E8F0</color>
+    <color name="clockSectionBackground">#F1F5F9</color>
+    <color name="bottomActionsBackground">#F8FAFC</color>
+    <color name="tabBackground">#E5E7EB</color>
+    <color name="checkboxTint">#1E40AF</color>
+    <color name="textPrimary">#374151</color>
+    <color name="textSecondary">#6B7280</color>
+    <color name="iconTint">#FFFFFF</color>
+    <color name="clockHourHand">#3B82F6</color>
+    <color name="clockMinuteHand">#1E40AF</color>
+
 </resources>
