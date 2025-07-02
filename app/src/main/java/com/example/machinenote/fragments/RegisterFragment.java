@@ -46,12 +46,10 @@ public class RegisterFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         context = getContext();
-
         setupSpinner();
         setupRegisterButton();
 
@@ -59,7 +57,7 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void setupSpinner() {
-        String[] items = {"Nova rola", "Admin", "Vzdrževanje"};
+        String[] items = {"Nova rola", "Admin", "Vzdrževanje"}; // TODO: uzem role iz podatkovne baze
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_item, items);
@@ -75,7 +73,7 @@ public class RegisterFragment extends BaseFragment {
                 if (selectedItem.equals("Nova rola")) {
                     binding.addARole.setVisibility(View.VISIBLE);
                 } else {
-                    binding.addARole.setVisibility(View.GONE);
+                    binding.addARole.setVisibility(View.GONE); // TODO: nared ce zberes rolo da ti zaklene in obkluka tiste role k so
                 }
             }
 
@@ -115,7 +113,7 @@ public class RegisterFragment extends BaseFragment {
             if (focusView == null) focusView = binding.editTextPassword;
             cancel = true;
         } else if (password.length() < 6) {
-            binding.editTextPassword.setError("Geslo mora imeti vsaj 6 znakov");
+            binding.editTextPassword.setError("Geslo mora imeti vsaj 6 znakov"); // TODO: kaksni zahtevki za geslo?
             if (focusView == null) focusView = binding.editTextPassword;
             cancel = true;
         }
@@ -135,7 +133,7 @@ public class RegisterFragment extends BaseFragment {
         performRegistration(username, password, roleForRegistration);
     }
 
-    private List<String> collectPermissions() {
+    private List<String> collectPermissions() { // Mogoce enum?
         List<String> permissions = new ArrayList<>();
         if (binding.checkBoxKnjizenje.isChecked()) permissions.add("Knjiženje");
         if (binding.checkBoxZastoji.isChecked()) permissions.add("Zastoji");
@@ -165,7 +163,7 @@ public class RegisterFragment extends BaseFragment {
                 Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show();
                 clearForm();
                 resetButton();
-                // TODO: Optionally navigate to LoginFragment or DashboardFragment
+                // TODO: izpisi ta prav error message glede na napako
             }
 
             @Override
@@ -190,12 +188,12 @@ public class RegisterFragment extends BaseFragment {
         binding.checkBoxNaloge.setChecked(false);
         binding.checkBoxRemonti.setChecked(false);
         binding.checkBoxOrodja.setChecked(false);
-        binding.checkBoxRegister.setChecked(false);
+        binding.checkBoxRegister.setChecked(false); // TODO: mogoce v loop pa eno mapo?
     }
 
     private void resetButton() {
         binding.registerButton.setEnabled(true);
-        binding.registerButton.setText("Registriraj");
+        binding.registerButton.setText("Registriraj"); //TODO: dodaj nazaj tipko
     }
 
     @Override
