@@ -53,6 +53,7 @@ public class ApiManager {
                     LoginResponse loginResponse = response.body();
                     String apiKey = loginResponse.getApiKey();
                     Role role = loginResponse.getRole();
+                    Log.d("role", String.valueOf(role));
                     ApiClient.setApiKey(apiKey);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Token, apiKey);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Username, username);

@@ -38,6 +38,7 @@ public class ApiClient {
                         // Log the raw JSON response
                         System.out.println("Raw JSON response: " + rawJson);
 
+
                         // Re-create the response before returning it because the rawJson string has already been consumed
                         return response.newBuilder()
                                 .body(ResponseBody.create(response.body().contentType(), rawJson))

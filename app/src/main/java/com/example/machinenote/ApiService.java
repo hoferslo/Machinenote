@@ -259,12 +259,12 @@ class RegistrationResponse {
 class RoleRequest {
     private String role;
     private boolean knjizenje;
-    private boolean rezervni_deli;
+    private boolean rezervniDeli;
     private boolean imenik;
-    private boolean preventivni_pregledi;
+    private boolean preventivniPregledi;
     private boolean zastoji;
     private boolean naloge;
-    private boolean dodajanje_nalog;
+    private boolean dodajanjeNalog;
     private boolean remonti;
     private boolean orodja;
     private boolean register;
@@ -272,12 +272,12 @@ class RoleRequest {
     public RoleRequest(String role, List<String> permissions) {
         this.role = role;
         this.knjizenje = permissions.contains("Knjiženje");
-        this.rezervni_deli = permissions.contains("Rezervni deli");
+        this.rezervniDeli = permissions.contains("Rezervni deli");
         this.imenik = permissions.contains("Imenik");
-        this.preventivni_pregledi = permissions.contains("Preventivni pregledi");
+        this.preventivniPregledi = permissions.contains("Preventivni pregledi");
         this.zastoji = permissions.contains("Zastoji");
         this.naloge = permissions.contains("Naloge");
-        this.dodajanje_nalog = permissions.contains("Dodajanje nalog");
+        this.dodajanjeNalog = permissions.contains("Dodajanje nalog");
         this.remonti = permissions.contains("Remonti");
         this.orodja = permissions.contains("Orodja");
         this.register = permissions.contains("Register");
@@ -288,18 +288,18 @@ class RoleRequest {
     public void setRole(String role) { this.role = role; }
     public boolean isKnjizenje() { return knjizenje; }
     public void setKnjizenje(boolean knjizenje) { this.knjizenje = knjizenje; }
-    public boolean isRezervni_deli() { return rezervni_deli; }
-    public void setRezervni_deli(boolean rezervni_deli) { this.rezervni_deli = rezervni_deli; }
+    public boolean isRezervni_deli() { return rezervniDeli; }
+    public void setRezervni_deli(boolean rezervniDeli) { this.rezervniDeli = rezervniDeli; }
     public boolean isImenik() { return imenik; }
     public void setImenik(boolean imenik) { this.imenik = imenik; }
-    public boolean isPreventivni_pregledi() { return preventivni_pregledi; }
-    public void setPreventivni_pregledi(boolean preventivni_pregledi) { this.preventivni_pregledi = preventivni_pregledi; }
+    public boolean isPreventivni_pregledi() { return preventivniPregledi; }
+    public void setPreventivni_pregledi(boolean preventivni_pregledi) { this.preventivniPregledi = preventivniPregledi; }
     public boolean isZastoji() { return zastoji; }
     public void setZastoji(boolean zastoji) { this.zastoji = zastoji; }
     public boolean isNaloge() { return naloge; }
     public void setNaloge(boolean naloge) { this.naloge = naloge; }
-    public boolean isDodajanje_nalog() { return dodajanje_nalog; }
-    public void setDodajanje_nalog(boolean dodajanje_nalog) { this.dodajanje_nalog = dodajanje_nalog; }
+    public boolean isDodajanje_nalog() { return dodajanjeNalog; }
+    public void setDodajanje_nalog(boolean dodajanje_nalog) { this.dodajanjeNalog = dodajanje_nalog; }
     public boolean isRemonti() { return remonti; }
     public void setRemonti(boolean remonti) { this.remonti = remonti; }
     public boolean isOrodja() { return orodja; }

@@ -12,11 +12,10 @@ public class SharedPreferencesHelper {
     private static final String PREFERENCES_FILE = "com.example.machinenote.PREFERENCES";
 
     // Preference keys
-
     public static final String Username = "Username";
     public static final String Password = "Password";
     public static final String Token = "Token";
-    public static final String Role = "Role";
+    public static final String ROLE_KEY = "Role";  // Renamed to avoid confusion
 
     private static SharedPreferencesHelper instance;
     private SharedPreferences sharedPreferences;
@@ -71,15 +70,32 @@ public class SharedPreferencesHelper {
 
     // Method to save a Role object
     public void putRole(Role role) {
-        String roleJson = gson.toJson(role);
-        editor.putString(Role, roleJson);
-        editor.apply();
+        if (role != null) {
+            String roleJson = gson.toJson(role);
+            editor.putString(ROLE_KEY, roleJson);
+            editor.apply();
+        }
     }
 
     // Method to get a Role object
     public Role getRole() {
-        String roleJson = sharedPreferences.getString(Role, null);
-        return gson.fromJson(roleJson, Role.class);
+        String roleJson = sharedPreferences.getString(ROLE_KEY, null);
+        if (roleJson != null && !roleJson.isEmpty()) {
+            try {
+                return gson.fromJson(roleJson, Role.class);
+            } catch (Exception e) {
+                // Log the error and return null if JSON parsing fails
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
+    }
+
+    // Method to check if user is logged in
+    public boolean isUserLoggedIn() {
+        String username = getString(Username, "");
+        return !username.isEmpty();
     }
 
     // Method to remove a specific key

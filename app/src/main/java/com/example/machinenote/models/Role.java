@@ -12,23 +12,23 @@ public class Role {
     @SerializedName("knjizenje")
     private boolean knjizenje;
 
-    @SerializedName("rezervni_deli")  // Maps API snake_case to Java camelCase
+    @SerializedName("rezervniDeli")
     private boolean rezervniDeli;
+
+    @SerializedName("preventivniPregledi")
+    private boolean preventivniPregledi;
+
+    @SerializedName("dodajanjeNalog")
+    private boolean dodajanjeNalog;
 
     @SerializedName("imenik")
     private boolean imenik;
-
-    @SerializedName("preventivni_pregledi")  // Maps API snake_case to Java camelCase
-    private boolean preventivniPregledi;
 
     @SerializedName("zastoji")
     private boolean zastoji;
 
     @SerializedName("naloge")
     private boolean naloge;
-
-    @SerializedName("dodajanje_nalog")  // Maps API snake_case to Java camelCase
-    private boolean dodajanjeNalog;
 
     @SerializedName("remonti")
     private boolean remonti;
