@@ -219,8 +219,8 @@ public class DashboardFragment extends BaseFragment {
         );
         layoutParams.setMargins(margins, margins, margins, margins);
 
-        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.background_corners_200)));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primaryColor_200));
+        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.background_corners_100)));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primaryColor_150));
 
         button.setLayoutParams(layoutParams);
 
@@ -253,7 +253,7 @@ public class DashboardFragment extends BaseFragment {
             if (button != null) {
                 switch (button.getText().toString()) {
                     case "Zastoji", "Knjiženje", "Remonti", "Preventivni pregledi", "Naloge",
-                         "Registracija" -> makeButtonOnline(online, button);
+                         "Registracija", "Rezervni deli", "Imenik", "Orodja" -> makeButtonOnline(online, button);
                 }
             }
         });
@@ -275,7 +275,7 @@ public class DashboardFragment extends BaseFragment {
         button.setClickable(online);
         button.setIcon(online ? null : ContextCompat.getDrawable(context, R.mipmap.signal_wifi_bad));
         button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
-        button.setBackgroundTintList(online ? ContextCompat.getColorStateList(context, R.color.primaryColor_200) : ContextCompat.getColorStateList(context, R.color.primaryColor_100));
+        button.setBackgroundTintList(online ? ContextCompat.getColorStateList(context, R.color.primaryColor_150) : ContextCompat.getColorStateList(context, R.color.primaryColor_100));
     }
 
     @Override

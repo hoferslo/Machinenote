@@ -13,6 +13,7 @@
     <color name="primaryColor_50_old">#D4F7FD</color>
     <color name="primaryColor_100_old">#CDF5FD</color>
     <color name="primaryColor_200_old">#A0E9FF</color>
+    <color name="primaryColor_600">#62BEFF</color>
     <color name="primaryColor_500">#89CFF3</color>
     <color name="primaryColor_700">#20A9FF</color>
     <color name="primaryColor_900">#05507E</color>
@@ -39,3 +40,4 @@
     <color name="clockMinuteHand">#1E40AF</color>
 
 </resources>
+

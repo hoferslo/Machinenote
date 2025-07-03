@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:padding="20dp"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:layout_marginBottom="12dp"
                         android:hint="@string/username"
                         android:fontFamily="@font/nunito_semibold"
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:padding="20dp"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:layout_marginBottom="12dp"
                         android:hint="@string/password"
                         android:inputType="textPassword"
@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
-                        android:background="@drawable/input_field_background" />
+                        android:background="@drawable/section_background" />
 
                 </LinearLayout>
 
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:padding="20dp"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:hint="@string/role_name"
                         android:fontFamily="@font/nunito_semibold"
                         android:background="@drawable/input_field_background"
@@ -133,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="12dp"
-                        android:background="@drawable/section_background">
+                        android:background="@drawable/input_field_background">
 
                         <!-- Prva vrstica checkboxov -->
                         <LinearLayout
@@ -319,7 +319,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Dodajanje nalog"
-                                android:textSize="14sp"
                                 android:textColor="@color/textPrimary"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center_vertical"
@@ -452,9 +451,8 @@
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:padding="14dp"
                 android:text="@string/register_button"
-                android:textSize="18sp"
                 android:fontFamily="@font/nunito_semibold"
                 style="@style/confirmButton" />
         </LinearLayout>
