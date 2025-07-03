@@ -68,9 +68,9 @@
                         android:layout_marginBottom="16dp"
                         android:padding="16dp"
                         android:text="@string/sifrant"
-                        style="@style/primaryButton"
+                        style="@style/secondaryButton"
                         android:id="@+id/sifrantBtn"
-                        android:background="@drawable/primary_button"
+                        android:background="@drawable/secondary_button"
                         />
 
                     <EditText
@@ -130,6 +130,7 @@
                             android:layout_marginEnd="12dp"
                             android:text="@string/line"
                             style="@style/secondaryButton"
+                            android:background="@drawable/secondary_button"
                             />
 
                         <ImageButton

@@ -52,13 +52,14 @@
 
     <!-- Secondary Outlined Button -->
     <style name="secondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:backgroundTint">@color/inputFieldBackground</item>
-        <item name="android:textColor">@color/textPrimaryColor</item>
-        <item name="strokeColor">@color/gray_30</item>
-        <item name="strokeWidth">1dp</item>
+        <item name="android:backgroundTint">@drawable/secondary_button</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="cornerRadius">12dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <!-- Icon Button - FIXED with explicit backgroundTint -->
