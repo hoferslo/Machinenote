@@ -76,24 +76,23 @@ public class RegisterFragment extends BaseFragment {
         return view;
     }
 
+
     private void setupModeToggleButtons() {
         binding.btnUserMode.setOnClickListener(v -> setUserMode());
         binding.btnRoleMode.setOnClickListener(v -> setRoleMode());
     }
-
     private void setUserMode() {
         isUserMode = true;
 
-        // Update button states
-        binding.btnUserMode.setEnabled(false);
-        binding.btnRoleMode.setEnabled(true);
+        // Check the user mode button in toggle group
+        binding.toggleGroup.check(binding.btnUserMode.getId());
 
         // Show/hide sections
         binding.userSection.setVisibility(View.VISIBLE);
         binding.roleSection.setVisibility(View.GONE);
 
         // Update register button text
-        binding.registerButton.setText("Registriraj uporabnika");
+        binding.registerButton.setText("Registriraj");
 
         // Restore permissions for the currently selected role
         restoreSelectedRolePermissions();
@@ -106,16 +105,15 @@ public class RegisterFragment extends BaseFragment {
     private void setRoleMode() {
         isUserMode = false;
 
-        // Update button states
-        binding.btnUserMode.setEnabled(true);
-        binding.btnRoleMode.setEnabled(false);
+        // Check the role mode button in toggle group
+        binding.toggleGroup.check(binding.btnRoleMode.getId());
 
         // Show/hide sections
         binding.userSection.setVisibility(View.GONE);
         binding.roleSection.setVisibility(View.VISIBLE);
 
         // Update register button text
-        binding.registerButton.setText("Ustvari vlogo");
+        binding.registerButton.setText("Ustvari");
 
         // Clear all checkboxes and enable them for role creation
         clearAllCheckboxes();
@@ -124,7 +122,6 @@ public class RegisterFragment extends BaseFragment {
         // Update toolbar title
         updateToolbarTitle("Dodaj vlogo");
     }
-
     private void restoreSelectedRolePermissions() {
         // Only restore if we have a selected role
         if (!TextUtils.isEmpty(selectedRole)) {
@@ -524,9 +521,9 @@ public class RegisterFragment extends BaseFragment {
     private void resetButton() {
         binding.registerButton.setEnabled(true);
         if (isUserMode) {
-            binding.registerButton.setText("Registriraj uporabnika");
+            binding.registerButton.setText("Registriraj");
         } else {
-            binding.registerButton.setText("Ustvari vlogo");
+            binding.registerButton.setText("Ustvari");
         }
     }
 

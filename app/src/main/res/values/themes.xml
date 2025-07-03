@@ -97,11 +97,11 @@
 
     <!-- Tab gumb -->
     <style name="tabButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">#6B7280</item>
+        <item name="android:textColor">@color/textSecondary</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:backgroundTint">@drawable/toggle_button_background</item>
         <item name="cornerRadius">0dp</item>
     </style>
     <style name="materialButtonToggle" parent="Widget.MaterialComponents.Button.OutlinedButton">

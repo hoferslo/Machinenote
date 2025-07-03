@@ -1,59 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragments.RegisterFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/colorBackground"
+    android:focusable="true"
+    android:clickable="true"
+    tools:context=".fragments.RegisterFragment">
 
-    <LinearLayout
+    <!-- Main Content Container -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="8dp"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
 
-        <androidx.cardview.widget.CardView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:gravity="center">
+            android:scrollbars="none"
+            android:background="@drawable/background_main_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_gravity="center_horizontal">
+                android:padding="16dp">
 
-                <!-- Toggle Buttons for switching between User and Role creation -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_corners_100"
-                    android:padding="8dp"
-                    android:layout_marginBottom="16dp">
+                <!-- Mode Selection Toggle -->
 
-                    <Button
-                        android:id="@+id/btnUserMode"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:text="Uporabnik"
-                        android:layout_marginEnd="4dp"
-                        style="@style/materialButton" />
-
-                    <Button
-                        android:id="@+id/btnRoleMode"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:text="Vloga"
-                        android:layout_marginStart="4dp"
-                        style="@style/materialButton" />
-
-                </LinearLayout>
 
                 <!-- User Registration Section -->
                 <LinearLayout
@@ -61,39 +38,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/background_corners_100"
-                    android:padding="8dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:padding="16dp"
+                    android:background="@drawable/background_rounded_card">
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
                         android:id="@+id/editTextUsername"
-                        android:background="@drawable/customborder_25"
-                        android:drawableStart="@mipmap/person"
-                        android:drawablePadding="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:padding="20dp"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp"
                         android:hint="@string/username"
-                        android:padding="8dp"
-                        android:textColor="@color/black"
-                        android:layout_marginBottom="16dp" />
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/input_field_background"
+                        android:drawableStart="@mipmap/person"
+                        android:drawablePadding="12dp" />
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
                         android:id="@+id/editTextPassword"
-                        android:background="@drawable/customborder_25"
-                        android:drawableLeft="@mipmap/lock"
-                        android:drawablePadding="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:padding="20dp"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp"
                         android:hint="@string/password"
                         android:inputType="textPassword"
-                        android:padding="8dp"
-                        android:layout_marginBottom="16dp" />
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/input_field_background"
+                        android:drawableStart="@mipmap/lock"
+                        android:drawablePadding="12dp" />
 
                     <Spinner
-                        android:layout_width="match_parent"
                         android:id="@+id/roleSpinner"
-                        android:layout_height="64dp"
-                        android:background="@drawable/customborder_25" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        android:background="@drawable/input_field_background" />
 
                 </LinearLayout>
 
@@ -103,21 +86,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/background_corners_100"
-                    android:padding="8dp"
                     android:layout_marginBottom="16dp"
+                    android:padding="16dp"
+                    android:background="@drawable/background_rounded_card"
                     android:visibility="gone">
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
                         android:id="@+id/addARole"
-                        android:background="@drawable/customborder_25"
-                        android:drawableLeft="@mipmap/settings"
-                        android:drawablePadding="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:padding="20dp"
+                        android:gravity="center"
                         android:hint="@string/role_name"
-                        android:padding="8dp"
-                        android:textColor="@color/black" />
+                        android:fontFamily="@font/nunito_semibold"
+                        android:background="@drawable/input_field_background"
+                        android:drawableStart="@mipmap/settings"
+                        android:drawablePadding="12dp" />
 
                 </LinearLayout>
 
@@ -125,124 +110,385 @@
                 <LinearLayout
                     android:id="@+id/permissionsSection"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:background="@drawable/background_corners_100"
-                    android:padding="8dp">
+                    android:layout_marginBottom="16dp"
+                    android:padding="16dp"
+                    android:background="@drawable/background_rounded_card">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
-                        android:id="@+id/showRoleBox"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Dovoljenja"
+                        android:textSize="18sp"
+                        android:textColor="@color/textPrimary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Spremenjen del - vsak checkbox v svoji vrstici -->
+                    <LinearLayout
+                        android:id="@+id/checkboxGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_gravity="center">
+                        android:padding="12dp"
+                        android:background="@drawable/section_background">
 
-                        <ScrollView
+                        <!-- Prva vrstica checkboxov -->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:id="@+id/addARoleBox"
-                            android:background="@drawable/background_corners_25"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="16dp">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <CheckBox
+                                android:id="@+id/checkBoxKnjizenje"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/checkboxGrid"
-                                android:orientation="horizontal"
-                                android:gravity="center">
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_weight="0.5"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Knjiženje"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxKnjizenje"
-                                        android:text="Knjiženje" />
+                        </LinearLayout>
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxZastoji"
-                                        android:text="Zastoji" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxRezervniDelo"
-                                        android:text="Rezervni deli" />
+                            <CheckBox
+                                android:id="@+id/checkBoxZastoji"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxPreventivniPregledi"
-                                        android:text="Preventivni pregledi" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Zastoji"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxImenik"
-                                        android:text="Imenik" />
+                        </LinearLayout>
 
-                                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
 
-                                <LinearLayout
-                                    android:layout_weight="0.5"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
+                            <CheckBox
+                                android:id="@+id/checkBoxRezervniDelo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxNaloge"
-                                        android:text="Naloge" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rezervni deli"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxDodajanjeNalog"
-                                        android:text="Dodajanje nalog" />
+                        </LinearLayout>
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxRemonti"
-                                        android:text="Remonti" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxOrodja"
-                                        android:text="Orodja" />
+                            <CheckBox
+                                android:id="@+id/checkBoxPreventivniPregledi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
 
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/checkBoxRegister"
-                                        android:text="Register" />
-                                </LinearLayout>
-                            </LinearLayout>
-                        </ScrollView>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Preventivni pregledi"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
+
+                            <CheckBox
+                                android:id="@+id/checkBoxImenik"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Imenik"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
+
+                            <CheckBox
+                                android:id="@+id/checkBoxNaloge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Naloge"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
+
+                            <CheckBox
+                                android:id="@+id/checkBoxDodajanjeNalog"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Dodajanje nalog"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
+
+                            <CheckBox
+                                android:id="@+id/checkBoxRemonti"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Remonti"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
+
+                            <CheckBox
+                                android:id="@+id/checkBoxOrodja"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Orodja"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp">
+
+                            <CheckBox
+                                android:id="@+id/checkBoxRegister"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkboxTint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Register"
+                                android:textSize="14sp"
+                                android:textColor="@color/textPrimary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:id="@+id/registerButton"
-                        android:text="@string/register_button"
-                        android:layout_gravity="bottom"
-                        style="@style/materialButton" />
                 </LinearLayout>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </ScrollView>
+
+    </FrameLayout>
+
+    <!-- Bottom Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bottom_actions_background">
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginEnd="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp"
+                android:text="@string/cancel"
+                style="@style/cancelButton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_weight="0.6"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/register_button"
+                android:textSize="18sp"
+                android:fontFamily="@font/nunito_semibold"
+                style="@style/confirmButton" />
+        </LinearLayout>
 
     </LinearLayout>
 
-</FrameLayout>
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:checkedButton="@id/btnUserMode">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUserMode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Uporabnik"
+            android:checkable="true"
+            style="@style/tabButton"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRoleMode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Vloga"
+            android:checkable="true"
+            style="@style/tabButton"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+</LinearLayout>
