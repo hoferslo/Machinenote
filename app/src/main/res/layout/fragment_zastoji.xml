@@ -6,7 +6,7 @@
     android:focusable="true"
     android:orientation="vertical"
     android:clickable="true"
-    android:background="@color/colorBackground"
+    android:background="@color/backgroundColorOfApp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ZastojiFragment">
 
@@ -36,7 +36,7 @@
                 android:layout_marginBottom="12dp"
                 android:padding="16dp"
                 android:minHeight="120dp"
-                android:background="@drawable/background_rounded_card">
+                android:background="@drawable/bg_rounded_card_main">
 
                 <ListView
                     android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
                 android:paddingVertical="16dp"
-                android:background="@drawable/background_main_card">
+                android:background="@drawable/bg_rounded_card_main">
 
                 <LinearLayout
                     android:id="@+id/allDataSv"
@@ -70,7 +70,7 @@
                         android:text="@string/sifrant"
                         style="@style/primaryButton"
                         android:id="@+id/sifrantBtn"
-                        android:background="@drawable/custom_button"
+                        android:background="@drawable/primary_button"
                         />
 
                     <EditText
@@ -83,7 +83,7 @@
                         android:layout_marginBottom="12dp"
                         android:hint="@string/name_of_worker"
                         android:fontFamily="@font/nunito_semibold"
-                        android:background="@drawable/input_field_background" />
+                        android:background="@drawable/bg_input_field" />
 
                     <EditText
                         android:id="@+id/razlog_zaustavitve_stroja"
@@ -95,7 +95,7 @@
                         android:layout_marginBottom="12dp"
                         android:fontFamily="@font/nunito_semibold"
                         android:hint="@string/reason_for_stoppage"
-                        android:background="@drawable/input_field_background" />
+                        android:background="@drawable/bg_input_field" />
 
                     <EditText
                         android:id="@+id/opomba"
@@ -107,7 +107,7 @@
                         android:hint="@string/opomba"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/nunito_semibold"
-                        android:background="@drawable/input_field_background" />
+                        android:background="@drawable/bg_input_field" />
 
                     <!-- Line and QR Code Section -->
                     <LinearLayout
@@ -118,7 +118,7 @@
                         android:layout_marginBottom="12dp"
                         android:padding="12dp"
                         android:gravity="center"
-                        android:background="@drawable/section_background">
+                        android:background="@drawable/bg_section">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/idOfLineBtn"
@@ -141,8 +141,7 @@
                             android:padding="8dp"
                             android:src="@mipmap/qr_code_scanner"
                             style="@style/iconButton"
-                            app:tint="@color/iconTint"
-                            android:background="@drawable/images_background"/>
+                            android:background="@drawable/bg_icon"/>
 
                     </LinearLayout>
 
@@ -153,7 +152,7 @@
                         android:orientation="horizontal"
                         android:layout_marginBottom="12dp"
                         android:padding="12dp"
-                        android:background="@drawable/section_background">
+                        android:background="@drawable/bg_section">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -166,7 +165,7 @@
                                 android:id="@+id/dezurstvoCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:buttonTint="@color/checkboxTint"
+                                android:buttonTint="@color/checkboxTintColor"
                                 android:scaleX="1.3"
                                 android:scaleY="1.3" />
 
@@ -177,7 +176,7 @@
                                 android:gravity="center"
                                 android:textSize="18sp"
                                 android:layout_marginStart="8dp"
-                                android:textColor="@color/textPrimary"
+                                android:textColor="@color/textPrimaryColor"
                                 android:text="@string/dezurstvo" />
                         </LinearLayout>
 
@@ -190,9 +189,8 @@
                             android:padding="8dp"
                             android:scaleType="fitCenter"
                             android:src="@mipmap/photo_camera"
-                            app:tint="@color/iconTint"
-                            style="@style/largeCameraButton"
-                            android:background="@drawable/images_background"
+                            style="@style/iconButton"
+                            android:background="@drawable/bg_icon"
                              />
                     </LinearLayout>
 
@@ -204,7 +202,7 @@
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
                         android:padding="16dp"
-                        android:background="@drawable/clock_section_background">
+                        android:background="@drawable/bg_clock_section">
 
                         <!-- Container for Before Time -->
                         <LinearLayout
@@ -220,8 +218,8 @@
                                 android:layout_height="120dp"
                                 android:layout_gravity="center_horizontal"
                                 app:secondTint="@color/transparent"
-                                app:hourTint="@color/clockHourHand"
-                                app:minuteTint="@color/clockMinuteHand" />
+                                app:hourTint="@color/clockHourHandColor"
+                                app:minuteTint="@color/clockMinuteHandColor" />
 
                             <TextView
                                 android:id="@+id/textBeforeTime"
@@ -231,7 +229,7 @@
                                 android:layout_marginTop="8dp"
                                 android:hint="@string/start_time"
                                 android:textSize="14sp"
-                                android:textColor="@color/textSecondary" />
+                                android:textColor="@color/textSecondaryColor" />
 
                         </LinearLayout>
 
@@ -248,8 +246,8 @@
                                 android:layout_height="120dp"
                                 android:layout_gravity="center_horizontal"
                                 app:secondTint="@color/transparent"
-                                app:hourTint="@color/clockHourHand"
-                                app:minuteTint="@color/clockMinuteHand" />
+                                app:hourTint="@color/clockHourHandColor"
+                                app:minuteTint="@color/clockHourHandColor" />
 
                             <TextView
                                 android:id="@+id/textAfterTime"
@@ -259,7 +257,7 @@
                                 android:layout_marginTop="8dp"
                                 android:hint="@string/end_time"
                                 android:textSize="14sp"
-                                android:textColor="@color/textSecondary" />
+                                android:textColor="@color/textSecondaryColor" />
 
                         </LinearLayout>
 
@@ -283,7 +281,7 @@
                 android:layout_weight="1"
                 android:scrollbars="none"
                 android:padding="16dp"
-                android:background="@drawable/images_background">
+                android:background="@drawable/bg_rounded_card_main">
 
                 <LinearLayout
                     android:id="@+id/imagesLlInSv"
@@ -303,8 +301,7 @@
                 android:scaleType="fitCenter"
                 android:src="@mipmap/photo_camera"
                 style="@style/largeCameraButton"
-                app:tint="@color/iconTint"
-                android:background="@drawable/images_background"/>
+                android:background="@drawable/bg_images"/>
 
         </LinearLayout>
 
@@ -329,7 +326,7 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
         android:padding="16dp"
-        android:background="@drawable/bottom_actions_background">
+        android:background="@drawable/bg_bottom_actions">
 
         <LinearLayout
             android:layout_width="0dp"

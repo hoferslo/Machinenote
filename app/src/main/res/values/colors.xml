@@ -1,43 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ============= CORE PALETTE ============= -->
 
+    <!-- Primary Blues -->
+    <color name="blue_300">#1E40AF</color>
+    <color name="blue_250">#3B82F6</color>
+    <color name="blue_200">#0095FF</color>
+    <color name="blue_150">#62BEFF</color>
+    <color name="blue_100">#C3E6FF</color>
+    <color name="blue_50">#E5E7EB</color>
 
-    <color name="primaryColor_25">#FFFFFF</color>
-    <color name="primaryColor_50">#EEF8FF</color>
-    <color name="primaryColor_100">#C3E6FF</color>
-    <color name="primaryColor_150">#62BEFF</color>
-    <color name="primaryColor_200">#0095FF</color>
+    <!-- Grays -->
+    <color name="gray_10">#F1F5F9</color>
+    <color name="gray_20">#CBD5E1</color>
+    <color name="gray_30">#D1D5DB</color>
+    <color name="gray_40">#E5E7EB</color>
+    <color name="gray_50">#F5F7FA</color>
+    <color name="gray_60">#F8FAFC</color>
+    <color name="gray_70">#E2E8F0</color>
 
-    <color name="primaryColor_25_old">#D8F8FD</color>
-    <color name="primaryColor_50_old">#D4F7FD</color>
-    <color name="primaryColor_100_old">#CDF5FD</color>
-    <color name="primaryColor_200_old">#A0E9FF</color>
-    <color name="primaryColor_600">#62BEFF</color>
-    <color name="primaryColor_500">#89CFF3</color>
-    <color name="primaryColor_700">#20A9FF</color>
-    <color name="primaryColor_900">#05507E</color>
+    <!-- Action Colors -->
+    <color name="green_main">#059669</color>
+    <color name="red_light">#FCA5A5</color>
+    <color name="red_main">#DC2626</color>
+
+    <!-- Secondary Colors -->
+    <color name="teal_main">#FF03DAC5</color>
+    <color name="teal_dark">#FF018786</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#4B5563</color>
+    <color name="text_secondary">#9CA3AF</color>
+
+    <!-- Base Colors -->
     <color name="transparent">#00000000</color>
-    <color name="secondaryColor_200">#FF03DAC5</color>
-    <color name="secondaryColor_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#FF4CAF50</color>
-    <color name="red">#FFF44336</color>
+    <color name="green">#FF00FF00</color>
+    <color name="red">#FFFF0000</color>
 
-    <color name="colorBackground">#F5F7FA</color>
-    <color name="cardBackground">#FFFFFF</color>
-    <color name="inputBackground">#F8FAFC</color>
-    <color name="sectionBackground">#E2E8F0</color>
-    <color name="clockSectionBackground">#F1F5F9</color>
-    <color name="bottomActionsBackground">#F8FAFC</color>
-    <color name="tabBackground">#E5E7EB</color>
-    <color name="checkboxTint">#1E40AF</color>
-    <color name="textPrimary">#374151</color>
-    <color name="textSecondary">#6B7280</color>
-    <color name="iconTint">#FFFFFF</color>
-    <color name="clockHourHand">#3B82F6</color>
-    <color name="clockMinuteHand">#1E40AF</color>
+    <!-- ============= BACKGROUNDS ============= -->
+
+    <!-- Main App Background -->
+    <color name="backgroundColorOfApp">@color/gray_50</color> <!-- glavno ozadje -->
+
+    <!-- Card & Input Backgrounds -->
+    <color name="cardBackgroundColor">@color/white</color> <!-- kartice / input ozadja -->
+    <color name="inputFieldBackgroundColor">@color/gray_10</color>
+    <color name="inputFieldBackground">@color/gray_60</color>
+
+    <!-- Section Backgrounds -->
+    <color name="sectionBackgroundColor">@color/gray_70</color> <!-- npr. za checkbox + foto del -->
+    <color name="clockSectionBackgroundColor">@color/gray_10</color>
+    <color name="bottomActionsBackgroundColor">@color/gray_60</color> <!-- spodnji gumbi -->
+    <color name="tabBackgroundColor">@color/gray_40</color> <!-- zavihek "Vnos / Slike" -->
+
+    <!-- Header Background -->
+    <color name="headerBackgroundColor">@color/blue_300</color> <!-- "ŠIFRANT" gumb -->
+
+    <!-- ============= STROKES & BORDERS ============= -->
+
+    <color name="cardSecondaryStrokeColor">@color/gray_30</color>
+    <color name="cardStrokeColor">@color/gray_40</color>
+    <color name="inputFieldStrokeColor">@color/gray_20</color>
+    <color name="strokeImageColor">@color/gray_20</color>
+    <color name="clockStrokeColor">@color/gray_20</color>
+    <color name="cancelButtonStrokeColor">@color/red_light</color> <!-- rdeča - PREKLIČI -->
+
+    <!-- ============= BUTTONS ============= -->
+
+    <!-- Primary Buttons -->
+    <color name="primaryButtonColor">@color/blue_150</color> <!-- aktivni elementi, glavni gumbi -->
+    <color name="primaryButtonPressed">@color/blue_100</color>
+
+    <!-- Secondary Buttons -->
+    <color name="secondaryButtonColor">@color/blue_100</color> <!-- aktivni elementi, glavni gumbi -->
+    <color name="secondaryButtonPressed">@color/blue_50</color>
+
+    <!-- Action Buttons -->
+    <color name="sendButtonColor">@color/green_main</color> <!-- zelena - POŠLJI -->
+    <color name="cancelButtonTextColor">@color/red_main</color>
+
+    <!-- ============= ICONS & ELEMENTS ============= -->
+
+    <color name="iconTintWhite">@color/white</color>
+    <color name="checkboxTintColor">@color/blue_300</color>
+
+    <!-- Clock Elements -->
+    <color name="clockHourHandColor">@color/blue_300</color>
+    <color name="clockMinuteHandColor">@color/blue_250</color>
+
+    <!-- ============= TEXT ============= -->
+
+    <color name="textPrimaryColor">@color/text_primary</color>    <!-- svetlejša, a še vedno jasno berljiva -->
+    <color name="textSecondaryColor">@color/text_secondary</color>  <!-- bolj subtilna siva za placeholderje -->
+
+    <!-- ============= LEGACY REFERENCES ============= -->
+
+    <!-- Keep old names for backward compatibility -->
+    <color name="primaryColor_300">@color/blue_300</color>
+    <color name="primaryColor_250">@color/blue_250</color>
+    <color name="primaryColor_200">@color/blue_200</color>
+    <color name="primaryColor_150">@color/blue_150</color>
+    <color name="primaryColor_100">@color/blue_100</color>
+    <color name="primaryColor_50">@color/blue_50</color>
+    <color name="grayColor_10">@color/gray_10</color>
+    <color name="grayColor_20">@color/gray_20</color>
+    <color name="secondaryAccentColor">@color/teal_main</color>
+    <color name="secondaryAccentDark">@color/teal_dark</color>
 
 </resources>
-
