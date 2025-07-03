@@ -3,8 +3,8 @@ package com.example.machinenote.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Role {
-    @SerializedName("role_id")
-    private int roleId;
+    @SerializedName("roleId")
+    private int role_Id;
 
     @SerializedName("role")
     private String role;
@@ -40,8 +40,8 @@ public class Role {
     private boolean register;
 
     // Updated constructor to include dodajanje_nalog
-    public Role(int roleId, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register) {
-        this.roleId = roleId;
+    public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register) {
+        this.role_Id = role_Id;
         this.role = role;
         this.knjizenje = knjizenje;
         this.rezervniDeli = rezervniDeli;
@@ -57,11 +57,11 @@ public class Role {
 
     // Getters and Setters
     public int getRoleId() {
-        return roleId;
+        return role_Id;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRoleId(int role_Id) {
+        this.role_Id = role_Id;
     }
 
     public String getRole() {
@@ -155,7 +155,7 @@ public class Role {
     @Override
     public String toString() {
         return "Role{" +
-                "roleId=" + roleId +
+                "role_Id=" + role_Id +
                 ", role='" + role + '\'' +
                 ", knjizenje=" + knjizenje +
                 ", rezervniDeli=" + rezervniDeli +
