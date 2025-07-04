@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:background="@color/background_app"
     tools:context=".activities.MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:orientation="horizontal"
-                android:background="@color/primaryColor_100">
+                android:background="@drawable/bg_card_primary"
+                android:elevation="4dp">
 
                 <TextView
                     android:id="@+id/toolbar_title"
@@ -32,22 +33,24 @@
                     android:text="Title"
                     android:gravity="center"
                     android:textSize="24sp"
+                    android:textColor="@color/content_primary"
+                    android:fontFamily="@font/nunito_semibold"
                     android:paddingHorizontal="8dp" />
 
                 <ImageButton
                     android:id="@+id/noWifiBtn"
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
+                    style="@style/Button.Icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="end"
                     android:scaleType="fitCenter"
                     android:visibility="gone"
-                    android:layout_margin="4dp"
+                    android:layout_margin="8dp"
                     android:src="@mipmap/signal_wifi_bad"
-                    style="@style/materialButton"
-                    app:tint="@android:color/white" />
+                    android:contentDescription="No WiFi"
+                    app:tint="@color/content_inverse" />
 
             </com.google.android.material.appbar.MaterialToolbar>
-
 
             <androidx.drawerlayout.widget.DrawerLayout
                 android:layout_width="match_parent"
@@ -67,13 +70,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
-                    android:background="@color/primaryColor_50">
+                    android:background="@color/surface_secondary">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/background_corners_100"
-                        android:layout_margin="8dp"
+                        android:background="@drawable/bg_card_primary"
+                        android:layout_margin="16dp"
                         android:padding="16dp"
                         android:orientation="vertical">
 
@@ -84,17 +87,18 @@
                             android:text="@string/username"
                             android:gravity="center_vertical"
                             android:textSize="18sp"
+                            android:textColor="@color/content_primary"
+                            android:fontFamily="@font/nunito_semibold"
                             android:drawableLeft="@mipmap/person"
-                            android:drawableTint="@color/cardview_dark_background"
-                            android:drawablePadding="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:textColor="@color/cardview_dark_background" />
+                            android:drawableTint="@color/content_secondary"
+                            android:drawablePadding="12dp"
+                            android:layout_marginBottom="12dp" />
 
-                        <LinearLayout
+                        <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@color/cardview_dark_background" />
+                            android:layout_marginBottom="12dp"
+                            android:background="@color/border_primary" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -102,7 +106,9 @@
                             android:id="@+id/drawerUserRoleTv"
                             android:text="Rola"
                             android:gravity="center_vertical"
-                            android:textColor="@color/cardview_dark_background" />
+                            android:textColor="@color/content_secondary"
+                            android:fontFamily="@font/nunito_semibold"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -118,15 +124,17 @@
 
                         <Button
                             android:layout_width="match_parent"
-                            android:layout_height="64dp"
+                            android:layout_height="wrap_content"
                             android:id="@+id/logout"
                             android:text="Logout"
-                            style="@style/materialButton"
+                            style="@style/Button.Destructive"
                             android:drawableLeft="@mipmap/logout"
-                            android:drawablePadding="8dp"
-                            android:layout_margin="8dp"
-
-                            />
+                            android:drawableTint="@color/action_destructive"
+                            android:drawablePadding="12dp"
+                            android:layout_margin="16dp"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="20dp"
+                            android:minHeight="56dp" />
 
                     </LinearLayout>
 
@@ -136,17 +144,19 @@
 
         </LinearLayout>
 
+        <!-- Loading Overlay -->
         <LinearLayout
             android:id="@+id/loadingLl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="invisible"
-            android:background="@color/primaryColor_100"
-            android:alpha="0.6"
+            android:background="@color/surface_primary"
+            android:alpha="0.9"
             android:focusable="true"
             android:clickable="true"
-            android:gravity="center">
+            android:gravity="center"
+            android:elevation="8dp">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/loadingProgressBar"
@@ -154,17 +164,17 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:layout_gravity="center"
-                app:indicatorColor="@color/primaryColor_900"
+                app:indicatorColor="@color/action_primary"
                 android:visibility="visible" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
+                android:layout_marginTop="24dp"
+                android:textSize="18sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
                 android:text="Loading" />
-
 
         </LinearLayout>
 

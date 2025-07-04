@@ -198,7 +198,7 @@ public class DashboardFragment extends BaseFragment {
 
 
     private MaterialButton createButton(String text) {
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.materialButton);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.primaryButton);
         MaterialButton button = new MaterialButton(contextThemeWrapper);
 
         // Set text
@@ -219,8 +219,8 @@ public class DashboardFragment extends BaseFragment {
         );
         layoutParams.setMargins(margins, margins, margins, margins);
 
-        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.background_corners_100)));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primaryColor_150));
+        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.bg_button_primary)));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_primary));
 
         button.setLayoutParams(layoutParams);
 
@@ -275,7 +275,7 @@ public class DashboardFragment extends BaseFragment {
         button.setClickable(online);
         button.setIcon(online ? null : ContextCompat.getDrawable(context, R.mipmap.signal_wifi_bad));
         button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
-        button.setBackgroundTintList(online ? ContextCompat.getColorStateList(context, R.color.primaryColor_150) : ContextCompat.getColorStateList(context, R.color.primaryColor_100));
+        button.setBackgroundTintList(online ? ContextCompat.getColorStateList(context, R.color.action_primary) : ContextCompat.getColorStateList(context, R.color.action_secondary));
     }
 
     @Override

@@ -1,148 +1,158 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme -->
-    <style name="Base.Theme.MachineNote" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color - changed to proper primary color -->
-        <item name="colorPrimary">@color/blue_300</item>
-        <item name="colorPrimaryVariant">@color/blue_250</item>
-        <item name="colorOnPrimary">@color/white</item>
-
-        <!-- Secondary brand color -->
-        <item name="colorSecondary">@color/secondaryAccentColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryAccentDark</item>
-        <item name="colorOnSecondary">@color/black</item>
+    <!-- Base application theme for API 24 -->
+    <style name="Base.Theme.MachineNote" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/action_primary</item>
+        <item name="colorPrimaryDark">@color/blue_600</item>
+        <item name="colorAccent">@color/action_secondary</item>
 
         <!-- Status bar -->
-        <item name="android:statusBarColor">@color/backgroundColorOfApp</item>
+        <item name="android:statusBarColor">@color/background_app</item>
 
-        <!-- Fonts & background -->
+        <!-- Typography -->
         <item name="android:fontFamily">@font/nunito_semibold</item>
-        <item name="fontFamily">@font/nunito_semibold</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:windowBackground">@color/backgroundColorOfApp</item>
+        <item name="android:textColor">@color/content_primary</item>
+
+        <!-- Background -->
+        <item name="android:windowBackground">@color/background_app</item>
     </style>
 
-    <!-- TextView with rounded background -->
-    <style name="textViewTheme">
-        <item name="android:background">@drawable/bg_rounded_card</item>
-    </style>
+    <!-- ===== BASE BUTTON STYLES ===== -->
 
-    <!-- Base Material Button -->
-    <style name="materialButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:background">@drawable/primary_button</item>
+    <!-- Base button style with common properties -->
+    <style name="BaseButton" parent="Widget.AppCompat.Button">
         <item name="android:backgroundTint">@null</item>
-        <item name="cornerRadius">4dp</item>
-        <item name="android:textSize">20sp</item>
-        <item name="elevation">0dp</item>
-        <item name="fontFamily">@font/nunito_semibold</item>
-        <item name="android:stateListAnimator">@null</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:paddingLeft">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/button_padding_vertical</item>
+        <item name="android:textAllCaps">false</item>
     </style>
+
+    <!-- Base outlined button style -->
+    <style name="BaseOutlinedButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:paddingLeft">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/button_padding_vertical</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- ===== BUTTON VARIANTS ===== -->
 
     <!-- Primary Button -->
-    <style name="primaryButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@drawable/primary_button</item>
-        <item name="backgroundTint">@null</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
-        <item name="cornerRadius">12dp</item>
-        <item name="android:elevation">4dp</item>
-        <item name="android:stateListAnimator">@null</item>
+    <style name="Button.Primary" parent="BaseButton">
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">@color/content_inverse</item>
+        <item name="android:elevation">@dimen/button_elevation</item>
     </style>
 
-    <!-- Secondary Outlined Button -->
-    <style name="secondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:backgroundTint">@drawable/secondary_button</item>
-        <item name="backgroundTint">@null</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
-        <item name="cornerRadius">12dp</item>
-        <item name="android:elevation">4dp</item>
-        <item name="android:stateListAnimator">@null</item>
+    <!-- Secondary Button -->
+    <style name="Button.Secondary" parent="BaseButton">
+        <item name="android:background">@drawable/bg_button_secondary</item>
+        <item name="android:textColor">@color/content_inverse</item>
+        <item name="android:elevation">@dimen/button_elevation</item>
     </style>
 
-    <!-- Icon Button - FIXED with explicit backgroundTint -->
-    <style name="iconButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@drawable/bg_icon</item>
-        <item name="backgroundTint">@null</item>
-        <item name="android:tint">@color/white</item>
-        <item name="cornerRadius">12dp</item>
-        <item name="android:elevation">2dp</item>
-        <item name="android:stateListAnimator">@null</item>
+    <!-- Success Button -->
+    <style name="Button.Success" parent="BaseButton">
+        <item name="android:background">@drawable/bg_button_success</item>
+        <item name="android:textColor">@color/content_inverse</item>
+        <item name="android:elevation">@dimen/button_elevation</item>
+    </style>
+
+    <!-- Destructive/Cancel Button -->
+    <style name="Button.Destructive" parent="BaseOutlinedButton">
+        <item name="android:background">@drawable/bg_button_outline</item>
+        <item name="android:textColor">@color/action_destructive</item>
+    </style>
+
+    <!-- Icon Button -->
+    <style name="Button.Icon" parent="BaseButton">
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:tint">@color/content_inverse</item>
+        <item name="android:elevation">@dimen/icon_button_elevation</item>
+        <item name="android:minWidth">@dimen/icon_button_min_size</item>
+        <item name="android:minHeight">@dimen/icon_button_min_size</item>
+        <item name="android:paddingLeft">@dimen/icon_button_padding</item>
+        <item name="android:paddingRight">@dimen/icon_button_padding</item>
+        <item name="android:paddingTop">@dimen/icon_button_padding</item>
+        <item name="android:paddingBottom">@dimen/icon_button_padding</item>
     </style>
 
     <!-- Large Camera Button -->
-    <style name="largeCameraButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/sendButtonColor</item>
-        <item name="backgroundTint">@color/sendButtonColor</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:tint">@color/white</item>
-        <item name="cornerRadius">16dp</item>
-        <item name="android:elevation">6dp</item>
-        <item name="android:stateListAnimator">@null</item>
-    </style>
-
-    <!-- Cancel Button -->
-    <style name="cancelButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:backgroundTint">@color/transparent</item>
-        <item name="android:textColor">@color/cancelButtonTextColor</item>
-        <item name="strokeColor">@color/cancelButtonStrokeColor</item>
-        <item name="strokeWidth">2dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
-        <item name="cornerRadius">12dp</item>
-    </style>
-
-    <!-- Confirm Button -->
-    <style name="confirmButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/sendButtonColor</item>
-        <item name="backgroundTint">@color/sendButtonColor</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
-        <item name="cornerRadius">12dp</item>
-        <item name="android:elevation">4dp</item>
-        <item name="android:stateListAnimator">@null</item>
+    <style name="Button.Camera.Large" parent="BaseButton">
+        <item name="android:background">@drawable/bg_button_success</item>
+        <item name="android:textColor">@color/content_inverse</item>
+        <item name="android:tint">@color/content_inverse</item>
+        <item name="android:elevation">@dimen/camera_button_elevation</item>
+        <item name="android:minHeight">@dimen/camera_button_min_height</item>
+        <item name="android:paddingTop">@dimen/camera_button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/camera_button_padding_vertical</item>
     </style>
 
     <!-- Tab Button -->
-    <style name="tabButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textSize">14sp</item>
+    <style name="Button.Tab" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textSize">@dimen/tab_button_text_size</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@drawable/toggle_button_text</item>
-        <item name="android:backgroundTint">@drawable/toggle_button_background</item>
-        <item name="cornerRadius">0dp</item>
+        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:backgroundTint">@drawable/bg_toggle_button</item>
+        <item name="android:minHeight">@dimen/tab_button_min_height</item>
+        <item name="android:paddingLeft">@dimen/tab_button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/tab_button_padding_horizontal</item>
     </style>
 
-    <!-- Material Toggle Button -->
-    <style name="materialButtonToggle" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="iconPadding">0dp</item>
-        <item name="fontFamily">@font/nunito_semibold</item>
-        <item name="cornerRadius">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">64dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:backgroundTint">@drawable/togglebtn_25</item>
-        <item name="android:layout_weight">0.5</item>
+    <!-- Toggle Button -->
+    <style name="Button.Toggle" parent="BaseOutlinedButton">
+        <item name="android:background">@drawable/bg_toggle_button</item>
+        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:minHeight">@dimen/toggle_button_min_height</item>
+    </style>
+
+    <!-- ===== INPUT STYLES ===== -->
+
+    <!-- Base input style -->
+    <style name="Input.Base" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:textSize">@dimen/input_text_size</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">@dimen/input_padding</item>
+        <item name="android:paddingRight">@dimen/input_padding</item>
+        <item name="android:paddingTop">@dimen/input_padding</item>
+        <item name="android:paddingBottom">@dimen/input_padding</item>
+        <item name="android:layout_marginBottom">@dimen/input_margin_bottom</item>
+        <item name="android:minHeight">@dimen/input_min_height</item>
     </style>
 
     <!-- Custom Dialog Theme -->
-    <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Dialog">
-        <item name="colorAccent">@color/headerBackgroundColor</item>
-        <item name="android:windowBackground">@drawable/customborder_25</item>
-        <item name="android:textColorAlertDialogListItem">@color/black</item>
+    <style name="Dialog.Custom" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/surface_primary</item>
+        <item name="android:windowBackground">@drawable/bg_card_primary</item>
+        <item name="android:textColorAlertDialogListItem">@color/content_primary</item>
     </style>
 
-    <!-- Fallback Dialog Theme - FIXED -->
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/primaryButtonPressed</item>
-        <item name="colorControlActivated">@color/blue_300</item>
-    </style>
+    <!-- ===== LEGACY COMPATIBILITY ===== -->
+
+    <!-- Legacy style names for backward compatibility -->
+    <style name="primaryButton" parent="Button.Primary" />
+    <style name="secondaryButton" parent="Button.Secondary" />
+    <style name="confirmButton" parent="Button.Success" />
+    <style name="cancelButton" parent="Button.Destructive" />
+    <style name="iconButton" parent="Button.Icon" />
+    <style name="largeCameraButton" parent="Button.Camera.Large" />
+    <style name="tabButton" parent="Button.Tab" />
+    <style name="materialButtonToggle" parent="Button.Toggle" />
+    <style name="CustomDialogTheme" parent="Dialog.Custom" />
 
 </resources>

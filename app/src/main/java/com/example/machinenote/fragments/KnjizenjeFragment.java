@@ -139,12 +139,12 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
 
     private void showMail() {
         binding.sendGmail.setVisibility(View.VISIBLE);
-        binding.articleMinimumLl.setBackgroundColor(context.getColor(R.color.red));
+        binding.articleMinimumLl.setBackgroundColor(context.getColor(R.color.red_600));
     }
 
     private void hideMail() {
         binding.sendGmail.setVisibility(View.GONE);
-        binding.articleMinimumLl.setBackgroundResource(R.drawable.background_corners_50);
+        binding.articleMinimumLl.setBackgroundResource(R.drawable.bg_card_interactive);
     }
 
     private void addToDataLl() {
