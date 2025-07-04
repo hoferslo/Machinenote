@@ -57,7 +57,6 @@
 
             </LinearLayout>
 
-            <!-- Password Input -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,15 +64,13 @@
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_card_primary"
                 android:padding="16dp"
-                android:layout_marginBottom="24dp">
-
+                android:layout_marginBottom="16dp">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@mipmap/lock"
                     android:layout_marginEnd="12dp"
-                    android:contentDescription="@string/password" />
-
+                    android:contentDescription="@string/username" />
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="0dp"
@@ -81,24 +78,21 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:hint="@string/password"
-                    android:textColor="@color/content_primary"
-                    android:textColorHint="@color/content_tertiary"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:inputType="textPassword"
-                    android:importantForAutofill="no"
-                    android:minHeight="48dp"
-                    android:gravity="center_vertical" />
+                    android:padding="8dp"
+                    android:inputType="textPassword"/>
 
-                <ImageButton
+                <TextView
                     android:id="@+id/togglePasswordVisibility"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:src="@mipmap/visibility_off"
-                    android:padding="12dp" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:drawableRight="@mipmap/visibility_off"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
             </LinearLayout>
+
 
             <!-- Login Button -->
             <Button
