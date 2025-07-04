@@ -7,6 +7,7 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/surface_primary"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
@@ -25,13 +26,13 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="12dp">
 
-            <!-- Icon placeholder - lahko dodaš ikono glede na tip -->
+            <!-- Icon indicator with semantic color -->
             <View
                 android:id="@+id/iconIndicator"
                 android:layout_width="12dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="12dp"
-                android:backgroundTint="@color/primaryColor_50" />
+                android:background="@color/action_primary" />
 
             <!-- Content container for dynamic fields -->
             <LinearLayout
@@ -41,31 +42,28 @@
                 android:layout_weight="1"
                 android:orientation="vertical" />
 
-            <!-- Action button -->
+            <!-- Action button with updated styling -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonAction"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Button.Destructive"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
                 android:text="Akcija"
                 android:textSize="12sp"
                 android:textAllCaps="false"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:minWidth="0dp"
-                app:cornerRadius="18dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/primaryColor_900"
-                android:textColor="@color/primaryColor_500" />
+                app:cornerRadius="18dp" />
 
         </LinearLayout>
 
-        <!-- Divider line -->
+        <!-- Divider line with semantic color -->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/primaryColor_25"
+            android:background="@color/border_secondary"
             android:visibility="gone" />
 
     </LinearLayout>

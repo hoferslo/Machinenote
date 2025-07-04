@@ -155,4 +155,12 @@
     <style name="materialButtonToggle" parent="Button.Toggle" />
     <style name="CustomDialogTheme" parent="Dialog.Custom" />
 
+
+    <!-- SearchView Theme -->
+    <style name="SearchViewTheme" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:textColorHint">@color/content_tertiary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
 </resources>

@@ -72,13 +72,13 @@ public class ListViewAdapter extends ArrayAdapter<ListViewItem> {
             textViewItem.setTextColor(Color.GREEN);
             drawable = ContextCompat.getDrawable(context, R.mipmap.check_circle);
             if (drawable != null) {
-                drawable.setColorFilter(ContextCompat.getColor(context, R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
+                drawable.setColorFilter(ContextCompat.getColor(context, R.color.green_500), android.graphics.PorterDuff.Mode.SRC_IN);
             }
         } else {
             textViewItem.setTextColor(Color.RED);
             drawable = ContextCompat.getDrawable(context, R.mipmap.error);
             if (drawable != null) {
-                drawable.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
+                drawable.setColorFilter(ContextCompat.getColor(context, R.color.red_500), android.graphics.PorterDuff.Mode.SRC_IN);
             }
         }
 
