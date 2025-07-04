@@ -10,7 +10,7 @@
 
         <!-- Icon button dimensions -->
         <dimen name="icon_button_min_size">56dp</dimen>
-        <dimen name="icon_button_padding">12dp</dimen>
+        <dimen name="icon_button_padding">16dp</dimen>
         <dimen name="icon_button_elevation">2dp</dimen>
 
         <!-- Camera button dimensions -->

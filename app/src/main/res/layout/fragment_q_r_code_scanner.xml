@@ -15,6 +15,6 @@
         android:textSize="24dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="32dp"
-        style="@style/materialButton"/>
+        style="@style/primaryButton"/>
 
 </FrameLayout>

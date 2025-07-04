@@ -6,63 +6,64 @@
     android:orientation="vertical"
     android:focusable="true"
     android:clickable="true"
-    android:background="@color/primaryColor_50"
-    android:padding="8dp"
+    android:background="@color/background_app"
+    android:padding="16dp"
     tools:context=".fragments.ImenikFragment">
 
+    <!-- Search Container -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/background_corners_25">
+        android:background="@drawable/bg_card_primary"
+        android:padding="16dp">
 
         <SearchView
             android:id="@+id/idOfDuty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="Widget.Material3.SearchBar"
             android:queryHint="@string/isci_karkoli"
             android:iconifiedByDefault="false"
             android:queryBackground="@android:color/transparent" />
 
     </LinearLayout>
 
+    <!-- Content Container -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:layout_marginBottom="16dp"
-        android:paddingVertical="8dp"
-        android:layout_weight="1"
-        android:background="@drawable/background_corners_100">
+        android:background="@drawable/bg_card_primary"
+        android:padding="16dp">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:paddingHorizontal="8dp">
-
+            android:scrollbars="none">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/scrollLv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:divider="@null" />
-
+                android:divider="@null"
+                android:clipToPadding="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
         </ScrollView>
 
     </LinearLayout>
 
+    <!-- Action Button -->
     <Button
         android:id="@+id/cancelBtn"
+        style="@style/Button.Destructive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:layout_marginBottom="8dp"
-        style="@style/materialButton" />
+        android:text="@string/cancel" />
 
 </LinearLayout>
