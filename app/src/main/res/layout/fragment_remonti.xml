@@ -135,7 +135,6 @@
                         android:orientation="horizontal"
                         android:baselineAligned="false"
                         android:gravity="center"
-                        android:layout_marginBottom="16dp"
                         android:background="@drawable/bg_card_secondary"
                         android:padding="16dp">
 
@@ -290,7 +289,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tabEntryBtn"
-            style="@style/Button.Tab"
+            style="@style/Button.MaterialTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -298,7 +297,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tabPicturesBtn"
-            style="@style/Button.Tab"
+            style="@style/Button.MaterialTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -306,7 +305,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tabInfoBtn"
-            style="@style/Button.Tab"
+            style="@style/Button.MaterialTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

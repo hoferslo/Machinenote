@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginBottom="8dp"
+
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
@@ -23,16 +24,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:gravity="center_vertical">
 
             <!-- Icon indicator with semantic color -->
             <View
                 android:id="@+id/iconIndicator"
                 android:layout_width="12dp"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
-                android:background="@color/action_primary" />
+                android:background="@drawable/bg_button_primary" />
 
             <!-- Content container for dynamic fields -->
             <LinearLayout
@@ -43,7 +43,7 @@
                 android:orientation="vertical" />
 
             <!-- Action button with updated styling -->
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/buttonAction"
                 style="@style/Button.Destructive"
                 android:layout_width="wrap_content"

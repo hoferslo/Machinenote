@@ -2,14 +2,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme for API 24 -->
-    <style name="Base.Theme.MachineNote" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Base.Theme.MachineNote" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/action_primary</item>
         <item name="colorPrimaryDark">@color/blue_600</item>
         <item name="colorAccent">@color/action_secondary</item>
 
         <!-- Status bar -->
-        <item name="android:statusBarColor">@color/background_app</item>
+        <item name="android:statusBarColor">@color/action_primary</item>
 
         <!-- Typography -->
         <item name="android:fontFamily">@font/nunito_semibold</item>
@@ -36,7 +36,6 @@
 
     <!-- Base outlined button style -->
     <style name="BaseOutlinedButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:backgroundTint">@null</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textSize">@dimen/button_text_size</item>
         <item name="android:minHeight">@dimen/button_min_height</item>
@@ -56,6 +55,7 @@
         <item name="android:elevation">@dimen/button_elevation</item>
     </style>
 
+
     <!-- Secondary Button -->
     <style name="Button.Secondary" parent="BaseButton">
         <item name="android:background">@drawable/bg_button_secondary</item>
@@ -64,16 +64,32 @@
     </style>
 
     <!-- Success Button -->
-    <style name="Button.Success" parent="BaseButton">
+    <style name="Button.Success" parent="Widget.MaterialComponents.Button">
         <item name="android:background">@drawable/bg_button_success</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:backgroundTint">@null</item>
         <item name="android:textColor">@color/content_inverse</item>
         <item name="android:elevation">@dimen/button_elevation</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:paddingLeft">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/button_padding_vertical</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <!-- Destructive/Cancel Button -->
-    <style name="Button.Destructive" parent="BaseOutlinedButton">
+    <style name="Button.Destructive" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:background">@drawable/bg_button_outline</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:backgroundTint">@null</item>
         <item name="android:textColor">@color/action_destructive</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <!-- Icon Button -->
@@ -161,6 +177,19 @@
         <item name="android:textColor">@color/content_primary</item>
         <item name="android:textColorHint">@color/content_tertiary</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <!-- Add this to your styles.xml -->
+    <style name="Button.MaterialTab" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textSize">@dimen/tab_button_text_size</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:minHeight">@dimen/tab_button_min_height</item>
+        <item name="android:paddingLeft">@dimen/tab_button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/tab_button_padding_horizontal</item>
+        <item name="strokeColor">@color/action_primary</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
 </resources>

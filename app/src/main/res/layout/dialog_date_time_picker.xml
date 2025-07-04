@@ -20,7 +20,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_set_time"
-            style="@style/Button.Toggle"
+            style="@style/Button.MaterialTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_set_date"
-            style="@style/Button.Toggle"
+            style="@style/Button.MaterialTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

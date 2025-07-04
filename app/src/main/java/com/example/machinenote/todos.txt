@@ -2,10 +2,17 @@
 - disable back button on login and main page
 - add Preventivni pregledi, vsa orodja, Naloge (vnos naloge)
 - rezervni deli
-- check za registracijo...
+
 - qr koda izpolne informacije?
 - upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
 - dodajanje naročil v aplikacijo / matej naredi osnutek
 - optimiziraj kodo za register
-- spremeni barvno paleto in stil oblikovanja
-- spremeni stil registriranja in rol
+
+
+
+- popravi date time picker barve
+- knjiženje uzame prevec placa in gre dol z ekrana, also zamenej barve
+
+- v scrollview spremeni barvo da se razlikuje od informacij, pod prekliči je prevec margina (Naloge)
+- pr blogah je prevec margina nekje tkoda to mau popravt
+- iskanje po rezervnih delih poprav pa odstran uspodi info, pa nevem ce rabm zalogo

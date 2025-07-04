@@ -32,9 +32,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@mipmap/search"
-                android:tint="@color/content_secondary"
                 android:layout_marginEnd="12dp"
-                android:contentDescription="@string/search" />
+                android:contentDescription="" />
 
             <SearchView
                 android:id="@+id/idOfDuty"
@@ -89,8 +88,7 @@
             style="@style/Button.Destructive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:layout_marginBottom="16dp" />
+            android:text="@string/cancel" />
 
     </LinearLayout>
 
@@ -105,7 +103,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tabNalogeBtn"
-            style="@style/Button.Tab"
+            style="@style/Button.MaterialTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -113,7 +111,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tabVnosNalogeBtn"
-            style="@style/Button.Tab"
+            style="@style/Button.MaterialTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
