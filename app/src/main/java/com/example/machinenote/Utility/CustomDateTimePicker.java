@@ -68,7 +68,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
         context = a;
         iCustomDateTimeListener = customDateTimeListener;
 
-        dialog = new Dialog(context, R.style.DialogTheme);
+        dialog = new Dialog(context, R.style.CustomDialogTheme);
         dialog.setOnDismissListener(dialog -> resetData());
 
         binding = DialogDateTimePickerBinding.inflate(dialog.getLayoutInflater());

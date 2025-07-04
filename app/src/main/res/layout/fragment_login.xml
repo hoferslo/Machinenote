@@ -1,95 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".fragments.LoginFragment"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:background="@color/white"
->
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_app"
+    tools:context=".fragments.LoginFragment">
 
-    
+    <!-- Main Content Container -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
-        <androidx.cardview.widget.CardView
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Login Card -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:background="@color/white"
-            android:gravity="center">
+            android:background="@drawable/bg_card_secondary"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Username Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/person"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="@string/username" />
+
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/username"
+                    android:textColor="@color/content_primary"
+                    android:textColorHint="@color/content_tertiary"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:inputType="textPersonName"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/primaryColor_100"
-                android:layout_gravity="center_horizontal"
-                android:padding="24dp">
-
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/lock"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="@string/username" />
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:id="@+id/username"
-                    android:background="@drawable/customborder_25"
-                    android:drawableLeft="@mipmap/person"
-                    android:drawablePadding="8dp"
-                    android:hint="@string/username"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="16dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/password"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/customborder_25"
-                    android:layout_marginBottom="16dp"
-                    android:padding="0dp"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/password"
+                    android:padding="8dp"
+                    android:inputType="textPassword"/>
 
-                    <EditText
-                        android:layout_height="64dp"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:id="@+id/password"
-                        android:background="@android:color/transparent"
-                        android:drawableLeft="@mipmap/lock"
-                        android:drawablePadding="8dp"
-                        android:hint="@string/password"
-                        android:padding="8dp"
-                        android:inputType="textPassword"/>
-
-                    <TextView
-                        android:id="@+id/togglePasswordVisibility"
-                        android:drawableRight="@mipmap/visibility_off"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:padding="8dp" />
-
-                </LinearLayout>
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:id="@+id/loginBtn"
-                    android:text="Login"
-                    style="@style/materialButton"
-                    />
-
+                <TextView
+                    android:id="@+id/togglePasswordVisibility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:drawableRight="@mipmap/visibility_off"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
+
+            <!-- Login Button -->
+            <Button
+                android:id="@+id/loginBtn"
+                style="@style/Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Login"
+                android:minHeight="56dp" />
+
+        </LinearLayout>
+
+        <!-- Registration Info -->
         <TextView
+            android:id="@+id/signupText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Niste registrirani? poklici mateja"
+            android:layout_marginTop="24dp"
+            android:text="@string/register_help_info"
+            android:textColor="@color/content_tertiary"
+            android:textSize="14sp"
+            android:fontFamily="@font/nunito_semibold"
             android:textAlignment="center"
-            android:id="@+id/signupText"
-            android:textColor="@color/primaryColor_700"
-            />
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
 
     </LinearLayout>
 

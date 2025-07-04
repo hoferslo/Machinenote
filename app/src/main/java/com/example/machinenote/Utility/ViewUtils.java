@@ -67,7 +67,7 @@ public class ViewUtils {
     private static void setLinearLayoutBackground(Context context, LinearLayout linearLayout) {
         // You can set a background drawable or color
         // For example, setting a drawable background
-        Drawable backgroundDrawable = context.getDrawable(R.drawable.background_corners_50);
+        Drawable backgroundDrawable = context.getDrawable(R.drawable.bg_card_primary);
         linearLayout.setBackground(backgroundDrawable);
 
         // Alternatively, you can set a color background

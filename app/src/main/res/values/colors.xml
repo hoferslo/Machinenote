@@ -1,43 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- colors.xml - Optimized Color System -->
 <resources>
 
+    <!-- ============= SEMANTIC COLOR TOKENS ============= -->
+    <!-- These are the colors you actually use in your UI -->
 
+    <!-- SURFACES & BACKGROUNDS -->
+    <color name="surface_primary">@color/white</color>           <!-- Main cards, dialogs -->
+    <color name="surface_secondary">@color/neutral_50</color>    <!-- Secondary cards -->
+    <color name="surface_tertiary">@color/neutral_100</color>    <!-- Input fields -->
+    <color name="background_app">@color/neutral_25</color>       <!-- Main app background -->
+    <color name="background_section">@color/neutral_75</color>   <!-- Section backgrounds -->
 
-    <color name="primaryColor_25">#FFFFFF</color>
-    <color name="primaryColor_50">#EEF8FF</color>
-    <color name="primaryColor_100">#C3E6FF</color>
-    <color name="primaryColor_150">#62BEFF</color>
-    <color name="primaryColor_200">#0095FF</color>
+    <!-- ACTIONS & INTERACTIVE -->
+    <color name="action_primary">@color/blue_300</color>         <!-- Primary buttons, main actions -->
+    <color name="action_primary_pressed">@color/blue_400</color>
+    <color name="action_secondary">@color/blue_500</color>       <!-- Secondary buttons -->
+    <color name="action_secondary_pressed">@color/blue_600</color>
+    <color name="action_success">@color/green_500</color>        <!-- Send, confirm buttons -->
+    <color name="action_success_pressed">@color/green_600</color>
+    <color name="action_destructive">@color/red_500</color>      <!-- Cancel, delete buttons -->
+    <color name="action_destructive_pressed">@color/red_600</color>
 
-    <color name="primaryColor_25_old">#D8F8FD</color>
-    <color name="primaryColor_50_old">#D4F7FD</color>
-    <color name="primaryColor_100_old">#CDF5FD</color>
-    <color name="primaryColor_200_old">#A0E9FF</color>
-    <color name="primaryColor_600">#62BEFF</color>
-    <color name="primaryColor_500">#89CFF3</color>
-    <color name="primaryColor_700">#20A9FF</color>
-    <color name="primaryColor_900">#05507E</color>
+    <!-- TEXT & CONTENT -->
+    <color name="content_primary">@color/neutral_900</color>     <!-- Main text -->
+    <color name="content_secondary">@color/neutral_600</color>   <!-- Secondary text -->
+    <color name="content_tertiary">@color/neutral_400</color>    <!-- Placeholder text -->
+    <color name="content_inverse">@color/white</color>          <!-- Text on dark backgrounds -->
+
+    <!-- BORDERS & STROKES -->
+    <color name="border_primary">@color/neutral_200</color>      <!-- Main borders -->
+    <color name="border_secondary">@color/neutral_100</color>    <!-- Subtle borders -->
+    <color name="border_accent">@color/blue_300</color>         <!-- Accent borders -->
+
+    <!-- STATES & FEEDBACK -->
+    <color name="state_selected">@color/blue_500</color>        <!-- Selected items -->
+    <color name="state_hover">@color/neutral_50</color>         <!-- Hover states -->
+    <color name="state_pressed">@color/neutral_100</color>      <!-- Pressed states -->
+    <color name="state_disabled">@color/neutral_300</color>     <!-- Disabled elements -->
+
+    <!-- SPECIALTY COLORS -->
+    <color name="clock_hour_hand">@color/blue_600</color>
+    <color name="clock_minute_hand">@color/blue_400</color>
+    <color name="checkbox_tint">@color/blue_500</color>
+    <color name="icon_tint">@color/white</color>
+
+    <!-- ============= PRIMITIVE COLOR PALETTE ============= -->
+    <!-- Base colors that semantic tokens reference -->
+
+    <!-- Blue Scale -->
+    <color name="blue_50">#EFF6FF</color>
+    <color name="blue_100">#DBEAFE</color>
+    <color name="blue_200">#A3D9F7</color>
+    <color name="blue_300">#89CFF3</color> <!-- Primary button color -->
+    <color name="blue_400">#60A5FA</color>
+    <color name="blue_500">#3B82F6</color>
+    <color name="blue_600">#2563EB</color>
+    <color name="blue_700">#1D4ED8</color>
+    <color name="blue_800">#1E40AF</color>
+    <color name="blue_900">#1E3A8A</color>
+
+    <!-- Neutral Scale -->
+    <color name="neutral_25">#FAFAFA</color>
+    <color name="neutral_50">#F5F5F5</color>
+    <color name="neutral_75">#F0F0F0</color>
+    <color name="neutral_100">#E5E5E5</color>
+    <color name="neutral_200">#D4D4D4</color>
+    <color name="neutral_300">#A3A3A3</color>
+    <color name="neutral_400">#737373</color>
+    <color name="neutral_500">#525252</color>
+    <color name="neutral_600">#404040</color>
+    <color name="neutral_700">#262626</color>
+    <color name="neutral_800">#171717</color>
+    <color name="neutral_900">#0A0A0A</color>
+
+    <!-- Green Scale -->
+    <color name="green_400">#4ADE80</color>
+    <color name="green_500">#22C55E</color>
+    <color name="green_600">#16A34A</color>
+    <color name="green_700">#15803D</color>
+
+    <!-- Red Scale -->
+    <color name="red_400">#F87171</color>
+    <color name="red_500">#EF4444</color>
+    <color name="red_600">#DC2626</color>
+    <color name="red_700">#B91C1C</color>
+
+    <!-- Base Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
-    <color name="secondaryColor_200">#FF03DAC5</color>
-    <color name="secondaryColor_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="green">#FF4CAF50</color>
-    <color name="red">#FFF44336</color>
-
-    <color name="colorBackground">#F5F7FA</color>
-    <color name="cardBackground">#FFFFFF</color>
-    <color name="inputBackground">#F8FAFC</color>
-    <color name="sectionBackground">#E2E8F0</color>
-    <color name="clockSectionBackground">#F1F5F9</color>
-    <color name="bottomActionsBackground">#F8FAFC</color>
-    <color name="tabBackground">#E5E7EB</color>
-    <color name="checkboxTint">#1E40AF</color>
-    <color name="textPrimary">#374151</color>
-    <color name="textSecondary">#6B7280</color>
-    <color name="iconTint">#FFFFFF</color>
-    <color name="clockHourHand">#3B82F6</color>
-    <color name="clockMinuteHand">#1E40AF</color>
 
 </resources>
-

@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:layout_marginBottom="12dp"
-    android:background="@drawable/background_corners_25">
+    android:padding="16dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_card_primary">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -19,47 +19,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:textColor="@color/content_primary"
+            android:fontFamily="@font/nunito_semibold"
             android:text="Naslov naloge"
-            android:padding="8dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/background_corners_50" />
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_card_secondary" />
 
         <TextView
             android:id="@+id/vzdrzevalec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:text="vzdrzevalec" />
+            android:textColor="@color/content_secondary"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="vzdrzevalec"
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/rokZaIzvedbo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:text="rokZaIzvedbo" />
+            android:textColor="@color/content_secondary"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="rokZaIzvedbo"
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/komentar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:text="komentar" />
+            android:textColor="@color/content_secondary"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="komentar"
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/izvedeno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/content_secondary"
+            android:fontFamily="@font/nunito_semibold"
             android:text="izvedeno" />
     </LinearLayout>
 
     <Button
         android:id="@+id/buttonAction"
+        style="@style/Button.Secondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lahk bi biu za editat"

@@ -158,7 +158,7 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
             @Override
             public void onImageCaptured(Bitmap bitmap) {
                 Log.d(TAG, "Image captured successfully.");
-                ImageHelper.handleImage(context, bitmap, binding.imagesLlInSv);
+                ImageHelper.handleImage(context, bitmap, binding.imagesContainer);
             }
 
             @Override
@@ -215,7 +215,7 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
 
     private void sendRemont() throws ParseException {
         if (adapter.areAllItemsComplete()) {
-            List<File> imageFiles = ImageHelper.getImagesFromLayout(context, binding.imagesLlInSv);
+            List<File> imageFiles = ImageHelper.getImagesFromLayout(context, binding.imagesContainer);
 
             remont = createRemont();
             ((MainActivity) context).showLoadingBar(true, getString(R.string.sending_stoppage));

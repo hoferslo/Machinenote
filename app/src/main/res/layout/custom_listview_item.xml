@@ -13,7 +13,7 @@
         android:visibility="visible"
         android:textColor="@android:color/black"
         android:drawableLeft="@mipmap/error"
-        android:drawableTint="@color/red"
+        android:drawableTint="@color/red_500"
         android:drawablePadding="8dp"
         android:textStyle="italic" />
 
