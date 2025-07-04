@@ -19,7 +19,7 @@
         <item name="android:windowBackground">@color/background_app</item>
     </style>
 
-    <!-- ===== BASE BUTTON STYLES ===== -->
+    <!-- ===== BASE BUTTON STYLES h ===== -->
 
     <!-- Base button style with common properties -->
     <style name="BaseButton" parent="Widget.AppCompat.Button">
