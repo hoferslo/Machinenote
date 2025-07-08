@@ -10,6 +10,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -92,8 +94,28 @@ public class RezervniDeliFragment extends BaseFragment {
 
         fetchRezervniDeli();
 
+        setupTabNavigation();
+
         return binding.getRoot();
     }
+
+    private void setupTabNavigation() {
+        binding.switchTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                MainActivity mainActivity = (MainActivity) requireActivity();
+                if (checkedId == R.id.tabSmallMaterialsBtn) {
+                    FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+
+                    // Pop current fragment and replace
+                    fragmentManager.popBackStack();
+
+                    Fragment drobniMaterialiFragment = com.example.machinenote.fragments.DrobniMaterialiFragment.newInstance(mainActivity);
+                    mainActivity.loadFragment(drobniMaterialiFragment);
+                }
+            }
+        });
+    }
+
 
     private void fetchRezervniDeli() {
         MainActivity mainActivity = (MainActivity) requireActivity();

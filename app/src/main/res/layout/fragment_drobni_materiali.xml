@@ -8,7 +8,7 @@
     android:focusable="true"
     android:clickable="true"
     android:background="@color/background_app"
-    tools:context=".fragments.KnjizenjeFragment">
+    tools:context=".fragments.DrobniMaterialiFragment">
 
     <!-- Main Content Container -->
     <FrameLayout
@@ -44,7 +44,7 @@
                     android:gravity="center_vertical" />
 
                 <TextView
-                    android:id="@+id/article_stock"
+                    android:id="@+id/material_stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100"
@@ -107,10 +107,10 @@
                     android:id="@+id/idOfDuty"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:hint="Poišči rezervni del"
+                    android:hint="Poišči drobni material"
                     android:background="@drawable/bg_input"
                     android:iconifiedByDefault="false"
-                    android:queryHint="Poišči rezervni del"
+                    android:queryHint="Poišči drobni material"
                     android:theme="@style/SearchViewTheme" />
 
             </LinearLayout>
@@ -130,13 +130,13 @@
                     android:scrollbars="none">
 
                     <LinearLayout
-                        android:id="@+id/allDataRezervniDeli"
+                        android:id="@+id/allDataDrobniMateriali"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <ListView
-                            android:id="@+id/allDataRezervniDeliListView"
+                            android:id="@+id/allDataDrobniMaterialiListView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/bg_card_secondary"

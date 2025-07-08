@@ -277,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         }
     }
 
+
     @Override
     public void onQRCodeScanned(String result) {
 

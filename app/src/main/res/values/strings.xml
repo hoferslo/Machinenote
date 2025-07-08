@@ -82,7 +82,8 @@
     <string name="tag_knjizenje">Knjiženje</string>
     <string name="tag_naloge">Naloge</string>
     <string name="tag_imenik">Imenik</string>
-    <string name="tag_rezervni_deli">Rezervni deli</string>"
+    <string name="tag_rezervni_deli">Rezervni deli</string>
+    <string name="tag_drobni_materiali">Drobni materiali</string>
 
     <string name="QR_koda_value_negative">NE</string>
     <string name="QR_koda_value_positive">DA</string>

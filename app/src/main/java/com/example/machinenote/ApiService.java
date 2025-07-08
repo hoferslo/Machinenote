@@ -1,5 +1,6 @@
 package com.example.machinenote;
 
+import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Naloga;
@@ -146,6 +147,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("users.php")
     Call<RegistrationResponse> createUser(@Body UserCreationRequest userRequest);
+
+    @Headers("Content-Type: application/json")
+    @GET("drobni_materiali.php")
+    Call<List<DrobniMateriali>> getDrobniMateriali();
 }
 
 class LoginRequest {

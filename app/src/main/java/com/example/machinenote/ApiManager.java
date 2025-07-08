@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
+import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Naloga;
@@ -745,6 +746,26 @@ public class ApiManager {
         });
     }
 
+    public void getDrobniMateriali(DrobniMaterialiCallback callback) {
+        Call<List<DrobniMateriali>> call = apiService.getDrobniMateriali();
+        call.enqueue(new Callback<List<DrobniMateriali>>() {
+            @Override
+            public void onResponse(Call<List<DrobniMateriali>> call, Response<List<DrobniMateriali>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<DrobniMateriali> drobniMaterialiList = response.body();
+                    callback.onSuccess(drobniMaterialiList);
+                } else {
+                    callback.onFailure("Failed to retrieve rezervni deli");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DrobniMateriali>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
     public interface RoleCreationCallback {
         void onSuccess();
         void onFailure(String errorMessage);
@@ -825,6 +846,12 @@ public class ApiManager {
 
     public interface RezervniDeliCallback {
         void onSuccess(List<RezervniDel> rezervniDeliList);
+
+        void onFailure(String errorMessage);
+    }
+
+    public interface DrobniMaterialiCallback {
+        void onSuccess(List<DrobniMateriali> drobniMaterialiList);
 
         void onFailure(String errorMessage);
     }
