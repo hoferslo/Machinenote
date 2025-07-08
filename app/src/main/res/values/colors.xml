@@ -28,7 +28,7 @@
     <color name="content_inverse">@color/white</color>          <!-- Text on dark backgrounds -->
 
     <!-- BORDERS & STROKES -->
-    <color name="border_primary">@color/neutral_200</color>      <!-- Main borders -->
+    <color name="border_primary">@color/neutral_300</color>      <!-- Main borders -->
     <color name="border_secondary">@color/neutral_100</color>    <!-- Subtle borders -->
     <color name="border_accent">@color/blue_300</color>         <!-- Accent borders -->
 
@@ -41,7 +41,7 @@
     <!-- SPECIALTY COLORS -->
     <color name="clock_hour_hand">@color/blue_600</color>
     <color name="clock_minute_hand">@color/blue_400</color>
-    <color name="checkbox_tint">@color/blue_500</color>
+    <color name="checkbox_tint">@color/action_primary</color>
     <color name="icon_tint">@color/white</color>
 
     <!-- ============= PRIMITIVE COLOR PALETTE ============= -->
@@ -61,6 +61,11 @@
 
     <color name="test">#0b3c70</color>
     <color name="test_ozadje">#668EB9</color>
+
+    <color name="testna1">#83B9E0</color>
+    <color name="testna2">#AED7F3</color>
+    <color name="testna3">#A2C987</color>
+    <color name="testna4">#7E986D</color>
 
     <!-- Neutral Scale -->
     <color name="neutral_25">#FAFAFA</color>

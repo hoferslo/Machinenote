@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_checked="true"
-        android:color="@color/state_selected" />
-    <item android:color="@color/surface_secondary" />
+        android:color="@color/action_secondary" />
+    <item android:color="@color/action_primary" />
 </selector>
