@@ -16,7 +16,7 @@
         <item name="android:textColor">@color/content_primary</item>
 
         <!-- Background -->
-        <item name="android:windowBackground">@color/background_app</item>
+        <item name="android:windowBackground">@drawable/gradient_background</item>
     </style>
 
     <!-- ===== BASE BUTTON STYLES h ===== -->
@@ -59,8 +59,10 @@
     <!-- Secondary Button -->
     <style name="Button.Secondary" parent="BaseButton">
         <item name="android:background">@drawable/bg_button_secondary</item>
-        <item name="android:textColor">@color/content_inverse</item>
+        <item name="android:textColor">@color/action_primary</item>
         <item name="android:elevation">@dimen/button_elevation</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 
     <!-- Success Button -->

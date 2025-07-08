@@ -1,100 +1,64 @@
 package com.example.machinenote.models;
 
-import java.util.LinkedHashMap;
+import com.google.gson.annotations.SerializedName;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DrobniMateriali implements DisplayableItem {
-    private int id;
-    private String material;
-    private String vrsta;
-    private String velikost;
-    private String kvaliteta;
-    private String skladišče;
-    private String regal;
+    @SerializedName("ID")
+    private int ID;
 
-    // Default constructor
-    public DrobniMateriali() {
-    }
+    @SerializedName("Material")
+    private String Material;
 
-    // Parameterized constructor
-    public DrobniMateriali(int id, String material, String vrsta, String velikost,
-                           String kvaliteta, String skladišče, String regal) {
-        this.id = id;
-        this.material = material;
-        this.vrsta = vrsta;
-        this.velikost = velikost;
-        this.kvaliteta = kvaliteta;
-        this.skladišče = skladišče;
-        this.regal = regal;
-    }
+    @SerializedName("Vrsta")
+    private String Vrsta;
 
-    // Getters and setters
-    public int getId() {
-        return id;
-    }
+    @SerializedName("Velikost")
+    private String Velikost;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @SerializedName("Kvaliteta")
+    private String Kvaliteta;
 
-    public String getMaterial() {
-        return material;
-    }
+    @SerializedName("Skladisce")
+    private String Skladisce;
 
-    public void setMaterial(String material) {
-        this.material = material;
-    }
+    @SerializedName("Regal")
+    private String Regal;
 
-    public String getVrsta() {
-        return vrsta;
-    }
+    // Konstruktor
+    public DrobniMateriali() {}
 
-    public void setVrsta(String vrsta) {
-        this.vrsta = vrsta;
-    }
+    // Getter metode
+    public int getID() { return ID; }
+    public String getMaterial() { return Material; }
+    public String getVrsta() { return Vrsta; }
+    public String getVelikost() { return Velikost; }
+    public String getKvaliteta() { return Kvaliteta; }
+    public String getSkladišče() { return Skladisce; }
+    public String getRegal() { return Regal; }
 
-    public String getVelikost() {
-        return velikost;
-    }
-
-    public void setVelikost(String velikost) {
-        this.velikost = velikost;
-    }
-
-    public String getKvaliteta() {
-        return kvaliteta;
-    }
-
-    public void setKvaliteta(String kvaliteta) {
-        this.kvaliteta = kvaliteta;
-    }
-
-    public String getSkladišče() {
-        return skladišče;
-    }
-
-    public void setSkladišče(String skladišče) {
-        this.skladišče = skladišče;
-    }
-
-    public String getRegal() {
-        return regal;
-    }
-
-    public void setRegal(String regal) {
-        this.regal = regal;
-    }
+    // Setter metode
+    public void setID(int ID) { this.ID = ID; }
+    public void setMaterial(String material) { this.Material = material; }
+    public void setVrsta(String vrsta) { this.Vrsta = vrsta; }
+    public void setVelikost(String velikost) { this.Velikost = velikost; }
+    public void setKvaliteta(String kvaliteta) { this.Kvaliteta = kvaliteta; }
+    public void setSkladisce(String skladisce) { this.Skladisce = skladisce; }
+    public void setRegal(String regal) { this.Regal = regal; }
 
     @Override
     public Map<String, String> getDisplayFields() {
-        Map<String, String> fields = new LinkedHashMap<>();
-        fields.put("ID", String.valueOf(id));
-        fields.put("Material", material);
-        fields.put("Vrsta", vrsta);
-        fields.put("Velikost", velikost);
-        fields.put("Kvaliteta", kvaliteta != null ? kvaliteta : "");
-        fields.put("Skladišče", skladišče);
-        fields.put("Regal", regal);
+        Map<String, String> fields = new HashMap<>();
+        fields.put("ID", String.valueOf(ID));
+        fields.put("Material", Material);
+        fields.put("Vrsta", Vrsta);
+        fields.put("Velikost", Velikost);
+        if (Kvaliteta != null && !Kvaliteta.isEmpty()) {
+            fields.put("Kvaliteta", Kvaliteta);
+        }
+        fields.put("Skladišče", Skladisce);
+        fields.put("Regal", Regal);
         return fields;
     }
 }

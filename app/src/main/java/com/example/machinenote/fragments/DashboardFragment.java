@@ -3,6 +3,7 @@ package com.example.machinenote.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -38,6 +39,7 @@ public class DashboardFragment extends BaseFragment {
     FragmentDashboardBinding binding;
     Context context;
     private final List<MaterialButton> buttonList = new ArrayList<>();
+    public int iconResourceId = 0;;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -198,11 +200,14 @@ public class DashboardFragment extends BaseFragment {
 
 
     private MaterialButton createButton(String text) {
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.primaryButton);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.secondaryButton);
         MaterialButton button = new MaterialButton(contextThemeWrapper);
 
         // Set text
         button.setText(text);
+
+        // Set icon based on button text
+        setButtonIcon(button, text);
 
         // Set margins and width/weight
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -219,16 +224,68 @@ public class DashboardFragment extends BaseFragment {
         );
         layoutParams.setMargins(margins, margins, margins, margins);
 
-        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.bg_button_primary)));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_primary));
+        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.bg_button_secondary)));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
 
         button.setLayoutParams(layoutParams);
 
         button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
 
+        // Set icon gravity to show icon above text
+        button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
+
+        button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
+        button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+
+
         buttonList.add(button);
-        //button.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_button));
         return button;
+    }
+
+    private void setButtonIcon(MaterialButton button, String text) {
+        int iconResourceId = 0;
+        Log.d("TAG", "setButtonIcon: " + text);
+        switch (text) {
+            case "Knjiženje":
+                iconResourceId = R.drawable.book_icon; // ali uporabite R.drawable.ic_menu_book
+                break;
+            case "Zastoji":
+                iconResourceId = R.drawable.schedule_icon; // ali R.drawable.ic_access_time
+                break;
+            case "Remonti":
+                iconResourceId = R.drawable.handyman; // ali R.drawable.ic_construction
+                break;
+            case "Imenik":
+                iconResourceId = R.drawable.contacts; // ali R.drawable.ic_account_circle
+                break;
+            case "Naloge":
+                iconResourceId = R.drawable.assignment_icon; // ali R.drawable.ic_task
+                break;
+            case "Preventivni pregledi":
+                iconResourceId = R.drawable.build_icon; // ali R.drawable.ic_tune
+                break;
+            case "Orodja":
+                iconResourceId = R.drawable.quick_reference; // ali R.drawable.ic_build_circle
+                break;
+            case "Rezervni deli":
+                iconResourceId = R.drawable.home_repair; // ali R.drawable.ic_check_circle
+                break;
+            case "Registracija":
+                iconResourceId = R.drawable.person_add; // ali R.drawable.ic_person_add
+                break;
+            default:
+                // Ni ikone za neznane gumbove
+                break;
+        }
+
+        if (iconResourceId != 0) {
+            button.setIcon(ContextCompat.getDrawable(context, iconResourceId));
+            int iconSizeInPx = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                    context.getResources().getDisplayMetrics()
+            );
+            button.setIconSize(iconSizeInPx);
+        }
     }
 
 
@@ -271,11 +328,27 @@ public class DashboardFragment extends BaseFragment {
         //todo naredi najprej naloge tab, potem šele to
     }
 
+
     private void makeButtonOnline(boolean online, MaterialButton button) {
         button.setClickable(online);
-        button.setIcon(online ? null : ContextCompat.getDrawable(context, R.mipmap.signal_wifi_bad));
+
+        if (online) {
+            // Remove gray overlay by restoring original colors and full opacity
+            button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
+            button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
+            button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+            button.setAlpha(1.0f); // Full opacity
+        } else {
+            // Apply subtle gray overlay effect - keep original colors but reduce opacity
+            // This creates a "locked" or "covered" appearance without changing colors completely
+            button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
+            button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
+            button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+            button.setAlpha(0.3f); // Reduced opacity creates gray overlay effect
+        }
+
+        // Keep the original icon (no need to change it)
         button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
-        button.setBackgroundTintList(online ? ContextCompat.getColorStateList(context, R.color.action_primary) : ContextCompat.getColorStateList(context, R.color.action_secondary));
     }
 
     @Override

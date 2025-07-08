@@ -16,3 +16,5 @@
 - v scrollview spremeni barvo da se razlikuje od informacij, pod prekliči je prevec margina (Naloge)
 - pr blogah je prevec margina nekje tkoda to mau popravt
 - iskanje po rezervnih delih poprav pa odstran uspodi info, pa nevem ce rabm zalogo
+
+- brez interneta ni centriran v top baru

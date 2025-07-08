@@ -135,6 +135,10 @@ public class DrobniMaterialiFragment extends BaseFragment {
             apiManager.getDrobniMateriali(new ApiManager.DrobniMaterialiCallback() {
                 @Override
                 public void onSuccess(List<DrobniMateriali> response) {
+                    Log.d(TAG, "API Success - received " + response.size() + " items");
+                    for (DrobniMateriali item : response) {
+                        Log.d(TAG, "Item: " + item.getMaterial() + " - " + item.getVrsta());
+                    }
                     drobniMaterialiList = response;
                     adapter.updateList(drobniMaterialiList);
                     updateStockDisplay(drobniMaterialiList.size());

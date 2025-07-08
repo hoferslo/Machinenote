@@ -12,10 +12,10 @@
     <color name="background_section">@color/neutral_75</color>   <!-- Section backgrounds -->
 
     <!-- ACTIONS & INTERACTIVE -->
-    <color name="action_primary">@color/blue_300</color>         <!-- Primary buttons, main actions -->
+    <color name="action_primary">@color/test</color>         <!-- Primary buttons, main actions -->
     <color name="action_primary_pressed">@color/blue_400</color>
-    <color name="action_secondary">@color/blue_500</color>       <!-- Secondary buttons -->
-    <color name="action_secondary_pressed">@color/blue_600</color>
+    <color name="action_secondary">@color/surface_primary</color>       <!-- Secondary buttons -->
+    <color name="action_secondary_pressed">@color/blue_100</color>
     <color name="action_success">@color/green_500</color>        <!-- Send, confirm buttons -->
     <color name="action_success_pressed">@color/green_600</color>
     <color name="action_destructive">@color/red_500</color>      <!-- Cancel, delete buttons -->
@@ -58,6 +58,9 @@
     <color name="blue_700">#1D4ED8</color>
     <color name="blue_800">#1E40AF</color>
     <color name="blue_900">#1E3A8A</color>
+
+    <color name="test">#0b3c70</color>
+    <color name="test_ozadje">#668EB9</color>
 
     <!-- Neutral Scale -->
     <color name="neutral_25">#FAFAFA</color>

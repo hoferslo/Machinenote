@@ -752,6 +752,7 @@ public class ApiManager {
             @Override
             public void onResponse(Call<List<DrobniMateriali>> call, Response<List<DrobniMateriali>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("ApiManager", "Drobni materiale retrieved successfully");
                     List<DrobniMateriali> drobniMaterialiList = response.body();
                     callback.onSuccess(drobniMaterialiList);
                 } else {
