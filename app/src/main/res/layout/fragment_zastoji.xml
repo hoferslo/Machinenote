@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:focusable="true"
+    android:focusable="false"
     android:clickable="true"
     tools:context=".fragments.ZastojiFragment">
 
@@ -75,7 +75,12 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/name_of_worker"
                         android:importantForAutofill="no"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@null"
+                        android:textColor="@color/content_primary" />
 
                     <EditText
                         android:id="@+id/razlog_zaustavitve_stroja"
@@ -84,7 +89,12 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/reason_for_stoppage"
                         android:importantForAutofill="no"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@null"
+                        android:textColor="@color/content_primary" />
 
                     <EditText
                         android:id="@+id/opomba"
@@ -94,7 +104,12 @@
                         android:hint="@string/opomba"
                         android:layout_marginBottom="16dp"
                         android:importantForAutofill="no"
-                        android:inputType="textMultiLine" />
+                        android:inputType="textMultiLine"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@null"
+                        android:textColor="@color/content_primary" />
 
                     <!-- Line and QR Code Section -->
                     <LinearLayout

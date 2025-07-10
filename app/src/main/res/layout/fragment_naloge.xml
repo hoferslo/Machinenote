@@ -44,7 +44,8 @@
                 android:queryBackground="@android:color/transparent"
                 android:background="@android:color/transparent"
                 android:searchIcon="@null"
-                android:submitBackground="@android:color/transparent" />
+                android:submitBackground="@android:color/transparent"
+                android:theme="@style/SearchViewTheme"/>
 
         </LinearLayout>
 

@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
             clearAllFragmentFromBackStack();
             sharedPreferencesHelper.clear();
             disableDrawer();
+            showDrawerIcon();
             loadFragment(LoginFragment.newInstance(this));
         });
 

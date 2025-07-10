@@ -19,7 +19,7 @@
     <color name="action_success">@color/green_500</color>        <!-- Send, confirm buttons -->
     <color name="action_success_pressed">@color/green_600</color>
     <color name="action_destructive">@color/red_500</color>      <!-- Cancel, delete buttons -->
-    <color name="action_destructive_pressed">@color/red_600</color>
+    <color name="action_destructive_pressed">@color/red_300</color>
 
     <!-- TEXT & CONTENT -->
     <color name="content_primary">@color/neutral_900</color>     <!-- Main text -->
@@ -88,6 +88,7 @@
     <color name="green_700">#15803D</color>
 
     <!-- Red Scale -->
+    <color name="red_300">#FCA5A5</color>
     <color name="red_400">#F87171</color>
     <color name="red_500">#EF4444</color>
     <color name="red_600">#DC2626</color>

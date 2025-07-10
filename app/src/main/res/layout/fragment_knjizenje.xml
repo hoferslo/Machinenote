@@ -7,15 +7,15 @@
     android:orientation="vertical"
     android:focusable="true"
     android:clickable="true"
-    android:padding="16dp"
+    android:padding="12dp"
     tools:context=".fragments.KnjizenjeFragment">
 
-    <!-- Article Name Header -->
+    <!-- Article Name Header - Compact -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:padding="16dp"
+        android:layout_marginBottom="8dp"
+        android:padding="12dp"
         android:background="@drawable/bg_card_primary">
 
         <TextView
@@ -23,23 +23,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:fontFamily="@font/nunito_semibold"
             android:textColor="@color/content_primary"
             android:text="@string/request_for_article_scan"
-            android:maxLines="3"
+            android:maxLines="2"
             android:ellipsize="end" />
 
     </LinearLayout>
 
-    <!-- Article Info Section -->
+    <!-- Article Info Section - Horizontal Layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp">
+        android:padding="12dp"
+        android:orientation="horizontal">
 
+        <!-- Info Items in Row -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -50,8 +52,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:padding="12dp"
+                android:layout_marginBottom="4dp"
+                android:padding="8dp"
                 android:background="@drawable/bg_card_secondary">
 
                 <TextView
@@ -60,8 +62,8 @@
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
                     android:text="@string/rack_label"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:textSize="12sp"
+                    android:maxLines="1" />
 
                 <TextView
                     android:id="@+id/article_rack"
@@ -72,8 +74,8 @@
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
                     android:textAlignment="textEnd"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:textSize="12sp"
+                    android:maxLines="1" />
 
             </LinearLayout>
 
@@ -81,8 +83,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:padding="12dp"
+                android:layout_marginBottom="4dp"
+                android:padding="8dp"
                 android:background="@drawable/bg_card_secondary">
 
                 <TextView
@@ -91,8 +93,8 @@
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
                     android:text="@string/warehouse_label"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:textSize="12sp"
+                    android:maxLines="1" />
 
                 <TextView
                     android:id="@+id/article_warehouse"
@@ -103,8 +105,8 @@
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
                     android:textAlignment="textEnd"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:textSize="12sp"
+                    android:maxLines="1" />
 
             </LinearLayout>
 
@@ -113,7 +115,7 @@
                 android:id="@+id/articleMinimumLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
+                android:padding="8dp"
                 android:background="@drawable/bg_card_secondary">
 
                 <TextView
@@ -122,8 +124,8 @@
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
                     android:text="@string/article_minimum"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:textSize="12sp"
+                    android:maxLines="1" />
 
                 <TextView
                     android:id="@+id/articleMinimumTv"
@@ -134,20 +136,20 @@
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
                     android:textAlignment="textEnd"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:textSize="12sp"
+                    android:maxLines="1" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Gmail Button -->
+        <!-- Gmail Button - Smaller -->
         <ImageButton
             android:id="@+id/sendGmail"
             style="@style/Button.Icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
             android:layout_gravity="center_vertical"
             android:visibility="gone"
             android:contentDescription="@string/send"
@@ -156,13 +158,13 @@
 
     </LinearLayout>
 
-    <!-- Stock Display Section -->
+    <!-- Stock Display Section - Compact -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <TextView
             android:layout_width="0dp"
@@ -171,57 +173,50 @@
             android:layout_gravity="center_vertical"
             android:textAllCaps="true"
             android:gravity="center"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:fontFamily="@font/nunito_semibold"
             android:textColor="@color/content_primary"
             android:text="@string/stock_label"
-            android:maxLines="2"
-            android:ellipsize="end" />
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/article_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:padding="16dp"
+            android:textSize="18sp"
+            android:padding="12dp"
             android:fontFamily="@font/nunito_semibold"
             android:text="0"
             style="@style/primaryButton"
-            android:maxLines="1"
-            android:ellipsize="end" />
+            android:maxLines="1" />
 
     </LinearLayout>
 
-    <!-- Scrollable Data Section (ONLY THIS SCROLLS) TODO: to se sploh ne prkaze -->
-    <LinearLayout
+    <!-- Compact Data Section - Fixed Height -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp">
+        android:padding="12dp">
 
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/allDataSv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical">
+            android:orientation="vertical"
+            android:gravity="top" />
 
-            <LinearLayout
-                android:id="@+id/allDataSv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
+    </ScrollView>
 
-        </ScrollView>
-
-    </LinearLayout>
-
-    <!-- Stock Control Section -->
+    <!-- Stock Control Section - Compact -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <Button
             android:id="@+id/minusBtn"
@@ -229,10 +224,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:textSize="24sp"
+            android:layout_marginEnd="6dp"
+            android:textSize="18sp"
             android:text="-"
-            android:minHeight="56dp" />
+            android:minHeight="44dp" />
 
         <EditText
             android:id="@+id/stockChangeValue"
@@ -240,14 +235,14 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:textSize="24sp"
+            android:layout_marginHorizontal="6dp"
+            android:textSize="16sp"
             android:layout_marginBottom="0dp"
             android:text="1"
             android:inputType="number"
             android:gravity="center"
-            android:maxLines="1"
-            />
+            android:minHeight="44dp"
+            android:maxLines="1" />
 
         <Button
             android:id="@+id/plusBtn"
@@ -255,20 +250,20 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textSize="24sp"
+            android:layout_marginStart="6dp"
+            android:textSize="18sp"
             android:text="+"
-            android:minHeight="56dp" />
+            android:minHeight="44dp" />
 
     </LinearLayout>
 
-    <!-- Input and Action Section -->
+    <!-- Input and Action Section - Compact -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <EditText
             android:id="@+id/idOfArticleEt"
@@ -276,21 +271,20 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="6dp"
             android:hint="@string/enter_id"
             android:inputType="number"
             android:gravity="center_vertical"
-            android:minHeight="56dp"
+            android:minHeight="44dp"
             android:maxLines="1"
-            android:ellipsize="end"
             android:layout_marginBottom="0dp"/>
 
         <ImageButton
             android:id="@+id/getArticelDataByIdBtn"
             style="@style/Button.Icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="6dp"
             android:contentDescription="@string/photo_button"
             android:src="?attr/homeAsUpIndicator"
             android:rotation="180"
@@ -300,8 +294,8 @@
         <ImageButton
             android:id="@+id/scanQRBtn"
             style="@style/Button.Icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:contentDescription="@string/scan_qr_code"
             android:src="@mipmap/qr_code_scanner"
             app:tint="@color/content_inverse"
@@ -309,12 +303,13 @@
 
     </LinearLayout>
 
-    <!-- Cancel Button -->
+    <!-- Cancel Button - Compact -->
     <Button
         android:id="@+id/cancelBtn"
         style="@style/Button.Destructive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cancel" />
+        android:text="@string/cancel"
+        android:minHeight="44dp" />
 
 </LinearLayout>

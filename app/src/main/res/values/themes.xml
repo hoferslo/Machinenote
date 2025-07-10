@@ -153,6 +153,10 @@
         <item name="android:paddingBottom">@dimen/input_padding</item>
         <item name="android:layout_marginBottom">@dimen/input_margin_bottom</item>
         <item name="android:minHeight">@dimen/input_min_height</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:cursorVisible">true</item>
     </style>
 
     <!-- Custom Dialog Theme -->
@@ -175,14 +179,6 @@
     <style name="materialButtonToggle" parent="Button.Toggle" />
     <style name="CustomDialogTheme" parent="Dialog.Custom" />
 
-
-    <!-- SearchView Theme -->
-    <style name="SearchViewTheme" parent="Widget.AppCompat.SearchView">
-        <item name="android:textColor">@color/content_primary</item>
-        <item name="android:textColorHint">@color/content_tertiary</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
-    </style>
-
     <!-- Add this to your styles.xml -->
     <style name="Button.MaterialTab" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textSize">@dimen/tab_button_text_size</item>
@@ -195,6 +191,16 @@
         <item name="android:paddingRight">@dimen/tab_button_padding_horizontal</item>
         <item name="strokeColor">@color/border_primary</item>
         <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Dodajte to v vaš styles.xml -->
+    <style name="SearchViewTheme" parent="Theme.AppCompat.Light">
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:textColorHint">@color/content_tertiary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="colorControlActivated">@color/action_primary</item>
+        <item name="colorControlNormal">@color/content_secondary</item>
     </style>
 
 </resources>
