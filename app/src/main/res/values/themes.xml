@@ -166,6 +166,50 @@
         <item name="android:textColorAlertDialogListItem">@color/content_primary</item>
     </style>
 
+    <!-- TimePicker Theme -->
+    <style name="CustomTimePickerTheme" parent="android:Theme.Material.Light">
+        <item name="android:timePickerMode">spinner</item>
+        <item name="android:colorAccent">@color/action_primary</item>
+        <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:colorPrimaryDark">@color/blue_600</item>
+        <item name="android:textColorPrimary">@color/content_primary</item>
+        <item name="android:textColorSecondary">@color/content_secondary</item>
+        <item name="android:textColorHint">@color/content_tertiary</item>
+        <item name="android:colorControlNormal">@color/content_secondary</item>
+        <item name="android:colorControlActivated">@color/action_primary</item>
+        <item name="android:colorControlHighlight">@color/action_secondary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <!-- DatePicker Theme -->
+    <style name="CustomDatePickerTheme" parent="android:Theme.Material.Light">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:colorAccent">@color/action_primary</item>
+        <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:colorPrimaryDark">@color/blue_600</item>
+        <item name="android:textColorPrimary">@color/content_primary</item>
+        <item name="android:textColorSecondary">@color/content_secondary</item>
+        <item name="android:textColorHint">@color/content_tertiary</item>
+        <item name="android:colorControlNormal">@color/content_secondary</item>
+        <item name="android:colorControlActivated">@color/action_primary</item>
+        <item name="android:colorControlHighlight">@color/action_secondary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <!-- Alternativno - za calendar mode DatePicker -->
+    <style name="CustomDatePickerCalendarTheme" parent="android:Theme.Material.Light">
+        <item name="android:datePickerMode">calendar</item>
+        <item name="android:colorAccent">@color/action_primary</item>
+        <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:colorPrimaryDark">@color/blue_600</item>
+        <item name="android:textColorPrimary">@color/content_primary</item>
+        <item name="android:textColorSecondary">@color/content_secondary</item>
+        <item name="android:colorControlNormal">@color/content_secondary</item>
+        <item name="android:colorControlActivated">@color/action_primary</item>
+        <item name="android:headerBackground">@color/action_primary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
     <!-- ===== LEGACY COMPATIBILITY ===== -->
 
     <!-- Legacy style names for backward compatibility -->
