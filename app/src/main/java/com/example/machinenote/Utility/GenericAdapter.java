@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.machinenote.R;
@@ -80,6 +81,7 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
                 TextView textView = new TextView(context);
                 textView.setText(label + ": " + value);
                 textView.setPadding(0, 8, 0, 8);
+                textView.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
                 container.addView(textView);
             }
             buttonAction.setVisibility(View.GONE);

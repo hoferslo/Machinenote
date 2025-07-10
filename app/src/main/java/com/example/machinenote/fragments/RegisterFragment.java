@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.R;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentRegisterBinding;
 import com.example.machinenote.RegistrationRequest;
@@ -184,9 +185,12 @@ public class RegisterFragment extends BaseFragment {
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_spinner_item, roleNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.item_spinner_layout, roleNames);  // your custom layout for selected item
+
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);  // your custom dropdown item layout
+
         binding.roleSpinner.setAdapter(adapter);
+
 
         binding.roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
