@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.OnBackPressedCallback;
@@ -24,6 +25,7 @@ import com.example.machinenote.R;
 import com.example.machinenote.Utility.ConnectionChecker;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.databinding.ActivityMainBinding;
+import com.example.machinenote.fragments.DashboardFragment;
 import com.example.machinenote.fragments.LoginFragment;
 import com.example.machinenote.fragments.QRCodeScannerFragment;
 
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     SharedPreferencesHelper sharedPreferencesHelper;
     private ConnectionChecker connectionChecker;
     public boolean serverConnection = true;
+    private boolean doubleBackToExitPressedOnce = false;
+    private Handler exitHandler = new Handler(Looper.getMainLooper());
 
 
     @Override
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                                     if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                                         clearLastFragmentFromBackStack();
                                     } else {
-                                        binding.drawerLayout.openDrawer(binding.navView);
+                                        showExitConfirmation(); //TODO: vprasat a je bols tko al ne?
                                     }
                                 }
                             } else {
@@ -211,26 +215,54 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         binding.drawerUserRoleTv.setText(sharedPreferencesHelper.getRole().getRole());
     }
 
+    // Replace your existing loadFragment method with this safer version:
+
     public void loadFragment(Fragment fragment) {
+        // Check if activity is still valid
+        if (isFinishing() || isDestroyed()) {
+            Log.w("MainActivity", "Activity is finishing/destroyed, cannot load fragment");
+            return;
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        // Check if fragment manager is available
+        if (fragmentManager.isStateSaved()) {
+            Log.w("MainActivity", "Fragment manager state is saved, cannot load fragment");
+            return;
+        }
+
         Fragment existingFragment = fragmentManager.findFragmentByTag(fragment.getClass().getName());
 
         if (existingFragment == null) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(
-                    R.anim.fragment_slide_in_from_right,  // Enter animation
-                    R.anim.fragment_slide_out_to_left,    // Exit animation
-                    R.anim.fragment_slide_in_from_left,   // Pop enter animation
-                    R.anim.fragment_slide_out_to_right    // Pop exit animation
-            );
-            if (!fragmentManager.getFragments().isEmpty()) {
-                fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1).onPause();
-            }
-            fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName());
-            // changed add to replace because of overlying fragments
-            fragmentTransaction.addToBackStack(null); // Optional: Add to back stack
-            fragmentTransaction.commit();
+            try {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(
+                        R.anim.fragment_slide_in_from_right,  // Enter animation
+                        R.anim.fragment_slide_out_to_left,    // Exit animation
+                        R.anim.fragment_slide_in_from_left,   // Pop enter animation
+                        R.anim.fragment_slide_out_to_right    // Pop exit animation
+                );
 
+                // Safely pause the current fragment
+                if (!fragmentManager.getFragments().isEmpty()) {
+                    Fragment currentFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+                    if (currentFragment != null && currentFragment.isAdded() && !currentFragment.isDetached()) {
+                        currentFragment.onPause();
+                    }
+                }
+
+                fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName());
+
+                // Ne dodaj DashboardFragment in LoginFragment v backstack
+                if (!(fragment instanceof DashboardFragment) && !(fragment instanceof LoginFragment)) {
+                    fragmentTransaction.addToBackStack(null);
+                }
+
+                fragmentTransaction.commitAllowingStateLoss(); // Use commitAllowingStateLoss for better safety
+            } catch (Exception e) {
+                Log.e("MainActivity", "Error loading fragment: " + e.getMessage());
+            }
         }
     }
 
@@ -266,8 +298,24 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
     public void triggerOnResumeOnLastFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        // Check if there are any fragments currently loaded
         if (!fragmentManager.getFragments().isEmpty()) {
-            fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1).onResume();
+            // Get the last fragment (current visible fragment)
+            Fragment lastFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+
+            // CRITICAL: Check if fragment is properly attached before calling onResume()
+            if (lastFragment != null && lastFragment.isAdded() && !lastFragment.isDetached() && lastFragment.getActivity() != null) {
+                try {
+                    lastFragment.onResume();
+                } catch (IllegalStateException e) {
+                    Log.e("MainActivity", "Fragment not attached when calling onResume: " + e.getMessage());
+                }
+            } else {
+                Log.w("MainActivity", "Cannot trigger onResume - fragment not properly attached");
+            }
+        } else {
+            Log.w("MainActivity", "No fragments available to trigger onResume");
         }
     }
 
@@ -287,5 +335,34 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     @Override
     public void onScanCancelled() {
 
+    }
+
+    private void showExitConfirmation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Zapri aplikacijo");
+        builder.setMessage("Ali res želite zapreti aplikacijo?");
+
+        builder.setPositiveButton("Da", (dialog, which) -> {
+            dialog.dismiss();
+            finish();
+        });
+
+        builder.setNegativeButton("Ne", (dialog, which) -> {
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private void handleDoubleBackPress() {
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Pritisnite znova za zapiranje aplikacije", Toast.LENGTH_SHORT).show();
+
+        exitHandler.postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }

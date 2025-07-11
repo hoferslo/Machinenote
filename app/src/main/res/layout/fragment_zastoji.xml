@@ -213,9 +213,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="120dp"
                                 android:layout_gravity="center_horizontal"
-                                app:secondTint="@android:color/transparent"
+                                app:secondTint="@color/action_primary"
                                 app:hourTint="@color/action_primary"
-                                app:minuteTint="@color/action_secondary" />
+                                app:faceTint="@color/border_primary"
+                                app:minuteTint="@color/action_primary" />
 
                             <TextView
                                 android:id="@+id/textBeforeTime"
@@ -242,9 +243,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="120dp"
                                 android:layout_gravity="center_horizontal"
-                                app:secondTint="@android:color/transparent"
+                                app:secondTint="@color/action_primary"
                                 app:hourTint="@color/action_primary"
-                                app:minuteTint="@color/action_secondary" />
+                                app:faceTint="@color/border_primary"
+                                app:minuteTint="@color/action_primary" />
 
                             <TextView
                                 android:id="@+id/textAfterTime"

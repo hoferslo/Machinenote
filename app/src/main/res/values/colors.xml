@@ -16,6 +16,7 @@
     <color name="action_primary_pressed">@color/blue_400</color>
     <color name="action_secondary">@color/surface_primary</color>       <!-- Secondary buttons -->
     <color name="action_secondary_pressed">@color/blue_100</color>
+    <color name="action_tertiary">@color/blue_300</color>    <!-- Tertiary buttons -->
     <color name="action_success">@color/green_500</color>        <!-- Send, confirm buttons -->
     <color name="action_success_pressed">@color/green_600</color>
     <color name="action_destructive">@color/red_500</color>      <!-- Cancel, delete buttons -->

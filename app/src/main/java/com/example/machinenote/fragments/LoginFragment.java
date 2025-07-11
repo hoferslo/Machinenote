@@ -111,13 +111,28 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public void onResume() {
+        // CRITICAL FIX: Check if fragment is properly attached before calling requireActivity()
+        if (!isAdded() || isDetached() || getActivity() == null) {
+            Log.w(TAG, "Fragment not attached to activity, skipping onResume");
+            return;
+        }
+
         super.onResume();
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.binding.toolbarTitle.setText(TAG);
-        if (binding.username.getText().toString().isEmpty()) {
-            loginUsingSharedPrefsUsernameAndPassword();
-        } else {
-            loginUsingTextviewUsernameAndPassword();
+
+        // Use getActivity() instead of requireActivity() for additional safety
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) activity;
+            mainActivity.binding.toolbarTitle.setText(TAG);
+
+            // Skrij drawer ikono ali back arrow za login
+            mainActivity.binding.toolbar.setNavigationIcon(null);
+
+            if (binding.username.getText().toString().isEmpty()) {
+                loginUsingSharedPrefsUsernameAndPassword();
+            } else {
+                loginUsingTextviewUsernameAndPassword();
+            }
         }
     }
 
@@ -125,9 +140,10 @@ public class LoginFragment extends BaseFragment {
         apiManager.login(username, password, new ApiManager.LoginCallback() {
             @Override
             public void onSuccess() {
-                if (isAdded()) {
+                // CRITICAL FIX: Check if fragment is still attached before UI operations
+                if (isAdded() && getActivity() != null) {
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
-                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.clearAllFragmentFromBackStack();
                     mainActivity.loadFragment(DashboardFragment.newInstance(context));
                     mainActivity.initDrawerInfo();
@@ -136,7 +152,10 @@ public class LoginFragment extends BaseFragment {
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(context, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                // CRITICAL FIX: Check if fragment is still attached before showing toast
+                if (isAdded() && getActivity() != null) {
+                    Toast.makeText(context, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
                 Log.e("error", errorMessage);
             }
         });
@@ -162,9 +181,10 @@ public class LoginFragment extends BaseFragment {
                 loginUsingTextviewUsernameAndPassword();
             } else {
                 // Permission denied, show a message to the user explaining why the permission is necessary
-                Toast.makeText(context, "Za zajem slik je potrebno dovoljenje uporabe kamere.", Toast.LENGTH_SHORT).show();
+                if (isAdded()) {
+                    Toast.makeText(context, "Za zajem slik je potrebno dovoljenje uporabe kamere.", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
-
 }
