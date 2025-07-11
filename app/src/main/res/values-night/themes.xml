@@ -1,8 +1,48 @@
+<!-- res/values-night/styles.xml - MINIMAL Dark Theme Styles -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.MachineNote" parent="Base.Theme.MachineNote">
-        <!-- Primary brand color. -->
 
+    <!-- Only override the main theme and what needs to change -->
+    <style name="Base.Theme.MachineNote" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/background_app</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Navigation bar -->
+        <item name="android:navigationBarColor">@color/background_app</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+
+        <!-- Background -->
+        <item name="android:windowBackground">@color/background_app</item>
+    </style>
+
+    <!-- Only override dialogs if they need specific dark adjustments -->
+    <style name="Dialog.Custom" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="android:windowBackground">@drawable/bg_card_primary</item>
+    </style>
+
+    <!-- Only override picker themes to remove light theme references -->
+    <style name="CustomTimePickerTheme" parent="android:Theme.Material">
+        <item name="android:timePickerMode">spinner</item>
+        <item name="android:colorAccent">@color/action_primary</item>
+        <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <style name="CustomDatePickerTheme" parent="android:Theme.Material">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:colorAccent">@color/action_primary</item>
+        <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <!-- SearchView theme -->
+    <style name="SearchViewTheme" parent="Theme.AppCompat">
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:textColorHint">@color/content_tertiary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="colorControlActivated">@color/action_primary</item>
+        <item name="colorControlNormal">@color/content_secondary</item>
     </style>
 
 </resources>

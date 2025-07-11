@@ -9,9 +9,4 @@
 - optimiziraj kodo za register
 
 
-- popravi date time picker barve
-- knjiženje uzame prevec placa in gre dol z ekrana, also zamenej barve
-
-- v scrollview spremeni barvo da se razlikuje od informacij, pod prekliči je prevec margina (Naloge)
-
 - iskanje po rezervnih delih poprav pa odstran uspodi info, pa nevem ce rabm zalogo

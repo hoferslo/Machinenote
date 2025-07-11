@@ -35,6 +35,17 @@
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
                     android:paddingHorizontal="8dp" />
+                <ImageView
+                    android:id="@+id/workerUnichem"
+                    android:backgroundTint="@color/content_inverse"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="2dp"
+                    android:layout_gravity="end"
+                    android:scaleType="fitCenter"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/worker_unichem"
+                    android:contentDescription="Unichem" />
 
                 <ImageButton
                     android:id="@+id/noWifiBtn"

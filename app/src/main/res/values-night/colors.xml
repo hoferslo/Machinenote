@@ -1,0 +1,43 @@
+<!-- res/values-night/colors.xml - MINIMAL Dark Theme Colors -->
+<resources>
+
+    <!-- ============= ONLY OVERRIDE WHAT CHANGES ============= -->
+
+    <!-- SURFACES & BACKGROUNDS -->
+    <color name="surface_primary">#1F1F1F</color>
+    <color name="surface_secondary">#2A2A2A</color>
+    <color name="surface_tertiary">#3A3A3A</color>
+    <color name="background_app">#121212</color>
+    <color name="background_section">#1A1A1A</color>
+
+    <!-- ACTIONS & INTERACTIVE -->
+    <color name="action_primary">#4A90E2</color>
+    <color name="action_secondary">#2A2A2A</color>
+    <color name="action_success">#4ADE80</color>
+    <color name="action_destructive">#F87171</color>
+
+    <!-- TEXT & CONTENT -->
+    <color name="content_primary">#FFFFFF</color>
+    <color name="content_secondary">#B3B3B3</color>
+    <color name="content_tertiary">#737373</color>
+    <color name="content_inverse">#121212</color>
+
+    <!-- BORDERS & STROKES -->
+    <color name="border_primary">#404040</color>
+    <color name="border_secondary">#2A2A2A</color>
+    <color name="border_accent">#4A90E2</color>
+
+    <!-- STATES & FEEDBACK -->
+    <color name="state_hover">#2A2A2A</color>
+    <color name="state_pressed">#404040</color>
+    <color name="state_disabled">#404040</color>
+
+    <!-- Your custom colors adjusted for dark theme -->
+    <color name="test">#4A90E2</color>
+    <color name="test_ozadje">#2A3F5F</color>
+    <color name="testna1">#5B9BD5</color>
+    <color name="testna2">#7BB3E0</color>
+    <color name="testna3">#8FBC8F</color>
+    <color name="testna4">#6B8E23</color>
+
+</resources>
