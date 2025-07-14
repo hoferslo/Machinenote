@@ -24,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.ConnectionChecker;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
+import com.example.machinenote.Utility.ThemeHelper;
 import com.example.machinenote.databinding.ActivityMainBinding;
 import com.example.machinenote.fragments.DashboardFragment;
 import com.example.machinenote.fragments.LoginFragment;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply saved theme before super.onCreate()
+        ThemeHelper.applyTheme(ThemeHelper.getSavedTheme(this));
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -59,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         setSupportActionBar(binding.toolbar);
+
+        // Setup theme switcher button
+        setupThemeSwitcher();
 
         //backwards press logic
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 33+
@@ -185,6 +192,50 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         // Start checking the connection
         new Thread(connectionChecker).start();
 
+    }
+
+    private void setupThemeSwitcher() {
+        // Nastavi začetni tekst na gumbu
+        updateThemeButtonText();
+
+        binding.themeSwitcherBtn.setOnClickListener(v -> cycleTheme());
+    }
+
+    private void cycleTheme() {
+        int currentTheme = ThemeHelper.getSavedTheme(this);
+        int nextTheme;
+
+        // Kroži med tremi temami: Light -> Dark -> System -> Light...
+        switch (currentTheme) {
+            case ThemeHelper.THEME_LIGHT:
+                nextTheme = ThemeHelper.THEME_DARK;
+                break;
+            case ThemeHelper.THEME_DARK:
+                nextTheme = ThemeHelper.THEME_SYSTEM;
+                break;
+            case ThemeHelper.THEME_SYSTEM:
+            default:
+                nextTheme = ThemeHelper.THEME_LIGHT;
+                break;
+        }
+
+        // Shrani in uporabi novo temo
+        ThemeHelper.saveTheme(this, nextTheme);
+        ThemeHelper.applyTheme(nextTheme);
+
+        // Ponovno ustvari aktivnost za takojšnjo uporabo teme
+        recreate();
+    }
+
+    private void updateThemeButtonText() {
+        int currentTheme = ThemeHelper.getSavedTheme(this);
+        String currentThemeName = ThemeHelper.getThemeName(this, currentTheme);
+        binding.themeSwitcherBtn.setText("Tema: " + currentThemeName);
+    }
+
+    // Method to get current theme for menu item updates
+    public void updateThemeMenuItem() {
+        updateThemeButtonText();
     }
 
     public void showLoadingBar(boolean b, String text) {
@@ -354,6 +405,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void handleDoubleBackPress() {
         if (doubleBackToExitPressedOnce) {
             finish();

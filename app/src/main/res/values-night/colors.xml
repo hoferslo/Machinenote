@@ -1,7 +1,7 @@
-<!-- res/values-night/colors.xml - MINIMAL Dark Theme Colors -->
+<!-- res/values-night/colors.xml - FIXED Dark Theme Colors -->
 <resources>
 
-    <!-- ============= ONLY OVERRIDE WHAT CHANGES ============= -->
+    <!-- ============= OVERRIDE COLORS FOR DARK THEME ============= -->
 
     <!-- SURFACES & BACKGROUNDS -->
     <color name="surface_primary">#1F1F1F</color>
@@ -12,9 +12,14 @@
 
     <!-- ACTIONS & INTERACTIVE -->
     <color name="action_primary">#4A90E2</color>
+    <color name="action_primary_pressed">#357ABD</color>
     <color name="action_secondary">#2A2A2A</color>
+    <color name="action_secondary_pressed">#404040</color>
+    <color name="action_tertiary">#5B9BD5</color>
     <color name="action_success">#4ADE80</color>
+    <color name="action_success_pressed">#22C55E</color>
     <color name="action_destructive">#F87171</color>
+    <color name="action_destructive_pressed">#FCA5A5</color>
 
     <!-- TEXT & CONTENT -->
     <color name="content_primary">#FFFFFF</color>
@@ -28,9 +33,16 @@
     <color name="border_accent">#4A90E2</color>
 
     <!-- STATES & FEEDBACK -->
+    <color name="state_selected">#4A90E2</color>
     <color name="state_hover">#2A2A2A</color>
     <color name="state_pressed">#404040</color>
     <color name="state_disabled">#404040</color>
+
+    <!-- SPECIALTY COLORS -->
+    <color name="clock_hour_hand">#4A90E2</color>
+    <color name="clock_minute_hand">#5B9BD5</color>
+    <color name="checkbox_tint">#4A90E2</color>
+    <color name="icon_tint">#FFFFFF</color>
 
     <!-- Your custom colors adjusted for dark theme -->
     <color name="test">#4A90E2</color>
@@ -39,5 +51,11 @@
     <color name="testna2">#7BB3E0</color>
     <color name="testna3">#8FBC8F</color>
     <color name="testna4">#6B8E23</color>
+
+    <!-- OVERRIDE BLUE SCALE FOR DARK THEME -->
+    <color name="blue_300">#5B9BD5</color>
+    <color name="blue_400">#4A90E2</color>
+    <color name="blue_500">#357ABD</color>
+    <color name="blue_600">#2563EB</color>
 
 </resources>

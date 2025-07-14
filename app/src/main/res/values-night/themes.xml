@@ -1,8 +1,29 @@
-<!-- res/values-night/styles.xml - MINIMAL Dark Theme Styles -->
+<!-- res/values-night/styles.xml - FIXED Dark Theme Styles -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Only override the main theme and what needs to change -->
+    <!-- Main theme with proper Material Components color overrides -->
     <style name="Base.Theme.MachineNote" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/action_primary</item>
+        <item name="colorPrimaryDark">@color/action_primary_pressed</item>
+        <item name="colorAccent">@color/action_primary</item>
+
+        <!-- Material Components color attributes -->
+        <item name="colorPrimaryVariant">@color/action_primary_pressed</item>
+        <item name="colorSecondary">@color/action_secondary</item>
+        <item name="colorSecondaryVariant">@color/action_secondary_pressed</item>
+        <item name="colorOnPrimary">@color/content_inverse</item>
+        <item name="colorOnSecondary">@color/content_primary</item>
+        <item name="colorSurface">@color/surface_primary</item>
+        <item name="colorOnSurface">@color/content_primary</item>
+        <item name="colorOnBackground">@color/content_primary</item>
+        <item name="colorError">@color/action_destructive</item>
+        <item name="colorOnError">@color/content_inverse</item>
+
+        <!-- Typography -->
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textColor">@color/content_primary</item>
+
         <!-- Status bar -->
         <item name="android:statusBarColor">@color/background_app</item>
         <item name="android:windowLightStatusBar">false</item>
@@ -15,23 +36,99 @@
         <item name="android:windowBackground">@color/background_app</item>
     </style>
 
-    <!-- Only override dialogs if they need specific dark adjustments -->
-    <style name="Dialog.Custom" parent="Theme.MaterialComponents.DayNight.Dialog">
-        <item name="android:windowBackground">@drawable/bg_card_primary</item>
+    <!-- Override Success Button to ensure proper colors -->
+    <style name="Button.Success" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/bg_button_success</item>
+        <item name="backgroundTint">@color/action_success</item>
+        <item name="android:backgroundTint">@color/action_success</item>
+        <item name="android:textColor">@color/content_inverse</item>
+        <item name="android:elevation">@dimen/button_elevation</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:paddingLeft">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/button_padding_vertical</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
-    <!-- Only override picker themes to remove light theme references -->
+    <!-- Override Destructive Button to ensure proper colors -->
+    <style name="Button.Destructive" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:background">@drawable/bg_button_outline</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">@color/action_destructive</item>
+        <item name="strokeColor">@color/action_destructive</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Override MaterialTab Button to ensure proper colors -->
+    <style name="Button.MaterialTab" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textSize">@dimen/tab_button_text_size</item>
+        <item name="backgroundTint">@color/action_secondary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:minHeight">@dimen/tab_button_min_height</item>
+        <item name="android:paddingLeft">@dimen/tab_button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/tab_button_padding_horizontal</item>
+        <item name="strokeColor">@color/border_primary</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Dialog theme -->
+    <style name="Dialog.Custom" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorAccent">@color/action_primary</item>
+        <item name="colorPrimary">@color/action_primary</item>
+        <item name="android:windowBackground">@color/surface_primary</item>
+        <item name="android:textColorAlertDialogListItem">@color/content_primary</item>
+    </style>
+
+    <!-- Time picker theme -->
     <style name="CustomTimePickerTheme" parent="android:Theme.Material">
         <item name="android:timePickerMode">spinner</item>
         <item name="android:colorAccent">@color/action_primary</item>
         <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:colorPrimaryDark">@color/action_primary_pressed</item>
+        <item name="android:textColorPrimary">@color/content_primary</item>
+        <item name="android:textColorSecondary">@color/content_secondary</item>
+        <item name="android:textColorHint">@color/content_tertiary</item>
+        <item name="android:colorControlNormal">@color/content_secondary</item>
+        <item name="android:colorControlActivated">@color/action_primary</item>
+        <item name="android:colorControlHighlight">@color/action_secondary</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 
+    <!-- Date picker theme -->
     <style name="CustomDatePickerTheme" parent="android:Theme.Material">
         <item name="android:datePickerMode">spinner</item>
         <item name="android:colorAccent">@color/action_primary</item>
         <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:colorPrimaryDark">@color/action_primary_pressed</item>
+        <item name="android:textColorPrimary">@color/content_primary</item>
+        <item name="android:textColorSecondary">@color/content_secondary</item>
+        <item name="android:textColorHint">@color/content_tertiary</item>
+        <item name="android:colorControlNormal">@color/content_secondary</item>
+        <item name="android:colorControlActivated">@color/action_primary</item>
+        <item name="android:colorControlHighlight">@color/action_secondary</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <!-- Calendar date picker theme -->
+    <style name="CustomDatePickerCalendarTheme" parent="android:Theme.Material">
+        <item name="android:datePickerMode">calendar</item>
+        <item name="android:colorAccent">@color/action_primary</item>
+        <item name="android:colorPrimary">@color/action_primary</item>
+        <item name="android:colorPrimaryDark">@color/action_primary_pressed</item>
+        <item name="android:textColorPrimary">@color/content_primary</item>
+        <item name="android:textColorSecondary">@color/content_secondary</item>
+        <item name="android:colorControlNormal">@color/content_secondary</item>
+        <item name="android:colorControlActivated">@color/action_primary</item>
+        <item name="android:headerBackground">@color/action_primary</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 

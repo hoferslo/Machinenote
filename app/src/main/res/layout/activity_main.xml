@@ -133,6 +133,19 @@
                             android:layout_weight="1" />
 
                         <Button
+                            android:id="@+id/themeSwitcherBtn"
+                            style="@style/primaryButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Spremeni temo"
+                            android:drawableLeft="@drawable/ic_theme_switcher"
+                            android:drawablePadding="12dp"
+                            android:layout_margin="16dp"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="20dp"
+                            android:minHeight="56dp"/>
+
+                        <Button
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/logout"
@@ -141,7 +154,8 @@
                             android:drawableLeft="@mipmap/logout"
                             android:drawableTint="@color/action_destructive"
                             android:drawablePadding="12dp"
-                            android:layout_margin="16dp"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginBottom="16dp"
                             android:gravity="center_vertical|start"
                             android:paddingLeft="20dp"
                             android:minHeight="56dp" />
