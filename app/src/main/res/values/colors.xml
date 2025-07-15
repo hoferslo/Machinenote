@@ -45,6 +45,12 @@
     <color name="checkbox_tint">@color/action_primary</color>
     <color name="icon_tint">@color/white</color>
 
+    <!-- Warning colors -->
+
+    <color name="error_primary">@color/red_500</color>
+    <color name="warning_primary">@android:color/holo_orange_light</color> <!-- TODO: zameni z realno rumeno -->
+    <color name="success_primary">@color/green_500</color>
+
     <!-- ============= PRIMITIVE COLOR PALETTE ============= -->
     <!-- Base colors that semantic tokens reference -->
 
@@ -66,7 +72,7 @@
     <color name="testna1">#83B9E0</color>
     <color name="testna2">#AED7F3</color>
     <color name="testna3">#A2C987</color>
-    <color name="testna4">#7E986D</color>
+    <color name="testna4">#7E986D</color> <!-- TODO: vn vrz testne in zameni z realnimi barvami -->
 
     <!-- Neutral Scale -->
     <color name="neutral_25">#FAFAFA</color>

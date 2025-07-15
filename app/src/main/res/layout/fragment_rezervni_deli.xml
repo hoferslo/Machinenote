@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:focusable="true"
     android:clickable="true"
-    tools:context=".fragments.KnjizenjeFragment">
+    tools:context=".fragments.RezervniDeliFragment">
 
     <!-- Main Content Container -->
     <FrameLayout
@@ -20,78 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <!-- Stock Display Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/stock_label"
-                    android:textAllCaps="true"
-                    android:textSize="20sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/article_stock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100"
-                    android:textSize="24sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:background="@drawable/bg_card_secondary"
-                    android:padding="12dp"
-                    android:minWidth="60dp"
-                    android:gravity="center" />
-
-            </LinearLayout>
-
-            <!-- Recent Items Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_card_primary"
-                android:padding="16dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/scrollLv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:scrollbars="none" />
-
-                <!-- Hidden Gmail Send Button -->
-                <LinearLayout
-                    android:id="@+id/sendGmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:visibility="gone"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </LinearLayout>
-            </LinearLayout>
 
             <!-- Search Section -->
             <LinearLayout
@@ -114,7 +42,7 @@
 
             </LinearLayout>
 
-            <!-- Main Data List Section -->
+            <!-- Main List Section with RecyclerView -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -123,29 +51,11 @@
                 android:background="@drawable/bg_card_primary"
                 android:padding="16dp">
 
-                <ScrollView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/scrollLv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:id="@+id/allDataRezervniDeli"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <ListView
-                            android:id="@+id/allDataRezervniDeliListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/bg_card_secondary"
-                            android:divider="@color/border_secondary"
-                            android:dividerHeight="1dp"
-                            android:padding="8dp" />
-
-                    </LinearLayout>
-
-                </ScrollView>
+                    android:scrollbars="vertical" />
 
             </LinearLayout>
 

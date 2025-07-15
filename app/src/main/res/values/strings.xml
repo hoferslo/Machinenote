@@ -124,5 +124,38 @@
     <string name="Login">Login</string>
     <string name="register_help_info">Niste registrirani? poklici mateja</string>
     <string name="available_tasks">Mozne naloge</string>
+
+    <string name="id_rezervnega_dela">ID</string>
+    <string name="lokacija">Lokacija</string>
+    <string name="skladisce">Skladišče</string>
+    <string name="ni_skladisca">Ni skladišča</string>
+    <string name="regal">Regal</string>
+    <string name="ni_regala">Ni regala</string>
+    <string name="artikel">Artikel</string>
+    <string name="ni_naziva_artikla">Ni naziva artikla</string>
+    <string name="opis">Opis</string>
+    <string name="ni_opisa">Ni opisa</string>
+    <string name="partnerji">Partnerji</string>
+    <string name="proizvajalec">Proizvajalec</string>
+    <string name="ni_proizvajalca">Ni proizvajalca</string>
+    <string name="dobavitelj">Dobavitelj</string>
+    <string name="ni_dobavitelja">Ni dobavitelja</string>
+    <string name="cene">Cena</string>
+    <string name="znesek">Znesek</string>
+    <string name="ni_zneska">Ni zneska</string>
+    <string name="dobava">Dobava</string>
+    <string name="ni_dobave">Ni dobave</string>
+    <string name="poraba">Poraba</string>
+    <string name="ni_porabe">Ni porabe</string>
+    <string name="inventura">Inventura</string>
+    <string name="ni_inventure">Ni inventura</string>
+    <string name="skupna_cena">Skupna cena</string>
+    <string name="ni_skupne_cene">Ni skupne cene</string>
+    <string name="zaloge">Zaloga</string>
+    <string name="minimalna_zaloga">Minimalna zaloga</string>
+    <string name="ni_minimalne_zaloge">Ni minimalne zaloge</string>
+    <string name="dejanska_zaloga">Dejanska zaloga</string>
+    <string name="ni_dejanske_zaloge">Ni dejanske zaloge</string>
+    <string name="nizka_zaloga_opozorilo">Zaloga je nizka</string>
 </resources>
 

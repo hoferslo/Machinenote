@@ -72,18 +72,38 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
             container.removeAllViews(); // clear old views
 
             Map<String, String> fields = item.getDisplayFields();
+
+            // Create views dynamically based on fields
             for (Map.Entry<String, String> entry : fields.entrySet()) {
                 String label = entry.getKey();
                 String value = entry.getValue();
 
                 if (value == null || value.isEmpty()) continue;
 
-                TextView textView = new TextView(context);
-                textView.setText(label + ": " + value);
-                textView.setPadding(0, 8, 0, 8);
-                textView.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
-                container.addView(textView);
+                // Create a horizontal layout for each field
+                LinearLayout fieldLayout = new LinearLayout(context);
+                fieldLayout.setOrientation(LinearLayout.HORIZONTAL);
+                fieldLayout.setPadding(0, 4, 0, 4);
+
+                // Label
+                TextView labelView = new TextView(context);
+                labelView.setText(label + ": ");
+                labelView.setTextColor(ContextCompat.getColorStateList(context, R.color.content_secondary));
+                labelView.setTextSize(14);
+                labelView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f));
+
+                // Value
+                TextView valueView = new TextView(context);
+                valueView.setText(value);
+                valueView.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+                valueView.setTextSize(14);
+                valueView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f));
+
+                fieldLayout.addView(labelView);
+                fieldLayout.addView(valueView);
+                container.addView(fieldLayout);
             }
+
             buttonAction.setVisibility(View.GONE);
             itemView.setOnClickListener(v -> onItemClickListener.onItemClick(item));
             buttonAction.setOnClickListener(v -> onItemClickListener.onButtonClick(item));

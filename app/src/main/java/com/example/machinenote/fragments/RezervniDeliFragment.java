@@ -21,6 +21,7 @@ import com.example.machinenote.R;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
+import com.example.machinenote.customFragments.RezervniDeliBottomSheetFragment;
 import com.example.machinenote.databinding.FragmentRezervniDeliBinding;
 import com.example.machinenote.models.RezervniDel;
 import com.google.gson.Gson;
@@ -58,16 +59,15 @@ public class RezervniDeliFragment extends BaseFragment {
         adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<RezervniDel>() {
             @Override
             public void onItemClick(RezervniDel del) {
-                Toast.makeText(getContext(),
-                        "Naziv: " + del.getArtikel() + "\nTip: " + del.getId(),
-                        Toast.LENGTH_SHORT).show();
+                // Create and show the bottom sheet
+                RezervniDeliBottomSheetFragment bottomSheet =
+                        RezervniDeliBottomSheetFragment.newInstance(getContext(), del);
+                bottomSheet.show(getChildFragmentManager(), "RezervniDeliBottomSheet");
             }
 
             @Override
             public void onButtonClick(RezervniDel del) {
-                Toast.makeText(getContext(),
-                        "Gumb za: " + del.getArtikel_dolgi_text(),
-                        Toast.LENGTH_SHORT).show();
+
             }
         });
 
