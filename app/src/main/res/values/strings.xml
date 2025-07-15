@@ -157,5 +157,12 @@
     <string name="dejanska_zaloga">Dejanska zaloga</string>
     <string name="ni_dejanske_zaloge">Ni dejanske zaloge</string>
     <string name="nizka_zaloga_opozorilo">Zaloga je nizka</string>
+
+    <string name="material_header">Material: %s</string>
+    <string name="velikost_label">Velikost: %s</string>
+    <string name="kvaliteta_label">Kvaliteta: %s</string>
+    <string name="vrsta">Vrsta</string>
+    <string name="kvaliteta">Kvaliteta</string>
+    <string name="material_info">Material: %s\nVrsta: %s\nVelikost: %s</string>
 </resources>
 

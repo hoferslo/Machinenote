@@ -196,6 +196,7 @@
 
         <!-- Proizvajalec in Dobavitelj -->
         <LinearLayout
+            android:id="@+id/partnerji"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -282,6 +283,7 @@
 
         <!-- Znesek in Skupna cena -->
         <LinearLayout
+            android:id="@+id/pricing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -368,6 +370,7 @@
 
         <!-- Zaloge -->
         <LinearLayout
+            android:id="@+id/stockManagement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

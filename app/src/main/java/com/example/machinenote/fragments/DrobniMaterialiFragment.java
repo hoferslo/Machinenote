@@ -22,8 +22,11 @@ import com.example.machinenote.R;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
+import com.example.machinenote.customFragments.DrobniMaterialiBottomSheetFragment;
+import com.example.machinenote.customFragments.RezervniDeliBottomSheetFragment;
 import com.example.machinenote.databinding.FragmentDrobniMaterialiBinding;
 import com.example.machinenote.models.DrobniMateriali;
+import com.example.machinenote.models.RezervniDel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -59,10 +62,11 @@ public class DrobniMaterialiFragment extends BaseFragment {
 
         adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<DrobniMateriali>() {
             @Override
-            public void onItemClick(DrobniMateriali material) {
-                Toast.makeText(getContext(),
-                        "Material: " + material.getMaterial() + "\nVrsta: " + material.getVrsta() + "\nVelikost: " + material.getVelikost(),
-                        Toast.LENGTH_SHORT).show();
+            public void onItemClick(DrobniMateriali del) {
+                // Create and show the bottom sheet
+                DrobniMaterialiBottomSheetFragment bottomSheet =
+                        DrobniMaterialiBottomSheetFragment.newInstance(getContext(), del);
+                bottomSheet.show(getChildFragmentManager(), "RezervniDeliBottomSheet");
             }
 
             @Override
