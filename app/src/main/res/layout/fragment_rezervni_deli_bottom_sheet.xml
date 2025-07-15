@@ -1,537 +1,522 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/surface_primary"
-    android:padding="16dp">
+    android:fillViewport="true"
+    android:nestedScrollingEnabled="true">
 
-    <!-- Header z ID rezervnega dela -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/bg_card_primary"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:id="@+id/partIdHeader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/id_rezervnega_dela"
-            android:textSize="24sp"
-            android:textColor="@color/content_primary"
-            android:fontFamily="@font/nunito_semibold" />
-
-    </LinearLayout>
-
-    <!-- Lokacija - Skladišče in Regal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/bg_card_secondary"
+        android:background="@color/surface_primary"
         android:padding="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/lokacija"
-            android:textSize="16sp"
-            android:textColor="@color/content_secondary"
-            android:fontFamily="@font/nunito_semibold"/>
-            <!-- android:drawableStart="@mipmap/location_on"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp" -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/skladisce"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/warehouse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_skladisca"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/regal"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/shelf"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_regala"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Artikel - Kratki tekst -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/artikel"
-            android:textSize="16sp"
-            android:textColor="@color/content_secondary"
-            android:fontFamily="@font/nunito_semibold"/>
-            <!--
-            android:drawableStart="@mipmap/inventory"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp" -->
-
-        <TextView
-            android:id="@+id/articleName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:text="@string/ni_naziva_artikla"
-            android:textSize="18sp"
-            android:textColor="@color/content_primary"
-            android:fontFamily="@font/nunito_semibold" />
-
-    </LinearLayout>
-
-    <!-- Dolgi tekst - Opis -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/opis"
-            android:textSize="16sp"
-            android:textColor="@color/content_secondary"
-            android:fontFamily="@font/nunito_semibold"/>
-            <!--
-            android:drawableStart="@mipmap/description"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp"  -->
-
-        <TextView
-            android:id="@+id/longDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start|top"
-            android:text="@string/ni_opisa"
-            android:textSize="16sp"
-            android:textColor="@color/content_primary"
-            android:fontFamily="@font/nunito_semibold"
-            android:minLines="2"
-            android:maxLines="4"
-            android:ellipsize="end" />
-
-    </LinearLayout>
-
-    <!-- Proizvajalec in Dobavitelj -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/partnerji"
-            android:textSize="16sp"
-            android:textColor="@color/content_secondary"
-            android:fontFamily="@font/nunito_semibold"/>
-            <!--
-            android:drawableStart="@mipmap/business"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp" -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/proizvajalec"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/manufacturer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_proizvajalca"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dobavitelj"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/supplier"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_dobavitelja"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Znesek in Skupna cena -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/cene"
-            android:textSize="16sp"
-            android:textColor="@color/content_secondary"
-            android:fontFamily="@font/nunito_semibold"/>
-        <!--
-            android:drawableStart="@mipmap/euro"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp" -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/znesek"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/unitPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_zneska"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/skupna_cena"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/totalPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_skupne_cene"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Zaloge -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/zaloge"
-            android:textSize="16sp"
-            android:textColor="@color/content_secondary"
-            android:fontFamily="@font/nunito_semibold"/>
-        <!--
-            android:drawableStart="@mipmap/inventory_2"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp" -->
-
-        <!-- Prva vrstica - Minimalna zaloga, Dobava -->
+        <!-- Header z ID rezervnega dela -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:background="@drawable/bg_card_primary"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/partIdHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minimalna_zaloga"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/minStock"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_minimalne_zaloge"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dobava"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/supply"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_dobave"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
+                android:gravity="center"
+                android:text="@string/id_rezervnega_dela"
+                android:textSize="24sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
 
         </LinearLayout>
 
-        <!-- Druga vrstica - Poraba, Inventura -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/poraba"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/consumption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_porabe"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/inventura"
-                    android:textSize="14sp"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/inventory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ni_inventure"
-                    android:textSize="18sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Dejanska zaloga -->
+        <!-- Lokacija - Skladišče in Regal -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_card_primary"
-            android:padding="12dp">
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dejanska_zaloga"
-                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:text="@string/lokacija"
+                android:textSize="16sp"
                 android:textColor="@color/content_secondary"
-                android:fontFamily="@font/nunito_semibold"
-                android:layout_marginBottom="4dp" />
+                android:fontFamily="@font/nunito_semibold"/>
 
-            <TextView
-                android:id="@+id/actualStock"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ni_dejanske_zaloge"
-                android:textSize="20sp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/skladisce"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/warehouse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_skladisca"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/regal"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/shelf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_regala"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Artikel - Kratki tekst -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/artikel"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"/>
+
+            <TextView
+                android:id="@+id/articleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:text="@string/ni_naziva_artikla"
+                android:textSize="18sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+
+        <!-- Dolgi tekst - Opis -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/opis"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"/>
+
+            <TextView
+                android:id="@+id/longDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:text="@string/ni_opisa"
+                android:textSize="16sp"
                 android:textColor="@color/content_primary"
                 android:fontFamily="@font/nunito_semibold"
-                android:gravity="center" />
+                android:minLines="2"
+                android:maxLines="4"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+
+        <!-- Proizvajalec in Dobavitelj -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/partnerji"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/proizvajalec"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/manufacturer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_proizvajalca"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dobavitelj"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/supplier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_dobavitelja"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Znesek in Skupna cena -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/cene"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/znesek"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/unitPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_zneska"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/skupna_cena"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/totalPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_skupne_cene"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Zaloge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/zaloge"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"/>
+
+            <!-- Prva vrstica - Minimalna zaloga, Dobava -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/minimalna_zaloga"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/minStock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_minimalne_zaloge"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dobava"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/supply"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_dobave"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Druga vrstica - Poraba, Inventura -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/poraba"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/consumption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_porabe"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/inventura"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/inventory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_inventure"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Dejanska zaloga -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_card_primary"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dejanska_zaloga"
+                    android:textSize="14sp"
+                    android:textColor="@color/content_secondary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/actualStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ni_dejanske_zaloge"
+                    android:textSize="20sp"
+                    android:textColor="@color/content_primary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:gravity="center" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
