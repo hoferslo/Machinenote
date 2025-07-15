@@ -51,7 +51,12 @@
                 android:text="@string/lokacija"
                 android:textSize="16sp"
                 android:textColor="@color/content_secondary"
-                android:fontFamily="@font/nunito_semibold"/>
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/location_on"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -131,8 +136,13 @@
                 android:gravity="center_vertical"
                 android:text="@string/artikel"
                 android:textSize="16sp"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/inventory"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/content_secondary"
-                android:fontFamily="@font/nunito_semibold"/>
+                android:drawableTint="?attr/colorControlNormal"
+                />
 
             <TextView
                 android:id="@+id/articleName"
@@ -162,7 +172,12 @@
                 android:text="@string/opis"
                 android:textSize="16sp"
                 android:textColor="@color/content_secondary"
-                android:fontFamily="@font/nunito_semibold"/>
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/description"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal"
+                />
 
             <TextView
                 android:id="@+id/longDescription"
@@ -195,7 +210,12 @@
                 android:text="@string/partnerji"
                 android:textSize="16sp"
                 android:textColor="@color/content_secondary"
-                android:fontFamily="@font/nunito_semibold"/>
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/business"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -276,7 +296,12 @@
                 android:text="@string/cene"
                 android:textSize="16sp"
                 android:textColor="@color/content_secondary"
-                android:fontFamily="@font/nunito_semibold"/>
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/euro"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -357,7 +382,12 @@
                 android:text="@string/zaloge"
                 android:textSize="16sp"
                 android:textColor="@color/content_secondary"
-                android:fontFamily="@font/nunito_semibold"/>
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/inventory_2"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal"
+                />
 
             <!-- Prva vrstica - Minimalna zaloga, Dobava -->
             <LinearLayout
