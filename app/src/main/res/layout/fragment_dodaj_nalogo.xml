@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true"
+    tools:context=".fragments.NalogeFragment">
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Vzdrzevalec Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vzdrzevalec"
+                    android:textSize="12sp"
+                    android:textColor="@color/content_secondary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:layout_marginBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/vzdrzevalecEditText"
+                    style="@style/Input.Base"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/vnesi_ime_vzdrzevalca"
+                    android:inputType="textPersonName" />
+
+            </LinearLayout>
+
+            <!-- Naslov Naloge Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/naslov_naloge"
+                    android:textSize="12sp"
+                    android:textColor="@color/content_secondary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:layout_marginBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/naslovEditText"
+                    style="@style/Input.Base"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/vnesi_naslov_naloge"
+                    android:inputType="text"
+                    android:maxLength="100" />
+
+            </LinearLayout>
+
+            <!-- Rok Naloge Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rok_naloge"
+                    android:textSize="12sp"
+                    android:textColor="@color/content_secondary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:layout_marginBottom="8dp" />
+
+                <Button
+                    android:id="@+id/rokEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/izberi_rok"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawableEnd="@mipmap/lock"
+                    android:drawablePadding="8dp"
+                    style="@style/Button.Primary"/>
+            </LinearLayout>
+
+            <!-- Opis Naloge Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/opis_naloge"
+                    android:textSize="12sp"
+                    android:textColor="@color/content_secondary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:layout_marginBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/opisEditText"
+                    style="@style/Input.Base"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/vnesi_opis_naloge"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:maxLines="6"
+                    android:maxLength="500"
+                    android:gravity="top|start" />
+
+            </LinearLayout>
+
+            <!-- Slika Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/slika"
+                    android:textSize="12sp"
+                    android:textColor="@color/content_secondary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Image Preview -->
+                <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    android:contentDescription="@string/predogled_slike" />
+
+                <!-- Image Action Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/dodajSlikoBtn"
+                        style="@style/Button.Primary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/dodaj_sliko"
+                        android:drawableStart="@mipmap/photo_camera"
+                        android:drawablePadding="8dp" />
+
+                    <Button
+                        android:id="@+id/odstranislikoBtn"
+                        style="@style/Button.Destructive"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/odstrani_sliko"
+                        android:drawableStart="@drawable/description"
+                        android:drawablePadding="8dp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Action Buttons -->
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/bg_card_primary">
+
+        <Button
+            android:id="@+id/prekliciBtn"
+            style="@style/Button.Destructive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:layout_marginEnd="8dp"
+            android:text="@string/preklici" />
+
+        <Button
+            android:id="@+id/shraniBtn"
+            style="@style/Button.Success"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:layout_marginStart="8dp"
+            android:text="@string/shrani_nalogo" />
+
+    </LinearLayout>
+
+    <!-- Tab Navigation -->
+    <LinearLayout
+        android:id="@+id/vnos_naloge_Ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/tabNalogeBtn"
+            style="@style/Button.MaterialTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/naloge" />
+
+        <Button
+            android:id="@+id/tabVnosNalogeBtn"
+            style="@style/Button.MaterialTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/vnos_naloge" />
+
+    </LinearLayout>
+
+</LinearLayout>

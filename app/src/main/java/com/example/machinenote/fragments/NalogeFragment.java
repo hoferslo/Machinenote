@@ -52,25 +52,57 @@ public class NalogeFragment extends BaseFragment {
             binding.vnosNalogeLl.setVisibility(View.GONE);
         }
 
+        setupRecyclerView();
+        setupTabNavigation();
+        fetchNaloge();
+
+        return binding.getRoot();
+    }
+
+    private void setupRecyclerView() {
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<Naloga>() {
             @Override
             public void onItemClick(Naloga item) {
-
+                // Handle item click
             }
 
             @Override
             public void onButtonClick(Naloga item) {
-                // TODO: handle button click if needed or leave empty
+                // Handle button click if needed
             }
         });
 
         recyclerView.setAdapter(adapter);
+    }
 
-        fetchNaloge();
-        return binding.getRoot();
+    private void setupTabNavigation() {
+        // Tab navigation click listeners
+        binding.tabNalogeBtn.setOnClickListener(v -> {
+            // Already on this fragment, do nothing or refresh
+            fetchNaloge();
+        });
+
+        binding.tabVnosNalogeBtn.setOnClickListener(v -> {
+            // Switch to DodajNalogoFragment
+            if (getActivity() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.loadFragment(DodajNalogoFragment.newInstance(context));
+            }
+        });
+
+        // Cancel button (if exists in your layout)
+        if (binding.cancelBtn != null) {
+            binding.cancelBtn.setOnClickListener(v -> {
+                // Handle cancel action
+                if (getActivity() instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.onBackPressed(); // or navigate to another fragment
+                }
+            });
+        }
     }
 
     private void fetchNaloge() {
