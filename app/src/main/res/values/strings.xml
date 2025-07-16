@@ -179,5 +179,8 @@
     <string name="odstrani_sliko">Odstrani sliko</string>
     <string name="preklici">Preklici</string>
     <string name="shrani_nalogo">Shrani nalogo</string>
+
+    <string name="select_image_source">Select Image Source</string>
+    <string name="gallery">Gallery</string>
 </resources>
 

@@ -70,7 +70,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 Log.d(TAG, "onActivityResult called with resultCode: " + result.getResultCode());
-                imageCaptureHelper.handleActivityResult(result.getResultCode());
+                imageCaptureHelper.handleActivityResult(result.getResultCode(), result.getData());
             }
     );
 
