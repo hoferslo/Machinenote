@@ -22,6 +22,7 @@ import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.ImageCaptureHelper;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
+import com.example.machinenote.Utility.ConfettiHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
 
@@ -53,7 +54,6 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -83,6 +83,7 @@ public class LoginFragment extends BaseFragment {
 
         return binding.getRoot();
     }
+
 
     private void loginUsingTextviewUsernameAndPassword() {
         if (areCameraPermissionsGranted) {
@@ -143,6 +144,20 @@ public class LoginFragment extends BaseFragment {
                 // CRITICAL FIX: Check if fragment is still attached before UI operations
                 if (isAdded() && getActivity() != null) {
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
+
+                    // Check for easter egg AFTER successful login
+                    if ("UNICHEM".equals(username) && "UNICHEM".equals(password)) {
+                        Log.d(TAG, "Easter egg activated after successful login!");
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            ViewGroup rootView = (ViewGroup) activity.findViewById(android.R.id.content);
+                            ConfettiHelper.showConfetti(context, rootView);
+
+                            // Add a slight delay to ensure the confetti shows
+                            Toast.makeText(context, "🎉 UNICHEM! 🎉", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.clearAllFragmentFromBackStack();
                     mainActivity.loadFragment(DashboardFragment.newInstance(context));
