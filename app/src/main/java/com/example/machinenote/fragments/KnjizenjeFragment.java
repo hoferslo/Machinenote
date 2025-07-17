@@ -16,6 +16,7 @@ import com.example.machinenote.Utility.KeyboardUtils;
 import com.example.machinenote.Utility.MailHelper;
 import com.example.machinenote.Utility.ViewUtils;
 import com.example.machinenote.activities.MainActivity;
+import com.example.machinenote.customFragments.RezervniDeliBottomSheetFragment;
 import com.example.machinenote.databinding.FragmentKnjizenjeBinding;
 import com.example.machinenote.models.RezervniDel;
 
@@ -76,6 +77,14 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
             mainActivity.onBackPressed();
         });
 
+        binding.articleNameLayout.setOnClickListener(v -> {
+            if (rezervniDel != null) {
+                showBottomSheet();
+            } else {
+                Toast.makeText(context, "No article data available", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         binding.scanQRBtn.setOnClickListener(v -> startQRCodeScanner());
 
         binding.sendGmail.setOnClickListener(v -> openGmail());
@@ -94,7 +103,7 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
         MailHelper.openEmailClient(
                 context,                              // context
                 "casperkadivec@gmail.com",             // recipient
-                "Subject of the email",            // subject
+                "Subject of the email",            // subject //TODO: add subject and body of email
                 "Body of the email"                // body
         );
     }
@@ -144,7 +153,7 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
 
     private void hideMail() {
         binding.sendGmail.setVisibility(View.GONE);
-        binding.articleMinimumLl.setBackgroundResource(R.drawable.bg_card_interactive);
+        binding.articleMinimumLl.setBackgroundResource(R.drawable.bg_card_secondary);
     }
 
     private void addToDataLl() {
@@ -203,5 +212,11 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
     @Override
     public void onScanCancelled() {
         Toast.makeText(getContext(), getString(R.string.scan_cancelled), Toast.LENGTH_LONG).show();
+    }
+
+    private void showBottomSheet() {
+        RezervniDeliBottomSheetFragment bottomSheetFragment =
+                RezervniDeliBottomSheetFragment.newInstance(context, rezervniDel);
+        bottomSheetFragment.show(getChildFragmentManager(), "RezervniDeliBottomSheet");
     }
 }

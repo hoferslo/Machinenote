@@ -12,11 +12,15 @@
 
     <!-- Article Name Header - Compact -->
     <LinearLayout
+        android:id="@+id/articleNameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:padding="12dp"
-        android:background="@drawable/bg_card_primary">
+        android:background="@drawable/bg_card_interactive"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/article_name"
