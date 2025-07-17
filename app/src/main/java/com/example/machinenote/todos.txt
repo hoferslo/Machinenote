@@ -10,3 +10,6 @@
 
 
 - iskanje po rezervnih delih poprav pa odstran uspodi info, pa nevem ce rabm zalogo
+
+
+Vprasej kere stvari pokazat samo - rezervni deli in drobni material
