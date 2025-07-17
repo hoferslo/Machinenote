@@ -3,6 +3,7 @@ package com.example.machinenote.customFragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,8 @@ public class RezervniDeliBottomSheetFragment extends BottomSheetDialogFragment {
         currencyFormat = new DecimalFormat("#,##0.00 €");
 
         // Populate header with ID
-        binding.partIdHeader.setText(getString(R.string.id_rezervnega_dela, rezervniDel.getId()));
-
+        binding.partIdHeader.setText(getString(R.string.id_rezervnega_dela) + ": " + rezervniDel.getId());
+        //Log.d("WOW", "RezervniDel ID: " + getString(R.string.id_rezervnega_dela, rezervniDel.getId()));
         // Populate location data
         binding.warehouse.setText(String.valueOf(rezervniDel.getSkladišče()));
         if (rezervniDel.getRegal() != null && !rezervniDel.getRegal().isEmpty()) {

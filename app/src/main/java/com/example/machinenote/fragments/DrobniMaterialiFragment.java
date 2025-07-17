@@ -60,22 +60,30 @@ public class DrobniMaterialiFragment extends BaseFragment {
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<DrobniMateriali>() {
-            @Override
-            public void onItemClick(DrobniMateriali del) {
-                // Create and show the bottom sheet
-                DrobniMaterialiBottomSheetFragment bottomSheet =
-                        DrobniMaterialiBottomSheetFragment.newInstance(getContext(), del);
-                bottomSheet.show(getChildFragmentManager(), "RezervniDeliBottomSheet");
-            }
+        adapter = GenericAdapter.create(
+                getContext(),
+                new ArrayList<>(),
+                new GenericAdapter.OnItemClickListener<DrobniMateriali>() {
+                    @Override
+                    public void onItemClick(DrobniMateriali del) {
+                        DrobniMaterialiBottomSheetFragment bottomSheet =
+                                DrobniMaterialiBottomSheetFragment.newInstance(getContext(), del);
+                        bottomSheet.show(getChildFragmentManager(), "DrobniMaterialiBottomSheet");
+                    }
 
-            @Override
-            public void onButtonClick(DrobniMateriali material) {
-                Toast.makeText(getContext(),
-                        "Gumb za: " + material.getMaterial() + " - " + material.getVrsta(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onButtonClick(DrobniMateriali del) {
+                        // Handle button click
+                    }
+                },
+                "ID",              // Only show these fields
+                "Material",   // in this order
+                "Vrsta",
+                "Velikost",
+                "Skladišče",
+                "Regal"
+                // Don't include "dolgi_opis" or any other fields you don't want
+        );
 
         recyclerView.setAdapter(adapter);
 
@@ -102,9 +110,6 @@ public class DrobniMaterialiFragment extends BaseFragment {
         // Setup Tab Navigation
         setupTabNavigation();
 
-        // Initialize stock display
-        updateStockDisplay(0);
-
         fetchDrobniMateriali();
 
         return binding.getRoot();
@@ -127,10 +132,6 @@ public class DrobniMaterialiFragment extends BaseFragment {
         });
     }
 
-    private void updateStockDisplay(int count) {
-        binding.materialStock.setText(String.valueOf(count));
-    }
-
     private void fetchDrobniMateriali() {
         MainActivity mainActivity = (MainActivity) requireActivity();
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(requireContext());
@@ -145,8 +146,6 @@ public class DrobniMaterialiFragment extends BaseFragment {
                     }
                     drobniMaterialiList = response;
                     adapter.updateList(drobniMaterialiList);
-                    updateStockDisplay(drobniMaterialiList.size());
-
                     String json = new Gson().toJson(drobniMaterialiList);
                     sharedPreferencesHelper.putString("DrobniMaterialiList", json);
                 }
@@ -169,7 +168,6 @@ public class DrobniMaterialiFragment extends BaseFragment {
             drobniMaterialiList = new Gson().fromJson(json, type);
             if (drobniMaterialiList != null) {
                 adapter.updateList(drobniMaterialiList);
-                updateStockDisplay(drobniMaterialiList.size());
             } else {
                 Log.e(TAG, "Parsed drobniMaterialiList is null.");
             }

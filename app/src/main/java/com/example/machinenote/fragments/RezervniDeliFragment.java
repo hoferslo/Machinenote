@@ -56,20 +56,29 @@ public class RezervniDeliFragment extends BaseFragment {
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<RezervniDel>() {
-            @Override
-            public void onItemClick(RezervniDel del) {
-                // Create and show the bottom sheet
-                RezervniDeliBottomSheetFragment bottomSheet =
-                        RezervniDeliBottomSheetFragment.newInstance(getContext(), del);
-                bottomSheet.show(getChildFragmentManager(), "RezervniDeliBottomSheet");
-            }
+        adapter = GenericAdapter.create(
+                getContext(),
+                new ArrayList<>(),
+                new GenericAdapter.OnItemClickListener<RezervniDel>() {
+                    @Override
+                    public void onItemClick(RezervniDel del) {
+                        RezervniDeliBottomSheetFragment bottomSheet =
+                                RezervniDeliBottomSheetFragment.newInstance(getContext(), del);
+                        bottomSheet.show(getChildFragmentManager(), "RezervniDeliBottomSheet");
+                    }
 
-            @Override
-            public void onButtonClick(RezervniDel del) {
+                    @Override
+                    public void onButtonClick(RezervniDel del) {
+                        // Handle button click
+                    }
+                },
+                "Artikel",              // Only show these fields
+                "ID",   // in this order
+                "Skladišče",
+                "Dobavitelj"
+                // Don't include "dolgi_opis" or any other fields you don't want
+        );
 
-            }
-        });
 
         recyclerView.setAdapter(adapter);
 

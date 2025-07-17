@@ -56,17 +56,26 @@ public class ImenikFragment extends BaseFragment {
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<Imenik>() {
-            @Override
-            public void onItemClick(Imenik item) {
-                ImenikBottomSheetFragment bottomSheetFragment = ImenikBottomSheetFragment.newInstance(requireActivity(), item);
-                bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
-            }
+        adapter = GenericAdapter.create(
+                getContext(),
+                new ArrayList<>(),
+                new GenericAdapter.OnItemClickListener<Imenik>() {
+                    @Override
+                    public void onItemClick(Imenik item) {
+                        ImenikBottomSheetFragment bottomSheetFragment = ImenikBottomSheetFragment.newInstance(requireActivity(), item);
+                        bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+                    }
 
-            @Override
-            public void onButtonClick(Imenik item) {
-            }
-        });
+                    @Override
+                    public void onButtonClick(Imenik item) {
+                        // Handle button click if needed
+                    }
+                },
+                "naziv_podjetja",     // Add the field names you want to display
+                "kontaktna_oseba",    // in the order you want them
+                "mail"               // Remove any fields you don't want to show
+                // Add more fields as needed based on your Imenik model
+        );
 
         recyclerView.setAdapter(adapter);
 

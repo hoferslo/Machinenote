@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.R;
 import com.example.machinenote.models.DisplayableItem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,16 +26,66 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
     private final Context context;
     private List<T> itemList;
     private final OnItemClickListener<T> onItemClickListener;
+    private final List<String> fieldsToDisplay;
+    private final Map<String, String> fieldDisplayNames;
 
     public interface OnItemClickListener<T> {
         void onItemClick(T item);
         void onButtonClick(T item);
     }
 
-    public GenericAdapter(Context context, List<T> itemList, OnItemClickListener<T> onItemClickListener) {
+    /**
+     * Constructor with field names to display
+     * @param context Context
+     * @param itemList List of items
+     * @param onItemClickListener Click listener
+     * @param fieldsToDisplay List of field names to display in order
+     */
+    public GenericAdapter(Context context, List<T> itemList, OnItemClickListener<T> onItemClickListener, List<String> fieldsToDisplay) {
         this.context = context;
         this.itemList = itemList;
         this.onItemClickListener = onItemClickListener;
+        this.fieldsToDisplay = fieldsToDisplay;
+        this.fieldDisplayNames = new HashMap<>();
+    }
+
+    /**
+     * Constructor with field names and custom display names
+     * @param context Context
+     * @param itemList List of items
+     * @param onItemClickListener Click listener
+     * @param fieldsToDisplay List of field names to display in order
+     * @param fieldDisplayNames Map of field names to display names (e.g., "artikel" -> "Article Code")
+     */
+    public GenericAdapter(Context context, List<T> itemList, OnItemClickListener<T> onItemClickListener,
+                                   List<String> fieldsToDisplay, Map<String, String> fieldDisplayNames) {
+        this.context = context;
+        this.itemList = itemList;
+        this.onItemClickListener = onItemClickListener;
+        this.fieldsToDisplay = fieldsToDisplay;
+        this.fieldDisplayNames = fieldDisplayNames != null ? fieldDisplayNames : new HashMap<>();
+    }
+
+    /**
+     * Convenience method to create adapter with varargs
+     */
+    public static <T extends DisplayableItem> GenericAdapter<T> create(
+            Context context, List<T> itemList, OnItemClickListener<T> onItemClickListener, String... fieldsToDisplay) {
+        List<String> fieldList = new ArrayList<>();
+        for (String field : fieldsToDisplay) {
+            fieldList.add(field);
+        }
+        return new GenericAdapter<>(context, itemList, onItemClickListener, fieldList);
+    }
+
+    /**
+     * Convenience method to create adapter with field mappings
+     */
+    public static <T extends DisplayableItem> GenericAdapter<T> createWithDisplayNames(
+            Context context, List<T> itemList, OnItemClickListener<T> onItemClickListener,
+            Map<String, String> fieldMappings) {
+        List<String> fieldList = new ArrayList<>(fieldMappings.keySet());
+        return new GenericAdapter<>(context, itemList, onItemClickListener, fieldList, fieldMappings);
     }
 
     public void updateList(List<T> newList) {
@@ -71,14 +124,26 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
         public void bind(T item) {
             container.removeAllViews(); // clear old views
 
-            Map<String, String> fields = item.getDisplayFields();
+            Map<String, String> allFields = item.getDisplayFields();
 
-            // Create views dynamically based on fields
-            for (Map.Entry<String, String> entry : fields.entrySet()) {
+            // Create filtered fields map in the specified order
+            Map<String, String> filteredFields = new LinkedHashMap<>();
+
+            for (String fieldName : fieldsToDisplay) {
+                if (allFields.containsKey(fieldName)) {
+                    String value = allFields.get(fieldName);
+                    if (value != null && !value.trim().isEmpty()) {
+                        // Use custom display name if available, otherwise use original field name
+                        String displayName = fieldDisplayNames.getOrDefault(fieldName, fieldName);
+                        filteredFields.put(displayName, value);
+                    }
+                }
+            }
+
+            // Create views dynamically based on filtered fields
+            for (Map.Entry<String, String> entry : filteredFields.entrySet()) {
                 String label = entry.getKey();
                 String value = entry.getValue();
-
-                if (value == null || value.isEmpty()) continue;
 
                 // Create a horizontal layout for each field
                 LinearLayout fieldLayout = new LinearLayout(context);

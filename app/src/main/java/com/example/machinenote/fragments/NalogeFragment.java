@@ -63,18 +63,24 @@ public class NalogeFragment extends BaseFragment {
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new GenericAdapter<>(getContext(), new ArrayList<>(), new GenericAdapter.OnItemClickListener<Naloga>() {
-            @Override
-            public void onItemClick(Naloga item) {
-                // Handle item click
-            }
+        adapter = GenericAdapter.create(
+                getContext(),
+                new ArrayList<>(),
+                new GenericAdapter.OnItemClickListener<Naloga>() {
+                    @Override
+                    public void onItemClick(Naloga item) {
+                    }
 
-            @Override
-            public void onButtonClick(Naloga item) {
-                // Handle button click if needed
-            }
-        });
-
+                    @Override
+                    public void onButtonClick(Naloga item) {
+                        // Handle button click if needed
+                    }
+                },
+                "Vzdrzevalec",     // Add the field names you want to display
+                "Opis",    // in the order you want them
+                "Naloga"               // Remove any fields you don't want to show
+                // Add more fields as needed based on your Imenik model
+        );
         recyclerView.setAdapter(adapter);
     }
 
