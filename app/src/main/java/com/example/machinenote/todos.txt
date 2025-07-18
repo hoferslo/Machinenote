@@ -16,6 +16,9 @@
 
 - nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. )
 - za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
+- 1. najprej registriraj uporabnika (password, username)
+- 2. nato mu doloci rolo al pa jo nared // nevem kako bi to naredu mogoce posebi fragment?
+
 - navodila za aplikacijo
 - excel / grafi za podatke (statistika in grafika)
 - mogoce dam na net pa nardim ai da samo nardi grafe glede na podatke da ni treba excel k je glup saj men
