@@ -1,15 +1,21 @@
 - make settings for bitmap commpression quality
-- disable back button on login and main page
 - add Preventivni pregledi, vsa orodja, Naloge (vnos naloge)
-- rezervni deli
 
 - qr koda izpolne informacije?
 - upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
 - dodajanje naročil v aplikacijo / matej naredi osnutek
 - optimiziraj kodo za register
 
+- iskanje po rezervnih delih poprav
 
-- iskanje po rezervnih delih poprav pa odstran uspodi info, pa nevem ce rabm zalogo
+- Vprasej kere stvari pokazat samo - rezervni deli in drobni material
+- vprasej ce je ura uredu?
+- a je knjizenje uredu al ga nekak zbolsam?
+- dokoncej vnos naloge (Slikanje + Date picker), fixej uspodi nav view
+- v registru fixi padding
 
-
-Vprasej kere stvari pokazat samo - rezervni deli in drobni material
+- nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. )
+- za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
+- navodila za aplikacijo
+- excel / grafi za podatke (statistika in grafika)
+- mogoce dam na net pa nardim ai da samo nardi grafe glede na podatke da ni treba excel k je glup saj men

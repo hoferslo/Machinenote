@@ -329,7 +329,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
             for (Linija l : linije) {
                 if (l.getLinija_SAP().equals(linijaSap)) {
                     setLinija(l);
-                    binding.idOfLineBtn.setText(linija.getLinijeSapAndNames());
+                    binding.idOfLineBtn.setText(linija.getLinijeSapAndNames()); // TODO: dodaj ko je qr scanned da ti nastela uro
                     adapter.updateItemStatus(5, true);
                     success = true;
                     qrKoda = getString(R.string.QR_koda_value_positive);
