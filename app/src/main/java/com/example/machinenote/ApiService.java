@@ -4,6 +4,7 @@ import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Naloga;
+import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
@@ -33,6 +34,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("users.php/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+
+    @Headers("Content-Type: application/json")
+    @GET("preventivni_pregledi.php") // Predvidevana pot do vaše PHP skripte
+    Call<List<PreventivniPregled>> getPreventivniPregledi();
 
     @Headers("Content-Type: application/json")
     @GET("rezervni_deli.php")

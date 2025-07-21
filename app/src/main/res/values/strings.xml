@@ -84,6 +84,7 @@
     <string name="tag_imenik">Imenik</string>
     <string name="tag_rezervni_deli">Rezervni deli</string>
     <string name="tag_drobni_materiali">Drobni materiali</string>
+    <string name="tag_preventivni_pregledi">Preventivni pregledi</string>
 
     <string name="QR_koda_value_negative">NE</string>
     <string name="QR_koda_value_positive">DA</string>

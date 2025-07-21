@@ -9,6 +9,7 @@ import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Naloga;
+import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.Remont;
 import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
@@ -71,6 +72,40 @@ public class ApiManager {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e("error onFailure", String.valueOf(t));
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public interface PreventivniPreglediCallback {
+        void onSuccess(List<PreventivniPregled> response);
+        void onFailure(String errorMessage);
+    }
+
+    public void getPreventivniPregledi(final PreventivniPreglediCallback callback) {
+        Call<List<PreventivniPregled>> call = apiService.getPreventivniPregledi();
+        call.enqueue(new Callback<List<PreventivniPregled>>() {
+            @Override
+            public void onResponse(Call<List<PreventivniPregled>> call, Response<List<PreventivniPregled>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    String errorMessage = "Failed to retrieve preventivni pregledi. Response code: " + response.code();
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage += " - " + response.errorBody().string();
+                        } catch (Exception e) {
+                            Log.e("ApiManager", "Error parsing error body", e);
+                        }
+                    }
+                    Log.e("ApiManager", errorMessage);
+                    callback.onFailure(errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PreventivniPregled>> call, Throwable t) {
+                Log.e("ApiManager", "API call failed for preventivni pregledi: " + t.getMessage(), t);
                 callback.onFailure(t.getMessage());
             }
         });

@@ -123,9 +123,7 @@ public class DashboardFragment extends BaseFragment {
                 MaterialButton btn = addButtonToLayout("Preventivni pregledi");
                 btn.setOnClickListener(view -> {
                     MainActivity mainActivity = (MainActivity) requireActivity();
-                    //mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
-
-
+                    mainActivity.loadFragment(PreventivniPreglediFragment.newInstance(context));
                 });
             }
         }

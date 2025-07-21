@@ -71,9 +71,9 @@ public class ImenikFragment extends BaseFragment {
                         // Handle button click if needed
                     }
                 },
-                "naziv_podjetja",     // Add the field names you want to display
-                "kontaktna_oseba",    // in the order you want them
-                "mail"               // Remove any fields you don't want to show
+                "Company Name",     // Add the field names you want to display
+                "Contact Person",    // in the order you want them
+                "Phone"               // Remove any fields you don't want to show
                 // Add more fields as needed based on your Imenik model
         );
 
