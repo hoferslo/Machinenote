@@ -9,6 +9,7 @@ import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Naloga;
+import com.example.machinenote.models.PregledOpravilo;
 import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.Remont;
 import com.example.machinenote.models.RezervniDel;
@@ -76,6 +77,16 @@ public class ApiManager {
             }
         });
     }
+    public interface UpdateCallback {
+        void onSuccess(String message);
+
+        void onSuccess(List<PreventivniPregled> response);
+        void onFailure(String errorMessage);
+    }
+
+    public void updateOpraviloStatus(int id, PregledOpravilo opravilo, ApiManager.UpdateCallback updateCallback) {
+
+    }
 
     public interface PreventivniPreglediCallback {
         void onSuccess(List<PreventivniPregled> response);
@@ -109,6 +120,44 @@ public class ApiManager {
                 callback.onFailure(t.getMessage());
             }
         });
+    }
+
+    // Add this method to your ApiManager class
+    public void getOpravilaForPregled(int pregledId, OpravilaCallback callback) {
+        Call<List<PregledOpravilo>> call = apiService.getOpravilaForPregled(pregledId);
+        call.enqueue(new Callback<List<PregledOpravilo>>() {
+            @Override
+            public void onResponse(Call<List<PregledOpravilo>> call, Response<List<PregledOpravilo>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<PregledOpravilo> opravilaList = response.body();
+                    Log.d("ApiManager", "Opravila retrieved successfully for pregled: " + pregledId);
+                    callback.onSuccess(opravilaList);
+                } else {
+                    String errorMessage = "Failed to retrieve opravila for pregled " + pregledId + ". Response code: " + response.code();
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage += " - " + response.errorBody().string();
+                        } catch (Exception e) {
+                            Log.e("ApiManager", "Error parsing error body", e);
+                        }
+                    }
+                    Log.e("ApiManager", errorMessage);
+                    callback.onFailure(errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PregledOpravilo>> call, Throwable t) {
+                Log.e("ApiManager", "API call failed for opravila: " + t.getMessage(), t);
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    // Add the callback interface at the bottom of your ApiManager class with the other interfaces
+    public interface OpravilaCallback {
+        void onSuccess(List<PregledOpravilo> opravilaList);
+        void onFailure(String errorMessage);
     }
 
     public void getZastoji(ZastojiCallback callback) {

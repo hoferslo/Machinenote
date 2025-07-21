@@ -10,6 +10,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,23 +62,23 @@ public class PreventivniPreglediFragment extends BaseFragment {
                 new GenericAdapter.OnItemClickListener<PreventivniPregled>() {
                     @Override
                     public void onItemClick(PreventivniPregled pregled) {
-                        /*
+                        // Navigacija na fragment z opravili
                         MainActivity mainActivity = (MainActivity) requireActivity();
                         PreventivniPreglediOpravilaFragment opravilaFragment =
                                 PreventivniPreglediOpravilaFragment.newInstance(getContext(), pregled);
-                        mainActivity.loadFragment(opravilaFragment); */
+                        mainActivity.loadFragment(opravilaFragment);
                     }
 
                     @Override
                     public void onButtonClick(PreventivniPregled pregled) {
-                        // Handle button click
+                        // Dodajte hitro akcijo - npr. premik v "V teku" status
+                        showQuickActionDialog(pregled);
                     }
                 },
-                "Naziv",              // Only show these fields
-                "ID",                 // in this order
+                "Naziv",
+                "ID",
                 "Datum",
                 "Status"
-                // Don't include other fields you don't want to show
         );
 
         recyclerView.setAdapter(adapter);
@@ -122,6 +123,25 @@ public class PreventivniPreglediFragment extends BaseFragment {
                 // }
             }
         });
+    }
+
+    private void showQuickActionDialog(PreventivniPregled pregled) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Hitro dejanje")
+                .setMessage("Kaj želite narediti s pregledом: " + pregled.getNaziv() + "?")
+                .setPositiveButton("Začni pregled", (dialog, which) -> {
+                    // TODO: API call za začetek pregleda
+                    pregled.setStatus("V teku");
+                    adapter.notifyDataSetChanged();
+                })
+                .setNegativeButton("Pokaži opravila", (dialog, which) -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    PreventivniPreglediOpravilaFragment opravilaFragment =
+                            PreventivniPreglediOpravilaFragment.newInstance(getContext(), pregled);
+                    mainActivity.loadFragment(opravilaFragment);
+                })
+                .setNeutralButton("Prekliči", null)
+                .show();
     }
 
     private void fetchPreventivniPregledi() {
