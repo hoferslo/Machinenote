@@ -9,7 +9,7 @@
         <item name="colorAccent">@color/action_secondary</item>
 
         <!-- Status bar -->
-        <item name="android:statusBarColor">@color/testna3</item>
+        <item name="android:statusBarColor">@color/neutral_75</item>
 
         <!-- Typography -->
         <item name="android:fontFamily">@font/nunito_semibold</item>

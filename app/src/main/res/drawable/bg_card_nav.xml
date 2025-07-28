@@ -3,14 +3,14 @@
     <!-- Top border line -->
     <item android:height="1dp" android:gravity="top">
         <shape android:shape="rectangle">
-            <solid android:color="@color/border_primary" />
+            <solid android:color="@color/border_secondary" />
         </shape>
     </item>
 
     <!-- Bottom border line -->
     <item android:height="1dp" android:gravity="bottom">
         <shape android:shape="rectangle">
-            <solid android:color="@color/border_primary" />
+            <solid android:color="@color/border_secondary" />
         </shape>
     </item>
 
