@@ -14,7 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        >
 
         <!-- Data Entry Screen -->
         <LinearLayout
@@ -49,14 +52,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                android:background="@drawable/bg_card_primary">
+                >
 
                 <LinearLayout
                     android:id="@+id/formContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    >
 
                     <!-- Sifrant Button -->
                     <Button
@@ -118,8 +121,7 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:layout_marginBottom="16dp"
-                        android:background="@drawable/bg_card_primary"
-                        android:padding="12dp">
+                        android:padding="0dp">
 
                         <Button
                             android:id="@+id/idOfLineBtn"
@@ -197,7 +199,7 @@
                         android:orientation="horizontal"
                         android:baselineAligned="false"
                         android:gravity="center"
-                        android:background="@drawable/bg_card_secondary"
+                        android:background="@drawable/bg_card_primary"
                         android:padding="16dp">
 
                         <!-- Start Time Clock -->
@@ -322,14 +324,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="@drawable/bg_card_primary">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        >
 
         <Button
             android:id="@+id/cancelBtn"
             style="@style/Button.Destructive"
             android:layout_width="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/cancel" />
@@ -338,7 +343,7 @@
             android:id="@+id/sendBtn"
             style="@style/Button.Success"
             android:layout_width="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/send" />
