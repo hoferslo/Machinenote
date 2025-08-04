@@ -216,25 +216,27 @@ public class DodajNalogoFragment extends BaseFragment {
             removeImage();
         });
     }
-
     private void saveNaloga() {
         String vzdrzevalec = binding.vzdrzevalecEditText.getText().toString().trim();
         String naslov = binding.naslovEditText.getText().toString().trim();
-        String rok = binding.rokEditText.getText().toString().trim();
         String opis = binding.opisEditText.getText().toString().trim();
 
-        if (vzdrzevalec.isEmpty() || naslov.isEmpty() || rok.isEmpty()) {
+        if (vzdrzevalec.isEmpty() || naslov.isEmpty() || selectedDate == null) {
             Toast.makeText(context, "Prosimo, izpolnite vsa obvezna polja", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Create Naloga object using the full constructor
+        // Format date for SQL (YYYY-MM-DD format)
+        SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String rokForDatabase = sqlDateFormat.format(selectedDate.getTime());
+
+        // Create Naloga object using the SQL-formatted date
         Naloga naloga = new Naloga(
                 0, // id (will be set by database)
                 vzdrzevalec,
                 naslov,
                 opis,
-                rok,
+                rokForDatabase, // Use SQL format instead of display format
                 "", // izvedeno - empty initially
                 "", // komentar - empty initially
                 0, // izvedenoBool - 0 means false/not completed
