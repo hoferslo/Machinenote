@@ -14,7 +14,7 @@
 - dokoncej vnos naloge (Slikanje + Date picker), fixej uspodi nav view
 - v registru fixi padding
 
-- nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. )
+- nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. ;D )
 - za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
 - 1. najprej registriraj uporabnika (password, username)
 - 2. nato mu doloci rolo al pa jo nared // nevem kako bi to naredu mogoce posebi fragment?

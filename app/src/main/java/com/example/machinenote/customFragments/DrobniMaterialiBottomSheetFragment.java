@@ -76,8 +76,8 @@ public class DrobniMaterialiBottomSheetFragment extends BottomSheetDialogFragmen
         // Hide stock management fields (not applicable for DrobniMateriali)
         binding.partnerji.setVisibility(View.GONE);
 
-        // You might also want to hide the labels/headers for these sections
-        // Depending on your layout structure, you may need to hide parent containers
+        // You might also want to hide the labels/headers for these sections if they don't apply
+        // Depending on your layout structure, you may need to hide parent containers as well
     }
 
     private void setupClickListeners() {

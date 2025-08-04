@@ -14,7 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
 
         <!-- Data Entry Screen -->
         <LinearLayout
@@ -49,14 +51,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                android:background="@drawable/bg_card_primary">
+                >
 
                 <LinearLayout
                     android:id="@+id/formContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    >
 
                     <!-- Line and QR Code Section -->
                     <LinearLayout
@@ -65,8 +67,7 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:layout_marginBottom="16dp"
-                        android:background="@drawable/bg_card_primary"
-                        android:padding="12dp">
+                        >
 
                         <Button
                             android:id="@+id/idOfLineBtn"
@@ -134,7 +135,7 @@
                         android:orientation="horizontal"
                         android:baselineAligned="false"
                         android:gravity="center"
-                        android:background="@drawable/bg_card_secondary"
+                        android:background="@drawable/bg_card_primary"
                         android:padding="16dp">
 
                         <!-- Start Time Clock -->
@@ -150,9 +151,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="120dp"
                                 android:layout_gravity="center_horizontal"
-                                app:secondTint="@android:color/transparent"
+                                app:secondTint="@color/action_primary"
                                 app:hourTint="@color/action_primary"
-                                app:minuteTint="@color/action_secondary" />
+                                app:minuteTint="@color/action_primary"
+                                app:faceTint="@color/border_primary"/>
 
                             <TextView
                                 android:id="@+id/textBeforeTime"
@@ -179,9 +181,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="120dp"
                                 android:layout_gravity="center_horizontal"
-                                app:secondTint="@android:color/transparent"
+                                app:secondTint="@color/action_primary"
                                 app:hourTint="@color/action_primary"
-                                app:minuteTint="@color/action_secondary" />
+                                app:minuteTint="@color/action_primary"
+                                app:faceTint="@color/border_primary"
+                                />
 
                             <TextView
                                 android:id="@+id/textAfterTime"
@@ -257,14 +261,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="@drawable/bg_card_primary">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        >
 
         <Button
             android:id="@+id/cancelBtn"
             style="@style/Button.Destructive"
             android:layout_width="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/cancel" />
@@ -273,46 +280,61 @@
             android:id="@+id/sendBtn"
             style="@style/Button.Success"
             android:layout_width="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/send" />
 
     </LinearLayout>
 
+
     <!-- Tab Navigation -->
-    <com.google.android.material.button.MaterialButtonToggleGroup
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:selectionRequired="true"
-        app:checkedButton="@id/tabEntryBtn">
+        android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tabEntryBtn"
-            style="@style/Button.MaterialTab"
-            android:layout_width="0dp"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border_primary" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/tab_for_inserting_data" />
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@id/tabEntryBtn">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tabPicturesBtn"
-            style="@style/Button.MaterialTab"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/tab_for_pictures" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabEntryBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tab_for_inserting_data"
+                app:icon="@drawable/add_box"
+                />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tabInfoBtn"
-            style="@style/Button.MaterialTab"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:text="@string/tab_for_info" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabPicturesBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tab_for_pictures"
+                app:icon="@mipmap/photo_camera"/>
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabInfoBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:text="@string/tab_for_info" />
 
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
 </LinearLayout>

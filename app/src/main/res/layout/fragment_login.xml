@@ -50,6 +50,7 @@
                     android:textColorHint="@color/content_tertiary"
                     android:textSize="16sp"
                     android:fontFamily="@font/nunito_semibold"
+                    android:textCursorDrawable="@null"
                     android:inputType="textPersonName"
                     android:importantForAutofill="no"
                     android:minHeight="48dp"
@@ -78,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
+                    android:textCursorDrawable="@null"
                     android:hint="@string/password"
                     android:padding="8dp"
                     android:inputType="textPassword"/>
@@ -124,5 +126,4 @@
             android:focusable="true" />
 
     </LinearLayout>
-
 </FrameLayout>

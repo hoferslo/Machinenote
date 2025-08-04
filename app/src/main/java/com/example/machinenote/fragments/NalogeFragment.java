@@ -31,7 +31,6 @@ public class NalogeFragment extends BaseFragment {
     private GenericAdapter<Naloga> adapter;
 
     public NalogeFragment() {
-        // Required empty public constructor
     }
 
     public static NalogeFragment newInstance(Context context) {
@@ -79,7 +78,6 @@ public class NalogeFragment extends BaseFragment {
                 "Vzdrzevalec",     // Add the field names you want to display
                 "Opis",    // in the order you want them
                 "Naloga"               // Remove any fields you don't want to show
-                // Add more fields as needed based on your Imenik model
         );
         recyclerView.setAdapter(adapter);
     }
@@ -99,7 +97,7 @@ public class NalogeFragment extends BaseFragment {
             }
         });
 
-        // Cancel button (if exists in your layout)
+        // Cancel button (if it exists in your layout)
         if (binding.cancelBtn != null) {
             binding.cancelBtn.setOnClickListener(v -> {
                 // Handle cancel action

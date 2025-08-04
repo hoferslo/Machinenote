@@ -93,30 +93,42 @@
     </LinearLayout>
 
     <!-- Tab Navigation -->
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/vnos_naloge_Ll"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:selectionRequired="true"
-        app:checkedButton="@id/tabNalogeBtn">
+        android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tabNalogeBtn"
-            style="@style/Button.MaterialTab"
-            android:layout_width="0dp"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border_primary" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/vnos_naloge_Ll"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/naloge" />
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@id/tabNalogeBtn">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tabVnosNalogeBtn"
-            style="@style/Button.MaterialTab"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/vnos_naloge" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabNalogeBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/naloge" />
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabVnosNalogeBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/vnos_naloge"
+                app:icon="@drawable/add_box"/>
 
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
 </LinearLayout>
