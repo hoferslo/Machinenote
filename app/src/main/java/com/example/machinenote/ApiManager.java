@@ -628,23 +628,35 @@ public class ApiManager {
         });
     }
 
-    public void createNaloga(Naloga naloga, final Callback<Void> callback) {
-        Call<Void> call = apiService.createNaloga(naloga);
+    public void sendNalogaWithImages(Naloga naloga, List<File> imageFiles, final Callback<Void> callback) {
+        // Convert Naloga to RequestBody
+        RequestBody nalogaBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(naloga));
+
+        // Convert image files to MultipartBody.Part
+        List<MultipartBody.Part> imageParts = new ArrayList<>();
+        for (File file : imageFiles) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("images[]", file.getName(), requestFile);  // Changed "images" to "images[]"
+            imageParts.add(body);
+        }
+
+        // Call the API
+        Call<Void> call = apiService.sendNalogaWithImages(nalogaBody, imageParts);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d("NalogaManager", "Naloga created successfully");
+                    Log.d("ApiManager", "Naloga and images sent successfully");
                     callback.onResponse(call, response);
                 } else {
-                    Log.e("NalogaManager", "Failed to create Naloga: " + response.message());
+                    Log.e("ApiManager", "Failed to send Naloga and images: " + response.message());
                     callback.onFailure(call, new Throwable(response.message()));
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("NalogaManager", "Error: " + t.getMessage());
+                Log.e("ApiManager", "Error: " + t.getMessage());
                 callback.onFailure(call, t);
             }
         });

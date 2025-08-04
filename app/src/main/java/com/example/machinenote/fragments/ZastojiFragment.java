@@ -41,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragment.QRCodeScanCallback {
+public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFragment.QRCodeScanCallback {
 
     private List<Linija> linije;
     private Linija linija;

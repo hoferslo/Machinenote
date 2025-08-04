@@ -401,19 +401,22 @@
     </FrameLayout>
 
     <!-- Bottom Action Buttons -->
+    <!-- Bottom Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_card_primary">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        >
 
         <Button
             android:id="@+id/cancelBtn"
             style="@style/Button.Destructive"
             android:layout_width="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/cancel" />
@@ -422,10 +425,10 @@
             android:id="@+id/registerButton"
             style="@style/Button.Success"
             android:layout_width="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/register_button" />
+            android:text="@string/send" />
 
     </LinearLayout>
 

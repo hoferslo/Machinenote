@@ -136,9 +136,12 @@ public interface ApiService {
     @GET("naloge.php")
     Call<List<Naloga>> getNaloge();
 
-    @Headers("Content-Type: application/json")
+    @Multipart
     @POST("naloge.php")
-    Call<Void> createNaloga(@Body Naloga naloga);
+    Call<Void> sendNalogaWithImages(
+            @Part("naloga") RequestBody naloga,  // Changed from "naloge" to "naloga"
+            @Part List<MultipartBody.Part> images
+    );
 
     @Headers("Content-Type: application/json")
     @PUT("naloge.php/{id}")
