@@ -1,24 +1,17 @@
 package com.example.machinenote.fragments;
 
-import android.Manifest;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import android.widget.DatePicker;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
@@ -26,11 +19,12 @@ import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDodajNalogoBinding;
 import com.example.machinenote.models.Naloga;
 import com.example.machinenote.ApiManager;
+import com.example.machinenote.Utility.ImageCaptureHelper;
+import com.example.machinenote.Utility.CustomDateTimePicker;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,10 +43,13 @@ public class DodajNalogoFragment extends BaseFragment {
     private List<File> selectedImages;
     private ApiManager apiManager;
 
+    // Utility classes
+    private ImageCaptureHelper imageCaptureHelper;
+    private CustomDateTimePicker customDateTimePicker;
+
     // Activity result launchers
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> galleryLauncher;
-    private ActivityResultLauncher<String> permissionLauncher;
 
     public DodajNalogoFragment() {
         // Required empty public constructor
@@ -75,6 +72,9 @@ public class DodajNalogoFragment extends BaseFragment {
 
         // Initialize activity result launchers
         initializeActivityLaunchers();
+
+        // Initialize utility classes
+        initializeUtilities();
     }
 
     @Override
@@ -94,16 +94,8 @@ public class DodajNalogoFragment extends BaseFragment {
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
-                        Bundle extras = result.getData().getExtras();
-                        Bitmap imageBitmap = (Bitmap) extras.get("data");
-                        if (imageBitmap != null) {
-                            File imageFile = saveBitmapToFile(imageBitmap);
-                            if (imageFile != null) {
-                                selectedImages.add(imageFile);
-                                updateImagePreview();
-                            }
-                        }
+                    if (imageCaptureHelper != null) {
+                        imageCaptureHelper.handleActivityResult(result.getResultCode(), result.getData());
                     }
                 }
         );
@@ -112,30 +104,57 @@ public class DodajNalogoFragment extends BaseFragment {
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
-                        Uri selectedImageUri = result.getData().getData();
-                        if (selectedImageUri != null) {
-                            File imageFile = createFileFromUri(selectedImageUri);
-                            if (imageFile != null) {
-                                selectedImages.add(imageFile);
-                                updateImagePreview();
-                            }
-                        }
+                    if (imageCaptureHelper != null) {
+                        imageCaptureHelper.handleActivityResult(result.getResultCode(), result.getData());
                     }
                 }
         );
+    }
 
-        // Permission launcher
-        permissionLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    if (isGranted) {
-                        showImageSourceDialog();
-                    } else {
-                        Toast.makeText(context, "Dovoljenje za dostop do kamere je potrebno", Toast.LENGTH_SHORT).show();
-                    }
+    private void initializeUtilities() {
+        // Initialize ImageCaptureHelper
+        imageCaptureHelper = new ImageCaptureHelper(context, cameraLauncher, galleryLauncher);
+        imageCaptureHelper.setImageCaptureCallback(new ImageCaptureHelper.ImageCaptureCallback() {
+            @Override
+            public void onImageCaptured(Bitmap bitmap) {
+                // Save bitmap to file and add to selectedImages list
+                File imageFile = saveBitmapToFile(bitmap);
+                if (imageFile != null) {
+                    selectedImages.add(imageFile);
+                    updateImagePreview();
+                    Toast.makeText(context, "Slika uspešno dodana", Toast.LENGTH_SHORT).show();
                 }
-        );
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(context, "Napaka: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Initialize CustomDateTimePicker
+        customDateTimePicker = new CustomDateTimePicker(context,
+                new CustomDateTimePicker.ICustomDateTimeListener() {
+                    @Override
+                    public void onSet(android.app.Dialog dialog, Calendar calendarSelected,
+                                      java.util.Date dateSelected, int year, String monthFullName,
+                                      String monthShortName, int monthNumber, int day,
+                                      String weekDayFullName, String weekDayShortName,
+                                      int hour24, int hour12, int min, int sec, String AM_PM) {
+
+                        selectedDate = calendarSelected;
+                        updateDateDisplay();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // Handle cancel if needed
+                    }
+                });
+
+        // Set to current date
+        customDateTimePicker.setDate(selectedDate);
+        customDateTimePicker.set24HourFormat(true); // Use 24-hour format for consistency
     }
 
     private void initializeViews() {
@@ -179,13 +198,17 @@ public class DodajNalogoFragment extends BaseFragment {
         });
 
         binding.rokEditText.setOnClickListener(v -> {
-            // Open date picker
-            showDatePicker();
+            // Open custom date time picker
+            if (customDateTimePicker != null) {
+                customDateTimePicker.showDialog();
+            }
         });
 
         binding.dodajSlikoBtn.setOnClickListener(v -> {
-            // Add image functionality
-            addImage();
+            // Add image using ImageCaptureHelper
+            if (imageCaptureHelper != null) {
+                imageCaptureHelper.captureImage();
+            }
         });
 
         binding.odstranislikoBtn.setOnClickListener(v -> {
@@ -233,9 +256,7 @@ public class DodajNalogoFragment extends BaseFragment {
                         binding.shraniBtn.setText("Shrani");
 
                         if (response.isSuccessful()) {
-                            Toast.makeText(context, "Naloga uspešno shranjena", Toast.LENGTH_SHORT).show();
-
-                            // Go back to NalogeFragment
+                            resetForm();
                             if (getActivity() instanceof MainActivity) {
                                 MainActivity mainActivity = (MainActivity) getActivity();
                                 mainActivity.loadFragment(NalogeFragment.newInstance(context));
@@ -260,69 +281,9 @@ public class DodajNalogoFragment extends BaseFragment {
         });
     }
 
-    private void showDatePicker() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                context,
-                (DatePicker view, int year, int month, int dayOfMonth) -> {
-                    selectedDate.set(Calendar.YEAR, year);
-                    selectedDate.set(Calendar.MONTH, month);
-                    selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    updateDateDisplay();
-                },
-                selectedDate.get(Calendar.YEAR),
-                selectedDate.get(Calendar.MONTH),
-                selectedDate.get(Calendar.DAY_OF_MONTH)
-        );
-
-        datePickerDialog.show();
-    }
-
     private void updateDateDisplay() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         binding.rokEditText.setText(dateFormat.format(selectedDate.getTime()));
-    }
-
-    private void addImage() {
-        // Check camera permission
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            permissionLauncher.launch(Manifest.permission.CAMERA);
-        } else {
-            showImageSourceDialog();
-        }
-    }
-
-    private void showImageSourceDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Izberi vir slike");
-
-        String[] options = {"Kamera", "Galerija"};
-        builder.setItems(options, (dialog, which) -> {
-            switch (which) {
-                case 0: // Camera
-                    openCamera();
-                    break;
-                case 1: // Gallery
-                    openGallery();
-                    break;
-            }
-        });
-
-        builder.show();
-    }
-
-    private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(context.getPackageManager()) != null) {
-            cameraLauncher.launch(cameraIntent);
-        } else {
-            Toast.makeText(context, "Kamera ni na voljo", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void openGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryLauncher.launch(galleryIntent);
     }
 
     private File saveBitmapToFile(Bitmap bitmap) {
@@ -340,29 +301,27 @@ public class DodajNalogoFragment extends BaseFragment {
         }
     }
 
-    private File createFileFromUri(Uri uri) {
-        try {
-            File file = new File(context.getCacheDir(), "selected_image_" + System.currentTimeMillis() + ".jpg");
+    private void resetForm() {
+        // Clear all text fields
+        binding.vzdrzevalecEditText.setText("");
+        binding.naslovEditText.setText("");
+        binding.opisEditText.setText("");
 
-            // Copy content from URI to file
-            try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
-                 FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-
-                if (inputStream != null) {
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    while ((length = inputStream.read(buffer)) > 0) {
-                        fileOutputStream.write(buffer, 0, length);
-                    }
-                }
-            }
-
-            return file;
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, "Napaka pri obdelavi slike", Toast.LENGTH_SHORT).show();
-            return null;
+        // Reset date to current date
+        selectedDate = Calendar.getInstance();
+        updateDateDisplay();
+        if (customDateTimePicker != null) {
+            customDateTimePicker.setDate(selectedDate);
         }
+
+        // Clear images
+        selectedImages.clear();
+        binding.imagePreview.setVisibility(View.GONE);
+        binding.odstranislikoBtn.setVisibility(View.GONE);
+        binding.dodajSlikoBtn.setContentDescription("Dodaj sliko");
+
+        // Show success message
+        Toast.makeText(context, "Naloga uspešno shranjena.", Toast.LENGTH_LONG).show();
     }
 
     private void updateImagePreview() {
@@ -401,11 +360,21 @@ public class DodajNalogoFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         // Clean up temporary files
         for (File file : selectedImages) {
             if (file.exists()) {
                 file.delete();
             }
+        }
+
+        // Clean up utility classes
+        if (imageCaptureHelper != null) {
+            imageCaptureHelper.deleteAllImages(); // Clean up any remaining temp files
+        }
+
+        if (customDateTimePicker != null) {
+            customDateTimePicker.dismissDialog(); // Dismiss any open dialogs
         }
     }
 }
