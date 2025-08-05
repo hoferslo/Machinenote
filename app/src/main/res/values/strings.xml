@@ -167,6 +167,7 @@
     <string name="material_info">Material: %s\nVrsta: %s\nVelikost: %s</string>
 
     <string name="dodaj_nalogo">Dodaj nalogo</string>
+    <string name="posodobi_nalogo">Posodobi nalogo</string>
     <string name="vnesi_ime_vzdrzevalca">Vnesi ime vzdrzevalca</string>
     <string name="naslov_naloge">Naslov naloge</string>
     <string name="vnesi_naslov_naloge">Vnesi naslov naloge</string>

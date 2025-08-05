@@ -65,7 +65,13 @@ public class CompletedNalogaFragment extends BaseFragment {
     public static CompletedNalogaFragment newInstance(Context context, Naloga naloga) {
         CompletedNalogaFragment fragment = new CompletedNalogaFragment();
         fragment.context = context;
-        fragment.TAG = context.getString(R.string.dodaj_nalogo);
+        fragment.TAG = context.getString(R.string.posodobi_nalogo);
+
+        // Shrani nalogo v Bundle
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_NALOGA, naloga);
+        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -76,7 +82,7 @@ public class CompletedNalogaFragment extends BaseFragment {
         if (getArguments() != null) {
             naloga = (Naloga) getArguments().getSerializable(ARG_NALOGA);
         }
-
+        Log.d(TAG, "onCreate: " + naloga);
         apiManager = new ApiManager(context);
 
         // Initialize activity result launchers

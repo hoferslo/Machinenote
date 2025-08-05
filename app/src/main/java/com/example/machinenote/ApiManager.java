@@ -684,6 +684,15 @@ public class ApiManager {
                     callback.onResponse(call, response);
                 } else {
                     Log.e("ApiManager", "Failed to update Naloga with images: " + response.message());
+
+                    // Dodatno logging za debugging
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("ApiManager", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e("ApiManager", "Could not read error body");
+                    }
+
                     callback.onFailure(call, new Throwable(response.message()));
                 }
             }

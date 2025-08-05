@@ -26,6 +26,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -143,15 +144,13 @@ public interface ApiService {
             @Part List<MultipartBody.Part> images
     );
 
+    @POST("naloge.php")
     @Multipart
-    @PUT("naloge/{id}")
     Call<Void> updateNalogaWithImages(
-            @Path("id") int id,
+            @Query("id") int id,
             @Part("naloga") RequestBody naloga,
             @Part List<MultipartBody.Part> completionImages
     );
-
-
 
     @Headers("Content-Type: application/json")
     @GET("roles.php")

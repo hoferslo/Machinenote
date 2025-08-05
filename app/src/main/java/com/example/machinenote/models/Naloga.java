@@ -2,10 +2,14 @@ package com.example.machinenote.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Naloga implements DisplayableItem {
+public class Naloga implements DisplayableItem, Serializable {
+
+    // Dodajte serialVersionUID za boljšo kompatibilnost
+    private static final long serialVersionUID = 1L;
 
     @SerializedName("id")
     private int id;
