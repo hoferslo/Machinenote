@@ -662,23 +662,35 @@ public class ApiManager {
         });
     }
 
-    public void updateNaloga(int id, Naloga naloga, final Callback<Void> callback) {
-        Call<Void> call = apiService.updateNaloga(id, naloga);
+    public void updateNalogaWithImages(int id, Naloga naloga, List<File> imageFiles, final Callback<Void> callback) {
+        // Convert Naloga to RequestBody
+        RequestBody nalogaBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(naloga));
+
+        // Convert image files to MultipartBody.Part
+        List<MultipartBody.Part> imageParts = new ArrayList<>();
+        for (File file : imageFiles) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("completion_images[]", file.getName(), requestFile);
+            imageParts.add(body);
+        }
+
+        // Call the API
+        Call<Void> call = apiService.updateNalogaWithImages(id, nalogaBody, imageParts);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d("NalogaManager", "Naloga updated successfully");
+                    Log.d("ApiManager", "Naloga updated with images successfully");
                     callback.onResponse(call, response);
                 } else {
-                    Log.e("NalogaManager", "Failed to update Naloga: " + response.message());
+                    Log.e("ApiManager", "Failed to update Naloga with images: " + response.message());
                     callback.onFailure(call, new Throwable(response.message()));
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("NalogaManager", "Error: " + t.getMessage());
+                Log.e("ApiManager", "Error updating naloga with images: " + t.getMessage());
                 callback.onFailure(call, t);
             }
         });

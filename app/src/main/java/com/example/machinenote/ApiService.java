@@ -143,9 +143,15 @@ public interface ApiService {
             @Part List<MultipartBody.Part> images
     );
 
-    @Headers("Content-Type: application/json")
-    @PUT("naloge.php/{id}")
-    Call<Void> updateNaloga(@Path("id") int id, @Body Naloga naloga);
+    @Multipart
+    @PUT("naloge/{id}")
+    Call<Void> updateNalogaWithImages(
+            @Path("id") int id,
+            @Part("naloga") RequestBody naloga,
+            @Part List<MultipartBody.Part> completionImages
+    );
+
+
 
     @Headers("Content-Type: application/json")
     @GET("roles.php")

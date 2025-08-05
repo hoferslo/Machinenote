@@ -17,7 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.activities.MainActivity;
-import com.example.machinenote.databinding.FragmentDodajNalogoBinding;
+import com.example.machinenote.databinding.FragmentCompletedNalogaBinding;
 import com.example.machinenote.models.Naloga;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.Utility.ImageCaptureHelper;
@@ -36,12 +36,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DodajNalogoFragment extends BaseFragment {
+public class CompletedNalogaFragment extends BaseFragment {
 
-    private FragmentDodajNalogoBinding binding;
+    ;
+    private static final String ARG_NALOGA = "naloga";
+
+    private FragmentCompletedNalogaBinding binding;
     private Context context;
-    private Calendar selectedDate;
-    private List<File> selectedImages;
+    private Naloga naloga;
+    private Calendar selectedCompletionDate;
+    private List<File> selectedCompletionImages;
     private ApiManager apiManager;
 
     // Utility classes
@@ -52,22 +56,26 @@ public class DodajNalogoFragment extends BaseFragment {
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> galleryLauncher;
 
-    public DodajNalogoFragment() {
+    public CompletedNalogaFragment() {
         // Required empty public constructor
-        selectedDate = Calendar.getInstance();
-        selectedImages = new ArrayList<>();
+        selectedCompletionDate = Calendar.getInstance();
+        selectedCompletionImages = new ArrayList<>();
     }
 
-    public static DodajNalogoFragment newInstance(Context context) {
-        DodajNalogoFragment fragment = new DodajNalogoFragment();
+    public static CompletedNalogaFragment newInstance(Context context, Naloga naloga) {
+        CompletedNalogaFragment fragment = new CompletedNalogaFragment();
         fragment.context = context;
-        fragment.TAG = context.getString(R.string.dodaj_nalogo); // ali "Dodaj nalogo"
+        fragment.TAG = context.getString(R.string.dodaj_nalogo);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            naloga = (Naloga) getArguments().getSerializable(ARG_NALOGA);
+        }
 
         apiManager = new ApiManager(context);
 
@@ -82,10 +90,11 @@ public class DodajNalogoFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentDodajNalogoBinding.inflate(getLayoutInflater());
+        binding = FragmentCompletedNalogaBinding.inflate(getLayoutInflater());
 
         setupClickListeners();
         initializeViews();
+        populateNalogaData();
 
         return binding.getRoot();
     }
@@ -118,11 +127,11 @@ public class DodajNalogoFragment extends BaseFragment {
         imageCaptureHelper.setImageCaptureCallback(new ImageCaptureHelper.ImageCaptureCallback() {
             @Override
             public void onImageCaptured(Bitmap bitmap) {
-                // Save bitmap to file and add to selectedImages list
+                // Save bitmap to file and add to selectedCompletionImages list
                 File imageFile = saveBitmapToFile(bitmap);
                 if (imageFile != null) {
-                    selectedImages.add(imageFile);
-                    updateImagePreview();
+                    selectedCompletionImages.add(imageFile);
+                    updateCompletionImagePreview();
                     Toast.makeText(context, "Slika uspešno dodana", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -143,8 +152,8 @@ public class DodajNalogoFragment extends BaseFragment {
                                       String weekDayFullName, String weekDayShortName,
                                       int hour24, int hour12, int min, int sec, String AM_PM) {
 
-                        selectedDate = calendarSelected;
-                        updateDateDisplay();
+                        selectedCompletionDate = calendarSelected;
+                        updateCompletionDateDisplay();
                     }
 
                     @Override
@@ -154,20 +163,42 @@ public class DodajNalogoFragment extends BaseFragment {
                 });
 
         // Set to current date
-        customDateTimePicker.setDate(selectedDate);
-        customDateTimePicker.set24HourFormat(true); // Use 24-hour format for consistency
+        customDateTimePicker.setDate(selectedCompletionDate);
+        customDateTimePicker.set24HourFormat(true);
     }
 
     private void initializeViews() {
-        // Set current date as default
-        updateDateDisplay();
+        // Set current date as default for completion
+        updateCompletionDateDisplay();
 
-        // Hide image preview and remove button initially
-        binding.imagePreview.setVisibility(View.GONE);
-        binding.odstranislikoBtn.setVisibility(View.GONE);
+        // Hide completion image preview and remove button initially
+        binding.slikaPoIzvedbiPreview.setVisibility(View.GONE);
+        binding.odstraniSlikoPoIzvedbiBtn.setVisibility(View.GONE);
 
         // Set the correct tab as checked
-        binding.tabVnosNalogeBtn.setChecked(true);
+        binding.tabNalogeBtn.setChecked(true);
+    }
+
+    private void populateNalogaData() {
+        if (naloga == null) return;
+
+        // Populate naloga data
+        binding.kdoMoraTextView.setText(naloga.getVzdrzevalec());
+        binding.rokNalogeTextView.setText(naloga.getRokZaIzvedbo());
+        binding.imeNalogeTextView.setText(naloga.getNaloga());
+        binding.podrobenOpisTextView.setText(naloga.getOpis());
+
+        // Show original image if exists
+        String[] originalImages = naloga.getSlikePredIzpolnitvijoNaloge();
+        if (originalImages.length > 0 && !originalImages[0].isEmpty()) {
+            binding.originalSlikaSection.setVisibility(View.VISIBLE);
+            // Load the first original image
+            // You might want to use an image loading library like Glide or Picasso here
+            // For example: Glide.with(context).load(originalImages[0]).into(binding.originalnaSlika);
+            binding.originalnaSlika.setImageURI(Uri.parse(originalImages[0]));
+        } else {
+            binding.originalSlikaSection.setVisibility(View.GONE);
+        }
     }
 
     private void setupClickListeners() {
@@ -181,7 +212,11 @@ public class DodajNalogoFragment extends BaseFragment {
         });
 
         binding.tabVnosNalogeBtn.setOnClickListener(v -> {
-            // Already on this fragment, do nothing or refresh
+            // Switch to DodajNalogoFragment
+            if (getActivity() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.loadFragment(DodajNalogoFragment.newInstance(context));
+            }
         });
 
         // Action buttons
@@ -193,79 +228,74 @@ public class DodajNalogoFragment extends BaseFragment {
             }
         });
 
-        binding.shraniBtn.setOnClickListener(v -> {
-            // Save naloga
-            saveNaloga();
+        binding.potrdiIzvedboBtn.setOnClickListener(v -> {
+            // Complete naloga
+            completeNaloga();
         });
 
-        binding.rokEditText.setOnClickListener(v -> {
+        binding.datumIzvedbeBtn.setOnClickListener(v -> {
             // Open custom date time picker
             if (customDateTimePicker != null) {
                 customDateTimePicker.showDialog();
             }
         });
 
-        binding.dodajSlikoBtn.setOnClickListener(v -> {
-            // Add image using ImageCaptureHelper
+        binding.dodajSlikoPoIzvedbiBtn.setOnClickListener(v -> {
+            // Add completion image using ImageCaptureHelper
             if (imageCaptureHelper != null) {
                 imageCaptureHelper.captureImage();
             }
         });
 
-        binding.odstranislikoBtn.setOnClickListener(v -> {
-            // Remove image
-            removeImage();
+        binding.odstraniSlikoPoIzvedbiBtn.setOnClickListener(v -> {
+            // Remove completion image
+            removeCompletionImage();
         });
     }
-    private void saveNaloga() {
-        String vzdrzevalec = binding.vzdrzevalecEditText.getText().toString().trim();
-        String naslov = binding.naslovEditText.getText().toString().trim();
-        String opis = binding.opisEditText.getText().toString().trim();
 
-        if (vzdrzevalec.isEmpty() || naslov.isEmpty() || opis.isEmpty() || selectedDate == null) {
-            Toast.makeText(context, "Prosimo, izpolnite vsa obvezna polja", Toast.LENGTH_SHORT).show();
+    private void completeNaloga() {
+        String komentar = binding.komentarIzvedbeEditText.getText().toString().trim();
+
+        if (komentar.isEmpty()) {
+            Toast.makeText(context, "Prosimo, vnesite komentar o izvedbi", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Format date for SQL (YYYY-MM-DD format)
         SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String rokForDatabase = sqlDateFormat.format(selectedDate.getTime());
+        String completionDateForDatabase = sqlDateFormat.format(selectedCompletionDate.getTime());
 
-        // Create Naloga object using the SQL-formatted date
-        Naloga naloga = new Naloga(
-                0, // id (will be set by database)
-                vzdrzevalec,
-                naslov,
-                opis,
-                rokForDatabase, // Use SQL format instead of display format
-                "", // izvedeno - empty initially
-                "", // komentar - empty initially
-                0, // izvedenoBool - 0 means false/not completed
-                "", // slike - empty initially (images after completion)
-                "" // slikePredIzpolnitvijoNaloge - will be set by server
-        );
+        // Update naloga object with completion data
+        naloga.setIzvedeno(completionDateForDatabase);
+        naloga.setKomentar(komentar);
+        naloga.setIzvedenoBool(1); // Mark as completed
 
         // Show loading
-        binding.shraniBtn.setEnabled(false);
-        binding.shraniBtn.setText("Shranjujem...");
+        binding.potrdiIzvedboBtn.setEnabled(false);
+        binding.potrdiIzvedboBtn.setText("Shranjujem...");
 
-        // Save naloga with images
-        apiManager.sendNalogaWithImages(naloga, selectedImages, new Callback<Void>() {
+        // Update naloga with completion images
+        apiManager.updateNalogaWithImages(naloga.getId(), naloga, selectedCompletionImages, new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        binding.shraniBtn.setEnabled(true);
-                        binding.shraniBtn.setText("Shrani");
+                        binding.potrdiIzvedboBtn.setEnabled(true);
+                        binding.potrdiIzvedboBtn.setText("Potrdi izvedbo");
 
                         if (response.isSuccessful()) {
-                            resetForm();
+                            Toast.makeText(context, "Naloga uspešno označena kot opravljena", Toast.LENGTH_LONG).show();
+
+                            // Clean up temporary files
+                            cleanupTempFiles();
+
+                            // Go back to NalogeFragment
                             if (getActivity() instanceof MainActivity) {
                                 MainActivity mainActivity = (MainActivity) getActivity();
                                 mainActivity.loadFragment(NalogeFragment.newInstance(context));
                             }
                         } else {
-                            Toast.makeText(context, "Napaka pri shranjevanju naloge", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Napaka pri shranjevanju izvedbe naloge", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -275,8 +305,8 @@ public class DodajNalogoFragment extends BaseFragment {
             public void onFailure(Call<Void> call, Throwable t) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        binding.shraniBtn.setEnabled(true);
-                        binding.shraniBtn.setText("Shrani");
+                        binding.potrdiIzvedboBtn.setEnabled(true);
+                        binding.potrdiIzvedboBtn.setText("Potrdi izvedbo");
                         Toast.makeText(context, "Napaka: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     });
                 }
@@ -284,14 +314,14 @@ public class DodajNalogoFragment extends BaseFragment {
         });
     }
 
-    private void updateDateDisplay() {
+    private void updateCompletionDateDisplay() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        binding.rokEditText.setText(dateFormat.format(selectedDate.getTime()));
+        binding.datumIzvedbeBtn.setText(dateFormat.format(selectedCompletionDate.getTime()));
     }
 
     private File saveBitmapToFile(Bitmap bitmap) {
         try {
-            File file = new File(context.getCacheDir(), "image_" + System.currentTimeMillis() + ".jpg");
+            File file = new File(context.getCacheDir(), "completion_image_" + System.currentTimeMillis() + ".jpg");
             FileOutputStream fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.flush();
@@ -304,53 +334,39 @@ public class DodajNalogoFragment extends BaseFragment {
         }
     }
 
-    private void resetForm() {
-        // Clear all text fields
-        binding.vzdrzevalecEditText.setText("");
-        binding.naslovEditText.setText("");
-        binding.opisEditText.setText("");
-
-        // Reset date to current date
-        selectedDate = Calendar.getInstance();
-        updateDateDisplay();
-        if (customDateTimePicker != null) {
-            customDateTimePicker.setDate(selectedDate);
-        }
-
-        // Clear images
-        selectedImages.clear();
-        binding.imagePreview.setVisibility(View.GONE);
-        binding.odstranislikoBtn.setVisibility(View.GONE);
-        binding.dodajSlikoBtn.setContentDescription("Dodaj sliko");
-
-        // Show success message
-        Toast.makeText(context, "Naloga uspešno shranjena.", Toast.LENGTH_LONG).show();
-    }
-
-    private void updateImagePreview() {
-        if (!selectedImages.isEmpty()) {
-            binding.imagePreview.setVisibility(View.VISIBLE);
-            binding.odstranislikoBtn.setVisibility(View.VISIBLE);
-
-            // Update button text to show count
-            if (selectedImages.size() == 1) {
-                binding.dodajSlikoBtn.setContentDescription("Dodaj še eno sliko (1 slika)");
-            } else {
-                binding.dodajSlikoBtn.setContentDescription("Dodaj še eno sliko (" + selectedImages.size() + " slik)");
-            }
+    private void updateCompletionImagePreview() {
+        if (!selectedCompletionImages.isEmpty()) {
+            binding.slikaPoIzvedbiPreview.setVisibility(View.VISIBLE);
+            binding.odstraniSlikoPoIzvedbiBtn.setVisibility(View.VISIBLE);
 
             // Show the most recent image as preview
-            File lastImage = selectedImages.get(selectedImages.size() - 1);
-            binding.imagePreview.setImageURI(Uri.fromFile(lastImage));
+            File lastImage = selectedCompletionImages.get(selectedCompletionImages.size() - 1);
+            binding.slikaPoIzvedbiPreview.setImageURI(Uri.fromFile(lastImage));
+
+            // Update content description
+            if (selectedCompletionImages.size() == 1) {
+                binding.dodajSlikoPoIzvedbiBtn.setContentDescription("Dodaj še eno sliko (1 slika)");
+            } else {
+                binding.dodajSlikoPoIzvedbiBtn.setContentDescription("Dodaj še eno sliko (" + selectedCompletionImages.size() + " slik)");
+            }
         }
     }
 
-    private void removeImage() {
-        selectedImages.clear();
-        binding.imagePreview.setVisibility(View.GONE);
-        binding.odstranislikoBtn.setVisibility(View.GONE);
-        binding.dodajSlikoBtn.setVisibility(View.VISIBLE);
-        binding.dodajSlikoBtn.setContentDescription("Dodaj sliko");
+    private void removeCompletionImage() {
+        selectedCompletionImages.clear();
+        binding.slikaPoIzvedbiPreview.setVisibility(View.GONE);
+        binding.odstraniSlikoPoIzvedbiBtn.setVisibility(View.GONE);
+        binding.dodajSlikoPoIzvedbiBtn.setContentDescription("Dodaj sliko po izvedbi");
+    }
+
+    private void cleanupTempFiles() {
+        // Clean up temporary files
+        for (File file : selectedCompletionImages) {
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        selectedCompletionImages.clear();
     }
 
     @Override
@@ -364,20 +380,15 @@ public class DodajNalogoFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
 
-        // Clean up temporary files
-        for (File file : selectedImages) {
-            if (file.exists()) {
-                file.delete();
-            }
-        }
+        cleanupTempFiles();
 
         // Clean up utility classes
         if (imageCaptureHelper != null) {
-            imageCaptureHelper.deleteAllImages(); // Clean up any remaining temp files
+            imageCaptureHelper.deleteAllImages();
         }
 
         if (customDateTimePicker != null) {
-            customDateTimePicker.dismissDialog(); // Dismiss any open dialogs
+            customDateTimePicker.dismissDialog();
         }
     }
 }

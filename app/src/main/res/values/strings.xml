@@ -181,6 +181,31 @@
     <string name="preklici">Preklici</string>
     <string name="shrani_nalogo">Shrani nalogo</string>
 
+    <string name="izberi_izvedeni_cas">Izberi čas ko je bila naloga opravljena</string>
+    <string name="izvedeni_cas">Naloga je bila opravljena:</string>
+
+    <string name="podatki_naloge">Podatki naloge</string>
+    <string name="izvedba_naloge">Izvedba naloge</string>
+
+    <!-- Obstoječi podatki naloge -->
+    <string name="kdo_mora_opraviti">Izvajalec</string>
+    <string name="ime_naloge">Naslov naloge</string>
+    <string name="podroben_opis_naloge">Opis naloge</string>
+    <string name="originalna_slika">Originalna slika</string>
+    <string name="originalna_slika_naloge">Originalna slika naloge</string>
+
+    <!-- Podatki o izvedbi -->
+    <string name="kdaj_opravljena">Datum izvedbe</string>
+    <string name="izberi_datum_izvedbe">Izberi datum izvedbe</string>
+    <string name="komentar_izvedbe">Komentar o izvedbi</string>
+    <string name="vnesi_komentar_izvedbe">Dodaj komentar o opravljeni nalogi…</string>
+    <string name="slika_po_izvedbi">Slika po izvedbi</string>
+    <string name="predogled_slike_po_izvedbi">Predogled slike po izvedbi</string>
+    <string name="photo_button_po_izvedbi">Dodaj sliko po izvedbi</string>
+
+    <!-- Gumbi -->
+    <string name="potrdi_izvedbo">Potrdi izvedbo</string>
+
     <string name="select_image_source">Select Image Source</string>
     <string name="gallery">Gallery</string>
 </resources>

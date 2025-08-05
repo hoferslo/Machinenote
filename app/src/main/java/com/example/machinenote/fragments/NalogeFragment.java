@@ -68,16 +68,28 @@ public class NalogeFragment extends BaseFragment {
                 new GenericAdapter.OnItemClickListener<Naloga>() {
                     @Override
                     public void onItemClick(Naloga item) {
+                        // Open CompletedNalogaFragment for the clicked naloga
+                        if (getActivity() instanceof MainActivity) {
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            CompletedNalogaFragment completedFragment = CompletedNalogaFragment.newInstance(context, item);
+                            mainActivity.loadFragment(completedFragment);
+                        }
                     }
 
                     @Override
                     public void onButtonClick(Naloga item) {
-                        // Handle button click if needed
+                        // Handle button click if needed - you could also open the fragment here
+                        // or perform a different action like editing the naloga
+                        if (getActivity() instanceof MainActivity) {
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            CompletedNalogaFragment completedFragment = CompletedNalogaFragment.newInstance(context, item);
+                            mainActivity.loadFragment(completedFragment);
+                        }
                     }
                 },
                 "Vzdrzevalec",     // Add the field names you want to display
-                "Opis",    // in the order you want them
-                "Naloga"               // Remove any fields you don't want to show
+                "Opis",            // in the order you want them
+                "Naloga"           // Remove any fields you don't want to show
         );
         recyclerView.setAdapter(adapter);
     }

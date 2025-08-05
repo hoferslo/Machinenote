@@ -115,32 +115,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/opis_naloge"
-                    android:textSize="12sp"
-                    android:textColor="@color/content_secondary"
+                    android:layout_marginBottom="8dp"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="8dp" />
+                    android:text="@string/opis_naloge"
+                    android:textColor="@color/content_secondary"
+                    android:textSize="12sp" />
 
                 <EditText
                     android:id="@+id/opisEditText"
                     style="@style/Input.Base"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="top|start"
                     android:hint="@string/vnesi_opis_naloge"
                     android:inputType="textMultiLine"
-                    android:minLines="4"
-                    android:maxLines="6"
                     android:maxLength="500"
-                    android:gravity="top|start" />
-
+                    android:maxLines="6"
+                    android:minLines="4" />
             </LinearLayout>
 
             <!-- Slika Section -->

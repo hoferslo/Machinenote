@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true"
+    tools:context=".fragments.CompletedNalogaFragment">
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Naslov sekcije - Podatki naloge -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/podatki_naloge"
+                android:textSize="18sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="16dp"
+                android:drawableStart="@drawable/assignment_icon"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical" />
+
+            <!-- Glavna kartica s podatki naloge -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_primary"
+                    android:padding="20dp">
+
+                    <!-- Kdo mora opraviti in Rok v eni vrstici -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <!-- Kdo mora opraviti -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/kdo_mora_opraviti"
+                                android:textSize="12sp"
+                                android:textColor="@color/content_secondary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:layout_marginBottom="6dp" />
+
+                            <TextView
+                                android:id="@+id/kdoMoraTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="14sp"
+                                android:textColor="@color/content_primary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:padding="10dp"
+                                android:background="@drawable/bg_card_secondary"
+                                android:drawableStart="@drawable/person_add"
+                                android:drawablePadding="8dp"
+                                android:gravity="center_vertical" />
+
+                        </LinearLayout>
+
+                        <!-- Rok naloge -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rok_naloge"
+                                android:textSize="12sp"
+                                android:textColor="@color/content_secondary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:layout_marginBottom="6dp" />
+
+                            <TextView
+                                android:id="@+id/rokNalogeTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="14sp"
+                                android:textColor="@color/content_primary"
+                                android:fontFamily="@font/nunito"
+                                android:padding="10dp"
+                                android:background="@drawable/bg_card_secondary"
+                                android:drawableStart="@drawable/schedule_icon"
+                                android:drawablePadding="8dp"
+                                android:gravity="center_vertical" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Ime naloge -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ime_naloge"
+                        android:textSize="12sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="6dp" />
+
+                    <TextView
+                        android:id="@+id/imeNalogeTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:padding="12dp"
+                        android:background="@drawable/bg_card_secondary"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Podroben opis naloge -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/podroben_opis_naloge"
+                        android:textSize="12sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="6dp" />
+
+                    <TextView
+                        android:id="@+id/podrobenOpisTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="15sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito"
+                        android:padding="12dp"
+                        android:background="@drawable/bg_card_secondary"
+                        android:minHeight="80dp"
+                        android:gravity="top|start"
+                        android:lineSpacingExtra="2dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Originalna slika naloge (če obstaja) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/originalSlikaSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_primary"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/originalna_slika"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="12dp"
+                        android:drawableStart="@mipmap/add_a_photo"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical" />
+
+                    <ImageView
+                        android:id="@+id/originalnaSlika"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:background="@drawable/bg_card_secondary"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/originalna_slika_naloge" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Naslov sekcije - Izvedba naloge -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/izvedba_naloge"
+                android:textSize="18sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="16dp"
+                android:drawableStart="@mipmap/check_circle"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical" />
+
+            <!-- Kartica z izvedbo -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_primary"
+                    android:padding="20dp">
+
+                    <!-- Datum izvedbe -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/kdaj_opravljena"
+                        android:textSize="12sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="8dp" />
+
+                    <Button
+                        android:id="@+id/datumIzvedbeBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/izberi_datum_izvedbe"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:drawableEnd="@drawable/schedule_icon"
+                        android:drawablePadding="8dp"
+                        android:layout_marginBottom="20dp"
+                        style="@style/Button.Primary"/>
+
+                    <!-- Komentar o izvedbi -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/komentar_izvedbe"
+                        android:textSize="12sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="8dp" />
+
+                    <EditText
+                        android:id="@+id/komentarIzvedbeEditText"
+                        style="@style/Input.Base"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:hint="@string/vnesi_komentar_izvedbe"
+                        android:inputType="textMultiLine"
+                        android:maxLength="500"
+                        android:maxLines="6"
+                        android:minLines="3"
+                        android:lineSpacingExtra="2dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Slika po izvedbi kartica -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_primary"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/slika_po_izvedbi"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="12dp"
+                        android:drawableStart="@mipmap/add_a_photo"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical" />
+
+                    <!-- Image Preview after completion -->
+                    <ImageView
+                        android:id="@+id/slikaPoIzvedbiPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_card_secondary"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        android:contentDescription="@string/predogled_slike_po_izvedbi" />
+
+                    <!-- Image Action Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/dodajSlikoPoIzvedbiBtn"
+                            style="@style/Button.Icon"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/photo_button_po_izvedbi"
+                            android:src="@mipmap/photo_camera" />
+
+                        <Button
+                            android:id="@+id/odstraniSlikoPoIzvedbiBtn"
+                            style="@style/Button.Destructive"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:layout_marginStart="12dp"
+                            android:text="@string/odstrani_sliko"
+                            android:drawableStart="@drawable/description"
+                            android:drawablePadding="8dp"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Action Buttons -->
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/bg_card_primary">
+
+        <Button
+            android:id="@+id/prekliciBtn"
+            style="@style/Button.Destructive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:layout_marginEnd="8dp"
+            android:text="@string/preklici" />
+
+        <Button
+            android:id="@+id/potrdiIzvedboBtn"
+            style="@style/Button.Success"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:layout_marginStart="8dp"
+            android:text="@string/potrdi_izvedbo" />
+
+    </LinearLayout>
+
+    <!-- Tab Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border_primary" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/vnos_naloge_Ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@id/tabNalogeBtn">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabNalogeBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/naloge" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabVnosNalogeBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/vnos_naloge"
+                app:icon="@drawable/add_box"/>
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
+
+</LinearLayout>
