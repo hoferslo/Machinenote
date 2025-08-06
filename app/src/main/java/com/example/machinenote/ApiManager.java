@@ -2,7 +2,6 @@ package com.example.machinenote;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.DrobniMateriali;
@@ -16,6 +15,7 @@ import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.SklopLinije;
+import com.example.machinenote.models.UpdateResponse;
 import com.example.machinenote.models.Zastoj;
 import com.google.gson.Gson;
 
@@ -77,6 +77,13 @@ public class ApiManager {
             }
         });
     }
+
+    public interface UpdateVersionCallback {
+        void onUpdateAvailable(UpdateResponse updateResponse);
+        void onNoUpdateNeeded();
+        void onFailure(String error);
+    }
+
     public interface UpdateCallback {
         void onSuccess(String message);
 
@@ -883,6 +890,34 @@ public class ApiManager {
             }
         });
     }
+
+    public void checkForUpdate(String currentVersion, String packageName, UpdateVersionCallback callback) {
+        UpdateRequest request = new UpdateRequest(currentVersion, packageName);
+        Call<UpdateResponse> call = apiService.checkForUpdate(request);
+
+        call.enqueue(new Callback<UpdateResponse>() {
+            @Override
+            public void onResponse(Call<UpdateResponse> call, Response<UpdateResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    UpdateResponse updateResponse = response.body();
+                    if (updateResponse.isUpdateAvailable()) {
+                        callback.onUpdateAvailable(updateResponse);
+                    } else {
+                        callback.onNoUpdateNeeded();
+                    }
+                } else {
+                    callback.onFailure("Failed to check for updates");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+
 
     public interface RoleCreationCallback {
         void onSuccess();

@@ -10,7 +10,9 @@ import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.SklopLinije;
+import com.example.machinenote.models.UpdateResponse;
 import com.example.machinenote.models.Zastoj;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -169,6 +171,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("drobni_materiali.php")
     Call<List<DrobniMateriali>> getDrobniMateriali();
+
+    @Headers("Content-Type: application/json")
+    @POST("check-update.php")
+    Call<UpdateResponse> checkForUpdate(@Body UpdateRequest request);
 }
 
 class LoginRequest {
@@ -364,3 +370,21 @@ class RoleResponse {
     public int getRole_id() { return role_id; }
     public void setRole_id(int role_id) { this.role_id = role_id; }
 }
+
+class UpdateRequest {
+    @SerializedName("current_version")
+    private String currentVersion;
+
+    @SerializedName("package_name")
+    private String packageName;
+
+    public UpdateRequest(String currentVersion, String packageName) {
+        this.currentVersion = currentVersion;
+        this.packageName = packageName;
+    }
+
+    // Getters
+    public String getCurrentVersion() { return currentVersion; }
+    public String getPackageName() { return packageName; }
+}
+

@@ -21,10 +21,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.example.machinenote.ApiManager;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.ConnectionChecker;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.ThemeHelper;
+import com.example.machinenote.models.UpdateManager;
 import com.example.machinenote.databinding.ActivityMainBinding;
 import com.example.machinenote.fragments.DashboardFragment;
 import com.example.machinenote.fragments.LoginFragment;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     public boolean serverConnection = true;
     private boolean doubleBackToExitPressedOnce = false;
     private Handler exitHandler = new Handler(Looper.getMainLooper());
+    private UpdateManager updateManager;
+    private ApiManager apiManager;
 
 
     @Override
@@ -172,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                 if (!serverConnection) {
                     serverConnection = true;
                     triggerOnResumeOnLastFragment();
+                    checkForAppUpdate();
                 }
             }
 
@@ -191,7 +196,8 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
         // Start checking the connection
         new Thread(connectionChecker).start();
-
+        apiManager = new ApiManager(this);
+        updateManager = new UpdateManager(this, apiManager);
     }
 
     private void setupThemeSwitcher() {
@@ -200,6 +206,13 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
         binding.themeSwitcherBtn.setOnClickListener(v -> cycleTheme());
     }
+
+    private void checkForAppUpdate() {
+        if (serverConnection) {
+            updateManager.checkForUpdate();
+        }
+    }
+
 
     private void cycleTheme() {
         int currentTheme = ThemeHelper.getSavedTheme(this);
