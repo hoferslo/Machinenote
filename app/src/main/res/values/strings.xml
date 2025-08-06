@@ -209,5 +209,17 @@
 
     <string name="select_image_source">Select Image Source</string>
     <string name="gallery">Gallery</string>
+
+
+    <string name="vnos_narocila">Vnos Naročila</string>
+    <string name="narocila">Naročila</string>
+    <string name="mozna_narocila">Možna naročila</string>
+    <string name="isci_narocila">Išči naročilo</string>
+
+    <string name="narocnik">Naročnik</string>
+    <string name="naziv_artikla">Naziv artikla</string>
+    <string name="tehnicni_podatki">Tehnični podatki / Opis:</string>
+
+
 </resources>
 
