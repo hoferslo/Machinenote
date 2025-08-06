@@ -219,6 +219,9 @@
     <string name="narocnik">Naročnik</string>
     <string name="naziv_artikla">Naziv artikla</string>
     <string name="tehnicni_podatki">Tehnični podatki / Opis:</string>
+    <string name="rok_dobave">Rok dobave</string>
+    <string name="kolicina">Količina</string>
+
 
 
 </resources>

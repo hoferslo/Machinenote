@@ -41,7 +41,7 @@
 
                 <!-- Input Fields -->
                 <EditText
-                    android:id="@+id/ime_delavca"
+                    android:id="@+id/nameOfShipper"
                     style="@style/Input.Base"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     android:textColor="@color/content_primary" />
 
                 <EditText
-                    android:id="@+id/razlog_zaustavitve_stroja"
+                    android:id="@+id/articleName"
                     style="@style/Input.Base"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                     android:textColor="@color/content_primary" />
 
                 <EditText
-                    android:id="@+id/opomba"
+                    android:id="@+id/technicalInfo"
                     style="@style/Input.Base"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,150 +93,111 @@
                     android:padding="0dp">
 
                     <Button
-                        android:id="@+id/idOfLineBtn"
+                        android:id="@+id/rokDobave"
                         style="@style/Button.Primary"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
-                        android:text="@string/line" />
-
-                    <ImageButton
-                        android:id="@+id/scanBtn"
-                        style="@style/Button.Icon"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:contentDescription="@string/scan_qr_code"
-                        android:src="@mipmap/qr_code_scanner" />
+                        android:text="@string/rok_dobave" />
 
                 </LinearLayout>
 
-                <!-- Duty and Camera Section -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/amountOfArticle"
+                        style="@style/Input.Base"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/kolicina"
+                        android:layout_marginBottom="16dp"
+                        android:importantForAutofill="no"
+                        android:inputType="textMultiLine"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@null"
+                        android:textColor="@color/content_primary"
+                        android:layout_weight="1"
+                        />
+
+                    <Spinner
+                        android:id="@+id/enotaSpinner"
+                        style="@style/Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Enota"
+                        android:layout_weight="3"
+                        />
+                </LinearLayout>
+
+
+                <!-- Slika Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
                     android:background="@drawable/bg_card_primary"
-                    android:padding="12dp">
+                    android:padding="16dp"
+                    android:layout_marginBottom="16dp">
 
-                    <!-- Duty Checkbox Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/slika"
+                        android:textSize="12sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Image Preview -->
+                    <ImageView
+                        android:id="@+id/imagePreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_card_secondary"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        android:contentDescription="@string/predogled_slike" />
+
+                    <!-- Image Action Buttons -->
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="8dp">
+                        android:gravity="center">
 
-                        <CheckBox
-                            android:id="@+id/dezurstvoCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/action_primary"
-                            android:scaleX="1.2"
-                            android:scaleY="1.2" />
+                        <ImageButton
+                            android:id="@+id/dodajSlikoBtn"
+                            style="@style/Button.Icon"
+                            android:layout_width="56dp"
+                            android:layout_weight="1"
+                            android:layout_height="56dp"
+                            android:contentDescription="@string/photo_button"
+                            android:src="@mipmap/photo_camera" />
 
-                        <TextView
-                            android:id="@+id/dezurstvoTv"
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/odstranislikoBtn"
+                            style="@style/Button.Destructive"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="@string/dezurstvo"
-                            android:textColor="@color/content_primary"
-                            android:textSize="16sp"
-                            android:fontFamily="@font/nunito_semibold" />
+                            android:text="@string/odstrani_sliko"
+                            android:drawableStart="@drawable/description"
+                            android:drawablePadding="8dp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
-
-                    <!-- Camera Button -->
-                    <ImageButton
-                        android:id="@+id/cameraBtn"
-                        style="@style/Button.Icon"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:contentDescription="@string/photo_button"
-                        android:src="@mipmap/photo_camera" />
-
                 </LinearLayout>
-
-                <!-- Time Clocks Section -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false"
-                    android:gravity="center"
-                    android:background="@drawable/bg_card_primary"
-                    android:padding="16dp">
-
-                    <!-- Start Time Clock -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="16dp">
-
-                        <com.leondzn.simpleanalogclock.SimpleAnalogClock
-                            android:id="@+id/analogClockBefore"
-                            android:layout_width="wrap_content"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center_horizontal"
-                            app:secondTint="@color/action_primary"
-                            app:hourTint="@color/action_primary"
-                            app:faceTint="@color/border_primary"
-                            app:minuteTint="@color/action_primary" />
-
-                        <TextView
-                            android:id="@+id/textBeforeTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:hint="@string/start_time"
-                            android:textColor="@color/content_primary"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/nunito_semibold"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                    <!-- End Time Clock -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <com.leondzn.simpleanalogclock.SimpleAnalogClock
-                            android:id="@+id/analogClockAfter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center_horizontal"
-                            app:secondTint="@color/action_primary"
-                            app:hourTint="@color/action_primary"
-                            app:faceTint="@color/border_primary"
-                            app:minuteTint="@color/action_primary" />
-
-                        <TextView
-                            android:id="@+id/textAfterTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:hint="@string/end_time"
-                            android:textColor="@color/content_primary"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/nunito_semibold"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
             </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
 
     <!-- Tab Navigation -->
