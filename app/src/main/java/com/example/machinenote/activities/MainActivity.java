@@ -26,7 +26,7 @@ import com.example.machinenote.R;
 import com.example.machinenote.Utility.ConnectionChecker;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.ThemeHelper;
-import com.example.machinenote.models.UpdateManager;
+import com.example.machinenote.Utility.UpdateManager;
 import com.example.machinenote.databinding.ActivityMainBinding;
 import com.example.machinenote.fragments.DashboardFragment;
 import com.example.machinenote.fragments.LoginFragment;
