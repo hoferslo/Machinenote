@@ -290,5 +290,26 @@
     <string name="slike">Slike</string>
     <string name="info">Info</string>
 
+    <!-- Status strings -->
+    <string name="status_narocila">Status naročila</string>
+    <string name="trenutni_status">Trenutni status</string>
+    <string name="v_obdelavi">V obdelavi</string>
+    <string name="predvidena_dostava">Predvidena dostava</string>
+    <string name="nastavi_predvideno_dostavo">Nastavi predvideno dostavo</string>
+    <string name="opombe_admin">Admin opombe</string>
+    <string name="interno_sporocilo_opombe">Interno sporočilo ali opombe...</string>
+
+    <!-- Info strings -->
+    <string name="informacije_o_narocilu">Informacije o naročilu</string>
+    <string name="ustvarjeno">Ustvarjeno</string>
+    <string name="zadnja_sprememba">Zadnja sprememba</string>
+    <string name="id_narocila">ID naročila</string>
+    <string name="upravljanje_narocila">Upravljanje naročila</string>
+    <string name="zahtevani_rok_dobave">Zahtevani rok dobave</string>
+
+    <!-- Action strings -->
+    <string name="nazaj">Nazaj</string>
+    <string name="shrani_spremembe">Shrani spremembe</string>
+
 </resources>
 
