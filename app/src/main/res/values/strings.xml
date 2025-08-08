@@ -311,5 +311,14 @@
     <string name="nazaj">Nazaj</string>
     <string name="shrani_spremembe">Shrani spremembe</string>
 
+    <!-- Time related strings -->
+    <string name="cas_remonta">Čas remonta</string>
+    <string name="zacetek_remonta">Začetek remonta</string>
+    <string name="konec_remonta">Konec remonta</string>
+
+    <!-- Images section -->
+    <string name="slike_remonta">Slike remonta</string>
+    <string name="dodajte_slike_remonta">Dodajte slike med izvajanjem remonta</string>
+
 </resources>
 

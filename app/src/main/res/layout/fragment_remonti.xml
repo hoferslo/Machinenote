@@ -13,159 +13,293 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:layout_weight="1">
 
         <!-- Data Entry Screen -->
-        <LinearLayout
+        <ScrollView
             android:id="@+id/entryLl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-            <!-- Required Items List -->
             <LinearLayout
-                android:id="@+id/requiredItemsLl"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginBottom="16dp"
-                android:minHeight="120dp"
-                android:background="@drawable/bg_card_primary"
-                android:padding="16dp">
-
-                <ListView
-                    android:id="@+id/requiredItemsLv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="none" />
-
-            </LinearLayout>
-
-            <!-- Scrollable Form Content -->
-            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-                >
+                android:orientation="vertical"
+                android:padding="16dp">
 
+                <!-- Required Items Section -->
                 <LinearLayout
-                    android:id="@+id/formContainer"
+                    android:id="@+id/requiredItemsLl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_card_primary"
+                    android:elevation="1dp"
                     android:orientation="vertical"
-                    >
+                    android:padding="20dp">
 
-                    <!-- Line and QR Code Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/potrebni_podatki"
+                        android:textColor="@color/content_primary"
+                        android:textSize="16sp" />
+
+                    <ListView
+                        android:id="@+id/requiredItemsLv"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:scrollbars="none" />
+
+                </LinearLayout>
+
+                <!-- Basic Information Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_card_primary"
+                    android:elevation="1dp"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Line Selection and QR Code -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
                         android:layout_marginBottom="16dp"
-                        >
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                        <Button
-                            android:id="@+id/idOfLineBtn"
-                            style="@style/Button.Primary"
+                        <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="12dp"
-                            android:text="@string/line" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <ImageButton
-                            android:id="@+id/scanBtn"
-                            style="@style/Button.Icon"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:contentDescription="@string/scan_qr_code"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/qr_code_scanner" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:text="@string/line"
+                                android:textColor="@color/content_secondary"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/idOfLineBtn"
+                                style="@style/Button.Secondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="8dp"
+                                android:gravity="start|center_vertical"
+                                android:text="@string/line" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/nunito"
+                                android:gravity="center"
+                                android:text="@string/skeniraj_qr"
+                                android:textColor="@color/content_secondary"
+                                android:textSize="12sp" />
+
+                            <ImageButton
+                                android:id="@+id/scanBtn"
+                                style="@style/Button.Icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/scan_qr_code"
+                                android:src="@mipmap/qr_code_scanner" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                     <!-- Sklop Linije Button -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/sklop_linije"
+                        android:textColor="@color/content_secondary"
+                        android:textSize="12sp" />
+
                     <Button
                         android:id="@+id/sklopLinijeBtn"
-                        style="@style/Button.Primary"
+                        style="@style/Button.Secondary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        android:drawablePadding="8dp"
+                        android:gravity="start|center_vertical"
                         android:text="@string/sklop_linije" />
 
-                    <!-- Input Fields -->
+                    <!-- Replaced Parts -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/zamenjani_deli"
+                        android:textColor="@color/content_secondary"
+                        android:textSize="12sp" />
+
                     <EditText
                         android:id="@+id/zamenjani_deli"
                         style="@style/Input.Base"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="start|center_vertical"
                         android:hint="@string/zamenjani_deli"
                         android:importantForAutofill="no"
                         android:inputType="text" />
+
+                    <!-- Notes -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/opomba"
+                        android:textColor="@color/content_secondary"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/opomba"
                         style="@style/Input.Base"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/opomba"
                         android:layout_marginBottom="16dp"
+                        android:gravity="top|start"
+                        android:hint="@string/opomba"
                         android:importantForAutofill="no"
-                        android:inputType="textMultiLine" />
+                        android:inputType="textMultiLine"
+                        android:minHeight="80dp"
+                        android:scrollbars="vertical" />
 
                     <!-- Camera Button -->
-                    <ImageButton
-                        android:id="@+id/cameraBtn"
-                        style="@style/Button.Icon"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:contentDescription="@string/photo_button"
-                        android:src="@mipmap/photo_camera" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/nunito"
+                                android:gravity="center"
+                                android:text="@string/dodaj_sliko"
+                                android:textColor="@color/content_secondary"
+                                android:textSize="12sp" />
+
+                            <ImageButton
+                                android:id="@+id/cameraBtn"
+                                style="@style/Button.Icon"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/photo_button"
+                                android:src="@mipmap/photo_camera" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                    <!-- Time Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/cas_remonta"
+                        android:textColor="@color/content_primary"
+                        android:textSize="16sp" />
 
                     <!-- Time Clocks Section -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:baselineAligned="false"
                         android:gravity="center"
-                        android:background="@drawable/bg_card_primary"
-                        android:padding="16dp">
+                        android:orientation="horizontal">
 
                         <!-- Start Time Clock -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
+                            android:background="@drawable/bg_card_secondary"
                             android:orientation="vertical"
-                            android:layout_marginEnd="16dp">
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="8dp"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center"
+                                android:text="@string/zacetek_remonta"
+                                android:textColor="@color/content_secondary"
+                                android:textSize="12sp" />
 
                             <com.leondzn.simpleanalogclock.SimpleAnalogClock
                                 android:id="@+id/analogClockBefore"
                                 android:layout_width="wrap_content"
-                                android:layout_height="120dp"
+                                android:layout_height="100dp"
                                 android:layout_gravity="center_horizontal"
-                                app:secondTint="@color/action_primary"
+                                app:faceTint="@color/border_primary"
                                 app:hourTint="@color/action_primary"
                                 app:minuteTint="@color/action_primary"
-                                app:faceTint="@color/border_primary"/>
+                                app:secondTint="@color/action_primary" />
 
                             <TextView
                                 android:id="@+id/textBeforeTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center"
                                 android:hint="@string/start_time"
                                 android:textColor="@color/content_primary"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/nunito_semibold"
-                                android:gravity="center" />
+                                android:textSize="14sp" />
 
                         </LinearLayout>
 
@@ -173,74 +307,119 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:background="@drawable/bg_card_secondary"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="8dp"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center"
+                                android:text="@string/konec_remonta"
+                                android:textColor="@color/content_secondary"
+                                android:textSize="12sp" />
 
                             <com.leondzn.simpleanalogclock.SimpleAnalogClock
                                 android:id="@+id/analogClockAfter"
                                 android:layout_width="wrap_content"
-                                android:layout_height="120dp"
+                                android:layout_height="100dp"
                                 android:layout_gravity="center_horizontal"
-                                app:secondTint="@color/action_primary"
+                                app:faceTint="@color/border_primary"
                                 app:hourTint="@color/action_primary"
                                 app:minuteTint="@color/action_primary"
-                                app:faceTint="@color/border_primary"
-                                />
+                                app:secondTint="@color/action_primary" />
 
                             <TextView
                                 android:id="@+id/textAfterTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center"
                                 android:hint="@string/end_time"
                                 android:textColor="@color/content_primary"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/nunito_semibold"
-                                android:gravity="center" />
+                                android:textSize="14sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
-            </ScrollView>
-
-        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
 
         <!-- Images Screen -->
         <LinearLayout
             android:id="@+id/imagesLl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/background_app"
             android:orientation="vertical"
             android:visibility="invisible">
+
+            <!-- Images Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/surface_primary"
+                android:elevation="1dp"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:text="@string/slike_remonta"
+                    android:textColor="@color/content_primary"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito"
+                    android:text="@string/dodajte_slike_remonta"
+                    android:textColor="@color/content_secondary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:scrollbars="none"
-                android:padding="16dp"
-                android:background="@drawable/bg_card_primary">
+                android:padding="20dp"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/imagesContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:background="@drawable/bg_card_primary"
+                    android:elevation="1dp"
+                    android:orientation="vertical"
+                    android:padding="20dp" />
 
             </ScrollView>
 
-            <ImageButton
+            <Button
                 android:id="@+id/ImagesCameraBtn"
-                style="@style/Button.Camera.Large"
+                style="@style/Button.Success"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_margin="20dp"
                 android:contentDescription="@string/photo_button"
-                android:src="@mipmap/photo_camera" />
+                android:drawableStart="@mipmap/photo_camera"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="@string/dodaj_novo_sliko" />
 
         </LinearLayout>
 
@@ -260,36 +439,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/surface_primary"
+        android:elevation="4dp"
         android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
-        >
+        android:padding="16dp">
 
         <Button
             android:id="@+id/cancelBtn"
             style="@style/Button.Destructive"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/cancel" />
 
         <Button
             android:id="@+id/sendBtn"
             style="@style/Button.Success"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/send" />
 
     </LinearLayout>
 
-
     <!-- Tab Navigation -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -314,8 +491,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tab_for_inserting_data"
-                app:icon="@drawable/add_box"
-                />
+                app:icon="@drawable/add_box" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tabPicturesBtn"
@@ -324,7 +500,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tab_for_pictures"
-                app:icon="@mipmap/photo_camera"/>
+                app:icon="@mipmap/photo_camera" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tabInfoBtn"
