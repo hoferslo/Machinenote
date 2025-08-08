@@ -149,7 +149,6 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
 
         binding.tabEntryBtn.setOnClickListener(v -> handleTabPress(1));
         binding.tabPicturesBtn.setOnClickListener(v -> handleTabPress(2));
-        binding.tabInfoBtn.setOnClickListener(v -> handleTabPress(3));
 
         imageCaptureHelper = new ImageCaptureHelper(requireContext(), cameraLauncher);
         imageCaptureHelper.setImageCaptureCallback(new ImageCaptureHelper.ImageCaptureCallback() {
@@ -305,13 +304,10 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
     public void handleTabPress(int position) {
         binding.entryLl.setVisibility(View.INVISIBLE);
         binding.imagesLl.setVisibility(View.INVISIBLE);
-        binding.infoLl.setVisibility(View.INVISIBLE);
         if (position == 1) {
             binding.entryLl.setVisibility(View.VISIBLE);
         } else if (position == 2) {
             binding.imagesLl.setVisibility(View.VISIBLE);
-        } else if (position == 3) {
-            binding.infoLl.setVisibility(View.VISIBLE);
         }
     }
 

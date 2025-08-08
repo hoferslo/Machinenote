@@ -223,6 +223,72 @@
     <string name="kolicina">Količina</string>
 
 
+    <string name="novo_narocilo">Novo naročilo</string>
+    <string name="izpolnite_podatke">Izpolnite podatke za novo naročilo</string>
+    <!-- Section Titles -->
+    <string name="osnovni_podatki">Osnovni podatki</string>
+    <string name="podatki_o_artiklu">Podatki o artiklu</string>
+    <string name="slika_artikla">Slika artikla</string>
+
+    <!-- Input Labels and Hints -->
+    <string name="vnesite_ime_narocnika">Vnesite ime naročnika</string>
+    <string name="izberite_datum">Izberite datum dobave</string>
+    <string name="vnesite_naziv">Vnesite naziv artikla</string>
+    <string name="kolicina_in_enota">Količina in enota</string>
+    <string name="dodatni_tehnicni_podatki">Dodatni tehnični podatki</string>
+
+    <!-- Image Section -->
+    <string name="ni_slike">Ni izbrane slike</string>
+
+    <!-- Existing strings that should already be in your project -->
+    <!-- Če jih nimaš, jih tudi dodaj: -->
+
+    <string name="enota">Enota</string>
+
+
+    <string name="zastoj_stroja">Zastoj stroja</string>
+    <string name="evidenca_zastojev">Evidenca in dokumentacija zastojev</string>
+
+    <!-- Section Titles -->
+    <string name="potrebni_podatki">Potrebni podatki</string>
+
+    <string name="lokacija_in_identifikacija">Lokacija in identifikacija</string>
+    <string name="dodatne_moznosti">Dodatne možnosti</string>
+    <string name="cas_zastoja">Čas zastoja</string>
+    <string name="slike_zastoja">Slike zastoja</string>
+    <string name="informacije">Informacije</string>
+
+    <!-- Input Labels and Hints -->
+    <string name="ime_delavca">Ime delavca</string>
+    <string name="vnesite_ime_delavca">Vnesite ime delavca</string>
+    <string name="razlog_zastoja">Razlog zastoja</string>
+    <string name="vnesite_razlog">Vnesite razlog zastoja</string>
+    <string name="dodatne_opombe">Dodatne opombe</string>
+    <string name="dodatne_informacije">Dodatne informacije o zastoju</string>
+    <string name="linija_stroja">Linija/stroj</string>
+    <string name="izberi_linijo">Izberi linijo</string>
+    <string name="izberi_sifrant">Izberi iz šifranta</string>
+
+    <!-- Time Section -->
+    <string name="zacetek_zastoja">Začetek zastoja</string>
+    <string name="konec_zastoja">Konec zastoja</string>
+
+    <!-- Action Labels -->
+    <string name="skeniraj_qr">Skeniraj QR</string>
+
+    <string name="potrdi">Potrdi</string>
+
+    <!-- Images Section -->
+    <string name="dodajte_slike_zastoja">Dodajte fotografije zastoja</string>
+    <string name="dodaj_novo_sliko">Dodaj novo sliko</string>
+
+    <!-- Info Section -->
+    <string name="pregled_informacij">Pregled vnesenih informacij</string>
+
+    <!-- Tab Navigation -->
+    <string name="vnos_podatkov">Vnos podatkov</string>
+    <string name="slike">Slike</string>
+    <string name="info">Info</string>
 
 </resources>
 
