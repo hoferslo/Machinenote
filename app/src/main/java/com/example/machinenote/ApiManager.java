@@ -8,6 +8,7 @@ import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Naloga;
+import com.example.machinenote.models.Narocila;
 import com.example.machinenote.models.PregledOpravilo;
 import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.Remont;
@@ -917,7 +918,108 @@ public class ApiManager {
         });
     }
 
+    public void getNarocila(NarocilaCallback callback) {
+        Call<List<Narocila>> call = apiService.getNarocilaApi();
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<Narocila>> call, Response<List<Narocila>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Narocila> narocilaList = response.body();
+                    callback.onSuccess(narocilaList);
+                } else {
+                    callback.onFailure("Failed to retrieve naloge");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<Narocila>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void sendNarocilaWithImages(Narocila narocila, List<File> imageFiles, final Callback<Void> callback) {
+        // Convert Naloga to RequestBody
+        RequestBody narocilaBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(narocila));
+
+        // Convert image files to MultipartBody.Part
+        List<MultipartBody.Part> imageParts = new ArrayList<>();
+        for (File file : imageFiles) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("images[]", file.getName(), requestFile);  // Changed "images" to "images[]"
+            imageParts.add(body);
+        }
+
+        // Call the API
+        Call<Void> call = apiService.sendNarocilaWithImages(narocilaBody, imageParts);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ApiManager", "Narocila and images sent successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ApiManager", "Failed to send Narocila and images: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ApiManager", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void updateNarocilaWithImages(int id, Narocila narocila, List<File> imageFiles, final Callback<Void> callback) {
+        // Convert Naloga to RequestBody
+        RequestBody narocilaBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(narocila));
+
+        // Convert image files to MultipartBody.Part
+        List<MultipartBody.Part> imageParts = new ArrayList<>();
+        for (File file : imageFiles) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("completion_images[]", file.getName(), requestFile);
+            imageParts.add(body);
+        }
+
+        // Call the API
+        Call<Void> call = apiService.updateNarocilaWithImages(id, narocilaBody, imageParts);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ApiManager", "Narocila updated with images successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("ApiManager", "Failed to update Narocila with images: " + response.message());
+
+                    // Dodatno logging za debugging
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("ApiManager", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e("ApiManager", "Could not read error body");
+                    }
+
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ApiManager", "Error updating narocila with images: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public interface NarocilaCallback {
+        void onSuccess(List<Narocila> narocilaList);
+
+        void onFailure(String message);
+    }
 
     public interface RoleCreationCallback {
         void onSuccess();

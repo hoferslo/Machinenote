@@ -391,6 +391,60 @@
 
                         </LinearLayout>
 
+                        <!-- Permission: Register -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+
+                            <CheckBox
+                                android:id="@+id/checkBoxNarocila"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkbox_tint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Narocila"
+                                android:textSize="14sp"
+                                android:textColor="@color/content_primary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <!-- Permission: Register -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+
+                            <CheckBox
+                                android:id="@+id/checkBoxDodajanjeNarocil"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/checkbox_tint"
+                                android:scaleX="1.1"
+                                android:scaleY="1.1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Dodajanje Naročil"
+                                android:textSize="14sp"
+                                android:textColor="@color/content_primary"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
                     </LinearLayout>
                 </ScrollView>

@@ -156,6 +156,8 @@ public class RegisterFragment extends BaseFragment {
         permissionCheckBoxes.put("Remonti", binding.checkBoxRemonti);
         permissionCheckBoxes.put("Orodja", binding.checkBoxOrodja);
         permissionCheckBoxes.put("Register", binding.checkBoxRegister);
+        permissionCheckBoxes.put("Naročila", binding.checkBoxNarocila);
+        permissionCheckBoxes.put("Dodajanje Naročil", binding.checkBoxDodajanjeNarocil);
     }
 
     private void loadRolesFromApi() {
@@ -289,6 +291,8 @@ public class RegisterFragment extends BaseFragment {
         if (role.isRemonti()) binding.checkBoxRemonti.setChecked(true);
         if (role.isOrodja()) binding.checkBoxOrodja.setChecked(true);
         if (role.isRegister()) binding.checkBoxRegister.setChecked(true);
+        if (role.isNarocila()) binding.checkBoxNarocila.setChecked(true);
+        if (role.isDodajanjeNarocil()) binding.checkBoxDodajanjeNarocil.setChecked(true);
     }
 
     private void setDefaultPermissionsForRole(String roleName) {

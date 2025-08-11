@@ -4,6 +4,7 @@ import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Naloga;
+import com.example.machinenote.models.Narocila;
 import com.example.machinenote.models.PregledOpravilo;
 import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.RezervniDel;
@@ -154,6 +155,26 @@ public interface ApiService {
             @Part List<MultipartBody.Part> completionImages
     );
 
+    // New endpoints for narocila
+    @Headers("Content-Type: application/json")
+    @GET("narocila.php")
+    Call<List<Narocila>> getNarocilaApi();
+
+    @Multipart
+    @POST("narocila.php")
+    Call<Void> sendNarocilaWithImages(
+            @Part("naloga") RequestBody naloga,  // Changed from "naloge" to "naloga"
+            @Part List<MultipartBody.Part> images
+    );
+
+    @POST("narocila.php")
+    @Multipart
+    Call<Void> updateNarocilaWithImages(
+            @Query("id") int id,
+            @Part("narocila") RequestBody narocila,
+            @Part List<MultipartBody.Part> completionImages
+    );
+
     @Headers("Content-Type: application/json")
     @GET("roles.php")
     Call<List<Role>> getRoles();
@@ -297,6 +318,8 @@ class RoleRequest {
     private boolean remonti;
     private boolean orodja;
     private boolean register;
+    private boolean narocila;
+    private boolean dodajanjeNarocil;
 
     public RoleRequest(String role, List<String> permissions) {
         this.role = role;
@@ -310,6 +333,8 @@ class RoleRequest {
         this.remonti = permissions.contains("Remonti");
         this.orodja = permissions.contains("Orodja");
         this.register = permissions.contains("Register");
+        this.narocila = permissions.contains("Narocila");
+        this.dodajanjeNarocil = permissions.contains("Dodajanje narocil");
     }
 
     // Getters and setters...
@@ -335,6 +360,10 @@ class RoleRequest {
     public void setOrodja(boolean orodja) { this.orodja = orodja; }
     public boolean isRegister() { return register; }
     public void setRegister(boolean register) { this.register = register; }
+    public boolean isNarocila() { return narocila; }
+    public void setNarocila(boolean narocila) { this.narocila = narocila; }
+    public boolean isDodajanje_narocil() { return dodajanjeNarocil; }
+    public void setDodajanje_narocil(boolean dodajanje_narocil) { this.dodajanjeNarocil = dodajanje_narocil; }
 }
 
 class UserCreationRequest {

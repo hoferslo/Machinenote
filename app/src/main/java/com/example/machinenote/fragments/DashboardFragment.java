@@ -155,6 +155,16 @@ public class DashboardFragment extends BaseFragment {
             }
         }
 
+        {
+            if (role.isNarocila()) {
+                MaterialButton btn = addButtonToLayout("Naročila");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(NarocilaFragment.newInstance(context));
+                });
+            }
+        }
+
         if (getLastLinearLayout().getChildCount() == 1) {
             MaterialButton button = createButton("invisibleBtn");
             getLastLinearLayout().addView(button);
@@ -270,6 +280,9 @@ public class DashboardFragment extends BaseFragment {
             case "Registracija":
                 iconResourceId = R.drawable.person_add;
                 break;
+            case "Naročila":
+                iconResourceId = R.drawable.assignment_icon;
+                break;
             default:
                 // Ni ikone za neznane gumbove
                 break;
@@ -312,6 +325,9 @@ public class DashboardFragment extends BaseFragment {
                 case "Registracija":
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
                     break;
+                case "Naroičila":
+                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
+                    break;
                 default:
                     button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
                     break;
@@ -341,7 +357,7 @@ public class DashboardFragment extends BaseFragment {
             if (button != null) {
                 switch (button.getText().toString()) {
                     case "Zastoji", "Knjiženje", "Remonti", "Preventivni pregledi", "Naloge",
-                         "Registracija", "Rezervni deli", "Imenik", "Orodja" -> makeButtonOnline(online, button);
+                         "Registracija", "Rezervni deli", "Imenik", "Orodja","Naročila" -> makeButtonOnline(online, button);
                 }
             }
         });
@@ -399,6 +415,9 @@ public class DashboardFragment extends BaseFragment {
                 case "Registracija":
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
                     break;
+                case "Naročila":
+                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
+                    break;
                 default:
                     button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
                     break;
@@ -437,6 +456,9 @@ public class DashboardFragment extends BaseFragment {
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_light));
                     break;
                 case "Registracija":
+                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
+                    break;
+                case "Naročila":
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
                     break;
                 default:
@@ -479,6 +501,9 @@ public class DashboardFragment extends BaseFragment {
                 iconColorResourceId = android.R.color.holo_green_light;
                 break;
             case "Registracija":
+                iconColorResourceId = android.R.color.holo_orange_light;
+                break;
+            case "Naročila":
                 iconColorResourceId = android.R.color.holo_orange_light;
                 break;
             default:

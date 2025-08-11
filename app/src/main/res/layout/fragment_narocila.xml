@@ -110,10 +110,10 @@
             android:layout_height="wrap_content"
             app:singleSelection="true"
             app:selectionRequired="true"
-            app:checkedButton="@id/tabNalogeBtn">
+            app:checkedButton="@id/tabNarocilaBtn">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/tabNalogeBtn"
+                android:id="@+id/tabNarocilaBtn"
                 style="@style/Button.MaterialTab"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                 android:text="@string/narocila" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/tabVnosNalogeBtn"
+                android:id="@+id/tabVnosNarocilaBtn"
                 style="@style/Button.MaterialTab"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

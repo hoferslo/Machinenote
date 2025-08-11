@@ -1,4 +1,403 @@
 package com.example.machinenote.fragments;
 
-public class NarocilaAddFragment {
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.example.machinenote.BaseFragment;
+import com.example.machinenote.R;
+import com.example.machinenote.activities.MainActivity;
+import com.example.machinenote.databinding.FragmentNarocilaAddBinding;
+import com.example.machinenote.models.Narocila;
+import com.example.machinenote.ApiManager;
+import com.example.machinenote.Utility.ImageCaptureHelper;
+import com.example.machinenote.Utility.CustomDateTimePicker;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class NarocilaAddFragment extends BaseFragment {
+
+    private FragmentNarocilaAddBinding binding;
+    private Context context;
+    private Calendar selectedDate;
+    private List<File> selectedImages;
+    private ApiManager apiManager;
+
+    // Utility classes
+    private ImageCaptureHelper imageCaptureHelper;
+    private CustomDateTimePicker customDateTimePicker;
+
+    // Activity result launchers
+    private ActivityResultLauncher<Intent> cameraLauncher;
+    private ActivityResultLauncher<Intent> galleryLauncher;
+
+    public NarocilaAddFragment() {
+        // Required empty public constructor
+        selectedDate = Calendar.getInstance();
+        selectedImages = new ArrayList<>();
+    }
+
+    public static NarocilaAddFragment newInstance(Context context) {
+        NarocilaAddFragment fragment = new NarocilaAddFragment();
+        fragment.context = context;
+        fragment.TAG = context.getString(R.string.tag_dodaj_narocilo); // ali "Dodaj naročilo"
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        apiManager = new ApiManager(context);
+
+        // Initialize activity result launchers
+        initializeActivityLaunchers();
+
+        // Initialize utility classes
+        initializeUtilities();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        binding = FragmentNarocilaAddBinding.inflate(getLayoutInflater());
+
+        setupSpinners();
+        setupClickListeners();
+        initializeViews();
+
+        return binding.getRoot();
+    }
+
+    private void setupSpinners() {
+        // Setup Location Spinner
+        // You should replace this with your actual location data
+        String[] locations = {"Ljubljana", "Maribor", "Celje", "Koper"};
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_spinner_item, locations);
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.lokacijaSpinner.setAdapter(locationAdapter);
+
+        // Setup Unit Spinner
+        // You should replace this with your actual unit data
+        String[] units = {"kg", "kom", "m", "m²", "m³", "l"};
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_spinner_item, units);
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.enotaSpinner.setAdapter(unitAdapter);
+    }
+
+    private void initializeActivityLaunchers() {
+        // Camera launcher
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (imageCaptureHelper != null) {
+                        imageCaptureHelper.handleActivityResult(result.getResultCode(), result.getData());
+                    }
+                }
+        );
+
+        // Gallery launcher
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (imageCaptureHelper != null) {
+                        imageCaptureHelper.handleActivityResult(result.getResultCode(), result.getData());
+                    }
+                }
+        );
+    }
+
+    private void initializeUtilities() {
+        // Initialize ImageCaptureHelper
+        imageCaptureHelper = new ImageCaptureHelper(context, cameraLauncher, galleryLauncher);
+        imageCaptureHelper.setImageCaptureCallback(new ImageCaptureHelper.ImageCaptureCallback() {
+            @Override
+            public void onImageCaptured(Bitmap bitmap) {
+                // Save bitmap to file and add to selectedImages list
+                File imageFile = saveBitmapToFile(bitmap);
+                if (imageFile != null) {
+                    selectedImages.add(imageFile);
+                    updateImagePreview();
+                    Toast.makeText(context, "Slika uspešno dodana", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(context, "Napaka: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Initialize CustomDateTimePicker
+        customDateTimePicker = new CustomDateTimePicker(context,
+                new CustomDateTimePicker.ICustomDateTimeListener() {
+                    @Override
+                    public void onSet(android.app.Dialog dialog, Calendar calendarSelected,
+                                      java.util.Date dateSelected, int year, String monthFullName,
+                                      String monthShortName, int monthNumber, int day,
+                                      String weekDayFullName, String weekDayShortName,
+                                      int hour24, int hour12, int min, int sec, String AM_PM) {
+
+                        selectedDate = calendarSelected;
+                        updateDateDisplay();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // Handle cancel if needed
+                    }
+                });
+
+        // Set to current date
+        customDateTimePicker.setDate(selectedDate);
+        customDateTimePicker.set24HourFormat(true); // Use 24-hour format for consistency
+    }
+
+    private void initializeViews() {
+        // Set current date as default
+        updateDateDisplay();
+
+        // Hide image preview container and remove button initially
+        binding.imagePreviewContainer.setVisibility(View.GONE);
+        binding.odstranislikoBtn.setVisibility(View.GONE);
+
+        // Set the correct tab as checked
+        binding.tabVnosNalogeBtn.setChecked(true);
+    }
+
+    private void setupClickListeners() {
+        // Tab navigation
+        binding.tabNalogeBtn.setOnClickListener(v -> {
+            // Switch back to NarocilaFragment
+            if (getActivity() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.loadFragment(NarocilaFragment.newInstance(context));
+            }
+        });
+
+        binding.tabVnosNalogeBtn.setOnClickListener(v -> {
+            // Already on this fragment, do nothing or refresh
+        });
+
+        // Date picker button
+        binding.rokDobave.setOnClickListener(v -> {
+            // Open custom date time picker
+            if (customDateTimePicker != null) {
+                customDateTimePicker.showDialog();
+            }
+        });
+
+        // Image action buttons
+        binding.dodajSlikoBtn.setOnClickListener(v -> {
+            // Add image using ImageCaptureHelper
+            if (imageCaptureHelper != null) {
+                imageCaptureHelper.captureImage();
+            }
+        });
+
+        binding.odstranislikoBtn.setOnClickListener(v -> {
+            // Remove image
+            removeImage();
+        });
+    }
+
+    private void saveNarocilo() {
+        // Get values from spinners and EditTexts
+        String lokacija = binding.lokacijaSpinner.getSelectedItem() != null ?
+                binding.lokacijaSpinner.getSelectedItem().toString() : "";
+        String narocnik = binding.nameOfShipper.getText().toString().trim();
+        String naziv = binding.articleName.getText().toString().trim();
+        String tehnicniPodatki = binding.technicalInfo.getText().toString().trim();
+        String kolicina = binding.amountOfArticle.getText().toString().trim();
+        String enotaStr = binding.enotaSpinner.getSelectedItem() != null ?
+                binding.enotaSpinner.getSelectedItem().toString() : "";
+
+        if (lokacija.isEmpty() || narocnik.isEmpty() || naziv.isEmpty() || kolicina.isEmpty() || selectedDate == null) {
+            Toast.makeText(context, "Prosimo, izpolnite vsa obvezna polja", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String enota = String.valueOf(binding.enotaSpinner.getSelectedItemPosition());
+
+        // Format date for SQL (YYYY-MM-DD format)
+        SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String rokForDatabase = sqlDateFormat.format(selectedDate.getTime());
+        String datumVnosa = sqlDateFormat.format(Calendar.getInstance().getTime());
+
+        // Create Narocila object using the SQL-formatted date
+        Narocila narocilo = new Narocila(
+                0, // id (will be set by database)
+                lokacija,
+                narocnik,
+                naziv,
+                tehnicniPodatki,
+                kolicina,
+                enota,
+                "", // slike - will be set by server
+                datumVnosa, // datum_vnosa - current date
+                rokForDatabase, // rok_za_dobavo - selected date
+                "", // datum_potrjene_dobave - empty initially
+                "novo" // status - default to "novo"
+        );
+
+        // Save narocilo with images
+        apiManager.sendNarocilaWithImages(narocilo, selectedImages, new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        if (response.isSuccessful()) {
+                            resetForm();
+                            Toast.makeText(context, "Naročilo uspešno shranjeno", Toast.LENGTH_SHORT).show();
+                            if (getActivity() instanceof MainActivity) {
+                                MainActivity mainActivity = (MainActivity) getActivity();
+                                mainActivity.loadFragment(NarocilaFragment.newInstance(context));
+                            }
+                        } else {
+                            Toast.makeText(context, "Napaka pri shranjevanju naročila", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(context, "Napaka: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private void updateDateDisplay() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        binding.rokDobave.setText(dateFormat.format(selectedDate.getTime()));
+    }
+
+    private File saveBitmapToFile(Bitmap bitmap) {
+        try {
+            File file = new File(context.getCacheDir(), "image_" + System.currentTimeMillis() + ".jpg");
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+            fos.close();
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Napaka pri shranjevanju slike", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
+    private void resetForm() {
+        // Reset spinners to first item
+        binding.lokacijaSpinner.setSelection(0);
+        binding.enotaSpinner.setSelection(0);
+
+        // Clear all text fields
+        binding.nameOfShipper.setText("");
+        binding.articleName.setText("");
+        binding.technicalInfo.setText("");
+        binding.amountOfArticle.setText("");
+
+        // Reset date to current date
+        selectedDate = Calendar.getInstance();
+        updateDateDisplay();
+        if (customDateTimePicker != null) {
+            customDateTimePicker.setDate(selectedDate);
+        }
+
+        // Clear images
+        selectedImages.clear();
+        binding.imagePreviewContainer.setVisibility(View.GONE);
+        binding.odstranislikoBtn.setVisibility(View.GONE);
+        binding.noImagePlaceholder.setVisibility(View.VISIBLE);
+    }
+
+    private void updateImagePreview() {
+        if (!selectedImages.isEmpty()) {
+            binding.imagePreviewContainer.setVisibility(View.VISIBLE);
+            binding.noImagePlaceholder.setVisibility(View.GONE);
+            binding.odstranislikoBtn.setVisibility(View.VISIBLE);
+
+            // Show the most recent image as preview
+            File lastImage = selectedImages.get(selectedImages.size() - 1);
+            binding.imagePreview.setImageURI(Uri.fromFile(lastImage));
+
+            // Update button text
+            if (selectedImages.size() == 1) {
+                binding.dodajSlikoBtn.setText("Dodaj še eno sliko");
+            } else {
+                binding.dodajSlikoBtn.setText("Dodaj sliko (" + selectedImages.size() + ")");
+            }
+        }
+    }
+
+    private void removeImage() {
+        selectedImages.clear();
+        binding.imagePreviewContainer.setVisibility(View.GONE);
+        binding.noImagePlaceholder.setVisibility(View.VISIBLE);
+        binding.odstranislikoBtn.setVisibility(View.GONE);
+        binding.dodajSlikoBtn.setText(getString(R.string.dodaj_sliko));
+    }
+
+    // Public method to save narocilo (can be called from outside if needed)
+    public void saveNarociloPublic() {
+        saveNarocilo();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.binding.toolbarTitle.setText(TAG);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Clean up temporary files
+        for (File file : selectedImages) {
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+
+        // Clean up utility classes
+        if (imageCaptureHelper != null) {
+            imageCaptureHelper.deleteAllImages(); // Clean up any remaining temp files
+        }
+
+        if (customDateTimePicker != null) {
+            customDateTimePicker.dismissDialog(); // Dismiss any open dialogs
+        }
+    }
 }

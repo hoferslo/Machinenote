@@ -1,23 +1,24 @@
 - make settings for bitmap commpression quality
-- add Preventivni pregledi, vsa orodja, Naloge (vnos naloge)
+- Dokoncej preventivne preglede in orodja
+- Dokoncej Narocila - dodaj tipko pošlji in preveri ce dela
 
 - qr koda izpolne informacije?
 - upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
-- dodajanje naročil v aplikacijo / matej naredi osnutek
 - optimiziraj kodo za register
+- za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
+- 1. najprej registriraj uporabnika (password, username)
+- 2. nato mu doloci rolo al pa jo nared // nevem kako bi to naredu mogoce posebi fragment?
 
 - iskanje po rezervnih delih poprav
 
 - Vprasej kere stvari pokazat samo - rezervni deli in drobni material
 - vprasej ce je ura uredu?
 - a je knjizenje uredu al ga nekak zbolsam?
+
+
 - dokoncej vnos naloge (Slikanje + Date picker), fixej uspodi nav view
-- v registru fixi padding
 
 - nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. ;D )
-- za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
-- 1. najprej registriraj uporabnika (password, username)
-- 2. nato mu doloci rolo al pa jo nared // nevem kako bi to naredu mogoce posebi fragment?
 
 - navodila za aplikacijo
 - excel / grafi za podatke (statistika in grafika)

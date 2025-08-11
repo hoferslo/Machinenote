@@ -39,8 +39,14 @@ public class Role {
     @SerializedName("register")
     private boolean register;
 
+    @SerializedName("narocila")
+    private boolean narocila;
+
+    @SerializedName("dodajanje_narocil")
+    private boolean dodajanjeNarocil;
+
     // Updated constructor to include dodajanje_nalog
-    public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register) {
+    public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register, boolean narocila, boolean dodajanjeNarocil) {
         this.role_Id = role_Id;
         this.role = role;
         this.knjizenje = knjizenje;
@@ -53,6 +59,8 @@ public class Role {
         this.remonti = remonti;
         this.orodja = orodja;
         this.register = register;
+        this.narocila = narocila;
+        this.dodajanjeNarocil = dodajanjeNarocil;
     }
 
     // Getters and Setters
@@ -152,6 +160,22 @@ public class Role {
         this.register = register;
     }
 
+    public boolean isDodajanjeNarocil() {
+        return dodajanjeNarocil;
+    }
+
+    public void setDodajanjeNarocil(boolean dodajanjeNarocil) {
+        this.dodajanjeNarocil = dodajanjeNarocil;
+    }
+
+    public boolean isNarocila() {
+        return narocila;
+    }
+
+    public void setNarocila(boolean narocila) {
+        this.narocila = narocila;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
@@ -167,6 +191,8 @@ public class Role {
                 ", remonti=" + remonti +
                 ", orodja=" + orodja +
                 ", register=" + register +
+                ", narocila=" + narocila +
+                ", dodajanje_narocil=" + dodajanjeNarocil +
                 '}';
     }
 }
