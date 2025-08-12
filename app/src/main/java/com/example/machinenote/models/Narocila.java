@@ -41,16 +41,22 @@ public class Narocila implements DisplayableItem, Serializable {
     @SerializedName("rok_za_dobavo")
     private String rokZaDobavo;
 
+    @SerializedName("datum_predvidene_dobave")
+    private String datumPredvideneDobave;
+
+    @SerializedName("admin_opomba")
+    private String adminOpomba;
+
     @SerializedName("datum_potrjene_dobave")
     private String datumPotrjeneDobave;
 
     @SerializedName("status")
-    private String status;;;
+    private String status;
 
 
     public Narocila(int id, String lokacija, String narocnik, String naziv, String tehnicniPodatki,
-                    String kolicina, String enota, String slike, String datumVnosa, String rokZaDobavo,
-                    String datumPotrjeneDobave, String status) {
+                    String kolicina, String enota, String slike, String datumVnosa, String rokZaDobavo, String datumPredvideneDobave,
+                    String adminOpomba, String datumPotrjeneDobave, String status) {
         this.id = id;
         this.lokacija = lokacija;
         this.narocnik = narocnik;
@@ -63,6 +69,8 @@ public class Narocila implements DisplayableItem, Serializable {
         this.rokZaDobavo = rokZaDobavo;
         this.datumPotrjeneDobave = datumPotrjeneDobave;
         this.status = status;
+        this.adminOpomba = adminOpomba;
+        this.datumPredvideneDobave = datumPredvideneDobave;
     }
 
     // Getter and Setter for id
@@ -155,6 +163,24 @@ public class Narocila implements DisplayableItem, Serializable {
         this.rokZaDobavo = rokZaDobavo;
     }
 
+    // Getter and Setter for datumPredvideneDobave
+    public String getDatumPredvideneDobave() {
+        return datumPredvideneDobave;
+    }
+
+    public void setDatumPredvideneDobave(String datumPredvideneDobave) {
+        this.datumPredvideneDobave = datumPredvideneDobave;
+    }
+
+    // Getter and Setter for adminOpomba
+    public String getAdminOpomba() {
+        return adminOpomba;
+    }
+
+    public void setAdminOpomba(String adminOpomba) {
+        this.adminOpomba = adminOpomba;
+    }
+
     // Getter and Setter for datumPotrjeneDobave
     public String getDatumPotrjeneDobave() {
         return datumPotrjeneDobave;
@@ -194,6 +220,8 @@ public class Narocila implements DisplayableItem, Serializable {
                 ", slike='" + slike + '\'' +
                 ", datumVnosa='" + datumVnosa + '\'' +
                 ", rokZaDobavo='" + rokZaDobavo + '\'' +
+                ", datumPredvideneDobave='" + datumPredvideneDobave + '\'' +
+                ", adminOpomba='" + adminOpomba + '\'' +
                 ", datumPotrjeneDobave='" + datumPotrjeneDobave + '\'' +
                 ", status='" + status + '\'' +
                 '}';
@@ -207,6 +235,8 @@ public class Narocila implements DisplayableItem, Serializable {
         map.put("Lokacija", getLokacija());
         map.put("Količina", getKolicina());
         map.put("Rok za dobavo", getRokZaDobavo());
+        map.put("Predvidena dostava", getDatumPredvideneDobave());
+        map.put("Admin opomba", getAdminOpomba());
         map.put("Status", getStatus());
         return map;
     }

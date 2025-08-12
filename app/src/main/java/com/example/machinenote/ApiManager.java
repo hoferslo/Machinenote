@@ -7,6 +7,7 @@ import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.Narocila;
 import com.example.machinenote.models.PregledOpravilo;
@@ -451,6 +452,26 @@ public class ApiManager {
 
             @Override
             public void onFailure(Call<List<SklopLinije>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void fetchLokacije(LokacijeCallback callback) {
+        Call<List<Lokacija>> call = apiService.getLokacije("lokacije");
+
+        call.enqueue(new Callback<List<Lokacija>>() {
+            @Override
+            public void onResponse(Call<List<Lokacija>> call, Response<List<Lokacija>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch sklope linij");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Lokacija>> call, Throwable t) {
                 callback.onFailure(t.getMessage());
             }
         });
@@ -1106,6 +1127,12 @@ public class ApiManager {
         void onFailure(String errorMessage);
     }
 
+    public interface LokacijeCallback {
+        void onSuccess(List<Lokacija> lokacija);
+
+        void onFailure(String errorMessage);
+    }
+
     // SifrantByIdCallback.java
     public interface SifrantByIdCallback {
         void onSuccess(Sifrant sifrant);
@@ -1138,5 +1165,7 @@ public class ApiManager {
 
         void onResponse(Call<Void> call, Response<Void> response);
     }
+
+
 
 }

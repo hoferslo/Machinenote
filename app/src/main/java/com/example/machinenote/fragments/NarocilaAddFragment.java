@@ -19,10 +19,12 @@ import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentNarocilaAddBinding;
+import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Narocila;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.Utility.ImageCaptureHelper;
 import com.example.machinenote.Utility.CustomDateTimePicker;
+import com.example.machinenote.models.SklopLinije;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,6 +46,9 @@ public class NarocilaAddFragment extends BaseFragment {
     private Calendar selectedDate;
     private List<File> selectedImages;
     private ApiManager apiManager;
+    private List<Lokacija> lokacije;
+    private List<String> locations = new ArrayList<>();
+    private ArrayAdapter<String> locationAdapter;
 
     // Utility classes
     private ImageCaptureHelper imageCaptureHelper;
@@ -85,6 +90,9 @@ public class NarocilaAddFragment extends BaseFragment {
 
         binding = FragmentNarocilaAddBinding.inflate(getLayoutInflater());
 
+        // Najprej pokličemo API klic, da dobimo lokacije
+        setupApiCalls();
+        // Potem nastavimo spinner-je (brez lokacij)
         setupSpinners();
         setupClickListeners();
         initializeViews();
@@ -93,16 +101,13 @@ public class NarocilaAddFragment extends BaseFragment {
     }
 
     private void setupSpinners() {
-        // Setup Location Spinner
-        // You should replace this with your actual location data
-        String[] locations = {"Ljubljana", "Maribor", "Celje", "Koper"};
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(context,
+        // Setup Location Spinner - inicializiramo prazen adapter
+        locationAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, locations);
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.lokacijaSpinner.setAdapter(locationAdapter);
 
         // Setup Unit Spinner
-        // You should replace this with your actual unit data
         String[] units = {"kg", "kom", "m", "m²", "m³", "l"};
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, units);
@@ -229,6 +234,7 @@ public class NarocilaAddFragment extends BaseFragment {
             saveNarocilo();
         });
     }
+
     private void saveNarocilo() {
         // Get values from spinners and EditTexts with better validation
         String lokacija = "";
@@ -295,8 +301,10 @@ public class NarocilaAddFragment extends BaseFragment {
                 "", // slike - will be set by server
                 datumVnosa, // datum_vnosa - current date
                 rokForDatabase, // rok_za_dobavo - selected date
+                "",
+                "",
                 "", // datum_potrjene_dobave - empty initially
-                "novo" // status - default to "novo"
+                "novo"// status - default to "novo"
         );
 
         // Debug log the narocilo object
@@ -405,6 +413,44 @@ public class NarocilaAddFragment extends BaseFragment {
         binding.noImagePlaceholder.setVisibility(View.VISIBLE);
         binding.odstranislikoBtn.setVisibility(View.GONE);
         binding.dodajSlikoBtn.setText(getString(R.string.dodaj_sliko));
+    }
+
+    private void setupApiCalls(){
+        apiManager.fetchLokacije(new ApiManager.LokacijeCallback() {
+            @Override
+            public void onSuccess(List<Lokacija> response) {
+                lokacije = response;
+                locations.clear(); // Počistimo seznam
+
+                for (Lokacija l : lokacije) {
+                    locations.add(l.getNaziv());
+                }
+
+                // Posodobimo adapter POTEM ko imamo podatke
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        locationAdapter.notifyDataSetChanged();
+
+                        // Če imamo lokacije, nastavimo prvo kot privzeto
+                        if (!locations.isEmpty()) {
+                            binding.lokacijaSpinner.setSelection(0);
+                        }
+                    });
+                }
+
+                Log.e("lokacije", "lokacije: " + lokacije.toString());
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("lokacije", "Error: " + errorMessage);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(context, "Napaka pri nalaganju lokacij: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
     }
 
     @Override

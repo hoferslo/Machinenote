@@ -19,6 +19,7 @@ import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentNarocilaManageBinding;
+import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Narocila;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.Utility.ImageCaptureHelper;
@@ -46,6 +47,9 @@ public class NarocilaManageFragment extends BaseFragment {
     private List<File> selectedImages;
     private ApiManager apiManager;
     private Narocila currentNarocilo;
+    private List<Lokacija> lokacije;
+    private List<String> locations = new ArrayList<>();
+    private ArrayAdapter<String> locationAdapter;
 
     // Edit modes
     private boolean isEditingBasicInfo = false;
@@ -93,7 +97,7 @@ public class NarocilaManageFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentNarocilaManageBinding.inflate(getLayoutInflater());
-
+        setupApiCalls();
         setupSpinners();
         setupClickListeners();
         initializeViews();
@@ -111,8 +115,7 @@ public class NarocilaManageFragment extends BaseFragment {
         binding.statusSpinner.setAdapter(statusAdapter);
 
         // Setup Location Spinner
-        String[] locations = {"Ljubljana", "Maribor", "Celje", "Koper"};
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(context,
+        locationAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, locations);
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.lokacijaSpinner.setAdapter(locationAdapter);
@@ -544,17 +547,42 @@ public class NarocilaManageFragment extends BaseFragment {
         binding.dodajSlikoBtn.setText(getString(R.string.dodaj_sliko));
     }
 
-    // Public method to set narocilo data (can be called from outside)
-    public void setNarocilo(Narocila narocilo) {
-        this.currentNarocilo = narocilo;
-        if (binding != null) {
-            loadNarociloData();
-        }
-    }
+    private void setupApiCalls(){
+        apiManager.fetchLokacije(new ApiManager.LokacijeCallback() {
+            @Override
+            public void onSuccess(List<Lokacija> response) {
+                lokacije = response;
+                locations.clear(); // Počistimo seznam
 
-    // Public method to get current narocilo state
-    public Narocila getCurrentNarocilo() {
-        return currentNarocilo;
+                for (Lokacija l : lokacije) {
+                    locations.add(l.getNaziv());
+                }
+
+                // Posodobimo adapter POTEM ko imamo podatke
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        locationAdapter.notifyDataSetChanged();
+
+                        // Če imamo lokacije, nastavimo prvo kot privzeto
+                        if (!locations.isEmpty()) {
+                            binding.lokacijaSpinner.setSelection(0);
+                        }
+                    });
+                }
+
+                Log.e("lokacije", "lokacije: " + lokacije.toString());
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("lokacije", "Error: " + errorMessage);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(context, "Napaka pri nalaganju lokacij: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
     }
 
     @Override

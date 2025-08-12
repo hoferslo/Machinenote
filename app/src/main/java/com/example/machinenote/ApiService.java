@@ -3,6 +3,7 @@ package com.example.machinenote;
 import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.Narocila;
 import com.example.machinenote.models.PregledOpravilo;
@@ -195,6 +196,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("check-update.php")
     Call<UpdateResponse> checkForUpdate(@Body UpdateRequest request);
+
+    @Headers("Content-Type: application/json")
+    @GET("helpers.php")
+    Call<List<Lokacija>> getLokacije(@Query("action") String action);
 }
 
 class LoginRequest {
