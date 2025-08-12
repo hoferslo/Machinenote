@@ -15,9 +15,6 @@
 - vprasej ce je ura uredu?
 - a je knjizenje uredu al ga nekak zbolsam?
 
-
-- dokoncej vnos naloge (Slikanje + Date picker), fixej uspodi nav view
-
 - nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. ;D )
 
 - navodila za aplikacijo

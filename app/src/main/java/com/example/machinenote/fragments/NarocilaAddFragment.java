@@ -187,12 +187,12 @@ public class NarocilaAddFragment extends BaseFragment {
         binding.odstranislikoBtn.setVisibility(View.GONE);
 
         // Set the correct tab as checked
-        binding.tabVnosNalogeBtn.setChecked(true);
+        binding.tabVnosNarocilaBtn.setChecked(true);
     }
 
     private void setupClickListeners() {
         // Tab navigation
-        binding.tabNalogeBtn.setOnClickListener(v -> {
+        binding.tabNarocilaBtn.setOnClickListener(v -> {
             // Switch back to NarocilaFragment
             if (getActivity() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -200,7 +200,7 @@ public class NarocilaAddFragment extends BaseFragment {
             }
         });
 
-        binding.tabVnosNalogeBtn.setOnClickListener(v -> {
+        binding.tabVnosNarocilaBtn.setOnClickListener(v -> {
             // Already on this fragment, do nothing or refresh
         });
 
@@ -224,21 +224,55 @@ public class NarocilaAddFragment extends BaseFragment {
             // Remove image
             removeImage();
         });
-    }
 
+        binding.shraniBtn.setOnClickListener(v -> {
+            saveNarocilo();
+        });
+    }
     private void saveNarocilo() {
-        // Get values from spinners and EditTexts
-        String lokacija = binding.lokacijaSpinner.getSelectedItem() != null ?
-                binding.lokacijaSpinner.getSelectedItem().toString() : "";
+        // Get values from spinners and EditTexts with better validation
+        String lokacija = "";
+        if (binding.lokacijaSpinner.getSelectedItem() != null) {
+            lokacija = binding.lokacijaSpinner.getSelectedItem().toString().trim();
+        }
+
+        // Debug log to check what's selected
+        Log.d("NarocilaAddFragment", "Selected lokacija: '" + lokacija + "'");
+        Log.d("NarocilaAddFragment", "Spinner position: " + binding.lokacijaSpinner.getSelectedItemPosition());
+
         String narocnik = binding.nameOfShipper.getText().toString().trim();
         String naziv = binding.articleName.getText().toString().trim();
         String tehnicniPodatki = binding.technicalInfo.getText().toString().trim();
         String kolicina = binding.amountOfArticle.getText().toString().trim();
-        String enotaStr = binding.enotaSpinner.getSelectedItem() != null ?
-                binding.enotaSpinner.getSelectedItem().toString() : "";
 
-        if (lokacija.isEmpty() || narocnik.isEmpty() || naziv.isEmpty() || kolicina.isEmpty() || selectedDate == null) {
-            Toast.makeText(context, "Prosimo, izpolnite vsa obvezna polja", Toast.LENGTH_SHORT).show();
+        String enotaStr = "";
+        if (binding.enotaSpinner.getSelectedItem() != null) {
+            enotaStr = binding.enotaSpinner.getSelectedItem().toString().trim();
+        }
+
+        // Improved validation
+        if (lokacija.isEmpty()) {
+            Toast.makeText(context, "Prosimo, izberite lokacijo", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (narocnik.isEmpty()) {
+            Toast.makeText(context, "Prosimo, vnesite naročnika", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (naziv.isEmpty()) {
+            Toast.makeText(context, "Prosimo, vnesite naziv artikla", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (kolicina.isEmpty()) {
+            Toast.makeText(context, "Prosimo, vnesite količino", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedDate == null) {
+            Toast.makeText(context, "Prosimo, izberite rok dobave", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -265,6 +299,9 @@ public class NarocilaAddFragment extends BaseFragment {
                 "novo" // status - default to "novo"
         );
 
+        // Debug log the narocilo object
+        Log.d("NarocilaAddFragment", "Narocilo object - Lokacija: '" + narocilo.getLokacija() + "'");
+
         // Save narocilo with images
         apiManager.sendNarocilaWithImages(narocilo, selectedImages, new Callback<Void>() {
             @Override
@@ -280,6 +317,7 @@ public class NarocilaAddFragment extends BaseFragment {
                             }
                         } else {
                             Toast.makeText(context, "Napaka pri shranjevanju naročila", Toast.LENGTH_SHORT).show();
+                            Log.e("NarocilaAddFragment", "Server response error: " + response.code());
                         }
                     });
                 }
@@ -290,6 +328,7 @@ public class NarocilaAddFragment extends BaseFragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(context, "Napaka: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("NarocilaAddFragment", "Network error", t);
                     });
                 }
             }
@@ -366,11 +405,6 @@ public class NarocilaAddFragment extends BaseFragment {
         binding.noImagePlaceholder.setVisibility(View.VISIBLE);
         binding.odstranislikoBtn.setVisibility(View.GONE);
         binding.dodajSlikoBtn.setText(getString(R.string.dodaj_sliko));
-    }
-
-    // Public method to save narocilo (can be called from outside if needed)
-    public void saveNarociloPublic() {
-        saveNarocilo();
     }
 
     @Override

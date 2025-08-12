@@ -259,46 +259,58 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
     }
 
     private void apiCalls() {
-        {
-            apiManager.fetchSifrants(new ApiManager.SifrantCallback() {
-                @Override
-                public void onSuccess(List<Sifrant> sifrants) {
-                    sifranti = sifrants;
-                }
+        // Initialize lists to prevent null pointer exceptions
+        linije = new ArrayList<>();
+        sifranti = new ArrayList<>();
 
-                @Override
-                public void onFailure(String errorMessage) {
+        // Disable buttons until data is loaded
+        binding.idOfLineBtn.setEnabled(false);
+        binding.sifrantBtn.setEnabled(false);
 
-                }
-            });
-        }
-        /**
-         {
-         // Fetch zastoji data
-         apiManager.getZastoji(new ApiManager.ZastojiCallback() {
-        @Override public void onSuccess(List<Zastoj> zastoji) {
+        // Fetch sifranti
+        apiManager.fetchSifrants(new ApiManager.SifrantCallback() {
+            @Override
+            public void onSuccess(List<Sifrant> sifrants) {
+                sifranti = sifrants;
+                binding.sifrantBtn.setEnabled(true);
+                Log.d(TAG, "Sifranti loaded: " + sifrants.size());
+            }
 
-        }
-
-        @Override public void onFailure(String errorMessage) {
-        Toast.makeText(context, getString(R.string.fetch_stoppages_failed) + errorMessage, Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(context, "Napaka pri nalaganju sifrantov: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Sifrant fetch failed: " + errorMessage);
+            }
         });
-         }*/
 
-        {
-            apiManager.fetchLinije(new ApiManager.LinijeCallback() {
-                @Override
-                public void onSuccess(List<Linija> response) {
+        // Fetch linije
+        apiManager.fetchLinije(new ApiManager.LinijeCallback() {
+            @Override
+            public void onSuccess(List<Linija> response) {
+                if (response != null && !response.isEmpty()) {
                     linije = response;
-                }
+                    binding.idOfLineBtn.setEnabled(true);
 
-                @Override
-                public void onFailure(String errorMessage) {
-                    System.err.println(getString(R.string.error) + errorMessage);
+                    // Optional: Update button text to show data is loaded
+                    binding.idOfLineBtn.setText(getString(R.string.pick_line));
+
+                    Log.d(TAG, "Linije loaded: " + response.size());
+                    Log.d(TAG, "First linija: " + response.get(0).toString());
+                } else {
+                    Toast.makeText(context, "Ni razpoložljivih linij", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Linije response is empty or null");
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(context, "Napaka pri nalaganju linij: " + errorMessage, Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Linije fetch failed: " + errorMessage);
+
+                // Keep button disabled on error
+                binding.idOfLineBtn.setEnabled(false);
+            }
+        });
     }
 
     public void handleTabPress(int position) {

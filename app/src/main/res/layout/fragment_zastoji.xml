@@ -52,7 +52,7 @@
                     <ListView
                         android:id="@+id/requiredItemsLv"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="60dp"
                         android:scrollbars="none" />
 
                 </LinearLayout>

@@ -304,58 +304,71 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Action Buttons -->
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/bg_card_primary">
+
+        <Button
+            android:id="@+id/prekliciBtn"
+            style="@style/Button.Destructive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:layout_marginEnd="8dp"
+            android:text="@string/preklici" />
+
+        <Button
+            android:id="@+id/shraniBtn"
+            style="@style/Button.Success"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:layout_marginStart="8dp"
+            android:text="@string/shrani_narocilo" />
+
+    </LinearLayout>
+
+    <!-- Tab Navigation -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/surface_primary"
-        android:elevation="8dp">
+        android:orientation="vertical">
 
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/border_primary" />
 
-        <!-- Tab Navigation -->
         <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/vnos_naloge_Ll"
+            android:id="@+id/vnos_narocila_Ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
             app:singleSelection="true"
             app:selectionRequired="true"
-            app:checkedButton="@id/tabVnosNalogeBtn">
+            app:checkedButton="@id/tabNarocilaBtn">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/tabNalogeBtn"
+                android:id="@+id/tabNarocilaBtn"
                 style="@style/Button.MaterialTab"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="4dp"
-                android:text="@string/narocila"
-                android:textColor="@color/content_primary"
-                app:strokeColor="@color/border_primary"
-                app:strokeWidth="1dp" />
+                android:text="@string/narocila" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/tabVnosNalogeBtn"
+                android:id="@+id/tabVnosNarocilaBtn"
                 style="@style/Button.MaterialTab"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="4dp"
                 android:text="@string/vnos_narocila"
-                android:textColor="@color/content_primary"
-                app:strokeColor="@color/border_primary"
-                app:strokeWidth="1dp"
-                app:icon="@drawable/add_box"
-                app:iconGravity="start"
-                app:iconPadding="8dp" />
+                app:icon="@drawable/add_box"/>
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </LinearLayout>
-
 </LinearLayout>

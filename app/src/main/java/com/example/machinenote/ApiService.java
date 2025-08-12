@@ -90,21 +90,20 @@ public interface ApiService {
     );
 
     @Headers("Content-Type: application/json")
-    @GET("linije.php")
-    Call<List<Linija>> getLinije();
+    @GET("helpers.php")
+    Call<List<Linija>> getLinije(@Query("action") String action);
 
     @Headers("Content-Type: application/json")
-    @GET("linije.php/{id}")
-    Call<Linija> getLinijaById(@Path("id") int id);
+    @GET("helpers.php/{id}")
+    Call<Linija> getLinijaById(@Query("action") String action, @Query("prostor_id") int prostorId);
 
+    @Headers("Content-Type: application/json")
+    @GET("helpers.php")
+    Call<List<SklopLinije>> getSklopeLinij();
 
     @Headers("Content-Type: application/json")
     @GET("sifrant.php")
     Call<List<Sifrant>> getSifrants();
-
-    @Headers("Content-Type: application/json")
-    @GET("sklop_linije.php")
-    Call<List<SklopLinije>> getSklopeLinij();
 
     @Headers("Content-Type: application/json")
     @GET("sifrant.php/{id}")
@@ -163,7 +162,7 @@ public interface ApiService {
     @Multipart
     @POST("narocila.php")
     Call<Void> sendNarocilaWithImages(
-            @Part("naloga") RequestBody naloga,  // Changed from "naloge" to "naloga"
+            @Part("narocila") RequestBody narocila,  // Changed from "naloge" to "naloga"
             @Part List<MultipartBody.Part> images
     );
 

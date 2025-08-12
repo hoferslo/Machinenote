@@ -363,27 +363,41 @@ public class ApiManager {
     }
 
     public void fetchLinije(LinijeCallback callback) {
-        Call<List<Linija>> call = apiService.getLinije();
+        Call<List<Linija>> call = apiService.getLinije("linije");
 
         call.enqueue(new Callback<List<Linija>>() {
             @Override
             public void onResponse(Call<List<Linija>> call, Response<List<Linija>> response) {
+
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
+                    List<Linija> linije = response.body();
+                    callback.onSuccess(linije);
                 } else {
-                    callback.onFailure("Failed to fetch linije");
+                    // Log error response body
+                    try {
+                        if (response.errorBody() != null) {
+                            String errorBody = response.errorBody().string();
+                            Log.e("API_ERROR", "Error response body: " + errorBody);
+                        }
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "Could not read error body: " + e.getMessage());
+                    }
+                    String errorMsg = "Failed to fetch linije: " + response.message();
+                    callback.onFailure(errorMsg);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Linija>> call, Throwable t) {
-                callback.onFailure(t.getMessage());
+                String errorMsg = "Network error: " + t.getMessage();
+                callback.onFailure(errorMsg);
             }
         });
     }
 
+
     public void fetchLinijaById(int id, LinijaCallback callback) {
-        Call<Linija> call = apiService.getLinijaById(id);
+        Call<Linija> call = apiService.getLinijaById("linije", id);
 
         call.enqueue(new Callback<Linija>() {
             @Override
