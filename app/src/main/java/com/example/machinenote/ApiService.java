@@ -98,7 +98,7 @@ public interface ApiService {
     Call<Linija> getLinijaById(@Query("action") String action, @Query("prostor_id") int prostorId);
 
     @Headers("Content-Type: application/json")
-    @GET("helpers.php")
+    @GET("sklop_linije.php")
     Call<List<SklopLinije>> getSklopeLinij();
 
     @Headers("Content-Type: application/json")

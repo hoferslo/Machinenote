@@ -1,22 +1,22 @@
 package com.example.machinenote.models;
 
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SklopLinije {
 
     private int id;
-    private String id_linije;
-    private String sklop_linije;
-    private String sklop_linije_aktiven;
+    private int linija_id;           // This is the line ID (integer foreign key)
+    private String sklop_linije;     // This is the assembly name
+    private boolean aktivna;         // This is the active status (boolean)
 
     // Constructor
-    public SklopLinije(int id, String idLinije, String sklopLinije, String sklop_linije_aktiven) {
+    public SklopLinije(int id, int linijaId, String sklopLinije, boolean aktivna) {
         this.id = id;
-        this.id_linije = idLinije;
+        this.linija_id = linijaId;
         this.sklop_linije = sklopLinije;
-        this.sklop_linije_aktiven = sklop_linije_aktiven;
+        this.aktivna = aktivna;
     }
 
     // Getter for id
@@ -29,52 +29,70 @@ public class SklopLinije {
         this.id = id;
     }
 
-    // Getter for idLinije
-    public String getIdLinije() {
-        return id_linije;
+    // Getter for line ID (foreign key)
+    public int getLinijaId() {
+        return linija_id;
     }
 
-    // Setter for idLinije
-    public void setIdLinije(String idLinije) {
-        this.id_linije = idLinije;
+    // Setter for line ID
+    public void setLinijaId(int linijaId) {
+        this.linija_id = linijaId;
     }
 
-    // Getter for sklopLinije
+    // Getter for assembly name (what gets displayed)
     public String getSklopLinije() {
         return sklop_linije;
     }
 
-    // Setter for sklopLinije
+    // Setter for assembly name
     public void setSklopLinije(String sklopLinije) {
         this.sklop_linije = sklopLinije;
     }
 
-    // Getter for sklopLinijeAktiven
-    public String getSklopLinijeAktiven() {
-        return sklop_linije_aktiven;
+    // Getter for active status
+    public boolean isAktivna() {
+        return aktivna;
     }
 
-    // Setter for sklopLinijeAktiven
-    public void setSklopLinijeAktiven(String sklopLinijeAktiven) {
-        this.sklop_linije_aktiven = sklopLinijeAktiven;
+    // Setter for active status
+    public void setAktivna(boolean aktivna) {
+        this.aktivna = aktivna;
+    }
+
+    // Legacy getter methods (for compatibility if used elsewhere)
+    @Deprecated
+    public String getIdLinije() {
+        return String.valueOf(linija_id);
+    }
+
+    @Deprecated
+    public String getSklopLinijeAktiven() {
+        return String.valueOf(aktivna);
     }
 
     @Override
     public String toString() {
         return "SklopLinije{" +
                 "id=" + id +
-                ", idLinije='" + id_linije + '\'' +
+                ", linijaId=" + linija_id +
                 ", sklopLinije='" + sklop_linije + '\'' +
-                ", sklopLinijeAktiven='" + sklop_linije_aktiven + '\'' +
+                ", aktivna=" + aktivna +
                 '}';
     }
 
     public static List<SklopLinije> getSklopLinijBasedOnLine(Linija linija, List<SklopLinije> sklopLinij) {
         List<SklopLinije> newSklopLinij = new ArrayList<>();
+
+        if (linija == null || sklopLinij == null) {
+            return newSklopLinij;
+        }
+        int targetLinija = linija.getLinija_id();
+        if (targetLinija == 0 ) {
+            return newSklopLinij;
+        }
+
         for (SklopLinije item : sklopLinij) {
-            // Check if the SAP_linije of the current SklopLinije matches the SAP_linije of the provided Linija
-            if (item.getIdLinije().equals(linija.getLinija_SAP())) {
-                // Add to the new list if it matches
+            if (item != null && item.getLinijaId() == targetLinija && item.isAktivna()) {
                 newSklopLinij.add(item);
             }
         }

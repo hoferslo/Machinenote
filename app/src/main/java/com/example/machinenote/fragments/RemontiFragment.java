@@ -128,6 +128,7 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
                             TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
                         });
             } else {
+                Log.e(TAG, sklopiLinijGledeNaIzbranoLinijo.toString());
                 Toast.makeText(context, R.string.najprej_izberi_linijo, Toast.LENGTH_SHORT).show();
             }
         });
@@ -254,6 +255,7 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
                 @Override
                 public void onSuccess(List<SklopLinije> response) {
                     sklopiLinij = response;
+                    Log.e("nekejnkeje", "sklopiLinij: " + sklopiLinij.toString());
                 }
 
                 @Override
