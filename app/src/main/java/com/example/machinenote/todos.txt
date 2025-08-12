@@ -1,8 +1,9 @@
 - make settings for bitmap commpression quality
+
 - Dokoncej preventivne preglede in orodja
+
 - Dokoncej Narocila - dodaj tipko pošlji in preveri ce dela
 
-- qr koda izpolne informacije?
 - upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
 - optimiziraj kodo za register
 - za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
@@ -10,6 +11,8 @@
 - 2. nato mu doloci rolo al pa jo nared // nevem kako bi to naredu mogoce posebi fragment?
 
 - iskanje po rezervnih delih poprav
+
+- Dodej filter dati filtrira po izbranem da ni treba vsega iskat
 
 - Vprasej kere stvari pokazat samo - rezervni deli in drobni material
 - vprasej ce je ura uredu?
@@ -26,3 +29,8 @@
 
 
 -Mogoce da se slika pojav za vsak rezervni del? treba vprasat
+
+Treba testirat qr kode
+
+
+- dodej v narocila opombe in predvidena dostava
