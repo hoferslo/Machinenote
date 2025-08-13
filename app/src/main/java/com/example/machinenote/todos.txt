@@ -14,9 +14,7 @@
 
 - Dodej filter dati filtrira po izbranem da ni treba vsega iskat
 
-- Vprasej kere stvari pokazat samo - rezervni deli in drobni material
-- vprasej ce je ura uredu?
-- a je knjizenje uredu al ga nekak zbolsam?
+
 
 - nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. ;D )
 
@@ -31,6 +29,8 @@
 -Mogoce da se slika pojav za vsak rezervni del? treba vprasat
 
 Treba testirat qr kode
-
+- Vprasej kere stvari pokazat samo - rezervni deli in drobni material
+- vprasej ce je ura uredu?
+- a je knjizenje uredu al ga nekak zbolsam?
 
 - dodej v narocila opombe in predvidena dostava

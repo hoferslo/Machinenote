@@ -65,6 +65,8 @@ public class CustomDateTimePicker implements View.OnClickListener {
         return custom;
     }
 
+
+
     public CustomDateTimePicker(Context a, ICustomDateTimeListener customDateTimeListener) {
         context = a;
         iCustomDateTimeListener = customDateTimeListener;
@@ -134,6 +136,8 @@ public class CustomDateTimePicker implements View.OnClickListener {
             selectedMinute = minute;
         });
     }
+
+
 
     public void showDialog() {
         if (!dialog.isShowing()) {

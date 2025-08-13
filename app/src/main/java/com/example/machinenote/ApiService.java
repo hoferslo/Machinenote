@@ -324,6 +324,7 @@ class RoleRequest {
     private boolean register;
     private boolean narocila;
     private boolean dodajanjeNarocil;
+    private boolean upravljanjeNarocil;
 
     public RoleRequest(String role, List<String> permissions) {
         this.role = role;
@@ -339,6 +340,7 @@ class RoleRequest {
         this.register = permissions.contains("Register");
         this.narocila = permissions.contains("Narocila");
         this.dodajanjeNarocil = permissions.contains("Dodajanje narocil");
+        this.upravljanjeNarocil = permissions.contains("Upravljanje narocil");
     }
 
     // Getters and setters...
@@ -368,6 +370,8 @@ class RoleRequest {
     public void setNarocila(boolean narocila) { this.narocila = narocila; }
     public boolean isDodajanje_narocil() { return dodajanjeNarocil; }
     public void setDodajanje_narocil(boolean dodajanje_narocil) { this.dodajanjeNarocil = dodajanje_narocil; }
+    public boolean isUpravljanje_narocil() { return upravljanjeNarocil; }
+    public void setUpravljanje_narocil(boolean upravljanje_narocil) { this.upravljanjeNarocil = upravljanje_narocil; }
 }
 
 class UserCreationRequest {

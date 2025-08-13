@@ -325,5 +325,20 @@
     <string name="slike_remonta">Slike remonta</string>
     <string name="dodajte_slike_remonta">Dodajte slike med izvajanjem remonta</string>
 
+    <string name="narocilo">Naročilo</string>
+
+    <string name="datum_cas_dostave">Datum in čas dostave</string>
+    <string name="potrdi_dostavo">Potrdi dostavo</string>
+
+    <!-- Messages -->
+    <string name="delivery_confirmed">Dostava uspešno potrjena</string>
+    <string name="delivery_error">Napaka pri potrditvi dostave</string>
+    <string name="delivery_confirming">Potrjujem...</string>
+    <string name="select_date_time">Izberi datum in čas</string>
+
+    <!-- Permission messages -->
+    <string name="no_manage_permission">Nimate dovoljenja za upravljanje naročil</string>
+    <string name="no_add_permission">Nimate dovoljenja za dodajanje naročil</string>
+
 </resources>
 

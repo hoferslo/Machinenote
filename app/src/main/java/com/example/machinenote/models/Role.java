@@ -45,8 +45,11 @@ public class Role {
     @SerializedName("dodajanje_narocil")
     private boolean dodajanjeNarocil;
 
+    @SerializedName("upravljanje_narocil")
+    private boolean upravljanjeNarocil;
+
     // Updated constructor to include dodajanje_nalog
-    public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register, boolean narocila, boolean dodajanjeNarocil) {
+    public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register, boolean narocila, boolean dodajanjeNarocil, boolean upravljanjeNarocil) {
         this.role_Id = role_Id;
         this.role = role;
         this.knjizenje = knjizenje;
@@ -61,6 +64,8 @@ public class Role {
         this.register = register;
         this.narocila = narocila;
         this.dodajanjeNarocil = dodajanjeNarocil;
+        this.upravljanjeNarocil = upravljanjeNarocil;
+
     }
 
     // Getters and Setters
@@ -168,6 +173,14 @@ public class Role {
         this.dodajanjeNarocil = dodajanjeNarocil;
     }
 
+    public boolean isUpravljanjeNarocil() {
+        return upravljanjeNarocil;
+    }
+
+    public void setUpravljanjeNarocil(boolean upravljanjeNarocil) {
+        this.upravljanjeNarocil = upravljanjeNarocil;
+    }
+
     public boolean isNarocila() {
         return narocila;
     }
@@ -193,6 +206,7 @@ public class Role {
                 ", register=" + register +
                 ", narocila=" + narocila +
                 ", dodajanje_narocil=" + dodajanjeNarocil +
+                ", upravljanje_narocil=" + upravljanjeNarocil +
                 '}';
     }
 }

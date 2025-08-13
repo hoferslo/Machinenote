@@ -16,6 +16,7 @@ import com.example.machinenote.R;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
+import com.example.machinenote.customFragments.NarocilaBottomSheetFragment;
 import com.example.machinenote.databinding.FragmentNarocilaBinding;
 import com.example.machinenote.models.Narocila;
 
@@ -46,11 +47,12 @@ public class NarocilaFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentNarocilaBinding.inflate(getLayoutInflater());
-        /*
+
+        // Check if user has permission to add orders
         if (!SharedPreferencesHelper.getInstance(context).getRole().isDodajanjeNarocil()) {
-            binding.vnosNarocilaLl.setVisibility(View.GONE); //TODO: add this tto the layout
+            binding.tabVnosNarocilaBtn.setVisibility(View.GONE);
         }
-        */
+
         setupRecyclerView();
         setupTabNavigation();
         fetchNarocila();
@@ -68,12 +70,7 @@ public class NarocilaFragment extends BaseFragment {
                 new GenericAdapter.OnItemClickListener<Narocila>() {
                     @Override
                     public void onItemClick(Narocila item) {
-                        // Open NarocilaManageFragment for the clicked narocilo
-                        if (getActivity() instanceof MainActivity) {
-                            MainActivity mainActivity = (MainActivity) getActivity();
-                            NarocilaManageFragment managedFragment = NarocilaManageFragment.newInstance(context, item);
-                            mainActivity.loadFragment(managedFragment);
-                        }
+                        handleNarociloClick(item);
                     }
 
                     @Override
@@ -89,6 +86,41 @@ public class NarocilaFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
     }
 
+    private void handleNarociloClick(Narocila narocilo) {
+        // Check if user has permission to manage orders
+        if (SharedPreferencesHelper.getInstance(context).getRole().isUpravljanjeNarocil()) {
+            // User has permission - open manage fragment
+            openManageFragment(narocilo);
+        } else {
+            // User doesn't have permission - show delivery confirmation bottom sheet
+            showNarocilaBottomSheetFragment(narocilo);
+        }
+    }
+
+    private void openManageFragment(Narocila narocilo) {
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            NarocilaManageFragment managedFragment = NarocilaManageFragment.newInstance(context, narocilo);
+            mainActivity.loadFragment(managedFragment);
+        }
+    }
+
+    private void showNarocilaBottomSheetFragment(Narocila narocilo) {
+        NarocilaBottomSheetFragment bottomSheet = NarocilaBottomSheetFragment.newInstance(context, narocilo);
+
+        // Set listener for when delivery is confirmed
+        bottomSheet.setOnDeliveryConfirmedListener(new NarocilaBottomSheetFragment.OnDeliveryConfirmedListener() {
+            @Override
+            public void onDeliveryConfirmed() {
+                // Refresh the list after delivery confirmation
+                fetchNarocila();
+            }
+        });
+
+        // Show the bottom sheet
+        bottomSheet.show(getParentFragmentManager(), "NarocilaBottomSheetFragment");
+    }
+
     private void setupTabNavigation() {
         // Tab navigation click listeners
         binding.tabNarocilaBtn.setOnClickListener(v -> {
@@ -97,10 +129,12 @@ public class NarocilaFragment extends BaseFragment {
         });
 
         binding.tabVnosNarocilaBtn.setOnClickListener(v -> {
-            // Switch to DodajNarociloFragment
-            if (getActivity() instanceof MainActivity) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadFragment(NarocilaAddFragment.newInstance(context));
+            // Switch to DodajNarociloFragment - only if user has permission
+            if (SharedPreferencesHelper.getInstance(context).getRole().isDodajanjeNarocil()) {
+                if (getActivity() instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.loadFragment(NarocilaAddFragment.newInstance(context));
+                }
             }
         });
 
@@ -137,5 +171,8 @@ public class NarocilaFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
+
+        // Refresh data when returning to this fragment
+        fetchNarocila();
     }
 }

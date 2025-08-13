@@ -1013,10 +1013,12 @@ public class ApiManager {
 
         // Convert image files to MultipartBody.Part
         List<MultipartBody.Part> imageParts = new ArrayList<>();
-        for (File file : imageFiles) {
-            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("completion_images[]", file.getName(), requestFile);
-            imageParts.add(body);
+        if (imageFiles != null) {
+            for (File file : imageFiles) {
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("completion_images[]", file.getName(), requestFile);
+                imageParts.add(body);
+            }
         }
 
         // Call the API
