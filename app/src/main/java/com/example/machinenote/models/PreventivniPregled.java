@@ -1,67 +1,58 @@
 package com.example.machinenote.models;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 
 public class PreventivniPregled implements DisplayableItem {
 
-    @SerializedName("ID")
+    @SerializedName("id")
     private int id;
 
-    @SerializedName("Naziv")
-    private String naziv;
+    @SerializedName("opis")
+    private String opis;
 
-    @SerializedName("Datum")
+    @SerializedName("linija_sap")
+    private String linijaSap;
+
+    @SerializedName("trajanje_std_min")
+    private int trajanjeStdMin;
+
+    @SerializedName("frekvenca")
+    private int frekvenca;
+
+    @SerializedName("datum")
     private String datum;
 
-    @SerializedName("Status")
-    private String status;
+    @SerializedName("lastnost")
+    private String lastnost;
 
-    @SerializedName("Linija_SAP")
-    private String linijaSAP;
+    @SerializedName("opombe")
+    private String opombe;
 
-    @SerializedName("NazivLinije")
+    @SerializedName("std_vrednost")
+    private String stdVrednost;
+
+    @SerializedName("naziv_linije")
     private String nazivLinije;
 
-    @SerializedName("Lokacija")
-    private String lokacija;
+    @SerializedName("prostor_naziv")
+    private String prostorNaziv;
 
-    @SerializedName("Prostor")
-    private String prostor;
+    @SerializedName("lokacija_naziv")
+    private String lokacijaNaziv;
 
-    @SerializedName("TotalOpravila")
-    private int totalOpravila;
+    @SerializedName("sklop_linije")
+    private String sklopLinije;
 
-    @SerializedName("CompletedOpravila")
-    private int completedOpravila;
+    @SerializedName("naslednji_pregled")
+    private String naslenjniPregled;
 
-    @SerializedName("Progress")
-    private double progress;
-
-    @SerializedName("Vzdrzevalec")
-    private String vzdrzevalec;
-
-    @SerializedName("Tip_Pregleda")
-    private String tipPregleda;
-
-    @SerializedName("Datum_Ustvarjen")
-    private String datumUstvarjen;
-
-    @SerializedName("Datum_Zakljucen")
-    private String datumZakljucen;
+    @SerializedName("dni_zamude")
+    private int dniZamude;
 
     // Constructors
     public PreventivniPregled() {}
-
-    public PreventivniPregled(int id, String naziv, String datum, String status) {
-        this.id = id;
-        this.naziv = naziv;
-        this.datum = datum;
-        this.status = status;
-    }
 
     // Getters and Setters
     public int getId() {
@@ -72,12 +63,36 @@ public class PreventivniPregled implements DisplayableItem {
         this.id = id;
     }
 
-    public String getNaziv() {
-        return naziv;
+    public String getOpis() {
+        return opis;
     }
 
-    public void setNaziv(String naziv) {
-        this.naziv = naziv;
+    public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+    public String getLinijaSap() {
+        return linijaSap;
+    }
+
+    public void setLinijaSap(String linijaSap) {
+        this.linijaSap = linijaSap;
+    }
+
+    public int getTrajanjeStdMin() {
+        return trajanjeStdMin;
+    }
+
+    public void setTrajanjeStdMin(int trajanjeStdMin) {
+        this.trajanjeStdMin = trajanjeStdMin;
+    }
+
+    public int getFrekvenca() {
+        return frekvenca;
+    }
+
+    public void setFrekvenca(int frekvenca) {
+        this.frekvenca = frekvenca;
     }
 
     public String getDatum() {
@@ -88,20 +103,28 @@ public class PreventivniPregled implements DisplayableItem {
         this.datum = datum;
     }
 
-    public String getStatus() {
-        return status;
+    public String getLastnost() {
+        return lastnost;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setLastnost(String lastnost) {
+        this.lastnost = lastnost;
     }
 
-    public String getLinijaSAP() {
-        return linijaSAP;
+    public String getOpombe() {
+        return opombe;
     }
 
-    public void setLinijaSAP(String linijaSAP) {
-        this.linijaSAP = linijaSAP;
+    public void setOpombe(String opombe) {
+        this.opombe = opombe;
+    }
+
+    public String getStdVrednost() {
+        return stdVrednost;
+    }
+
+    public void setStdVrednost(String stdVrednost) {
+        this.stdVrednost = stdVrednost;
     }
 
     public String getNazivLinije() {
@@ -112,95 +135,83 @@ public class PreventivniPregled implements DisplayableItem {
         this.nazivLinije = nazivLinije;
     }
 
-    public String getLokacija() {
-        return lokacija;
+    public String getProstorNaziv() {
+        return prostorNaziv;
     }
 
-    public void setLokacija(String lokacija) {
-        this.lokacija = lokacija;
+    public void setProstorNaziv(String prostorNaziv) {
+        this.prostorNaziv = prostorNaziv;
     }
 
-    public String getProstor() {
-        return prostor;
+    public String getLokacijaNaziv() {
+        return lokacijaNaziv;
     }
 
-    public void setProstor(String prostor) {
-        this.prostor = prostor;
+    public void setLokacijaNaziv(String lokacijaNaziv) {
+        this.lokacijaNaziv = lokacijaNaziv;
     }
 
-    public int getTotalOpravila() {
-        return totalOpravila;
+    public String getSklopLinije() {
+        return sklopLinije;
     }
 
-    public void setTotalOpravila(int totalOpravila) {
-        this.totalOpravila = totalOpravila;
+    public void setSklopLinije(String sklopLinije) {
+        this.sklopLinije = sklopLinije;
     }
 
-    public int getCompletedOpravila() {
-        return completedOpravila;
+    public String getNaslenjniPregled() {
+        return naslenjniPregled;
     }
 
-    public void setCompletedOpravila(int completedOpravila) {
-        this.completedOpravila = completedOpravila;
+    public void setNaslenjniPregled(String naslenjniPregled) {
+        this.naslenjniPregled = naslenjniPregled;
     }
 
-    public double getProgress() {
-        return progress;
+    public int getDniZamude() {
+        return dniZamude;
     }
 
-    public void setProgress(double progress) {
-        this.progress = progress;
-    }
-
-    public String getVzdrzevalec() {
-        return vzdrzevalec;
-    }
-
-    public void setVzdrzevalec(String vzdrzevalec) {
-        this.vzdrzevalec = vzdrzevalec;
-    }
-
-    public String getTipPregleda() {
-        return tipPregleda;
-    }
-
-    public void setTipPregleda(String tipPregleda) {
-        this.tipPregleda = tipPregleda;
-    }
-
-    public String getDatumUstvarjen() {
-        return datumUstvarjen;
-    }
-
-    public void setDatumUstvarjen(String datumUstvarjen) {
-        this.datumUstvarjen = datumUstvarjen;
-    }
-
-    public String getDatumZakljucen() {
-        return datumZakljucen;
-    }
-
-    public void setDatumZakljucen(String datumZakljucen) {
-        this.datumZakljucen = datumZakljucen;
+    public void setDniZamude(int dniZamude) {
+        this.dniZamude = dniZamude;
     }
 
     @Override
     public String toString() {
         return "PreventivniPregled{" +
                 "id=" + id +
-                ", naziv='" + naziv + '\'' +
+                ", opis='" + opis + '\'' +
+                ", linijaSap='" + linijaSap + '\'' +
                 ", datum='" + datum + '\'' +
-                ", status='" + status + '\'' +
-                ", linijaSAP='" + linijaSAP + '\'' +
                 ", nazivLinije='" + nazivLinije + '\'' +
-                ", lokacija='" + lokacija + '\'' +
-                ", prostor='" + prostor + '\'' +
-                ", progress=" + progress +
+                ", dniZamude=" + dniZamude +
                 '}';
     }
 
     @Override
     public Map<String, String> getDisplayFields() {
         return Collections.emptyMap();
+    }
+
+    // Helper metode
+    public String getStatusText() {
+        if (dniZamude > 0) {
+            return "Zamuda: " + dniZamude + " dni";
+        } else if (dniZamude == 0) {
+            return "Danes";
+        } else {
+            return "Prihajajoč";
+        }
+    }
+
+    public String getFullLocation() {
+        StringBuilder location = new StringBuilder();
+        if (lokacijaNaziv != null && !lokacijaNaziv.isEmpty()) {
+            location.append(lokacijaNaziv);
+        }
+        if (prostorNaziv != null && !prostorNaziv.isEmpty()) {
+            if (location.length() > 0) location.append(" - ");
+            location.append(prostorNaziv);
+        }
+        return location.toString();
     }
 }

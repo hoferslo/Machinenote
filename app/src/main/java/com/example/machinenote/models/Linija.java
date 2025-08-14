@@ -2,7 +2,10 @@ package com.example.machinenote.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Linija {
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class Linija  implements DisplayableItem{
     // Use @SerializedName to match PHP response field names
     @SerializedName("id")
     private int linija_id;
@@ -150,5 +153,21 @@ public class Linija {
                 ", prostor_naziv='" + prostor_naziv + '\'' +
                 ", lokacija_naziv='" + lokacija_naziv + '\'' +
                 '}';
+    }
+
+    @Override
+    public Map<String, String> getDisplayFields() {
+        Map<String, String> fields = new LinkedHashMap<>();
+        fields.put("ID", String.valueOf(linija_id));
+        fields.put("SAP Koda", linija_SAP);
+        fields.put("Naziv Linije", naziv_linije);
+        fields.put("Aktivna", linija_aktivna);
+        fields.put("Prostor ID", String.valueOf(prostor_id));
+        fields.put("Lokacija", lokacija != null ? lokacija : "");
+        fields.put("Prostor Naziv", prostor_naziv != null ? prostor_naziv : "");
+        fields.put("Lokacija Naziv", lokacija_naziv != null ? lokacija_naziv : "");
+        fields.put("Število Sklopov", String.valueOf(stevilo_sklopov));
+        fields.put("Polna Lokacija", getFullLocationInfo());
+        return fields;
     }
 }

@@ -2,8 +2,6 @@
 
 - Dokoncej preventivne preglede in orodja
 
-- Dokoncej Narocila - dodaj tipko pošlji in preveri ce dela
-
 - upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
 - optimiziraj kodo za register
 - za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
@@ -13,8 +11,7 @@
 - iskanje po rezervnih delih poprav
 
 - Dodej filter dati filtrira po izbranem da ni treba vsega iskat
-
-
+- filtriranje po statusu naročila pa kok urgentno je
 
 - nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. ;D )
 
@@ -32,5 +29,3 @@ Treba testirat qr kode
 - Vprasej kere stvari pokazat samo - rezervni deli in drobni material
 - vprasej ce je ura uredu?
 - a je knjizenje uredu al ga nekak zbolsam?
-
-- dodej v narocila opombe in predvidena dostava

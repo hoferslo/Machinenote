@@ -216,6 +216,16 @@
             android:gravity="end">
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/tabBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Nazaj"
+                android:icon="@drawable/person_add"
+                style="@style/Button.Destructive" />
+            <!-- TODO: dej sm notr ic_check_all uspod pa ic_add -->
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/fab_complete_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

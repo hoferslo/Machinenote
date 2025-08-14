@@ -10,6 +10,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,9 +21,9 @@ import com.example.machinenote.R;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
-import com.example.machinenote.databinding.FragmentPreventivniPreglediOpravilaBinding;
+import com.example.machinenote.databinding.FragmentPreventivniPreglediBinding;
 import com.example.machinenote.models.PreventivniPregled;
-import com.example.machinenote.models.PregledOpravilo;
+import com.example.machinenote.models.Linija;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,111 +34,65 @@ import java.util.stream.Collectors;
 
 public class PreventivniPreglediOpravilaFragment extends BaseFragment {
 
-    private FragmentPreventivniPreglediOpravilaBinding binding;
+    private FragmentPreventivniPreglediBinding binding;
     private ApiManager apiManager;
-    private List<PregledOpravilo> opravilaList;
-    private GenericAdapter<PregledOpravilo> adapter;
-    private PreventivniPregled parentPregled;
+    private List<PreventivniPregled> preventivniPreglediList;
+    private List<PreventivniPregled> allPreventivniPreglediList; // Za filtriranje
+    private GenericAdapter<PreventivniPregled> adapter;
+    private Linija selectedLinija;
 
     public PreventivniPreglediOpravilaFragment() {}
 
-    public static PreventivniPreglediOpravilaFragment newInstance(Context context, PreventivniPregled pregled) {
+    public static PreventivniPreglediOpravilaFragment newInstance(Context context, Linija linija) {
         PreventivniPreglediOpravilaFragment fragment = new PreventivniPreglediOpravilaFragment();
         fragment.apiManager = new ApiManager(context);
-        fragment.parentPregled = pregled;
-        fragment.TAG = "Opravila - " + pregled.getNaziv();
+        fragment.selectedLinija = linija;
+        fragment.TAG = "Preventivni pregledi - " + (linija != null ? linija.getLinija_SAP() : "");
         return fragment;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentPreventivniPreglediOpravilaBinding.inflate(inflater, container, false);
+        binding = FragmentPreventivniPreglediBinding.inflate(inflater, container, false);
 
-        setupUI();
-        setupRecyclerView();
-        setupSearch();
-        fetchOpravila();
-
-        return binding.getRoot();
-    }
-
-    private void setupUI() {
-        // Prikaži podatke o preventivnem pregledu
-        binding.textPregledNaziv.setText(parentPregled.getNaziv());
-        binding.textPregledDatum.setText(parentPregled.getDatum());
-        binding.textPregledLinija.setText(parentPregled.getLinijaSAP() + " - " + parentPregled.getNazivLinije());
-        binding.textPregledStatus.setText(parentPregled.getStatus());
-
-        // Nastavi barvo statusa
-        setStatusColor(parentPregled.getStatus());
-
-        // Progress bar
-        updateProgress();
-    }
-
-    private void setStatusColor(String status) {
-        int colorRes;
-        switch (status.toLowerCase()) {
-            case "aktiven":
-                colorRes = R.color.action_destructive;
-                break;
-            case "v teku":
-                colorRes = R.color.action_secondary;
-                break;
-            case "zakljucen":
-                colorRes = R.color.action_success;
-                break;
-            default:
-                colorRes = R.color.action_secondary;
-        }
-        binding.textPregledStatus.setTextColor(getResources().getColor(colorRes, null));
-    }
-
-    private void updateProgress() {
-        if (opravilaList != null) {
-            long completed = opravilaList.stream()
-                    .filter(o -> "Zakljuceno".equals(o.getStatus()))
-                    .count();
-
-            binding.progressBar.setMax(opravilaList.size());
-            binding.progressBar.setProgress((int) completed);
-            binding.textProgress.setText(completed + "/" + opravilaList.size() + " opravil");
-        }
-    }
-
-    private void setupRecyclerView() {
-        RecyclerView recyclerView = binding.recyclerViewOpravila;
+        RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = GenericAdapter.create(
                 getContext(),
                 new ArrayList<>(),
-                new GenericAdapter.OnItemClickListener<PregledOpravilo>() {
+                new GenericAdapter.OnItemClickListener<PreventivniPregled>() {
                     @Override
-                    public void onItemClick(PregledOpravilo opravilo) {
-                        // Odpri dialog za urejanje opravila
-                        showOpraviloEditDialog(opravilo);
+                    public void onItemClick(PreventivniPregled pregled) {
+                        // Tukaj odpri opravilo za ta preventivni pregled
+                        showExecutionDialog(pregled);
                     }
 
                     @Override
-                    public void onButtonClick(PregledOpravilo opravilo) {
-                        // Hitro označevanje kot končano
-                        markOpraviloAsCompleted(opravilo);
+                    public void onButtonClick(PreventivniPregled pregled) {
+                        // Hitro dejanje - začni pregled
+                        showExecutionDialog(pregled);
                     }
                 },
-                "OpisOpravila",
-                "Status",
-                "Sklop_Linije",
-                "Trajanje_STD_Min",
-                "ActVredParameter"
+                // Mapiranje polj za GenericAdapter
+                "Opis",              // -> pregled.getOpis()
+                "Lokacija",          // -> pregled.getFullLocation()
+                "Frekvenca",         // -> pregled.getFrekvenca() + " dni"
+                "Trajanje",          // -> pregled.getTrajanjeStdMin() + " min"
+                "Status",            // -> pregled.getStatusText()
+                "Naslednji pregled"  // -> pregled.getNaslenjniPregled()
         );
 
         recyclerView.setAdapter(adapter);
-    }
 
-    private void setupSearch() {
-        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        // Nastavi naslov z informacijami o liniji
+        if (selectedLinija != null) {
+            String title = selectedLinija.getLinija_SAP() + " - " + selectedLinija.getNaziv_linije();
+            ((MainActivity) requireActivity()).binding.toolbarTitle.setText(title);
+        }
+
+        binding.idOfDuty.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -144,118 +100,268 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterOpravila(newText);
+                filterPreventivniPregledi(newText);
                 return true;
             }
         });
 
-        binding.searchView.setOnFocusChangeListener((view, hasFocus) -> {
+        binding.idOfDuty.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                binding.searchView.clearFocus();
+                binding.idOfDuty.clearFocus();
+            }
+        });
+
+        // Naloži preventivne preglede za izbrano linijo
+        fetchPreventivniPreglediForLinija();
+        setupTabNavigation();
+
+        return binding.getRoot();
+    }
+
+    private void setupTabNavigation() {
+        binding.switchTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                MainActivity mainActivity = (MainActivity) requireActivity();
+                // Navigacija nazaj na linije
+                if (checkedId == R.id.tabBack) { // Prilagodi ID-je
+                    mainActivity.getSupportFragmentManager().popBackStack();
+                }
             }
         });
     }
 
-    private void fetchOpravila() {
+    private void fetchPreventivniPreglediForLinija() {
         MainActivity mainActivity = (MainActivity) requireActivity();
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(requireContext());
+        /*
+        if (mainActivity.serverConnection && selectedLinija != null) {
+            // API call za preventivne preglede za izbrano linijo
+            apiManager.getPreventivniPregledi(selectedLinija.getLinija_id(),
+                    new ApiManager.PreventivniPreglediCallback() {
+                        @Override
+                        public void onSuccess(List<PreventivniPregled> response) {
+                            preventivniPreglediList = response;
+                            allPreventivniPreglediList = new ArrayList<>(response); // Copy for filtering
+                            adapter.updateList(preventivniPreglediList);
 
-        String cacheKey = "OpravilaPregled_" + parentPregled.getId();
+                            // Shrani podatke v cache z ključem, ki vsebuje linija_id
+                            String cacheKey = "PreventivniPreglediList_" + selectedLinija.getLinija_id();
+                            String json = new Gson().toJson(preventivniPreglediList);
+                            sharedPreferencesHelper.putString(cacheKey, json);
 
-        if (mainActivity.serverConnection) {
-            apiManager.getOpravilaForPregled(parentPregled.getId(), new ApiManager.OpravilaCallback() {
-                @Override
-                public void onSuccess(List<PregledOpravilo> response) {
-                    opravilaList = response;
-                    adapter.updateList(opravilaList);
-                    updateProgress();
+                            Toast.makeText(getContext(),
+                                    "Naloženih " + response.size() + " pregledov za linijo " + selectedLinija.getLinija_SAP(),
+                                    Toast.LENGTH_SHORT).show();
 
-                    // Cache the data
-                    String json = new Gson().toJson(opravilaList);
-                    sharedPreferencesHelper.putString(cacheKey, json);
-                }
+                            Log.d(TAG, "Successfully loaded " + response.size() + " preventivni pregledi for linija " + selectedLinija.getLinija_SAP());
+                        }
 
-                @Override
-                public void onFailure(String errorMessage) {
-                    Log.e(TAG, "API failure: " + errorMessage);
-                    loadOpravilaFromCache(sharedPreferencesHelper, cacheKey);
-                }
-            });
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Log.e(TAG, "API failure: " + errorMessage);
+                            Toast.makeText(getContext(), "Napaka pri nalaganju: " + errorMessage,
+                                    Toast.LENGTH_LONG).show();
+                            loadPreventivniPreglediFromPrefs(sharedPreferencesHelper);
+                        }
+                    });
         } else {
-            loadOpravilaFromCache(sharedPreferencesHelper, cacheKey);
-        }
-    }
-
-    private void loadOpravilaFromCache(SharedPreferencesHelper prefs, String cacheKey) {
-        String json = prefs.getString(cacheKey, null);
-        if (json != null) {
-            Type type = new TypeToken<List<PregledOpravilo>>() {}.getType();
-            opravilaList = new Gson().fromJson(json, type);
-            if (opravilaList != null) {
-                adapter.updateList(opravilaList);
-                updateProgress();
+            if (selectedLinija == null) {
+                Log.e(TAG, "Selected linija is null");
+                Toast.makeText(getContext(), "Napaka: linija ni izbrana", Toast.LENGTH_LONG).show();
+                showEmptyState();
             } else {
-                Log.e(TAG, "Parsed opravilaList is null.");
+                loadPreventivniPreglediFromPrefs(sharedPreferencesHelper);
+                Toast.makeText(getContext(), "Ni povezave s strežnikom - naloženi lokalni podatki",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+
+         */
+    }
+
+    private void loadPreventivniPreglediFromPrefs(SharedPreferencesHelper prefs) {
+        if (selectedLinija == null) {
+            showEmptyState();
+            return;
+        }
+
+        String cacheKey = "PreventivniPreglediList_" + selectedLinija.getLinija_id();
+        String json = prefs.getString(cacheKey, null);
+
+        if (json != null && !json.isEmpty()) {
+            try {
+                Type type = new TypeToken<List<PreventivniPregled>>() {}.getType();
+                preventivniPreglediList = new Gson().fromJson(json, type);
+
+                if (preventivniPreglediList != null && !preventivniPreglediList.isEmpty()) {
+                    allPreventivniPreglediList = new ArrayList<>(preventivniPreglediList);
+                    adapter.updateList(preventivniPreglediList);
+                    Log.i(TAG, "Loaded " + preventivniPreglediList.size() + " pregledi from cache for linija " + selectedLinija.getLinija_SAP());
+                } else {
+                    Log.e(TAG, "Parsed preventivniPreglediList is empty or null.");
+                    showEmptyState();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error parsing cached data: " + e.getMessage());
+                showEmptyState();
             }
         } else {
-            Log.e(TAG, "No cached data found for key: " + cacheKey);
-            Toast.makeText(getContext(), "Ni podatkov o opravilih", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "No cached data found for linija " + selectedLinija.getLinija_SAP());
+            showEmptyState();
         }
     }
 
-    private void filterOpravila(String query) {
-        if (opravilaList != null) {
-            List<PregledOpravilo> filtered = opravilaList.stream()
-                    .filter(o -> query == null || query.isEmpty()
-                            || o.getOpisOpravila().toLowerCase().contains(query.toLowerCase())
-                            || o.getSklopLinije().toLowerCase().contains(query.toLowerCase())
-                            || o.getStatus().toLowerCase().contains(query.toLowerCase()))
+    private void showEmptyState() {
+        preventivniPreglediList = new ArrayList<>();
+        allPreventivniPreglediList = new ArrayList<>();
+        adapter.updateList(preventivniPreglediList);
+
+        String message = selectedLinija != null ?
+                "Ni preventivnih pregledov za linijo " + selectedLinija.getLinija_SAP() :
+                "Ni podatkov za prikaz";
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showExecutionDialog(PreventivniPregled pregled) {
+        if (pregled == null) {
+            Toast.makeText(getContext(), "Napaka: pregled ni izbran", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String title = pregled.getOpis() != null && !pregled.getOpis().isEmpty() ?
+                pregled.getOpis() :
+                ("Pregled za linijo " + (selectedLinija != null ? selectedLinija.getLinija_SAP() : ""));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Začni pregled")
+                .setMessage("Ali želite začeti pregled: " + title + "?")
+                .setPositiveButton("Začni", (dialog, which) -> {
+                    startPregledExecution(pregled);
+                })
+                .setNegativeButton("Podrobnosti", (dialog, which) -> {
+                    showPregledDetails(pregled);
+                })
+                .setNeutralButton("Prekliči", null)
+                .show();
+    }
+
+    private void startPregledExecution(PreventivniPregled pregled) {
+        if (pregled == null) {
+            Toast.makeText(getContext(), "Napaka: pregled ni izbran", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // TODO: Implementiraj navigacijo na fragment za izvajanje pregleda
+        Toast.makeText(getContext(),
+                "Začenjam pregled: " + (pregled.getOpis() != null ? pregled.getOpis() : "Pregled"),
+                Toast.LENGTH_SHORT).show();
+
+        Log.d(TAG, "Starting execution for pregled ID: " + pregled.getId());
+
+        // Primer navigacije na fragment za izvajanje:
+        // MainActivity mainActivity = (MainActivity) requireActivity();
+        // PregledExecutionFragment executionFragment =
+        //     PregledExecutionFragment.newInstance(getContext(), pregled, selectedLinija);
+        // mainActivity.loadFragment(executionFragment);
+    }
+
+    private void showPregledDetails(PreventivniPregled pregled) {
+        if (pregled == null) {
+            Toast.makeText(getContext(), "Napaka: pregled ni izbran", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        StringBuilder details = new StringBuilder();
+        details.append("ID: ").append(pregled.getId()).append("\n\n");
+
+        if (selectedLinija != null) {
+            details.append("Linija: ").append(selectedLinija.getLinija_SAP())
+                    .append(" - ").append(selectedLinija.getNaziv_linije()).append("\n");
+        }
+
+        details.append("Opis: ").append(pregled.getOpis() != null ? pregled.getOpis() : "Ni opisa").append("\n");
+
+        if (pregled.getFullLocation() != null) {
+            details.append("Lokacija: ").append(pregled.getFullLocation()).append("\n");
+        }
+
+        if (pregled.getTrajanjeStdMin() != 0 ) {
+            details.append("Trajanje: ").append(pregled.getTrajanjeStdMin()).append(" min\n");
+        }
+
+        if (pregled.getFrekvenca() != 0) {
+            details.append("Frekvenca: ").append(pregled.getFrekvenca()).append(" dni\n");
+        }
+
+        if (pregled.getDatum() != null) {
+            details.append("Zadnji pregled: ").append(pregled.getDatum()).append("\n");
+        }
+
+        if (pregled.getNaslenjniPregled() != null) {
+            details.append("Naslednji pregled: ").append(pregled.getNaslenjniPregled()).append("\n");
+        }
+
+        if (pregled.getStatusText() != null) {
+            details.append("Status: ").append(pregled.getStatusText()).append("\n");
+        }
+
+        if (pregled.getOpombe() != null && !pregled.getOpombe().isEmpty()) {
+            details.append("\nOpombe: ").append(pregled.getOpombe());
+        }
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Podrobnosti pregleda")
+                .setMessage(details.toString())
+                .setPositiveButton("V redu", null)
+                .setNegativeButton("Začni pregled", (dialog, which) -> {
+                    startPregledExecution(pregled);
+                })
+                .show();
+    }
+
+    private void filterPreventivniPregledi(String query) {
+        if (allPreventivniPreglediList == null) {
+            Log.w(TAG, "allPreventivniPreglediList is null, cannot filter");
+            return;
+        }
+
+        List<PreventivniPregled> filtered;
+
+        if (query == null || query.trim().isEmpty()) {
+            filtered = new ArrayList<>(allPreventivniPreglediList);
+        } else {
+            String lowerQuery = query.toLowerCase().trim();
+            filtered = allPreventivniPreglediList.stream()
+                    .filter(p -> {
+                        return (p.getOpis() != null && p.getOpis().toLowerCase().contains(lowerQuery)) ||
+                                (p.getLokacijaNaziv() != null && p.getLokacijaNaziv().toLowerCase().contains(lowerQuery)) ||
+                                (p.getProstorNaziv() != null && p.getProstorNaziv().toLowerCase().contains(lowerQuery)) ||
+                                (p.getSklopLinije() != null && p.getSklopLinije().toLowerCase().contains(lowerQuery)) ||
+                                (p.getStatusText() != null && p.getStatusText().toLowerCase().contains(lowerQuery));
+                    })
                     .collect(Collectors.toList());
-            adapter.updateList(filtered);
         }
-    }
 
-    private void showOpraviloEditDialog(PregledOpravilo opravilo) {
-        // TODO: Implementiraj dialog za urejanje opravila
-        // Dialog naj omogoča:
-        // - Spremembo statusa
-        // - Vnos dejanske vrednosti parametra
-        // - Vnos časa izvajanja
-        // - Vnos opomb
-        Toast.makeText(getContext(), "Edit dialog za: " + opravilo.getOpisOpravila(), Toast.LENGTH_SHORT).show();
-    }
-
-    private void markOpraviloAsCompleted(PregledOpravilo opravilo) {
-        // Hitro označevanje kot končano
-        opravilo.setStatus("Zakljuceno");
-
-        // Pošlji na API
-        apiManager.updateOpraviloStatus(opravilo.getId(), opravilo, new ApiManager.UpdateCallback() {
-            @Override
-            public void onSuccess(String message) {
-                adapter.notifyDataSetChanged();
-                updateProgress();
-                Toast.makeText(getContext(), "Opravilo označeno kot končano", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(List<PreventivniPregled> response) {
-
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                // Povrni status nazaj
-                opravilo.setStatus("Ni zaceto"); // ali prejšnji status
-                Log.e(TAG, "Failed to update opravilo: " + errorMessage);
-                Toast.makeText(getContext(), "Napaka pri posodabljanju", Toast.LENGTH_SHORT).show();
-            }
-        });
+        preventivniPreglediList = filtered;
+        adapter.updateList(filtered);
+        Log.d(TAG, "Filtered " + filtered.size() + " items from " + allPreventivniPreglediList.size());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) requireActivity()).binding.toolbarTitle.setText(TAG);
+        if (selectedLinija != null) {
+            String title = selectedLinija.getLinija_SAP() + " - Preventivni pregledi";
+            ((MainActivity) requireActivity()).binding.toolbarTitle.setText(title);
+        } else {
+            ((MainActivity) requireActivity()).binding.toolbarTitle.setText("Preventivni pregledi");
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
