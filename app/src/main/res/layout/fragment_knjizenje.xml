@@ -196,23 +196,25 @@
 
     </LinearLayout>
 
-    <!-- Compact Data Section - Fixed Height -->
-    <ScrollView
+    <TextView
+        android:id="@+id/allDataSv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_card_primary"
-        android:padding="12dp">
-
-        <LinearLayout
-            android:id="@+id/allDataSv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="top" />
-
-    </ScrollView>
+        android:layout_marginBottom="12dp"
+        style="@style/Input.Base"
+        android:text="Prikaži več informacij o artiklu"
+        android:textColor="@color/content_secondary"
+        android:fontFamily="@font/nunito_semibold"
+        android:textSize="16sp"
+        android:drawableEnd="@drawable/ic_chevron_right"
+        android:drawableTint="@color/content_tertiary"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp" />
 
     <!-- Stock Control Section - Compact -->
     <LinearLayout

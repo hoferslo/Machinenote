@@ -85,6 +85,9 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
             }
         });
 
+        // Nastavi click listener
+        binding.allDataSv.setOnClickListener(v -> showRezervniDeliBottomSheet());
+
         binding.scanQRBtn.setOnClickListener(v -> startQRCodeScanner());
 
         binding.sendGmail.setOnClickListener(v -> openGmail());
@@ -137,7 +140,6 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
         binding.articleMinimumTv.setText(String.valueOf(rezervniDel.getMinimalna_zaloga()));
         binding.articleStock.setText(String.valueOf(rezervniDel.getRealZalogo()));
 
-        addToDataLl();
 
         hideMail();
 
@@ -156,23 +158,17 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
         binding.articleMinimumLl.setBackgroundResource(R.drawable.bg_card_secondary);
     }
 
-    private void addToDataLl() {
-        binding.allDataSv.removeAllViews();
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_id), String.valueOf(rezervniDel.getId())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_skladisce), String.valueOf(rezervniDel.getSkladišče())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_regal), String.valueOf(rezervniDel.getRegal())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_artikel), String.valueOf(rezervniDel.getArtikel())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_znaki), String.valueOf(rezervniDel.getZnaki())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_artikel_dolgi_text), String.valueOf(rezervniDel.getArtikel_dolgi_text())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_proizvajalec), String.valueOf(rezervniDel.getProizvajalec())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_dobavitelj), String.valueOf(rezervniDel.getDobavitelj())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_znesek), String.valueOf(rezervniDel.getZnesek())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_minimalna_zaloga), String.valueOf(rezervniDel.getMinimalna_zaloga())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_dobava), String.valueOf(rezervniDel.getDobava())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_poraba), String.valueOf(rezervniDel.getPoraba())));
-        binding.allDataSv.addView(ViewUtils.createTextViewLinearLayoutStartEnd(context, getString(R.string.field_inventura), String.valueOf(rezervniDel.getInventura())));
-
+    private void showRezervniDeliBottomSheet() {
+        if (rezervniDel != null) {
+            RezervniDeliBottomSheetFragment bottomSheet =
+                    RezervniDeliBottomSheetFragment.newInstance(getContext(), rezervniDel);
+            bottomSheet.show(getChildFragmentManager(), "RezervniDeliBottomSheet");
+        } else {
+            // Opcijsko: prikaži sporočilo, če ni podatkov
+            Toast.makeText(getContext(), "Ni podatkov o delu", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     private void adjustStock(int change) {
         // Define the callback for stock adjustment

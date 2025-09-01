@@ -42,7 +42,7 @@ public class PreventivniPreglediFragment extends BaseFragment {
     public static PreventivniPreglediFragment newInstance(Context context) {
         PreventivniPreglediFragment fragment = new PreventivniPreglediFragment();
         fragment.apiManager = new ApiManager(context);
-        fragment.TAG = "Linije"; // Ali uporabi context.getString(R.string.tag_linije)
+        fragment.TAG = "Preventivni pregledi"; // Ali uporabi context.getString(R.string.tag_linije)
         return fragment;
     }
 
@@ -77,11 +77,11 @@ public class PreventivniPreglediFragment extends BaseFragment {
                     }
                 },
                 // Mapiranje polj za GenericAdapter - prilagojeno za Linijo
-                "Linija SAP",        // -> linija.getLinija_SAP()
-                "Naziv linije",      // -> linija.getNaziv_linije()
+                "SAP Koda",        // -> linija.getLinija_SAP()
+                "Naziv Linije",      // -> linija.getNaziv_linije()
                 "Lokacija",          // -> linija.getFullLocationInfo()
-                "Št. sklopov",       // -> String.valueOf(linija.getStevilo_sklopov())
-                "Status",            // -> linija.getLinija_aktivna()
+                "Število Sklopov",       // -> String.valueOf(linija.getStevilo_sklopov())
+                "Aktivna",            // -> linija.getLinija_aktivna()
                 ""                   // Prazen za zadnje polje
         );
 

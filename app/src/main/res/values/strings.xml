@@ -340,5 +340,34 @@
     <string name="no_manage_permission">Nimate dovoljenja za upravljanje naročil</string>
     <string name="no_add_permission">Nimate dovoljenja za dodajanje naročil</string>
 
+
+    <!-- Filter & Sort Component Strings -->
+    <string name="filter_and_sort">Filter &amp; Sort</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+
+    <!-- Filter Options -->
+    <string name="filter_options">Filter Options</string>
+    <string name="filter_by_status">Filter by Status</string>
+    <string name="filter_by_date">Filter by Date</string>
+    <string name="all">All</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
+    <string name="date_from">Date From</string>
+    <string name="date_to">Date To</string>
+    <string name="clear">Clear</string>
+    <string name="apply">Apply</string>
+
+    <!-- Sort Options -->
+    <string name="sort_options">Sort Options</string>
+    <string name="sort_by">Sort By</string>
+    <string name="sort_by_name">Sort by Name</string>
+    <string name="sort_by_date">Sort by Date</string>
+    <string name="sort_by_status">Sort by Status</string>
+    <string name="sort_order">Sort Order</string>
+    <string name="ascending">Ascending (A-Z)</string>
+    <string name="descending">Descending (Z-A)</string>
+    <string name="apply_sort">Apply Sort</string>
+
 </resources>
 

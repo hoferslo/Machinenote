@@ -1,9 +1,12 @@
 package com.example.machinenote.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RezervniDel implements DisplayableItem{
+    @SerializedName("ID")
     private int id;
     private int skladišče;
     private String regal;

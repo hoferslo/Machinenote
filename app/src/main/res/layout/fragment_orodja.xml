@@ -1,74 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragments.OrodjaFragment"
-    android:gravity="center_vertical"
-    >
+    android:background="@color/background_app">
 
-    <LinearLayout
-        android:background="@drawable/bg_card_primary"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:paddingVertical="16dp">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_gravity="center_vertical">
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:gravity="center_vertical">
 
+
+            <!-- Slike Linij card -->
             <LinearLayout
-                android:id="@+id/allDataSv"
+                android:id="@+id/cardSlikeLinij"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:layout_gravity="center_vertical">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_card_primary"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
 
-                <Button
-                    style="@style/primaryButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Slike Linij" />
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_factory"
+                    app:tint="@color/red_500"
+                    android:layout_marginEnd="16dp" />
 
-                <Button
-                    style="@style/primaryButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Navodila linij" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <Button
-                    style="@style/primaryButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Varnostni listi" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Slike Linij"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary" />
 
-                <Button
-                    style="@style/primaryButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Filmi" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pregledaj slike vseh linij"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/content_tertiary" />
 
             </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+
+            <!-- Navodila linij card -->
+            <LinearLayout
+                android:id="@+id/cardNavodila"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_card_primary"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_description"
+                    app:tint="@color/green_500"
+                    android:layout_marginEnd="16dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Navodila linij"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dostop do navodil za vse linije"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/content_tertiary" />
+
+            </LinearLayout>
+
+            <!-- Varnostni listi card -->
+            <LinearLayout
+                android:id="@+id/cardVarnostni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_card_primary"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_security"
+                    app:tint="@color/warning_primary"
+                    android:layout_marginEnd="16dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Varnostni listi"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pomembne varnostne informacije"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/content_tertiary" />
+
+            </LinearLayout>
+
+            <!-- Filmi card -->
+            <LinearLayout
+                android:id="@+id/cardFilmi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_primary"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_play_circle"
+                    app:tint="@color/blue_500"
+                    android:layout_marginEnd="16dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filmi"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Videoposnetki in izobraževalni materiali"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/content_tertiary" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

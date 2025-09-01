@@ -286,6 +286,8 @@ public class ApiManager {
             public void onResponse(Call<List<RezervniDel>> call, Response<List<RezervniDel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<RezervniDel> rezervniDeliList = response.body();
+                    Log.d("ApiManager", "Rezervni Deli retrieved successfully");
+                    Log.d("ApiManager", "Rezervni Deli list: " + rezervniDeliList);
                     callback.onSuccess(rezervniDeliList);
                 } else {
                     callback.onFailure("Failed to retrieve rezervni deli");

@@ -2,6 +2,7 @@ package com.example.machinenote.models;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PreventivniPregled implements DisplayableItem {
@@ -189,7 +190,24 @@ public class PreventivniPregled implements DisplayableItem {
 
     @Override
     public Map<String, String> getDisplayFields() {
-        return Collections.emptyMap();
+        Map<String, String> fields = new LinkedHashMap<>();
+
+        // Dodaj polja v vrstnem redu, kot jih želiš prikazati
+        fields.put("Opis", opis != null ? opis : "");
+        fields.put("Lokacija", getFullLocation());
+        fields.put("Frekvenca", frekvenca > 0 ? frekvenca + " dni" : "");
+        fields.put("Trajanje", trajanjeStdMin > 0 ? trajanjeStdMin + " min" : "");
+        fields.put("Status", getStatusText());
+        fields.put("Naslednji pregled", naslenjniPregled != null ? naslenjniPregled : "");
+        fields.put("SAP Koda", linijaSap != null ? linijaSap : "");
+        fields.put("Naziv Linije", nazivLinije != null ? nazivLinije : "");
+        fields.put("Sklop", sklopLinije != null ? sklopLinije : "");
+        fields.put("Zadnji pregled", datum != null ? datum : "");
+        fields.put("Lastnost", lastnost != null && !lastnost.isEmpty() ? lastnost : "");
+        fields.put("Std. vrednost", stdVrednost != null && !stdVrednost.isEmpty() ? stdVrednost : "");
+        fields.put("Opombe", opombe != null && !opombe.isEmpty() ? opombe : "");
+
+        return fields;
     }
 
     // Helper metode
