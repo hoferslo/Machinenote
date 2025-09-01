@@ -19,7 +19,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.FilterDialogBuilder;
 import com.example.machinenote.Utility.GenericAdapter;
+import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.customFragments.DrobniMaterialiBottomSheetFragment;
@@ -32,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +43,9 @@ public class DrobniMaterialiFragment extends BaseFragment {
     private FragmentDrobniMaterialiBinding binding;
     private ApiManager apiManager;
     private List<DrobniMateriali> drobniMaterialiList;
+    private GenericFilter<DrobniMateriali> filter;
     private GenericAdapter<DrobniMateriali> adapter;
+    private String currentSearchQuery = "";
 
     public DrobniMaterialiFragment() {}
 
@@ -96,7 +101,8 @@ public class DrobniMaterialiFragment extends BaseFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterDrobniMateriali(newText);
+                currentSearchQuery = newText;
+                applySearchAndFilter();
                 return true;
             }
         });
@@ -106,6 +112,8 @@ public class DrobniMaterialiFragment extends BaseFragment {
                 binding.idOfDuty.clearFocus();
             }
         });
+
+        binding.filterSortToggleBtn.setOnClickListener(v -> showFilterDialog());
 
         // Setup Tab Navigation
         setupTabNavigation();
@@ -148,6 +156,7 @@ public class DrobniMaterialiFragment extends BaseFragment {
                     adapter.updateList(drobniMaterialiList);
                     String json = new Gson().toJson(drobniMaterialiList);
                     sharedPreferencesHelper.putString("DrobniMaterialiList", json);
+                    setupFilter();
                 }
 
                 @Override
@@ -176,20 +185,76 @@ public class DrobniMaterialiFragment extends BaseFragment {
         }
     }
 
-    private void filterDrobniMateriali(String query) {
-        if (drobniMaterialiList != null) {
-            List<DrobniMateriali> filtered = drobniMaterialiList.stream()
-                    .filter(m -> query == null || query.isEmpty()
-                            || m.getMaterial().toLowerCase().contains(query.toLowerCase())
-                            || m.getVrsta().toLowerCase().contains(query.toLowerCase())
-                            || m.getVelikost().toLowerCase().contains(query.toLowerCase())
-                            || (m.getKvaliteta() != null && m.getKvaliteta().toLowerCase().contains(query.toLowerCase()))
-                            || m.getSkladišče().toLowerCase().contains(query.toLowerCase())
-                            || m.getRegal().toLowerCase().contains(query.toLowerCase()))
-                    .collect(Collectors.toList());
-            adapter.updateList(filtered);
+    private void setupFilter() {
+        if (drobniMaterialiList == null || drobniMaterialiList.isEmpty()) {
+            return;
+        }
+
+        // Initialize the filter with callback to update the adapter
+        filter = new GenericFilter<>(drobniMaterialiList, filteredList -> {
+            updateRecyclerView(filteredList);
+        });
+
+        // Register field extractors for filtering
+        filter.addFieldExtractor("skladisce", del -> del.getSkladišče() != 0 ? String.valueOf(del.getSkladišče()) : "")
+                .addFieldExtractor("material", del -> del.getMaterial() != null ? del.getMaterial() : "")
+                .addFieldExtractor("vrsta", del -> del.getVrsta() != null ? del.getVrsta() : "")
+                .addFieldExtractor("velikost", del -> del.getVelikost() != null ? del.getVelikost() : "")
+                .setNameExtractor(del -> del.getVrsta() != null ? del.getVrsta() : ""); // Set artikel as the name field for sorting
+    }
+
+    private void updateRecyclerView(List<DrobniMateriali> filteredData) {
+        if (adapter != null) {
+            adapter.updateList(filteredData);
         }
     }
+
+    private void showFilterDialog() {
+        if (filter == null) {
+            Toast.makeText(getContext(), "No data available for filtering", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<FilterDialogBuilder.FilterField> fields = Arrays.asList(
+                new FilterDialogBuilder.FilterField("velikost", "Velikost", filter.getUniqueValuesForField("velikost")),
+                new FilterDialogBuilder.FilterField("material", "Material", filter.getUniqueValuesForField("material")),
+                new FilterDialogBuilder.FilterField("skladisce", "Skladišče", filter.getUniqueValuesForField("skladisce")),
+                new FilterDialogBuilder.FilterField("kvaliteta", "Kvaliteta", filter.getUniqueValuesForField("kvaliteta"))
+        );
+        FilterDialogBuilder.showFilterDialog(getContext(), fields, (globalSortOrder, criteria) -> {
+            filter.applyFilter(globalSortOrder, criteria);
+            // Also apply search if there's an active search query
+            applySearchAndFilter();
+        });
+    }
+
+    private void applySearchAndFilter() {
+        if (filter == null) {
+            return;
+        }
+
+        List<DrobniMateriali> currentData = filter.getCurrentFilteredList();
+
+        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
+            // Apply search on the already filtered data
+            String lowerQuery = currentSearchQuery.toLowerCase();
+            List<DrobniMateriali> searchFiltered = currentData.stream()
+                    .filter(d -> lowerQuery.isEmpty()
+                            || (String.valueOf(d.getID()) != null && String.valueOf(d.getID()).toLowerCase().contains(lowerQuery))
+                            || (d.getVrsta() != null && d.getVrsta().toLowerCase().contains(lowerQuery))
+                            || (String.valueOf(d.getID()) != null && String.valueOf(d.getID()).toLowerCase().contains(lowerQuery))
+                            || (d.getMaterial() != null && d.getMaterial().toLowerCase().contains(lowerQuery))
+                            || (d.getVelikost() != null && d.getVelikost().toLowerCase().contains(lowerQuery))
+                            || (String.valueOf(d.getSkladišče()) != null && String.valueOf(d.getSkladišče()).toLowerCase().contains(lowerQuery))
+                            || (d.getKvaliteta() != null && d.getKvaliteta().toLowerCase().contains(lowerQuery)))
+                    .collect(Collectors.toList());
+
+            updateRecyclerView(searchFiltered);
+        } else {
+            updateRecyclerView(currentData);
+        }
+    }
+
 
     @Override
     public void onResume() {

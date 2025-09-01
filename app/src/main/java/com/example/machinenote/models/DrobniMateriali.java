@@ -21,7 +21,7 @@ public class DrobniMateriali implements DisplayableItem {
     private String Kvaliteta;
 
     @SerializedName("Skladisce")
-    private String Skladisce;
+    private int Skladisce;
 
     @SerializedName("Regal")
     private String Regal;
@@ -35,7 +35,7 @@ public class DrobniMateriali implements DisplayableItem {
     public String getVrsta() { return Vrsta; }
     public String getVelikost() { return Velikost; }
     public String getKvaliteta() { return Kvaliteta; }
-    public String getSkladišče() { return Skladisce; }
+    public int getSkladišče() { return Skladisce; }
     public String getRegal() { return Regal; }
 
     // Setter metode
@@ -44,7 +44,7 @@ public class DrobniMateriali implements DisplayableItem {
     public void setVrsta(String vrsta) { this.Vrsta = vrsta; }
     public void setVelikost(String velikost) { this.Velikost = velikost; }
     public void setKvaliteta(String kvaliteta) { this.Kvaliteta = kvaliteta; }
-    public void setSkladisce(String skladisce) { this.Skladisce = skladisce; }
+    public void setSkladišče(int skladisce) { this.Skladisce = skladisce; }
     public void setRegal(String regal) { this.Regal = regal; }
 
     @Override
@@ -57,7 +57,7 @@ public class DrobniMateriali implements DisplayableItem {
         if (Kvaliteta != null && !Kvaliteta.isEmpty()) {
             fields.put("Kvaliteta", Kvaliteta);
         }
-        fields.put("Skladišče", Skladisce);
+        fields.put("Skladišče", String.valueOf(Skladisce));
         fields.put("Regal", Regal);
         return fields;
     }

@@ -1,13 +1,10 @@
 - make settings for bitmap commpression quality
 
-- Dokoncej orodja
+- Dokoncej preventivni pregledi:
+        + posiljanje pregledov
 
 - upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
-
-
-
-
-- Dodej filter dati filtrira po izbranem da ni treba vsega iskat
+- filtriranje dodej se v preventivne preglede, naročila, imenik, naloge
 - filtriranje po statusu naročila pa kok urgentno je
 
 

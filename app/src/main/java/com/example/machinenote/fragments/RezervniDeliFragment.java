@@ -240,22 +240,6 @@ public class RezervniDeliFragment extends BaseFragment {
         }
     }
 
-    // Keep the old filter method as backup/reference - can be removed later
-    private void filterRezervniDeli(String query) {
-        if (rezervniDelList != null) {
-            String lowerQuery = query == null ? "" : query.toLowerCase();
-            List<RezervniDel> filtered = rezervniDelList.stream()
-                    .filter(d -> lowerQuery.isEmpty()
-                            || (d.getArtikel() != null && d.getArtikel().toLowerCase().contains(lowerQuery))
-                            || (d.getArtikel_dolgi_text() != null && d.getArtikel_dolgi_text().toLowerCase().contains(lowerQuery))
-                            || (String.valueOf(d.getId()) != null && String.valueOf(d.getId()).toLowerCase().contains(lowerQuery))
-                            || (String.valueOf(d.getSkladišče()) != null && String.valueOf(d.getSkladišče()).toLowerCase().contains(lowerQuery))
-                            || (d.getDobavitelj() != null && d.getDobavitelj().toLowerCase().contains(lowerQuery)))
-                    .collect(Collectors.toList());
-            adapter.updateList(filtered);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
