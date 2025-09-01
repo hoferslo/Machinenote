@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         toggle.syncState();
         setSupportActionBar(binding.toolbar);
 
-        // Setup theme switcher button
-        setupThemeSwitcher();
-
         //backwards press logic
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 33+
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
@@ -84,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                                     if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                                         clearLastFragmentFromBackStack();
                                     } else {
-                                        showExitConfirmation(); //TODO: vprasat a je bols tko al ne?
+                                        showExitConfirmation();
                                     }
                                 }
                             } else {
@@ -200,12 +197,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         updateManager = new UpdateManager(this, apiManager);
     }
 
-    private void setupThemeSwitcher() {
-        // Nastavi začetni tekst na gumbu
-        updateThemeButtonText();
 
-        binding.themeSwitcherBtn.setOnClickListener(v -> cycleTheme());
-    }
 
     private void checkForAppUpdate() {
         if (serverConnection) {
@@ -213,43 +205,6 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         }
     }
 
-
-    private void cycleTheme() {
-        int currentTheme = ThemeHelper.getSavedTheme(this);
-        int nextTheme;
-
-        // Kroži med tremi temami: Light -> Dark -> System -> Light...
-        switch (currentTheme) {
-            case ThemeHelper.THEME_LIGHT:
-                nextTheme = ThemeHelper.THEME_DARK;
-                break;
-            case ThemeHelper.THEME_DARK:
-                nextTheme = ThemeHelper.THEME_SYSTEM;
-                break;
-            case ThemeHelper.THEME_SYSTEM:
-            default:
-                nextTheme = ThemeHelper.THEME_LIGHT;
-                break;
-        }
-
-        // Shrani in uporabi novo temo
-        ThemeHelper.saveTheme(this, nextTheme);
-        ThemeHelper.applyTheme(nextTheme);
-
-        // Ponovno ustvari aktivnost za takojšnjo uporabo teme
-        recreate();
-    }
-
-    private void updateThemeButtonText() {
-        int currentTheme = ThemeHelper.getSavedTheme(this);
-        String currentThemeName = ThemeHelper.getThemeName(this, currentTheme);
-        binding.themeSwitcherBtn.setText("Tema: " + currentThemeName);
-    }
-
-    // Method to get current theme for menu item updates
-    public void updateThemeMenuItem() {
-        updateThemeButtonText();
-    }
 
     public void showLoadingBar(boolean b, String text) {
         binding.loadingLl.setVisibility(b ? View.VISIBLE : View.GONE);
