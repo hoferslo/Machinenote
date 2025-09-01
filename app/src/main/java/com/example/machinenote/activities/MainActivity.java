@@ -31,6 +31,7 @@ import com.example.machinenote.databinding.ActivityMainBinding;
 import com.example.machinenote.fragments.DashboardFragment;
 import com.example.machinenote.fragments.LoginFragment;
 import com.example.machinenote.fragments.QRCodeScannerFragment;
+import com.example.machinenote.fragments.SettingsFragment;
 
 import java.time.LocalDateTime;
 
@@ -138,6 +139,19 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
             disableDrawer();
             showDrawerIcon();
             loadFragment(LoginFragment.newInstance(this));
+        });
+
+        binding.settingsBtn.setOnClickListener(view -> {
+            // Close drawer if it's open
+            if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+                binding.drawerLayout.closeDrawer(binding.navView);
+            }
+
+            // Load SettingsFragment
+            loadFragment(new SettingsFragment());
+
+            // Show back arrow since we're navigating to a new fragment
+            showBackArrow();
         });
 
         binding.noWifiBtn.setOnClickListener(view -> {

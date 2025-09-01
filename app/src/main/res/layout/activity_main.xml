@@ -35,6 +35,7 @@
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
                     android:paddingHorizontal="8dp" />
+
                 <ImageView
                     android:id="@+id/workerUnichem"
                     android:backgroundTint="@color/content_inverse"
@@ -122,6 +123,18 @@
 
                     </LinearLayout>
 
+                    <ImageButton
+                        android:id="@+id/settingsBtn"
+                        style="@style/Button.Icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="end"
+                        android:scaleType="fitCenter"
+                        android:layout_marginEnd="4dp"
+                        android:src="@mipmap/settings"
+                        android:contentDescription="Settings"
+                        app:tint="@color/content_inverse" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -148,6 +161,7 @@
                             android:minHeight="56dp" />
 
                     </LinearLayout>
+
 
                 </com.google.android.material.navigation.NavigationView>
 
