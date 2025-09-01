@@ -1,3 +1,4 @@
+
 package com.example.machinenote.fragments;
 
 import android.content.Context;
@@ -19,6 +20,8 @@ import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.GenericAdapter;
+import com.example.machinenote.Utility.GenericFilter;
+import com.example.machinenote.Utility.FilterDialogBuilder;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.customFragments.RezervniDeliBottomSheetFragment;
@@ -29,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +42,8 @@ public class RezervniDeliFragment extends BaseFragment {
     private ApiManager apiManager;
     private List<RezervniDel> rezervniDelList;
     private GenericAdapter<RezervniDel> adapter;
+    private GenericFilter<RezervniDel> filter;
+    private String currentSearchQuery = "";
 
     public RezervniDeliFragment() {}
 
@@ -72,16 +78,15 @@ public class RezervniDeliFragment extends BaseFragment {
                         // Handle button click
                     }
                 },
-                "Artikel",              // Only show these fields
-                "ID",   // in this order
+                "Artikel",
+                "ID",
                 "Skladišče",
                 "Dobavitelj"
-                // Don't include "dolgi_opis" or any other fields you don't want
         );
-
 
         recyclerView.setAdapter(adapter);
 
+        // Setup search functionality
         binding.idOfDuty.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -90,7 +95,8 @@ public class RezervniDeliFragment extends BaseFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterRezervniDeli(newText);
+                currentSearchQuery = newText;
+                applySearchAndFilter();
                 return true;
             }
         });
@@ -101,11 +107,79 @@ public class RezervniDeliFragment extends BaseFragment {
             }
         });
 
-        fetchRezervniDeli();
+        // Setup filter button
+        binding.filterSortToggleBtn.setOnClickListener(v -> showFilterDialog());
 
+        fetchRezervniDeli();
         setupTabNavigation();
 
         return binding.getRoot();
+    }
+
+    private void setupFilter() {
+        if (rezervniDelList == null || rezervniDelList.isEmpty()) {
+            return;
+        }
+
+        // Initialize the filter with callback to update the adapter
+        filter = new GenericFilter<>(rezervniDelList, filteredList -> {
+            updateRecyclerView(filteredList);
+        });
+
+        // Register field extractors for filtering
+        filter.addFieldExtractor("skladisce", del -> del.getSkladišče() != 0 ? String.valueOf(del.getSkladišče()) : "")
+                .addFieldExtractor("dobavitelj", del -> del.getDobavitelj() != null ? del.getDobavitelj() : "")
+                .addFieldExtractor("artikel", del -> del.getArtikel() != null ? del.getArtikel() : "")
+                .setNameExtractor(del -> del.getArtikel() != null ? del.getArtikel() : ""); // Set artikel as the name field for sorting
+    }
+
+    private void showFilterDialog() {
+        if (filter == null) {
+            Toast.makeText(getContext(), "No data available for filtering", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<FilterDialogBuilder.FilterField> fields = Arrays.asList(
+                new FilterDialogBuilder.FilterField("skladisce", "Skladišče", filter.getUniqueValuesForField("skladisce")),
+                new FilterDialogBuilder.FilterField("dobavitelj", "Dobavitelj", filter.getUniqueValuesForField("dobavitelj"))
+        );
+
+        FilterDialogBuilder.showFilterDialog(getContext(), fields, (globalSortOrder, criteria) -> {
+            filter.applyFilter(globalSortOrder, criteria);
+            // Also apply search if there's an active search query
+            applySearchAndFilter();
+        });
+    }
+
+    private void applySearchAndFilter() {
+        if (filter == null) {
+            return;
+        }
+
+        List<RezervniDel> currentData = filter.getCurrentFilteredList();
+
+        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
+            // Apply search on the already filtered data
+            String lowerQuery = currentSearchQuery.toLowerCase();
+            List<RezervniDel> searchFiltered = currentData.stream()
+                    .filter(d -> lowerQuery.isEmpty()
+                            || (d.getArtikel() != null && d.getArtikel().toLowerCase().contains(lowerQuery))
+                            || (d.getArtikel_dolgi_text() != null && d.getArtikel_dolgi_text().toLowerCase().contains(lowerQuery))
+                            || (String.valueOf(d.getId()) != null && String.valueOf(d.getId()).toLowerCase().contains(lowerQuery))
+                            || (String.valueOf(d.getSkladišče()) != null && String.valueOf(d.getSkladišče()).toLowerCase().contains(lowerQuery))
+                            || (d.getDobavitelj() != null && d.getDobavitelj().toLowerCase().contains(lowerQuery)))
+                    .collect(Collectors.toList());
+
+            updateRecyclerView(searchFiltered);
+        } else {
+            updateRecyclerView(currentData);
+        }
+    }
+
+    private void updateRecyclerView(List<RezervniDel> filteredData) {
+        if (adapter != null) {
+            adapter.updateList(filteredData);
+        }
     }
 
     private void setupTabNavigation() {
@@ -114,8 +188,6 @@ public class RezervniDeliFragment extends BaseFragment {
                 MainActivity mainActivity = (MainActivity) requireActivity();
                 if (checkedId == R.id.tabSmallMaterialsBtn) {
                     FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-
-                    // Pop current fragment and replace
                     fragmentManager.popBackStack();
 
                     Fragment drobniMaterialiFragment = com.example.machinenote.fragments.DrobniMaterialiFragment.newInstance(mainActivity);
@@ -124,7 +196,6 @@ public class RezervniDeliFragment extends BaseFragment {
             }
         });
     }
-
 
     private void fetchRezervniDeli() {
         MainActivity mainActivity = (MainActivity) requireActivity();
@@ -136,6 +207,7 @@ public class RezervniDeliFragment extends BaseFragment {
                 public void onSuccess(List<RezervniDel> response) {
                     rezervniDelList = response;
                     adapter.updateList(rezervniDelList);
+                    setupFilter(); // Setup filter after data is loaded
 
                     String json = new Gson().toJson(rezervniDelList);
                     sharedPreferencesHelper.putString("RezervniDelList", json);
@@ -159,6 +231,7 @@ public class RezervniDeliFragment extends BaseFragment {
             rezervniDelList = new Gson().fromJson(json, type);
             if (rezervniDelList != null) {
                 adapter.updateList(rezervniDelList);
+                setupFilter(); // Setup filter after data is loaded
             } else {
                 Log.e(TAG, "Parsed rezervniDelList is null.");
             }
@@ -167,6 +240,7 @@ public class RezervniDeliFragment extends BaseFragment {
         }
     }
 
+    // Keep the old filter method as backup/reference - can be removed later
     private void filterRezervniDeli(String query) {
         if (rezervniDelList != null) {
             String lowerQuery = query == null ? "" : query.toLowerCase();
@@ -181,7 +255,6 @@ public class RezervniDeliFragment extends BaseFragment {
             adapter.updateList(filtered);
         }
     }
-
 
     @Override
     public void onResume() {
