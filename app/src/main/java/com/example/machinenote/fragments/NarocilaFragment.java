@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,15 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.FilterDialogBuilder;
 import com.example.machinenote.Utility.GenericAdapter;
+import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.customFragments.NarocilaBottomSheetFragment;
 import com.example.machinenote.databinding.FragmentNarocilaBinding;
+import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.Narocila;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NarocilaFragment extends BaseFragment {
 
@@ -30,6 +36,8 @@ public class NarocilaFragment extends BaseFragment {
     private ApiManager apiManager;
     private List<Narocila> narocilaList;
     private GenericAdapter<Narocila> adapter;
+    private GenericFilter<Narocila> filter;
+    private String currentSearchQuery = "";
 
     public NarocilaFragment() {
     }
@@ -83,6 +91,8 @@ public class NarocilaFragment extends BaseFragment {
                 "Lokacija",        // Remove any fields you don't want to show
                 "Status"
         );
+
+        binding.filterSortToggleBtn.setOnClickListener(v -> showFilterDialog());
         recyclerView.setAdapter(adapter);
     }
 
@@ -155,16 +165,103 @@ public class NarocilaFragment extends BaseFragment {
             @Override
             public void onSuccess(List<Narocila> response) {
                 narocilaList = response;
+
+                // Najprej sortiraj po statusu: "Novo" naj bo najvišje
+                narocilaList.sort((n1, n2) -> {
+                    boolean isN1Novo = n1.getStatus() != null && n1.getStatus().equalsIgnoreCase("Novo");
+                    boolean isN2Novo = n2.getStatus() != null && n2.getStatus().equalsIgnoreCase("Novo");
+
+                    if (isN1Novo && !isN2Novo) return -1;  // n1 gre gor
+                    if (!isN1Novo && isN2Novo) return 1;   // n2 gre gor
+
+                    // Če imata oba isti status, dodatno sortiraj (npr. po IDju ali datumu padajoče)
+                    return Integer.compare(n2.getId(), n1.getId());
+                });
+
                 adapter.updateList(narocilaList);
+                setupFilter();
             }
 
             @Override
             public void onFailure(String errorMessage) {
                 Log.e(TAG, "Error: " + errorMessage);
-                // Optionally load saved data from SharedPreferences here
             }
         });
     }
+
+
+    private void setupFilter() {
+        if (narocilaList == null || narocilaList.isEmpty()) {
+            return;
+        }
+
+        // Initialize the filter with callback to update the adapter
+        filter = new GenericFilter<>(narocilaList, filteredList -> {
+            updateRecyclerView(filteredList);
+        });
+
+        // Register field extractors for filtering -> zdaj po pravih poljih Narocila
+        filter.addFieldExtractor("naziv", n -> n.getNaziv() != null ? n.getNaziv() : "")
+                .addFieldExtractor("narocnik", n -> n.getNarocnik() != null ? n.getNarocnik() : "")
+                .addFieldExtractor("lokacija", n -> n.getLokacija() != null ? n.getLokacija() : "")
+                .addFieldExtractor("status", n -> n.getStatus() != null ? n.getStatus() : "")
+                .addFieldExtractor("rok_za_dobavo", n -> n.getRokZaDobavo() != null ? n.getRokZaDobavo() : "")
+                .setNameExtractor(n -> n.getNaziv() != null ? n.getNaziv() : "");
+    }
+
+    private void updateRecyclerView(List<Narocila> filteredData) {
+        if (adapter != null) {
+            adapter.updateList(filteredData);
+        }
+    }
+
+    private void showFilterDialog() {
+        if (filter == null) {
+            Toast.makeText(getContext(), "No data available for filtering", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<FilterDialogBuilder.FilterField> fields = Arrays.asList(
+                new FilterDialogBuilder.FilterField("naziv", "Naziv", filter.getUniqueValuesForField("naziv")),
+                new FilterDialogBuilder.FilterField("narocnik", "Naročnik", filter.getUniqueValuesForField("narocnik")),
+                new FilterDialogBuilder.FilterField("lokacija", "Lokacija", filter.getUniqueValuesForField("lokacija")),
+                new FilterDialogBuilder.FilterField("status", "Status", filter.getUniqueValuesForField("status"))
+        );
+
+        FilterDialogBuilder.showFilterDialog(getContext(), fields, (globalSortOrder, criteria) -> {
+            filter.applyFilter(globalSortOrder, criteria);
+            applySearchAndFilter();
+        });
+    }
+
+    private void applySearchAndFilter() {
+        if (filter == null) {
+            return;
+        }
+
+        List<Narocila> currentData = filter.getCurrentFilteredList();
+
+        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
+            String lowerQuery = currentSearchQuery.toLowerCase();
+            List<Narocila> searchFiltered = currentData.stream()
+                    .filter(n -> lowerQuery.isEmpty()
+                            || String.valueOf(n.getId()).toLowerCase().contains(lowerQuery)
+                            || (n.getNaziv() != null && n.getNaziv().toLowerCase().contains(lowerQuery))
+                            || (n.getNarocnik() != null && n.getNarocnik().toLowerCase().contains(lowerQuery))
+                            || (n.getLokacija() != null && n.getLokacija().toLowerCase().contains(lowerQuery))
+                            || (n.getStatus() != null && n.getStatus().toLowerCase().contains(lowerQuery))
+                            || (n.getRokZaDobavo() != null && n.getRokZaDobavo().toLowerCase().contains(lowerQuery))
+                            || (n.getDatumPredvideneDobave() != null && n.getDatumPredvideneDobave().toLowerCase().contains(lowerQuery))
+                            || (n.getAdminOpomba() != null && n.getAdminOpomba().toLowerCase().contains(lowerQuery)))
+                    .collect(Collectors.toList());
+
+            updateRecyclerView(searchFiltered);
+        } else {
+            updateRecyclerView(currentData);
+        }
+    }
+
+
 
     @Override
     public void onResume() {

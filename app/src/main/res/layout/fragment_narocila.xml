@@ -18,34 +18,39 @@
         android:padding="16dp">
 
         <!-- Search Section -->
+        <!-- Search Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:background="@drawable/bg_card_primary"
-            android:padding="16dp"
             android:layout_marginBottom="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@mipmap/search"
-                android:layout_marginEnd="12dp"
-                android:contentDescription="" />
-
-            <SearchView
-                android:id="@+id/idOfDuty"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:queryHint="@string/isci_narocila"
-                android:iconifiedByDefault="false"
-                android:queryBackground="@android:color/transparent"
-                android:background="@android:color/transparent"
-                android:searchIcon="@null"
-                android:submitBackground="@android:color/transparent"
-                android:theme="@style/SearchViewTheme"/>
+                android:paddingRight="8dp">
+
+                <SearchView
+                    android:id="@+id/idOfDuty"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="@string/isci_narocila"
+                    android:background="@drawable/bg_input"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="@string/isci_narocila"
+                    android:theme="@style/SearchViewTheme" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/filterSortToggleBtn"
+                style="@style/Button.Secondary"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:drawableEnd="@drawable/ic_filter"
+                android:drawablePadding="8dp"
+                android:gravity="start|center_vertical"
+                android:textAllCaps="false" />
 
         </LinearLayout>
 

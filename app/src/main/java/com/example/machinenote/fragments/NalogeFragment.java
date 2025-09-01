@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,14 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.FilterDialogBuilder;
 import com.example.machinenote.Utility.GenericAdapter;
+import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentNalogeBinding;
+import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Naloga;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NalogeFragment extends BaseFragment {
 
@@ -29,7 +35,8 @@ public class NalogeFragment extends BaseFragment {
     private ApiManager apiManager;
     private List<Naloga> nalogaList;
     private GenericAdapter<Naloga> adapter;
-
+    private GenericFilter<Naloga> filter;
+    private String currentSearchQuery = "";
     public NalogeFragment() {
     }
 
@@ -54,6 +61,7 @@ public class NalogeFragment extends BaseFragment {
         setupRecyclerView();
         setupTabNavigation();
         fetchNaloge();
+
 
         return binding.getRoot();
     }
@@ -91,6 +99,7 @@ public class NalogeFragment extends BaseFragment {
                 "Opis",            // in the order you want them
                 "Naloga"           // Remove any fields you don't want to show
         );
+        binding.filterSortToggleBtn.setOnClickListener(v -> showFilterDialog());
         recyclerView.setAdapter(adapter);
     }
 
@@ -127,6 +136,7 @@ public class NalogeFragment extends BaseFragment {
             public void onSuccess(List<Naloga> response) {
                 nalogaList = response;
                 adapter.updateList(nalogaList);
+                setupFilter();
             }
 
             @Override
@@ -135,6 +145,69 @@ public class NalogeFragment extends BaseFragment {
                 // Optionally load saved data from SharedPreferences here
             }
         });
+    }
+
+    private void setupFilter() {
+        if (nalogaList == null || nalogaList.isEmpty()) {
+            return;
+        }
+
+        // Initialize the filter with callback to update the adapter
+        filter = new GenericFilter<>(nalogaList, filteredList -> {
+            updateRecyclerView(filteredList);
+        });
+
+        // Register field extractors for filtering
+        filter.addFieldExtractor("vzdrzevalec", nal -> nal.getVzdrzevalec() != null ? nal.getVzdrzevalec() : "")
+                .addFieldExtractor("opis", nal -> nal.getOpis() != null ? nal.getOpis() : "")
+                .addFieldExtractor("status", nal -> nal.getNaloga() != null ? nal.getNaloga() : "")
+                .addFieldExtractor("datum", nal -> nal.getIzvedeno() != null ? nal.getIzvedeno().toString() : "")
+                .setNameExtractor(nal -> nal.getOpis() != null ? nal.getOpis() : "");
+    }
+
+    private void updateRecyclerView(List<Naloga> filteredData) {
+        if (adapter != null) {
+            adapter.updateList(filteredData);
+        }
+    }
+
+    private void showFilterDialog() {
+        if (filter == null) {
+            Toast.makeText(getContext(), "No data available for filtering", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<FilterDialogBuilder.FilterField> fields = Arrays.asList(
+                new FilterDialogBuilder.FilterField("vzdrzevalec", "Vzdrževalec", filter.getUniqueValuesForField("vzdrzevalec"))
+        );
+        FilterDialogBuilder.showFilterDialog(getContext(), fields, (globalSortOrder, criteria) -> {
+            filter.applyFilter(globalSortOrder, criteria);
+            applySearchAndFilter();
+        });
+    }
+
+    private void applySearchAndFilter() {
+        if (filter == null) {
+            return;
+        }
+
+        List<Naloga> currentData = filter.getCurrentFilteredList();
+
+        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
+            String lowerQuery = currentSearchQuery.toLowerCase();
+            List<Naloga> searchFiltered = currentData.stream()
+                    .filter(n -> lowerQuery.isEmpty()
+                            || (String.valueOf(n.getId()) != null && String.valueOf(n.getId()).toLowerCase().contains(lowerQuery))
+                            || (n.getOpis() != null && n.getOpis().toLowerCase().contains(lowerQuery))
+                            || (n.getVzdrzevalec() != null && n.getVzdrzevalec().toLowerCase().contains(lowerQuery))
+                            || (n.getIzvedeno() != null && n.getIzvedeno().toLowerCase().contains(lowerQuery))
+                            || (n.getNaloga() != null && n.getNaloga().toString().toLowerCase().contains(lowerQuery)))
+                    .collect(Collectors.toList());
+
+            updateRecyclerView(searchFiltered);
+        } else {
+            updateRecyclerView(currentData);
+        }
     }
 
     @Override
