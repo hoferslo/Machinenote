@@ -123,34 +123,42 @@
 
                     </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/settingsBtn"
-                        style="@style/Button.Icon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="end"
-                        android:scaleType="fitCenter"
-                        android:layout_marginEnd="4dp"
-                        android:src="@mipmap/settings"
-                        android:contentDescription="Settings"
-                        app:tint="@color/content_inverse" />
+
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:weightSum="1">
 
-                        <View
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <!-- sem daš menijske stvari zgoraj, če bo -->
+                        </LinearLayout>
 
-                        <Button
+                        <ImageButton
+                            android:id="@+id/settingsBtn"
+                            style="@style/Button.Icon"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:src="@mipmap/settings"
+                            android:contentDescription="Settings"
+                            app:tint="@color/content_inverse"
+                            android:gravity="center_vertical|start"
+                            android:drawablePadding="8dp"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginBottom="16dp"/>
+
+                        <Button
                             android:id="@+id/logout"
-                            android:text="Logout"
                             style="@style/Button.Destructive"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Logout"
                             android:drawableLeft="@mipmap/logout"
                             android:drawableTint="@color/action_destructive"
                             android:drawablePadding="12dp"
@@ -159,8 +167,8 @@
                             android:gravity="center_vertical|start"
                             android:paddingLeft="20dp"
                             android:minHeight="56dp" />
-
                     </LinearLayout>
+
 
 
                 </com.google.android.material.navigation.NavigationView>

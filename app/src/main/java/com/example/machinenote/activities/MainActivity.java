@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -25,7 +26,6 @@ import com.example.machinenote.ApiManager;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.ConnectionChecker;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
-import com.example.machinenote.Utility.ThemeHelper;
 import com.example.machinenote.Utility.UpdateManager;
 import com.example.machinenote.databinding.ActivityMainBinding;
 import com.example.machinenote.fragments.DashboardFragment;
@@ -51,16 +51,38 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     private UpdateManager updateManager;
     private ApiManager apiManager;
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("toolbar_title", binding.toolbarTitle.getText().toString());
+        outState.putBoolean("back_arrow_visible", binding.toolbar.getNavigationIcon() != null);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Apply saved theme before super.onCreate()
-        ThemeHelper.applyTheme(ThemeHelper.getSavedTheme(this));
+        // ENOSTAVEN PRISTOP za temo
+        SharedPreferencesHelper prefsHelper = SharedPreferencesHelper.getInstance(this);
+        boolean isDarkTheme = prefsHelper.getInt("theme_simple", 0) == 1;
+
+        if (isDarkTheme) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (savedInstanceState != null) {
+            binding.toolbarTitle.setText(savedInstanceState.getString("toolbar_title"));
+            if (savedInstanceState.getBoolean("back_arrow_visible")) {
+                showBackArrow();
+            } else {
+                showDrawerIcon();
+            }
+        }
 
         sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
 
@@ -141,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
             loadFragment(LoginFragment.newInstance(this));
         });
 
+
         binding.settingsBtn.setOnClickListener(view -> {
             // Close drawer if it's open
             if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
@@ -170,7 +193,9 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         });
         // Save a string value
         disableDrawer();
-        loadFragment(LoginFragment.newInstance(this));
+        if (savedInstanceState == null) {
+            loadFragment(LoginFragment.newInstance(this));
+        }
 
         connectionChecker = new ConnectionChecker(this, new ConnectionChecker.ConnectionCallback() {
             @Override
