@@ -131,6 +131,35 @@ public class ApiManager {
         });
     }
 
+    public void executePreventivniPregled(final PregledExecutionCallback callback) {
+        Call<List<PregledOpravilo>> call = apiService.executePreventivniPregled();
+        call.enqueue(new Callback<List<PregledOpravilo>>() {
+            @Override
+            public void onResponse(Call<List<PregledOpravilo>> call, Response<List<PregledOpravilo>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    String errorMessage = "Failed to execute preventivni pregled. Response code: " + response.code();
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage += " - " + response.errorBody().string();
+                        } catch (Exception e) {
+                            Log.e("ApiManager", "Error parsing error body", e);
+                        }
+                    }
+                    Log.e("ApiManager", errorMessage);
+                    callback.onFailure(errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PregledOpravilo>> call, Throwable t) {
+                Log.e("ApiManager", "API call failed for execute preventivni pregled: " + t.getMessage(), t);
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
     // Add this method to your ApiManager class
     public void getOpravilaForPregled(int pregledId, OpravilaCallback callback) {
         Call<List<PregledOpravilo>> call = apiService.getOpravilaForPregled(pregledId);
@@ -1052,6 +1081,12 @@ public class ApiManager {
                 callback.onFailure(call, t);
             }
         });
+    }
+
+    // Callback interface
+    public interface PregledExecutionCallback {
+        void onSuccess(List<PregledOpravilo> response);
+        void onFailure(String errorMessage);
     }
 
     public interface NarocilaCallback {

@@ -200,6 +200,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("helpers.php")
     Call<List<Lokacija>> getLokacije(@Query("action") String action);
+
+    @Headers("Content-Type: application/json")
+    @POST("preventivni_pregledi.php?action=create_izvedba")
+    Call<List<PregledOpravilo>> executePreventivniPregled();
 }
 
 class LoginRequest {
@@ -338,9 +342,9 @@ class RoleRequest {
         this.remonti = permissions.contains("Remonti");
         this.orodja = permissions.contains("Orodja");
         this.register = permissions.contains("Register");
-        this.narocila = permissions.contains("Narocila");
-        this.dodajanjeNarocil = permissions.contains("Dodajanje narocil");
-        this.upravljanjeNarocil = permissions.contains("Upravljanje narocil");
+        this.narocila = permissions.contains("Naročila");
+        this.dodajanjeNarocil = permissions.contains("Dodajanje Naročil");
+        this.upravljanjeNarocil = permissions.contains("Upravljanje Naročil");
     }
 
     // Getters and setters...

@@ -47,7 +47,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
         PreventivniPreglediOpravilaFragment fragment = new PreventivniPreglediOpravilaFragment();
         fragment.apiManager = new ApiManager(context);
         fragment.selectedLinija = linija;
-        fragment.TAG = "Preventivni pregledi - " + (linija != null ? linija.getLinija_SAP() : "");
+        fragment.TAG = (linija != null ? linija.getLinija_SAP() : "");
         return fragment;
     }
 
@@ -259,7 +259,6 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
             return;
         }
 
-        // TODO: Implementiraj navigacijo na fragment za izvajanje pregleda
         Toast.makeText(getContext(),
                 "Začenjam pregled: " + (pregled.getOpis() != null ? pregled.getOpis() : "Pregled"),
                 Toast.LENGTH_SHORT).show();
@@ -267,10 +266,10 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
         Log.d(TAG, "Starting execution for pregled ID: " + pregled.getId());
 
         // Primer navigacije na fragment za izvajanje:
-        // MainActivity mainActivity = (MainActivity) requireActivity();
-        // PregledExecutionFragment executionFragment =
-        //     PregledExecutionFragment.newInstance(getContext(), pregled, selectedLinija);
-        // mainActivity.loadFragment(executionFragment);
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        PregledExecutionFragment executionFragment =
+             PregledExecutionFragment.newInstance(getContext(), pregled, selectedLinija);
+         mainActivity.loadFragment(executionFragment);
     }
 
     private void showPregledDetails(PreventivniPregled pregled) {

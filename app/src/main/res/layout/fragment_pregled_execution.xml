@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="false"
+    android:orientation="vertical"
+    android:background="@color/background_app">
+
+    <!-- Main Content Container -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- Data Entry Screen -->
+        <ScrollView
+            android:id="@+id/entryLl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Pregled Information Card -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_card_primary"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="Informacije o pregledu"
+                        android:textColor="@color/content_primary"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvPregledInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:lineSpacingExtra="2dp" />
+
+                </LinearLayout>
+
+                <!-- Execution Form -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_card_primary"
+                    android:elevation="1dp"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="Podatki o izvajanju"
+                        android:textColor="@color/content_primary"
+                        android:textSize="18sp" />
+
+                    <!-- Duration -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="Trajanje v minutah *"
+                        android:textColor="@color/content_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etTrajanjeMin"
+                        style="@style/Input.Base"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Vnesite trajanje v minutah"
+                        android:importantForAutofill="no"
+                        android:inputType="number" />
+
+                    <!-- Inspection Type -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="Tip pregleda *"
+                        android:textColor="@color/content_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etTipPregleda"
+                        style="@style/Input.Base"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Vnesite tip pregleda"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+
+                    <!-- Maintainer -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="Vzdrževalec *"
+                        android:textColor="@color/content_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etVzdrzevalec"
+                        style="@style/Input.Base"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Ime vzdrževalca"
+                        android:importantForAutofill="no"
+                        android:inputType="textPersonName" />
+
+                    <!-- Date and QR Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:text="Datum"
+                                android:textColor="@color/content_secondary"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/etDatum"
+                                style="@style/Button.Secondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/calendar"
+                                android:drawablePadding="8dp"
+                                android:gravity="start|center_vertical"
+                                android:text="Izberi datum" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Measured Value and Camera Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/nunito_semibold"
+                                android:text="Izmerjena vrednost"
+                                android:textColor="@color/content_secondary"
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/etDejanskavrednost"
+                                style="@style/Input.Base"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Vnesite izmerjeno vrednost"
+                                android:importantForAutofill="no"
+                                android:inputType="text" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"/>
+
+                    </LinearLayout>
+
+                    <!-- Notes Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="Opombe"
+                        android:textColor="@color/content_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etOpombe"
+                        style="@style/Input.Base"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:hint="Dodatne informacije ali opombe"
+                        android:importantForAutofill="no"
+                        android:inputType="textMultiLine"
+                        android:minHeight="80dp"
+                        android:scrollbars="vertical" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- Images Screen -->
+        <LinearLayout
+            android:id="@+id/imagesLl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_app"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <!-- Images Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/surface_primary"
+                android:elevation="1dp"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:text="Slike pregleda"
+                    android:textColor="@color/content_primary"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito"
+                    android:text="Dodajte slike, ki dokumentirajo pregled"
+                    android:textColor="@color/content_secondary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/imagesContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_primary"
+                    android:elevation="1dp"
+                    android:orientation="vertical"
+                    android:padding="20dp" />
+
+            </ScrollView>
+
+            <Button
+                android:id="@+id/ImagesCameraBtn"
+                style="@style/Button.Success"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:contentDescription="Dodaj sliko"
+                android:drawableStart="@mipmap/photo_camera"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="Dodaj novo sliko" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Bottom Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_primary"
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Button.Destructive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Prekliči" />
+
+        <Button
+            android:id="@+id/btnExecutePregled"
+            style="@style/Button.Success"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Izvedi pregled" />
+
+    </LinearLayout>
+
+    <!-- Tab Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border_primary" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/switchTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:checkedButton="@id/tabEntryBtn"
+            app:selectionRequired="true"
+            app:singleSelection="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>

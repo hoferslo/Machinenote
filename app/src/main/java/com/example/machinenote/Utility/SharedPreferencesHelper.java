@@ -68,6 +68,10 @@ public class SharedPreferencesHelper {
         return sharedPreferences.getBoolean(key, defaultValue);
     }
 
+    public String getUsername() {
+        return getString(Username, ""); // Vrne prazen string, če username ni shranjen
+    }
+
     // Method to save a Role object
     public void putRole(Role role) {
         if (role != null) {
@@ -91,6 +95,7 @@ public class SharedPreferencesHelper {
         }
         return null;
     }
+
 
     // Method to check if user is logged in
     public boolean isUserLoggedIn() {

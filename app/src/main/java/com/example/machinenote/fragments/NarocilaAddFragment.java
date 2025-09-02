@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentNarocilaAddBinding;
 import com.example.machinenote.models.Lokacija;
@@ -49,6 +50,7 @@ public class NarocilaAddFragment extends BaseFragment {
     private List<Lokacija> lokacije;
     private List<String> locations = new ArrayList<>();
     private ArrayAdapter<String> locationAdapter;
+    private SharedPreferencesHelper sharedPreferencesHelper;
 
     // Utility classes
     private ImageCaptureHelper imageCaptureHelper;
@@ -89,7 +91,7 @@ public class NarocilaAddFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentNarocilaAddBinding.inflate(getLayoutInflater());
-
+        sharedPreferencesHelper = SharedPreferencesHelper.getInstance(requireContext());
         // Najprej pokličemo API klic, da dobimo lokacije
         setupApiCalls();
         // Potem nastavimo spinner-je (brez lokacij)
@@ -138,6 +140,8 @@ public class NarocilaAddFragment extends BaseFragment {
     }
 
     private void initializeUtilities() {
+
+
         // Initialize ImageCaptureHelper
         imageCaptureHelper = new ImageCaptureHelper(context, cameraLauncher, galleryLauncher);
         imageCaptureHelper.setImageCaptureCallback(new ImageCaptureHelper.ImageCaptureCallback() {
@@ -190,6 +194,11 @@ public class NarocilaAddFragment extends BaseFragment {
         // Hide image preview container and remove button initially
         binding.imagePreviewContainer.setVisibility(View.GONE);
         binding.odstranislikoBtn.setVisibility(View.GONE);
+
+        String maintainerName = sharedPreferencesHelper.getUsername();
+        if (maintainerName != null && !maintainerName.isEmpty()) {
+            binding.nameOfShipper.setText(maintainerName);
+        }
 
         // Set the correct tab as checked
         binding.tabVnosNarocilaBtn.setChecked(true);

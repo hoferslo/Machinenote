@@ -294,7 +294,7 @@ public class RegisterFragment extends BaseFragment {
         if (role.isRegister()) binding.checkBoxRegister.setChecked(true);
         if (role.isNarocila()) binding.checkBoxNarocila.setChecked(true);
         if (role.isDodajanjeNarocil()) binding.checkBoxDodajanjeNarocil.setChecked(true);
-        if(role.isUpravljanjeNarocil()) binding.checkBoxUpravljanjeNarocil.setChecked(true);
+        if (role.isUpravljanjeNarocil()) binding.checkBoxUpravljanjeNarocil.setChecked(true);
     }
 
     private void setDefaultPermissionsForRole(String roleName) {
