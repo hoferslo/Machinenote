@@ -54,6 +54,7 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
     ApiManager apiManager;
     private ImageCaptureHelper imageCaptureHelper;
     private String qrKoda = "NE";
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     public ZastojiFragment() {
         // Required empty public constructor
@@ -83,6 +84,7 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        sharedPreferencesHelper = SharedPreferencesHelper.getInstance(requireContext());
         binding = FragmentZastojiBinding.inflate(getLayoutInflater());
 
         apiManager = new ApiManager(context);
@@ -99,6 +101,11 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
         binding.requiredItemsLv.setAdapter(adapter);
 
         // Set up TextWatchers
+        String maintainerName = sharedPreferencesHelper.getUsername();
+        if (maintainerName != null && !maintainerName.isEmpty()) {
+            binding.imeDelavca.setText(maintainerName);
+        }
+
         TextWatcherUtil.addTextWatcherToEditText(binding.imeDelavca, 2, adapter); //textWatcher
         TextWatcherUtil.addTextWatcherToEditText(binding.razlogZaustavitveStroja, 3, adapter);
         TextWatcherUtil.addTextWatcherToEditText(binding.opomba, 4, adapter);
@@ -181,6 +188,7 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
         binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(!binding.dezurstvoCheckBox.isChecked()));
 
         binding.scanBtn.setOnClickListener(v -> startQRCodeScanner());
+
 
         TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 

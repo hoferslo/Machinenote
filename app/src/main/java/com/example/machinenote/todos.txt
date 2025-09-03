@@ -30,12 +30,6 @@ Potrjena dobava v manage more actually bit predvidena
 
 
 
-Premakni registracijo da se sam registrira
-dodaj dvakratno kodo za registriranje
-Poudari za vnos naloge in za vnos naročil...
-Qr kodo da se bolj vidi gor
-Glavne stvari bolj poudari
-Zastoji tvoje ime kot naročnik da se ze vpise
 Popravi dodajanje naročil in managanje naročil v registriranju
 
 

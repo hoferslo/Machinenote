@@ -441,7 +441,7 @@ public class NarocilaManageFragment extends BaseFragment {
         currentNarocilo.setEnota(enota);
         currentNarocilo.setStatus(status);
         currentNarocilo.setRokZaDobavo(rokForDatabase);
-        currentNarocilo.setDatumPotrjeneDobave(predvidenaForDatabase);
+        currentNarocilo.setDatumPredvideneDobave(predvidenaForDatabase);
 
         // Show loading state
         binding.shraniSpremembeBtn.setEnabled(false);
