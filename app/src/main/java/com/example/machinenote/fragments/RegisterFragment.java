@@ -33,7 +33,7 @@ import retrofit2.Response;
 
 public class RegisterFragment extends BaseFragment {
 
-    public String TAG = "Registracija";
+    public String TAG = "Upravljanje uporabnikov";
     private FragmentRegisterBinding binding;
     private Context context;
     private ApiManager apiManager;
@@ -68,6 +68,7 @@ public class RegisterFragment extends BaseFragment {
 
         initializePermissionCheckBoxes();
         setupModeToggleButtons();
+        setupCancelButton();
         loadRolesFromApi();
         setupRegisterButton();
 
@@ -77,11 +78,20 @@ public class RegisterFragment extends BaseFragment {
         return view;
     }
 
-
     private void setupModeToggleButtons() {
         binding.btnUserMode.setOnClickListener(v -> setUserMode());
         binding.btnRoleMode.setOnClickListener(v -> setRoleMode());
     }
+
+    private void setupCancelButton() {
+        binding.cancelBtn.setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.getSupportFragmentManager().popBackStack();
+            }
+        });
+    }
+
     private void setUserMode() {
         isUserMode = true;
 
@@ -93,14 +103,14 @@ public class RegisterFragment extends BaseFragment {
         binding.roleSection.setVisibility(View.GONE);
 
         // Update register button text
-        binding.registerButton.setText("Registriraj");
+        binding.registerButton.setText("Dodeli vlogo");
 
         // Restore permissions for the currently selected role
         restoreSelectedRolePermissions();
         disableAllCheckboxes();
 
         // Update toolbar title
-        updateToolbarTitle("Dodaj uporabnika");
+        updateToolbarTitle("Dodeli vlogo uporabniku");
     }
 
     private void setRoleMode() {
@@ -114,15 +124,16 @@ public class RegisterFragment extends BaseFragment {
         binding.roleSection.setVisibility(View.VISIBLE);
 
         // Update register button text
-        binding.registerButton.setText("Ustvari");
+        binding.registerButton.setText("Ustvari novo vlogo");
 
         // Clear all checkboxes and enable them for role creation
         clearAllCheckboxes();
         enableAllCheckboxes();
 
         // Update toolbar title
-        updateToolbarTitle("Dodaj vlogo");
+        updateToolbarTitle("Ustvari novo vlogo");
     }
+
     private void restoreSelectedRolePermissions() {
         // Only restore if we have a selected role
         if (!TextUtils.isEmpty(selectedRole)) {
@@ -175,29 +186,38 @@ public class RegisterFragment extends BaseFragment {
             public void onFailure(Call<List<Role>> call, Throwable t) {
                 // Fallback to default roles if API fails
                 setupSpinnerWithDefaults();
-                Toast.makeText(context, "Napaka pri povezavi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Napaka pri nalaganju vlog: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setupSpinner() {
         List<String> roleNames = new ArrayList<>();
+        roleNames.add("Izberi vlogo..."); // Default option
 
         for (Role role : availableRoles) {
             roleNames.add(role.getRole());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                R.layout.item_spinner_layout, roleNames);  // your custom layout for selected item
+                R.layout.item_spinner_layout, roleNames);
 
-        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);  // your custom dropdown item layout
-
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.roleSpinner.setAdapter(adapter);
-
 
         binding.roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    // Default "Izberi vlogo..." selected
+                    selectedRole = "";
+                    clearAllCheckboxes();
+                    if (isUserMode) {
+                        disableAllCheckboxes();
+                    }
+                    return;
+                }
+
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 selectedRole = selectedItem;
 
@@ -205,10 +225,8 @@ public class RegisterFragment extends BaseFragment {
                 Role selectedRoleObj = findRoleByName(selectedItem);
 
                 if (selectedRoleObj != null) {
-                    // Use data from database
                     setPermissionsForRole(selectedRoleObj);
                 } else {
-                    // Use default permissions if not found in database
                     setDefaultPermissionsForRole(selectedItem);
                 }
 
@@ -221,19 +239,16 @@ public class RegisterFragment extends BaseFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedRole = "";
+                clearAllCheckboxes();
                 if (isUserMode) {
-                    clearAllCheckboxes();
                     disableAllCheckboxes();
-                } else {
-                    // In role mode, keep checkboxes enabled
-                    enableAllCheckboxes();
                 }
             }
         });
     }
 
     private void setupSpinnerWithDefaults() {
-        String[] items = {"Admin", "Vzdrževanje"};
+        String[] items = {"Izberi vlogo...", "Admin", "Vzdrževanje", "Gost"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_item, items);
@@ -243,13 +258,20 @@ public class RegisterFragment extends BaseFragment {
         binding.roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    selectedRole = "";
+                    clearAllCheckboxes();
+                    if (isUserMode) {
+                        disableAllCheckboxes();
+                    }
+                    return;
+                }
+
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 selectedRole = selectedItem;
 
-                // For default roles, set default permissions
                 setDefaultPermissionsForRole(selectedItem);
 
-                // Only disable checkboxes in user mode
                 if (isUserMode) {
                     disableAllCheckboxes();
                 }
@@ -258,11 +280,9 @@ public class RegisterFragment extends BaseFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedRole = "";
+                clearAllCheckboxes();
                 if (isUserMode) {
-                    clearAllCheckboxes();
                     disableAllCheckboxes();
-                } else {
-                    enableAllCheckboxes();
                 }
             }
         });
@@ -318,6 +338,9 @@ public class RegisterFragment extends BaseFragment {
                 binding.checkBoxRemonti.setChecked(true);
                 binding.checkBoxOrodja.setChecked(true);
                 break;
+            case "Gost":
+                // Guest has no permissions - already cleared
+                break;
         }
     }
 
@@ -364,6 +387,10 @@ public class RegisterFragment extends BaseFragment {
             binding.editTextUsername.setError("Uporabniško ime je obvezno");
             focusView = binding.editTextUsername;
             cancel = true;
+        } else if (username.length() < 3) {
+            binding.editTextUsername.setError("Uporabniško ime mora imeti vsaj 3 znake");
+            focusView = binding.editTextUsername;
+            cancel = true;
         }
 
         if (TextUtils.isEmpty(password)) {
@@ -397,6 +424,13 @@ public class RegisterFragment extends BaseFragment {
 
         if (TextUtils.isEmpty(roleName)) {
             binding.addARole.setError("Ime vloge je obvezno");
+            binding.addARole.requestFocus();
+            return;
+        }
+
+        // Check if role already exists
+        if (findRoleByName(roleName) != null) {
+            binding.addARole.setError("Vloga s tem imenom že obstaja");
             binding.addARole.requestFocus();
             return;
         }
@@ -440,43 +474,85 @@ public class RegisterFragment extends BaseFragment {
     private void performUserRegistration(String username, String password, String role) {
         binding.registerButton.setEnabled(false);
         binding.registerButton.setText("Registriram...");
-        //Log.d(TAG, "performUserRegistration: " + username + " " + password + " " + role);
 
-        // For user registration, we don't need to pass permissions as they're determined by the role
-        RegistrationRequest registrationRequest = new RegistrationRequest(username, password, role, new ArrayList<>());
+        // Check if the role with these permissions already exists
+        Role existingRole = findRoleByName(role);
+        List<String> currentPermissions = collectPermissions();
 
-        apiManager.registerUser(registrationRequest, new ApiManager.RegistrationCallback() {
-            @Override
-            public void onSuccess() {
-                if (!isAdded()) return;
-                Toast.makeText(context, "Uporabnik uspešno registriran", Toast.LENGTH_SHORT).show();
-                clearUserForm();
-                resetButton();
-            }
+        if (existingRole != null && permissionsMatch(existingRole, currentPermissions)) {
+            // Use existing role
+            RegistrationRequest registrationRequest = new RegistrationRequest(username, password, role, new ArrayList<>());
 
-            @Override
-            public void onFailure(String errorMessage) {
-                if (!isAdded()) return;
-                String displayMessage = getDisplayErrorMessage(errorMessage);
-                Toast.makeText(context, displayMessage, Toast.LENGTH_LONG).show();
-                resetButton();
-            }
-        });
+            apiManager.registerUser(registrationRequest, new ApiManager.RegistrationCallback() {
+                @Override
+                public void onSuccess() {
+                    if (!isAdded()) return;
+                    Toast.makeText(context, "Uporabnik uspešno registriran z obstoječo vlogo: " + role, Toast.LENGTH_SHORT).show();
+                    clearUserForm();
+                    resetButton();
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    if (!isAdded()) return;
+                    String displayMessage = getDisplayErrorMessage(errorMessage);
+                    Toast.makeText(context, displayMessage, Toast.LENGTH_LONG).show();
+                    resetButton();
+                }
+            });
+        } else {
+            // For user registration, we don't need to pass permissions as they're determined by the role
+            RegistrationRequest registrationRequest = new RegistrationRequest(username, password, role, new ArrayList<>());
+
+            apiManager.registerUser(registrationRequest, new ApiManager.RegistrationCallback() {
+                @Override
+                public void onSuccess() {
+                    if (!isAdded()) return;
+                    Toast.makeText(context, "Uporabnik uspešno registriran", Toast.LENGTH_SHORT).show();
+                    clearUserForm();
+                    resetButton();
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    if (!isAdded()) return;
+                    String displayMessage = getDisplayErrorMessage(errorMessage);
+                    Toast.makeText(context, displayMessage, Toast.LENGTH_LONG).show();
+                    resetButton();
+                }
+            });
+        }
+    }
+
+    private boolean permissionsMatch(Role role, List<String> permissions) {
+        // Convert role permissions to list for comparison
+        List<String> rolePermissions = new ArrayList<>();
+        if (role.isKnjizenje()) rolePermissions.add("Knjiženje");
+        if (role.isZastoji()) rolePermissions.add("Zastoji");
+        if (role.isRezervniDeli()) rolePermissions.add("Rezervni deli");
+        if (role.isPreventivniPregledi()) rolePermissions.add("Preventivni pregledi");
+        if (role.isImenik()) rolePermissions.add("Imenik");
+        if (role.isNaloge()) rolePermissions.add("Naloge");
+        if (role.isDodajanjeNalog()) rolePermissions.add("Dodajanje nalog");
+        if (role.isRemonti()) rolePermissions.add("Remonti");
+        if (role.isOrodja()) rolePermissions.add("Orodja");
+        if (role.isRegister()) rolePermissions.add("Register");
+        if (role.isNarocila()) rolePermissions.add("Naročila");
+        if (role.isDodajanjeNarocil()) rolePermissions.add("Dodajanje Naročil");
+        if (role.isUpravljanjeNarocil()) rolePermissions.add("Upravljanje Naročil");
+
+        return rolePermissions.containsAll(permissions) && permissions.containsAll(rolePermissions);
     }
 
     private void performRoleCreation(String roleName, List<String> permissions) {
         binding.registerButton.setEnabled(false);
         binding.registerButton.setText("Ustvarjam...");
 
-        // Create a role creation request - you might need to modify this based on your API
-        RegistrationRequest roleRequest = new RegistrationRequest("", "", roleName, permissions);
-
-        // You might need to create a separate API method for role creation
         apiManager.createRole(roleName, permissions, new ApiManager.RoleCreationCallback() {
             @Override
             public void onSuccess() {
                 if (!isAdded()) return;
-                Toast.makeText(context, "Vloga uspešno ustvarjena", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Vloga '" + roleName + "' uspešno ustvarjena", Toast.LENGTH_SHORT).show();
                 clearRoleForm();
                 resetButton();
                 loadRolesFromApi(); // Refresh the roles list
@@ -520,7 +596,7 @@ public class RegisterFragment extends BaseFragment {
     private void clearUserForm() {
         binding.editTextUsername.setText("");
         binding.editTextPassword.setText("");
-        binding.roleSpinner.setSelection(0);
+        binding.roleSpinner.setSelection(0); // Reset to "Izberi vlogo..."
     }
 
     private void clearRoleForm() {
@@ -531,9 +607,9 @@ public class RegisterFragment extends BaseFragment {
     private void resetButton() {
         binding.registerButton.setEnabled(true);
         if (isUserMode) {
-            binding.registerButton.setText("Registriraj");
+            binding.registerButton.setText("Dodeli vlogo");
         } else {
-            binding.registerButton.setText("Ustvari");
+            binding.registerButton.setText("Ustvari novo vlogo");
         }
     }
 
@@ -541,9 +617,9 @@ public class RegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (isUserMode) {
-            updateToolbarTitle("Dodaj uporabnika");
+            updateToolbarTitle("Dodeli vlogo uporabniku");
         } else {
-            updateToolbarTitle("Dodaj vlogo");
+            updateToolbarTitle("Ustvari novo vlogo");
         }
     }
 }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.LoginFragment">
+    tools:context=".fragments.PublicRegisterFragment">
 
     <!-- Main Content Container -->
     <LinearLayout
@@ -13,13 +13,24 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Login Card -->
+        <!-- Registration Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_card_secondary"
             android:orientation="vertical"
             android:padding="24dp">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registracija"
+                android:textSize="24sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito"
+                android:layout_gravity="center"
+                android:layout_marginBottom="24dp" />
 
             <!-- Username Input -->
             <LinearLayout
@@ -39,7 +50,7 @@
                     android:contentDescription="@string/username" />
 
                 <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/editTextUsername"
                     android:cursorVisible="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -58,6 +69,7 @@
 
             </LinearLayout>
 
+            <!-- Password Input -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,14 +78,16 @@
                 android:background="@drawable/bg_card_primary"
                 android:padding="16dp"
                 android:layout_marginBottom="16dp">
+
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@mipmap/lock"
                     android:layout_marginEnd="12dp"
-                    android:contentDescription="@string/username" />
+                    android:contentDescription="@string/password" />
+
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/editTextPassword"
                     android:cursorVisible="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -81,8 +95,13 @@
                     android:background="@android:color/transparent"
                     android:textCursorDrawable="@null"
                     android:hint="@string/password"
-                    android:padding="8dp"
-                    android:inputType="textPassword"/>
+                    android:textColor="@color/content_primary"
+                    android:textColorHint="@color/content_tertiary"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:gravity="center_vertical" />
 
                 <TextView
                     android:id="@+id/togglePasswordVisibility"
@@ -93,37 +112,90 @@
                     android:padding="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
+                    android:background="?android:attr/selectableItemBackgroundBorderless" />
+
             </LinearLayout>
 
+            <!-- Confirm Password Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp">
 
-            <!-- Login Button -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/lock"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="Potrdi geslo" />
+
+                <EditText
+                    android:id="@+id/editTextConfirmPassword"
+                    android:cursorVisible="true"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:textCursorDrawable="@null"
+                    android:hint="Potrdi geslo"
+                    android:textColor="@color/content_primary"
+                    android:textColorHint="@color/content_tertiary"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/toggleConfirmPasswordVisibility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:drawableRight="@mipmap/visibility_off"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+            </LinearLayout>
+
+            <!-- Register Button -->
             <Button
-                android:id="@+id/loginBtn"
+                android:id="@+id/registerButton"
                 style="@style/Button.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Login"
-                android:minHeight="56dp" />
+                android:text="Registriraj se"
+                android:minHeight="56dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Back to Login Button -->
+            <Button
+                android:id="@+id/backToLoginButton"
+                style="@style/Button.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nazaj na prijavo"
+                android:minHeight="48dp" />
 
         </LinearLayout>
 
-        <!-- Registration Info -->
-        <Button
-            android:id="@+id/registerButton"
+        <!-- Info Text -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/register_help_info"
+            android:text="Po registraciji boste dobili osnovni dostop. Za dodatne pravice se obrnite na administratorja."
             android:textColor="@color/content_tertiary"
             android:textSize="14sp"
             android:fontFamily="@font/nunito_semibold"
             android:textAlignment="center"
             android:gravity="center"
-            android:padding="16dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true" />
+            android:padding="16dp" />
 
     </LinearLayout>
 </FrameLayout>

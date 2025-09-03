@@ -85,6 +85,10 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
             }
         });
 
+        binding.articleName.setOnClickListener(v -> {
+            startQRCodeScanner();
+        });
+
         // Nastavi click listener
         binding.allDataSv.setOnClickListener(v -> showRezervniDeliBottomSheet());
 

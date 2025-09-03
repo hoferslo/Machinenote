@@ -78,12 +78,19 @@ public class LoginFragment extends BaseFragment {
                 binding.togglePasswordVisibility.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.visibility, 0);
             }
             isPasswordVisible = !isPasswordVisible;
-            binding.password.setSelection(binding.password.length()); // Move cursor to the end
+            binding.password.setSelection(binding.password.length());
+        });
+
+        // Add register button click listener
+        binding.registerButton.setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.loadFragment(PublicRegisterFragment.newInstance(context));
+            }
         });
 
         return binding.getRoot();
     }
-
 
     private void loginUsingTextviewUsernameAndPassword() {
         if (areCameraPermissionsGranted) {
