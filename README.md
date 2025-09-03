@@ -27,7 +27,7 @@ INSERT INTO app_updates (
 ) VALUES (
     'com.example.machinenote',
     '1.2.0',
-    'http://192.168.12.192/MachineNoteV2/machinenote-v1.2.0.apk',
+    'http://192.168.12.192/MachineNoteV2.apk',
     0,
     'Bug fixes and improvements',
     15000000
