@@ -470,7 +470,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/action_primary">
 
         <View
             android:layout_width="match_parent"
@@ -487,6 +488,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tabEntryBtn"
                 style="@style/Button.MaterialTab"
+                android:backgroundTint="@color/action_primary"
+                android:textColor="@color/action_secondary"
+                app:iconTint="@color/action_secondary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -496,6 +500,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tabPicturesBtn"
                 style="@style/Button.MaterialTab"
+                android:backgroundTint="@color/action_primary"
+                android:textColor="@color/action_secondary"
+                app:iconTint="@color/action_secondary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -505,6 +512,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tabInfoBtn"
                 style="@style/Button.MaterialTab"
+                android:backgroundTint="@color/action_primary"
+                android:textColor="@color/action_secondary"
+                app:iconTint="@color/action_secondary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
