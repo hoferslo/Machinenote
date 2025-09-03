@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     public boolean serverConnection = true;
     private boolean doubleBackToExitPressedOnce = false;
     private Handler exitHandler = new Handler(Looper.getMainLooper());
-    private UpdateManager updateManager;
+    public UpdateManager updateManager;
     private ApiManager apiManager;
 
     @Override
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // ENOSTAVEN PRISTOP za temo
+        scheduleUpdateCheck();
+        // ENOSTAVEN PRISTOP     za temo
         SharedPreferencesHelper prefsHelper = SharedPreferencesHelper.getInstance(this);
         boolean isDarkTheme = prefsHelper.getInt("theme_simple", 0) == 1;
 
@@ -239,6 +240,15 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         enableDrawer();
         binding.drawerUserNameTv.setText(sharedPreferencesHelper.getString("Username", "Ni povezave"));
         binding.drawerUserRoleTv.setText(sharedPreferencesHelper.getRole().getRole());
+    }
+
+    private void scheduleUpdateCheck() {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            if (serverConnection) {
+                updateManager.checkForUpdate();
+            }
+        }, 2000); // Check after 2 seconds
     }
 
     private void handleBackPress() {

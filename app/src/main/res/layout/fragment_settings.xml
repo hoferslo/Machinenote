@@ -255,6 +255,20 @@
                     </LinearLayout>
 
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/textCurrentVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Različica: 1.0.0"
+                    android:textSize="16sp" />
+
+                <!-- Update check button -->
+                <Button
+                    android:id="@+id/checkUpdateBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Preveri posodobitve"
+                    android:layout_marginTop="16dp" />
 
             </LinearLayout>
 

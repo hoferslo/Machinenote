@@ -1,16 +1,8 @@
 - make settings for bitmap commpression quality
 
 - upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
-
 - nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. ;D )
 
-
-
-Opcijsko:
-    - za register dodaj double verification password mogoce mau bl tko postopek registriraj uporabnika in gre po svojih fragmentih / postopkih
-    - 1. najprej registriraj uporabnika (password, username)
-    - 2. nato mu doloci rolo al pa jo nared // nevem kako bi to naredu mogoce posebi fragment?
-    - optimiziraj kodo za register
 
 - navodila za aplikacijo
 - excel / grafi za podatke (statistika in grafika)
@@ -28,8 +20,9 @@ Treba testirat qr kode
 
 Potrjena dobava v manage more actually bit predvidena
 
-
-
 Popravi dodajanje naročil in managanje naročil v registriranju
+
+
+Naredi za updejtat
 
 

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
+import com.example.machinenote.Utility.UpdateManager;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentSettingsBinding;
 import com.example.machinenote.models.Role;
@@ -67,6 +68,10 @@ public class SettingsFragment extends BaseFragment {
                 android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
         ));
+
+        // Display current app version
+        String currentVersion = UpdateManager.getAppVersion(requireContext());
+        binding.textCurrentVersion.setText("Različica: " + currentVersion);
     }
 
     private void setupClickListeners() {
@@ -88,6 +93,51 @@ public class SettingsFragment extends BaseFragment {
                 Toast.makeText(getContext(),
                         isChecked ? "Obvestila vključena" : "Obvestila izključena",
                         Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Check for updates button click listener
+        binding.checkUpdateBtn.setOnClickListener(v -> {
+            checkForUpdates();
+        });
+    }
+
+    private void checkForUpdates() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+
+        // Check if we have server connection
+        if (!mainActivity.serverConnection) {
+            Toast.makeText(getContext(), "Ni povezave do strežnika", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show loading indicator
+        mainActivity.showLoadingBar(true, "Preverjam posodobitve...");
+        binding.checkUpdateBtn.setEnabled(false);
+        binding.checkUpdateBtn.setText("Preverjam...");
+
+        // Perform update check with callback
+        mainActivity.updateManager.checkForUpdate(new UpdateManager.UpdateCallback() {
+            @Override
+            public void onUpdateCheckComplete() {
+                // Hide loading and reset button
+                mainActivity.showLoadingBar(false, "");
+                binding.checkUpdateBtn.setEnabled(true);
+                binding.checkUpdateBtn.setText("Preveri posodobitve");
+
+                // Show success message (if no update was available, user will see this)
+                Toast.makeText(getContext(), "Aplikacija je posodobljena", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onUpdateCheckFailed(String error) {
+                // Hide loading and reset button
+                mainActivity.showLoadingBar(false, "");
+                binding.checkUpdateBtn.setEnabled(true);
+                binding.checkUpdateBtn.setText("Preveri posodobitve");
+
+                // Show error message
+                Toast.makeText(getContext(), "Napaka pri preverjanju: " + error, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -140,7 +190,6 @@ public class SettingsFragment extends BaseFragment {
                     : AppCompatDelegate.MODE_NIGHT_NO
             );
         });
-
     }
 
     @Override
