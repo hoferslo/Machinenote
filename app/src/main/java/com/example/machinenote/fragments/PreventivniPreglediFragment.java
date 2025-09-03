@@ -107,26 +107,11 @@ public class PreventivniPreglediFragment extends BaseFragment {
         });
 
         fetchLinije();
-        setupTabNavigation();
 
         return binding.getRoot();
     }
 
-    private void setupTabNavigation() {
-        binding.switchTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (isChecked) {
-                MainActivity mainActivity = (MainActivity) requireActivity();
-                // Add navigation logic for tabs if needed
-                // Example:
-                // if (checkedId == R.id.tabOtherBtn) {
-                //     FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-                //     fragmentManager.popBackStack();
-                //     Fragment otherFragment = OtherFragment.newInstance(mainActivity);
-                //     mainActivity.loadFragment(otherFragment);
-                // }
-            }
-        });
-    }
+
 
     private void fetchLinije() {
         MainActivity mainActivity = (MainActivity) requireActivity();

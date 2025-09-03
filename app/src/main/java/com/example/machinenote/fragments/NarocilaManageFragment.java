@@ -23,7 +23,7 @@ import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Narocila;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.Utility.ImageCaptureHelper;
-import com.example.machinenote.Utility.CustomDateTimePicker;
+import com.example.machinenote.Utility.CustomDatePicker;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,7 +58,7 @@ public class NarocilaManageFragment extends BaseFragment {
 
     // Utility classes
     private ImageCaptureHelper imageCaptureHelper;
-    private CustomDateTimePicker customDateTimePicker;
+    private CustomDatePicker customDatePicker;
 
     // Activity result launchers
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -171,27 +171,27 @@ public class NarocilaManageFragment extends BaseFragment {
             }
         });
 
-        // Initialize CustomDateTimePicker
-        customDateTimePicker = new CustomDateTimePicker(context,
-                new CustomDateTimePicker.ICustomDateTimeListener() {
-                    @Override
-                    public void onSet(android.app.Dialog dialog, Calendar calendarSelected,
-                                      java.util.Date dateSelected, int year, String monthFullName,
-                                      String monthShortName, int monthNumber, int day,
-                                      String weekDayFullName, String weekDayShortName,
-                                      int hour24, int hour12, int min, int sec, String AM_PM) {
+        // Initialize CustomDatePicker (instead of CustomDateTimePicker)
+        customDatePicker = new CustomDatePicker(getContext(), new CustomDatePicker.ICustomDateListener() {
+            @Override
+            public void onSet(android.app.Dialog dialog, Calendar calendarSelected,
+                              java.util.Date dateSelected, int year, String monthFullName,
+                              String monthShortName, int monthNumber, int day,
+                              String weekDayFullName, String weekDayShortName) {
 
-                        selectedPredvidenaDate = calendarSelected;
-                        updatePredvidenaDateDisplay();
-                    }
+                // Update selected predvidena date
+                selectedPredvidenaDate = calendarSelected;
+                updatePredvidenaDateDisplay();
+            }
 
-                    @Override
-                    public void onCancel() {
-                        // Handle cancel if needed
-                    }
-                });
+            @Override
+            public void onCancel() {
+                // Handle cancel if needed
+            }
+        });
 
-        customDateTimePicker.set24HourFormat(true);
+        // Set to current date
+        customDatePicker.setDate(selectedPredvidenaDate);
     }
 
     private void initializeViews() {
@@ -273,6 +273,11 @@ public class NarocilaManageFragment extends BaseFragment {
             selectedPredvidenaDate = (Calendar) originalDeliveryDate.clone();
         }
         updatePredvidenaDateDisplay();
+
+        // Update the CustomDatePicker with the loaded date
+        if (customDatePicker != null) {
+            customDatePicker.setDate(selectedPredvidenaDate);
+        }
     }
 
     private void loadImages() {
@@ -305,8 +310,8 @@ public class NarocilaManageFragment extends BaseFragment {
 
         // Date picker button
         binding.predvidenaDostavaBtn.setOnClickListener(v -> {
-            if (customDateTimePicker != null) {
-                customDateTimePicker.showDialog();
+            if (customDatePicker != null) {
+                customDatePicker.showDialog();
             }
         });
 
@@ -612,8 +617,8 @@ public class NarocilaManageFragment extends BaseFragment {
             imageCaptureHelper.deleteAllImages();
         }
 
-        if (customDateTimePicker != null) {
-            customDateTimePicker.dismissDialog();
+        if (customDatePicker != null) {
+            customDatePicker.dismissDialog();
         }
     }
 }

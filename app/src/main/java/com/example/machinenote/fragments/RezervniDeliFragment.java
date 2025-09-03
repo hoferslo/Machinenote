@@ -183,17 +183,12 @@ public class RezervniDeliFragment extends BaseFragment {
     }
 
     private void setupTabNavigation() {
-        binding.switchTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (isChecked) {
-                MainActivity mainActivity = (MainActivity) requireActivity();
-                if (checkedId == R.id.tabSmallMaterialsBtn) {
-                    FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-                    fragmentManager.popBackStack();
-
-                    Fragment drobniMaterialiFragment = com.example.machinenote.fragments.DrobniMaterialiFragment.newInstance(mainActivity);
-                    mainActivity.loadFragment(drobniMaterialiFragment);
-                }
-            }
+        binding.tabSmallMaterialsBtn.setOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+            fragmentManager.popBackStack();
+            Fragment drobniMaterialiFragment = com.example.machinenote.fragments.DrobniMaterialiFragment.newInstance(mainActivity);
+            mainActivity.loadFragment(drobniMaterialiFragment);
         });
     }
 

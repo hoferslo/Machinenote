@@ -124,22 +124,14 @@ public class DrobniMaterialiFragment extends BaseFragment {
     }
 
     private void setupTabNavigation() {
-        binding.switchTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (isChecked) {
-                MainActivity mainActivity = (MainActivity) requireActivity();
-                if (checkedId == R.id.tabRezervniDeliBtn) {
-                    FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-
-                    // Pop current fragment and replace
-                    fragmentManager.popBackStack();
-
-                    Fragment rezervniDeliFragment = com.example.machinenote.fragments.RezervniDeliFragment.newInstance(mainActivity);
-                    mainActivity.loadFragment(rezervniDeliFragment);
-                }
-            }
+        binding.tabRezervniDeliBtn.setOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+            fragmentManager.popBackStack();
+            Fragment RezervniDeliFragment = com.example.machinenote.fragments.RezervniDeliFragment.newInstance(mainActivity);
+            mainActivity.loadFragment(RezervniDeliFragment);
         });
     }
-
     private void fetchDrobniMateriali() {
         MainActivity mainActivity = (MainActivity) requireActivity();
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(requireContext());

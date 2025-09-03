@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
@@ -24,7 +26,7 @@ import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Narocila;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.Utility.ImageCaptureHelper;
-import com.example.machinenote.Utility.CustomDateTimePicker;
+import com.example.machinenote.Utility.CustomDatePicker;
 import com.example.machinenote.models.SklopLinije;
 
 import java.io.File;
@@ -54,7 +56,7 @@ public class NarocilaAddFragment extends BaseFragment {
 
     // Utility classes
     private ImageCaptureHelper imageCaptureHelper;
-    private CustomDateTimePicker customDateTimePicker;
+    private CustomDatePicker customDatePicker;
 
     // Activity result launchers
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -140,8 +142,6 @@ public class NarocilaAddFragment extends BaseFragment {
     }
 
     private void initializeUtilities() {
-
-
         // Initialize ImageCaptureHelper
         imageCaptureHelper = new ImageCaptureHelper(context, cameraLauncher, galleryLauncher);
         imageCaptureHelper.setImageCaptureCallback(new ImageCaptureHelper.ImageCaptureCallback() {
@@ -162,29 +162,27 @@ public class NarocilaAddFragment extends BaseFragment {
             }
         });
 
-        // Initialize CustomDateTimePicker
-        customDateTimePicker = new CustomDateTimePicker(context,
-                new CustomDateTimePicker.ICustomDateTimeListener() {
-                    @Override
-                    public void onSet(android.app.Dialog dialog, Calendar calendarSelected,
-                                      java.util.Date dateSelected, int year, String monthFullName,
-                                      String monthShortName, int monthNumber, int day,
-                                      String weekDayFullName, String weekDayShortName,
-                                      int hour24, int hour12, int min, int sec, String AM_PM) {
+        // Initialize CustomDatePicker (instead of CustomDateTimePicker)
+        customDatePicker = new CustomDatePicker(getContext(), new CustomDatePicker.ICustomDateListener() {
+            @Override
+            public void onSet(android.app.Dialog dialog, Calendar calendarSelected,
+                              java.util.Date dateSelected, int year, String monthFullName,
+                              String monthShortName, int monthNumber, int day,
+                              String weekDayFullName, String weekDayShortName) {
 
-                        selectedDate = calendarSelected;
-                        updateDateDisplay();
-                    }
+                // Update selected date
+                selectedDate = calendarSelected;
+                updateDateDisplay();
+            }
 
-                    @Override
-                    public void onCancel() {
-                        // Handle cancel if needed
-                    }
-                });
+            @Override
+            public void onCancel() {
+                // Handle cancel if needed
+            }
+        });
 
         // Set to current date
-        customDateTimePicker.setDate(selectedDate);
-        customDateTimePicker.set24HourFormat(true); // Use 24-hour format for consistency
+        customDatePicker.setDate(selectedDate);
     }
 
     private void initializeViews() {
@@ -200,29 +198,23 @@ public class NarocilaAddFragment extends BaseFragment {
             binding.nameOfShipper.setText(maintainerName);
         }
 
-        // Set the correct tab as checked
-        binding.tabVnosNarocilaBtn.setChecked(true);
     }
 
     private void setupClickListeners() {
         // Tab navigation
         binding.tabNarocilaBtn.setOnClickListener(v -> {
-            // Switch back to NarocilaFragment
-            if (getActivity() instanceof MainActivity) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadFragment(NarocilaFragment.newInstance(context));
-            }
-        });
-
-        binding.tabVnosNarocilaBtn.setOnClickListener(v -> {
-            // Already on this fragment, do nothing or refresh
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+            fragmentManager.popBackStack();
+            Fragment NarocilaFragment = com.example.machinenote.fragments.NarocilaFragment.newInstance(mainActivity);
+            mainActivity.loadFragment(NarocilaFragment);
         });
 
         // Date picker button
         binding.rokDobave.setOnClickListener(v -> {
-            // Open custom date time picker
-            if (customDateTimePicker != null) {
-                customDateTimePicker.showDialog();
+            // Open custom date picker
+            if (customDatePicker != null) {
+                customDatePicker.showDialog();
             }
         });
 
@@ -386,8 +378,8 @@ public class NarocilaAddFragment extends BaseFragment {
         // Reset date to current date
         selectedDate = Calendar.getInstance();
         updateDateDisplay();
-        if (customDateTimePicker != null) {
-            customDateTimePicker.setDate(selectedDate);
+        if (customDatePicker != null) {
+            customDatePicker.setDate(selectedDate);
         }
 
         // Clear images
@@ -485,8 +477,8 @@ public class NarocilaAddFragment extends BaseFragment {
             imageCaptureHelper.deleteAllImages(); // Clean up any remaining temp files
         }
 
-        if (customDateTimePicker != null) {
-            customDateTimePicker.dismissDialog(); // Dismiss any open dialogs
+        if (customDatePicker != null) {
+            customDatePicker.dismissDialog(); // Dismiss any open dialogs
         }
     }
 }

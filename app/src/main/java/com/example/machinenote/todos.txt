@@ -27,3 +27,8 @@ Treba testirat qr kode
 - Vprasej kere stvari pokazat samo - rezervni deli in drobni material
 - vprasej ce je ura uredu?
 - a je knjizenje uredu al ga nekak zbolsam?
+
+
+Potrjena dobava v manage more actually bit predvidena
+
+

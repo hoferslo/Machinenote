@@ -205,8 +205,8 @@ public class Role {
                 ", orodja=" + orodja +
                 ", register=" + register +
                 ", narocila=" + narocila +
-                ", dodajanje_narocil=" + dodajanjeNarocil +
-                ", upravljanje_narocil=" + upravljanjeNarocil +
+                ", dodajanjeNarocil=" + dodajanjeNarocil +
+                ", upravljanjeNarocil=" + upravljanjeNarocil +
                 '}';
     }
 }

@@ -541,6 +541,7 @@
                 android:gravity="center"
                 android:text="Uporabnik"
                 android:checkable="true"
+                app:icon="@drawable/person_add"
                 style="@style/Button.MaterialTab"/>
 
             <com.google.android.material.button.MaterialButton
@@ -551,8 +552,11 @@
                 android:gravity="center"
                 android:text="Vloga"
                 android:checkable="true"
+                app:icon="@drawable/badge"
                 style="@style/Button.MaterialTab"/>
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </LinearLayout>
+
+
 </LinearLayout>

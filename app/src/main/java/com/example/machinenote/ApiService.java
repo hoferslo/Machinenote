@@ -203,7 +203,7 @@ public interface ApiService {
 
     @Headers("Content-Type: application/json")
     @POST("preventivni_pregledi.php?action=create_izvedba")
-    Call<List<PregledOpravilo>> executePreventivniPregled();
+    Call<List<PregledOpravilo>> executePreventivniPregled(@Body PregledOpravilo pregledOpravilo);
 }
 
 class LoginRequest {

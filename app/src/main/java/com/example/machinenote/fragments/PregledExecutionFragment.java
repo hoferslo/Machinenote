@@ -217,38 +217,58 @@ public class PregledExecutionFragment extends BaseFragment {
         binding.btnExecutePregled.setEnabled(false);
         binding.btnExecutePregled.setText("Izvajam...");
 
-        // Call API to execute pregled
-        apiManager.executePreventivniPregled(new ApiManager.PregledExecutionCallback() {
-            @Override
-            public void onSuccess(List<PregledOpravilo> response) {
-                if (getActivity() == null) return;
+        // Pripravite podatke iz UI
+        int trajanje = Integer.parseInt(binding.etTrajanjeMin.getText().toString().trim());
+        String vzdrzevalec = binding.etVzdrzevalec.getText().toString().trim();
+        String datum = binding.etDatum.getText().toString().trim();
 
-                requireActivity().runOnUiThread(() -> {
-                    binding.btnExecutePregled.setEnabled(true);
-                    binding.btnExecutePregled.setText("Izvedi pregled");
+        // Pridobite opombe in dejanske vrednosti iz UI
+        String opombe = "";
+        String dejanskaVrednost = "";
 
-                    String message = "Pregled uspešno izveden!";
-                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "Pregled executed successfully");
+        // Če imate ta polja v vaše binding:
+        if (binding.etOpombe != null) {
+            opombe = binding.etOpombe.getText().toString().trim();
+        }
+        if (binding.etDejanskavrednost != null) {
+            dejanskaVrednost = binding.etDejanskavrednost.getText().toString().trim();
+        }
 
-                    // Navigate back
-                    requireActivity().getSupportFragmentManager().popBackStack();
+        Log.d(TAG, "Sending data: opombe='" + opombe + "', dejanskaVrednost='" + dejanskaVrednost + "'");
+
+        // Call API z modifikacijo ApiManager signature
+        apiManager.executePreventivniPregled(selectedPregled, trajanje, vzdrzevalec,
+                datum, opombe, dejanskaVrednost, new ApiManager.PregledExecutionCallback() {
+                    @Override
+                    public void onSuccess(List<PregledOpravilo> response) {
+                        if (getActivity() == null) return;
+
+                        requireActivity().runOnUiThread(() -> {
+                            binding.btnExecutePregled.setEnabled(true);
+                            binding.btnExecutePregled.setText("Izvedi pregled");
+
+                            String message = "Pregled uspešno izveden!";
+                            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "Pregled executed successfully");
+
+                            // Navigate back
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        if (getActivity() == null) return;
+
+                        requireActivity().runOnUiThread(() -> {
+                            binding.btnExecutePregled.setEnabled(true);
+                            binding.btnExecutePregled.setText("Izvedi pregled");
+
+                            Toast.makeText(getContext(), "Napaka pri izvajanju: " + errorMessage, Toast.LENGTH_LONG).show();
+                            Log.e(TAG, "Pregled execution failed: " + errorMessage);
+                        });
+                    }
                 });
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                if (getActivity() == null) return;
-
-                requireActivity().runOnUiThread(() -> {
-                    binding.btnExecutePregled.setEnabled(true);
-                    binding.btnExecutePregled.setText("Izvedi pregled");
-
-                    Toast.makeText(getContext(), "Napaka pri izvajanju: " + errorMessage, Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "Pregled execution failed: " + errorMessage);
-                });
-            }
-        });
     }
 
     @Override

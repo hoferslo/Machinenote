@@ -131,8 +131,34 @@ public class ApiManager {
         });
     }
 
-    public void executePreventivniPregled(final PregledExecutionCallback callback) {
-        Call<List<PregledOpravilo>> call = apiService.executePreventivniPregled();
+    public void executePreventivniPregled(PreventivniPregled selectedPregled,
+                                          int trajanje, String vzdrzevalec,
+                                          String datum, String opombe, String dejanskaVrednost,
+                                          final PregledExecutionCallback callback) {
+
+        // Ustvari PregledOpravilo objekt z ustreznimi podatki
+        PregledOpravilo pregledOpravilo = new PregledOpravilo();
+
+        // Nastavite podatke iz selectedPregled in user input
+        pregledOpravilo.setId(selectedPregled.getId()); // To je OpraviloID
+        pregledOpravilo.setOpisOpravila(selectedPregled.getOpis());
+        pregledOpravilo.setDejanskoTrajanjeMin(trajanje); // Dejansko_Trajanje_Min
+        pregledOpravilo.setVzdrzevalec(vzdrzevalec);
+        pregledOpravilo.setDatumIzvedbe(datum);
+        pregledOpravilo.setOpombe(opombe);
+        pregledOpravilo.setActVredParameter(dejanskaVrednost); // Dejanska vrednost
+        pregledOpravilo.setStatus("V teku"); // Status med izvajanjem
+
+        // Debug log
+        Log.d("ApiManager", "Sending PregledOpravilo: opombe='" + opombe + "', actVredParameter='" + dejanskaVrednost + "'");
+
+        // Dodajte tudi standardne podatke, če so na voljo
+        pregledOpravilo.setTrajanjeStdMin(selectedPregled.getTrajanjeStdMin());
+        pregledOpravilo.setLastnost(selectedPregled.getLastnost());
+        pregledOpravilo.setStdVrednostLastnosti(selectedPregled.getStdVrednost());
+
+        Call<List<PregledOpravilo>> call = apiService.executePreventivniPregled(pregledOpravilo);
+
         call.enqueue(new Callback<List<PregledOpravilo>>() {
             @Override
             public void onResponse(Call<List<PregledOpravilo>> call, Response<List<PregledOpravilo>> response) {

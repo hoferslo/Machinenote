@@ -77,30 +77,43 @@
 
     </FrameLayout>
 
-    <!-- Tab Navigation -->
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/switchTabs"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:selectionRequired="true">
+        android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tabRezervniDeliBtn"
-            style="@style/Button.MaterialTab"
-            android:layout_width="0dp"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border_primary" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Rezervni Deli" />
+            app:checkedButton="@id/tabEntryBtn"
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tabSmallMaterialsBtn"
-            style="@style/Button.MaterialTab"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Drobni material" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabRezervniDeliBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_rezervni_deli"
+                app:icon="@drawable/home_repair" />
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabSmallMaterialsBtn"
+                style="@style/Button.MaterialTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_drobni_materiali"
+                app:icon="@drawable/screw"
+                />
 
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    </LinearLayout>
 </LinearLayout>

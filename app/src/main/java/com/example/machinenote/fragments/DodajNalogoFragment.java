@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
@@ -175,8 +177,11 @@ public class DodajNalogoFragment extends BaseFragment {
         binding.tabNalogeBtn.setOnClickListener(v -> {
             // Switch back to NalogeFragment
             if (getActivity() instanceof MainActivity) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadFragment(NalogeFragment.newInstance(context));
+                MainActivity mainActivity = (MainActivity) requireActivity();
+                FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+                fragmentManager.popBackStack();
+                Fragment NalogeFragment = com.example.machinenote.fragments.NalogeFragment.newInstance(mainActivity);
+                mainActivity.loadFragment(NalogeFragment);
             }
         });
 

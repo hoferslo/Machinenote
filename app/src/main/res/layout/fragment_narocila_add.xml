@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:focusable="true"
     android:clickable="true"
-    android:background="@color/background_app"
     tools:context=".fragments.NarocilaFragment">
 
     <!-- Main Content Container -->
@@ -358,7 +357,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/narocila" />
+                android:text="@string/narocila"
+                app:icon="@drawable/assignment_icon"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tabVnosNarocilaBtn"

@@ -181,8 +181,6 @@ public class CompletedNalogaFragment extends BaseFragment {
         binding.slikaPoIzvedbiPreview.setVisibility(View.GONE);
         binding.odstraniSlikoPoIzvedbiBtn.setVisibility(View.GONE);
 
-        // Set the correct tab as checked
-        binding.tabNalogeBtn.setChecked(true);
     }
 
     private void populateNalogaData() {
@@ -208,23 +206,6 @@ public class CompletedNalogaFragment extends BaseFragment {
     }
 
     private void setupClickListeners() {
-        // Tab navigation
-        binding.tabNalogeBtn.setOnClickListener(v -> {
-            // Switch back to NalogeFragment
-            if (getActivity() instanceof MainActivity) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadFragment(NalogeFragment.newInstance(context));
-            }
-        });
-
-        binding.tabVnosNalogeBtn.setOnClickListener(v -> {
-            // Switch to DodajNalogoFragment
-            if (getActivity() instanceof MainActivity) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadFragment(DodajNalogoFragment.newInstance(context));
-            }
-        });
-
         // Action buttons
         binding.prekliciBtn.setOnClickListener(v -> {
             // Cancel - go back to NalogeFragment

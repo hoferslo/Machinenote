@@ -122,7 +122,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/naloge" />
+                android:text="@string/naloge"
+                app:icon="@drawable/assignment_icon"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tabVnosNalogeBtn"

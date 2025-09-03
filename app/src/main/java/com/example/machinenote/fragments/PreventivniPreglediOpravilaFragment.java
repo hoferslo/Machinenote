@@ -113,21 +113,8 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
 
         // Naloži preventivne preglede za izbrano linijo
         fetchPreventivniPreglediForLinija();
-        setupTabNavigation();
 
         return binding.getRoot();
-    }
-
-    private void setupTabNavigation() {
-        binding.switchTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (isChecked) {
-                MainActivity mainActivity = (MainActivity) requireActivity();
-                // Navigacija nazaj na linije
-                if (checkedId == R.id.tabBack) { // Prilagodi ID-je
-                    mainActivity.getSupportFragmentManager().popBackStack();
-                }
-            }
-        });
     }
 
     private void fetchPreventivniPreglediForLinija() {
