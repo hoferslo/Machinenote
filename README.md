@@ -13,7 +13,7 @@ versionName "1.2.0"  // New version
 
 ### 2. Build & Upload APK
 - Build → Generate Signed APK
-- Upload to: `http://192.168.12.192/MachineNoteV2/machinenote-v1.2.0.apk`
+- Upload to: `http://192.168.12.192/MachineNoteV2.apk`
 
 ### 3. Database Insert
 ```sql
