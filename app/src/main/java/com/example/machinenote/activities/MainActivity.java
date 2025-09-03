@@ -97,23 +97,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                     OnBackInvokedDispatcher.PRIORITY_DEFAULT,
                     () -> {
                         if (binding.loadingLl.getVisibility() != View.VISIBLE) {
-                            if (binding.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
-                                if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
-                                    binding.drawerLayout.closeDrawer(binding.navView);
-                                } else {
-                                    if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                                        clearLastFragmentFromBackStack();
-                                    } else {
-                                        showExitConfirmation();
-                                    }
-                                }
-                            } else {
-                                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                                    clearLastFragmentFromBackStack();
-                                } else {
-                                    finish();
-                                }
-                            }
+                            handleBackPress();
                         }
                     }
             );
@@ -122,23 +106,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                 @Override
                 public void handleOnBackPressed() {
                     if (binding.loadingLl.getVisibility() != View.VISIBLE) {
-                        if (binding.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
-                            if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
-                                binding.drawerLayout.closeDrawer(binding.navView);
-                            } else {
-                                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                                    clearLastFragmentFromBackStack();
-                                } else {
-                                    binding.drawerLayout.openDrawer(binding.navView);
-                                }
-                            }
-                        } else {
-                            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                                clearLastFragmentFromBackStack();
-                            } else {
-                                finish();
-                            }
-                        }
+                        handleBackPress();
                     }
                 }
             });
@@ -271,6 +239,22 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         enableDrawer();
         binding.drawerUserNameTv.setText(sharedPreferencesHelper.getString("Username", "Ni povezave"));
         binding.drawerUserRoleTv.setText(sharedPreferencesHelper.getRole().getRole());
+    }
+
+    private void handleBackPress() {
+        if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+            binding.drawerLayout.closeDrawer(binding.navView);
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            clearLastFragmentFromBackStack();
+        } else {
+            // Samo na dashboard-u pokažemo confirmation, drugače finish
+            Fragment currentFragment = getCurrentFragment();
+            if (currentFragment instanceof DashboardFragment) {
+                showExitConfirmation();
+            } else {
+                finish();
+            }
+        }
     }
 
     // Replace your existing loadFragment method with this safer version:
