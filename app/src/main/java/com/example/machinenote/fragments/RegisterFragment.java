@@ -21,6 +21,7 @@ import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentRegisterBinding;
 import com.example.machinenote.RegistrationRequest;
 import com.example.machinenote.models.Role;
+import com.example.machinenote.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class RegisterFragment extends BaseFragment {
     private FragmentRegisterBinding binding;
     private Context context;
     private ApiManager apiManager;
+    private List<User> users;
     private String selectedRole = "";
     private List<Role> availableRoles = new ArrayList<>();
     private Map<String, CheckBox> permissionCheckBoxes = new HashMap<>();
@@ -71,6 +73,7 @@ public class RegisterFragment extends BaseFragment {
         setupCancelButton();
         loadRolesFromApi();
         setupRegisterButton();
+        loadUsersFromApi();
 
         // Set initial mode
         setUserMode();
@@ -178,7 +181,7 @@ public class RegisterFragment extends BaseFragment {
             public void onResponse(Call<List<Role>> call, Response<List<Role>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     availableRoles = response.body();
-                    setupSpinner();
+                    setupRoleSpinner();
                 }
             }
 
@@ -191,7 +194,59 @@ public class RegisterFragment extends BaseFragment {
         });
     }
 
-    private void setupSpinner() {
+    public void loadUsersFromApi() {
+        apiManager.getUsers(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    users = response.body();
+                    setupUserSpinner();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                // Handle error
+                Log.e("Error", "Failed to get users: " + t.getMessage());
+            }
+        });
+    }
+    // 3. Add user spinner listener to handle user selection
+    private void setupUserSpinner() {
+        List<String> userNames = new ArrayList<>();
+        userNames.add("Izberi uporabnika..."); // Default option
+        for (User user : users) {
+            userNames.add(user.getUsername());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                R.layout.item_spinner_layout, userNames);
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
+        binding.userSpinner.setAdapter(adapter);
+
+        // ADD THIS LISTENER
+        binding.userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    // Default "Izberi uporabnika..." selected
+                    return;
+                }
+
+                // Optional: You could load the user's current role here
+                String selectedUsername = parent.getItemAtPosition(position).toString();
+                // Find user and set their current role in the role spinner if needed
+                loadCurrentUserRole(selectedUsername);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle case where nothing is selected
+            }
+        });
+    }
+
+    private void setupRoleSpinner() {
         List<String> roleNames = new ArrayList<>();
         roleNames.add("Izberi vlogo..."); // Default option
 
@@ -245,6 +300,33 @@ public class RegisterFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    private void loadCurrentUserRole(String username) {
+        // Find the user object
+        User selectedUser = null;
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                selectedUser = user;
+                break;
+            }
+        }
+
+        if (selectedUser != null && selectedUser.getRoleId() != 0) {
+            // Find role by ID and select it in spinner
+            for (int i = 0; i < availableRoles.size(); i++) {
+                if (availableRoles.get(i).getRoleId() == selectedUser.getRoleId()) {
+                    // Set the role spinner to show current role
+                    String currentRoleName = availableRoles.get(i).getRole();
+                    ArrayAdapter<String> adapter = (ArrayAdapter<String>) binding.roleSpinner.getAdapter();
+                    int rolePosition = adapter.getPosition(currentRoleName);
+                    if (rolePosition >= 0) {
+                        binding.roleSpinner.setSelection(rolePosition);
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     private void setupSpinnerWithDefaults() {
@@ -365,56 +447,61 @@ public class RegisterFragment extends BaseFragment {
     private void setupRegisterButton() {
         binding.registerButton.setOnClickListener(v -> {
             if (isUserMode) {
-                attemptUserRegistration();
+                attemptUserUpdate();
             } else {
                 attemptRoleCreation();
             }
         });
     }
 
-    private void attemptUserRegistration() {
-        // Reset errors
-        binding.editTextUsername.setError(null);
-        binding.editTextPassword.setError(null);
-
-        String username = binding.editTextUsername.getText().toString().trim();
-        String password = binding.editTextPassword.getText().toString().trim();
-
-        View focusView = null;
-        boolean cancel = false;
-
-        if (TextUtils.isEmpty(username)) {
-            binding.editTextUsername.setError("Uporabniško ime je obvezno");
-            focusView = binding.editTextUsername;
-            cancel = true;
-        } else if (username.length() < 3) {
-            binding.editTextUsername.setError("Uporabniško ime mora imeti vsaj 3 znake");
-            focusView = binding.editTextUsername;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            binding.editTextPassword.setError("Geslo je obvezno");
-            if (focusView == null) focusView = binding.editTextPassword;
-            cancel = true;
-        } else if (!isPasswordValid(password)) {
-            binding.editTextPassword.setError("Geslo mora imeti vsaj 8 znakov, vsebovati mora vsaj eno veliko črko, eno malo črko in eno številko");
-            if (focusView == null) focusView = binding.editTextPassword;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(selectedRole)) {
-            Toast.makeText(context, "Izberi vlogo za uporabnika", Toast.LENGTH_SHORT).show();
-            cancel = true;
-        }
-
-        if (cancel) {
-            if (focusView != null) focusView.requestFocus();
+    public void attemptUserUpdate() {
+        // Check if user is selected
+        if (binding.userSpinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, "Izberi uporabnika", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        performUserRegistration(username, password, selectedRole);
+        // Check if role is selected
+        if (binding.roleSpinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, "Izberi vlogo", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Get selected user and role
+        String selectedUsername = binding.userSpinner.getSelectedItem().toString();
+        String roleName = binding.roleSpinner.getSelectedItem().toString();
+
+        // Find the role ID
+        Role selectedRole = findRoleByName(roleName);
+        if (selectedRole == null) {
+            Toast.makeText(context, "Napaka: vloga ni najdena", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int roleId = selectedRole.getRoleId();
+
+        // Create updated user object
+        User updatedUser = new User(selectedUsername, null, roleId, null);
+
+        apiManager.updateUser(selectedUsername, updatedUser, new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "Uporabnik uspešno posodobljen", Toast.LENGTH_SHORT).show();
+                    clearUserForm();
+                } else {
+                    Toast.makeText(context, "Napaka pri posodabljanju uporabnika", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("Error", "Failed to update user: " + t.getMessage());
+                Toast.makeText(context, "Napaka pri povezavi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     private void attemptRoleCreation() {
         // Reset errors
@@ -444,20 +531,6 @@ public class RegisterFragment extends BaseFragment {
         performRoleCreation(roleName, permissions);
     }
 
-    private boolean isPasswordValid(String password) {
-        // Password requirements: at least 8 characters, one uppercase, one lowercase, one digit
-        if (password.length() < 8) return false;
-
-        boolean hasUpper = false, hasLower = false, hasDigit = false;
-
-        for (char c : password.toCharArray()) {
-            if (Character.isUpperCase(c)) hasUpper = true;
-            else if (Character.isLowerCase(c)) hasLower = true;
-            else if (Character.isDigit(c)) hasDigit = true;
-        }
-
-        return hasUpper && hasLower && hasDigit;
-    }
 
     private List<String> collectPermissions() {
         List<String> permissions = new ArrayList<>();
@@ -471,78 +544,6 @@ public class RegisterFragment extends BaseFragment {
         return permissions;
     }
 
-    private void performUserRegistration(String username, String password, String role) {
-        binding.registerButton.setEnabled(false);
-        binding.registerButton.setText("Registriram...");
-
-        // Check if the role with these permissions already exists
-        Role existingRole = findRoleByName(role);
-        List<String> currentPermissions = collectPermissions();
-
-        if (existingRole != null && permissionsMatch(existingRole, currentPermissions)) {
-            // Use existing role
-            RegistrationRequest registrationRequest = new RegistrationRequest(username, password, role, new ArrayList<>());
-
-            apiManager.registerUser(registrationRequest, new ApiManager.RegistrationCallback() {
-                @Override
-                public void onSuccess() {
-                    if (!isAdded()) return;
-                    Toast.makeText(context, "Uporabnik uspešno registriran z obstoječo vlogo: " + role, Toast.LENGTH_SHORT).show();
-                    clearUserForm();
-                    resetButton();
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    if (!isAdded()) return;
-                    String displayMessage = getDisplayErrorMessage(errorMessage);
-                    Toast.makeText(context, displayMessage, Toast.LENGTH_LONG).show();
-                    resetButton();
-                }
-            });
-        } else {
-            // For user registration, we don't need to pass permissions as they're determined by the role
-            RegistrationRequest registrationRequest = new RegistrationRequest(username, password, role, new ArrayList<>());
-
-            apiManager.registerUser(registrationRequest, new ApiManager.RegistrationCallback() {
-                @Override
-                public void onSuccess() {
-                    if (!isAdded()) return;
-                    Toast.makeText(context, "Uporabnik uspešno registriran", Toast.LENGTH_SHORT).show();
-                    clearUserForm();
-                    resetButton();
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    if (!isAdded()) return;
-                    String displayMessage = getDisplayErrorMessage(errorMessage);
-                    Toast.makeText(context, displayMessage, Toast.LENGTH_LONG).show();
-                    resetButton();
-                }
-            });
-        }
-    }
-
-    private boolean permissionsMatch(Role role, List<String> permissions) {
-        // Convert role permissions to list for comparison
-        List<String> rolePermissions = new ArrayList<>();
-        if (role.isKnjizenje()) rolePermissions.add("Knjiženje");
-        if (role.isZastoji()) rolePermissions.add("Zastoji");
-        if (role.isRezervniDeli()) rolePermissions.add("Rezervni deli");
-        if (role.isPreventivniPregledi()) rolePermissions.add("Preventivni pregledi");
-        if (role.isImenik()) rolePermissions.add("Imenik");
-        if (role.isNaloge()) rolePermissions.add("Naloge");
-        if (role.isDodajanjeNalog()) rolePermissions.add("Dodajanje nalog");
-        if (role.isRemonti()) rolePermissions.add("Remonti");
-        if (role.isOrodja()) rolePermissions.add("Orodja");
-        if (role.isRegister()) rolePermissions.add("Register");
-        if (role.isNarocila()) rolePermissions.add("Naročila");
-        if (role.isDodajanjeNarocil()) rolePermissions.add("Dodajanje Naročil");
-        if (role.isUpravljanjeNarocil()) rolePermissions.add("Upravljanje Naročil");
-
-        return rolePermissions.containsAll(permissions) && permissions.containsAll(rolePermissions);
-    }
 
     private void performRoleCreation(String roleName, List<String> permissions) {
         binding.registerButton.setEnabled(false);
@@ -593,15 +594,19 @@ public class RegisterFragment extends BaseFragment {
         }
     }
 
-    private void clearUserForm() {
-        binding.editTextUsername.setText("");
-        binding.editTextPassword.setText("");
-        binding.roleSpinner.setSelection(0); // Reset to "Izberi vlogo..."
-    }
-
     private void clearRoleForm() {
         binding.addARole.setText("");
         clearAllCheckboxes();
+    }
+
+    private void clearUserForm() {
+        binding.userSpinner.setSelection(0);
+        binding.roleSpinner.setSelection(0);
+        selectedRole = "";
+        clearAllCheckboxes();
+        if (isUserMode) {
+            disableAllCheckboxes();
+        }
     }
 
     private void resetButton() {

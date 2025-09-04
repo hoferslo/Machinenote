@@ -43,10 +43,10 @@ public class Role {
     private boolean narocila;
 
     @SerializedName("dodajanje_narocil")
-    private boolean dodajanjeNarocil;
+    private boolean dodajanje_narocil;
 
     @SerializedName("upravljanje_narocil")
-    private boolean upravljanjeNarocil;
+    private boolean upravljanje_narocil;
 
     // Updated constructor to include dodajanje_nalog
     public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register, boolean narocila, boolean dodajanjeNarocil, boolean upravljanjeNarocil) {
@@ -63,8 +63,8 @@ public class Role {
         this.orodja = orodja;
         this.register = register;
         this.narocila = narocila;
-        this.dodajanjeNarocil = dodajanjeNarocil;
-        this.upravljanjeNarocil = upravljanjeNarocil;
+        this.dodajanje_narocil = dodajanjeNarocil;
+        this.upravljanje_narocil = upravljanjeNarocil;
 
     }
 
@@ -166,19 +166,19 @@ public class Role {
     }
 
     public boolean isDodajanjeNarocil() {
-        return dodajanjeNarocil;
+        return dodajanje_narocil;
     }
 
     public void setDodajanjeNarocil(boolean dodajanjeNarocil) {
-        this.dodajanjeNarocil = dodajanjeNarocil;
+        this.dodajanje_narocil = dodajanjeNarocil;
     }
 
     public boolean isUpravljanjeNarocil() {
-        return upravljanjeNarocil;
+        return upravljanje_narocil;
     }
 
     public void setUpravljanjeNarocil(boolean upravljanjeNarocil) {
-        this.upravljanjeNarocil = upravljanjeNarocil;
+        this.upravljanje_narocil = upravljanjeNarocil;
     }
 
     public boolean isNarocila() {
@@ -205,8 +205,8 @@ public class Role {
                 ", orodja=" + orodja +
                 ", register=" + register +
                 ", narocila=" + narocila +
-                ", dodajanjeNarocil=" + dodajanjeNarocil +
-                ", upravljanjeNarocil=" + upravljanjeNarocil +
+                ", dodajanje_narocil=" + dodajanje_narocil +
+                ", upravljanje_narocil=" + upravljanje_narocil +
                 '}';
     }
 }

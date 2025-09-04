@@ -348,8 +348,8 @@ class RoleRequest {
     private boolean orodja;
     private boolean register;
     private boolean narocila;
-    private boolean dodajanjeNarocil;
-    private boolean upravljanjeNarocil;
+    private boolean dodajanje_narocil;
+    private boolean upravljanje_narocil;
 
     public RoleRequest(String role, List<String> permissions) {
         this.role = role;
@@ -364,8 +364,8 @@ class RoleRequest {
         this.orodja = permissions.contains("Orodja");
         this.register = permissions.contains("Register");
         this.narocila = permissions.contains("Naročila");
-        this.dodajanjeNarocil = permissions.contains("Dodajanje Naročil");
-        this.upravljanjeNarocil = permissions.contains("Upravljanje Naročil");
+        this.dodajanje_narocil = permissions.contains("Dodajanje Naročil");
+        this.upravljanje_narocil = permissions.contains("Upravljanje Naročil");
     }
 
     // Getters and setters...
@@ -393,10 +393,10 @@ class RoleRequest {
     public void setRegister(boolean register) { this.register = register; }
     public boolean isNarocila() { return narocila; }
     public void setNarocila(boolean narocila) { this.narocila = narocila; }
-    public boolean isDodajanje_narocil() { return dodajanjeNarocil; }
-    public void setDodajanje_narocil(boolean dodajanje_narocil) { this.dodajanjeNarocil = dodajanje_narocil; }
-    public boolean isUpravljanje_narocil() { return upravljanjeNarocil; }
-    public void setUpravljanje_narocil(boolean upravljanje_narocil) { this.upravljanjeNarocil = upravljanje_narocil; }
+    public boolean isDodajanje_narocil() { return dodajanje_narocil; }
+    public void setDodajanje_narocil(boolean dodajanje_narocil) { this.dodajanje_narocil = dodajanje_narocil; }
+    public boolean isUpravljanje_narocil() { return upravljanje_narocil; }
+    public void setUpravljanje_narocil(boolean upravljanje_narocil) { this.upravljanje_narocil = upravljanje_narocil; }
 }
 
 class UserCreationRequest {

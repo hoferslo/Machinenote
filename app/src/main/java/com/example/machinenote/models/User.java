@@ -9,7 +9,7 @@ public class User {
     @SerializedName("password")
     private String password;
 
-    @SerializedName("roleId")
+    @SerializedName("role_id")
     private int roleId;
 
     @SerializedName("apiKey")
