@@ -1,14 +1,25 @@
 package com.example.machinenote.Utility;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.machinenote.R;
 import com.example.machinenote.databinding.DialogDateTimePickerBinding;
 import com.leondzn.simpleanalogclock.SimpleAnalogClock;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,17 +27,12 @@ import java.util.Locale;
 
 public class CustomDateTimePicker implements View.OnClickListener {
     private final DialogDateTimePickerBinding binding;
-
     private Calendar calendar_date = null;
-
     private final Context context;
     private ICustomDateTimeListener iCustomDateTimeListener = null;
-
     private final Dialog dialog;
-
-    private static boolean is24HourView = true; // Changed to false for 12-hour format
+    private static boolean is24HourView = true;
     private boolean isAutoDismiss = true;
-
     private int selectedHour, selectedMinute;
 
     public static CustomDateTimePicker newInstance(Context context, TextView textTime, SimpleAnalogClock clock, ListViewAdapter adapter, TextView startTimeTextView, TextView endTimeTextView) {
@@ -46,7 +52,6 @@ public class CustomDateTimePicker implements View.OnClickListener {
                         textTime.setText(time);
                         clock.setTime(date.getHours(), date.getMinutes(), date.getSeconds());
 
-                        // Trigger time validation after setting the time
                         if (adapter != null && startTimeTextView != null && endTimeTextView != null) {
                             TextWatcherUtil.validateTimeOrderWithCalculator(startTimeTextView, endTimeTextView, adapter);
                         }
@@ -58,14 +63,12 @@ public class CustomDateTimePicker implements View.OnClickListener {
                     }
                 });
 
-        custom.set24HourFormat(is24HourView); // Set to 12-hour format
+        custom.set24HourFormat(is24HourView);
         custom.setDate(Calendar.getInstance());
         clock.setOnClickListener(v -> custom.showDialog());
         textTime.setOnClickListener(v -> custom.showDialog());
         return custom;
     }
-
-
 
     public CustomDateTimePicker(Context a, ICustomDateTimeListener customDateTimeListener) {
         context = a;
@@ -88,6 +91,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
         binding.btnSetTime.setOnClickListener(v -> {
             if (binding.viewSwitcher.getCurrentView() == binding.datePicker) {
                 binding.viewSwitcher.showNext();
+                applyTimePickerFixes();
             }
         });
 
@@ -130,14 +134,12 @@ public class CustomDateTimePicker implements View.OnClickListener {
             }
         });
 
-        // Updated time change listener for both API levels
+        // Time change listener
         binding.timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
             selectedHour = hourOfDay;
             selectedMinute = minute;
         });
     }
-
-
 
     public void showDialog() {
         if (!dialog.isShowing()) {
@@ -147,7 +149,6 @@ public class CustomDateTimePicker implements View.OnClickListener {
             selectedHour = calendar_date.get(Calendar.HOUR_OF_DAY);
             selectedMinute = calendar_date.get(Calendar.MINUTE);
 
-            // Force 12-hour format for digital clock
             binding.timePicker.setIs24HourView(is24HourView);
 
             // Set current time
@@ -165,6 +166,122 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
             dialog.show();
             binding.btnSetTime.performClick();
+
+            // Apply fixes with delay
+            binding.timePicker.post(() -> {
+                applyTimePickerFixes();
+
+                // Re-set values to ensure proper display
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    binding.timePicker.setHour(selectedHour);
+                    binding.timePicker.setMinute(selectedMinute);
+                } else {
+                    binding.timePicker.setCurrentHour(selectedHour);
+                    binding.timePicker.setCurrentMinute(selectedMinute);
+                }
+            });
+        }
+    }
+
+    /**
+     * Apply fixes to TimePicker - maintains fade effect with small dividers
+     */
+    private void applyTimePickerFixes() {
+        try {
+            binding.timePicker.postDelayed(() -> {
+                adjustNumberPickers(binding.timePicker);
+                binding.timePicker.invalidate();
+            }, 100);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Find and adjust all NumberPickers - DON'T TOUCH FADE SETTINGS
+     */
+    private void adjustNumberPickers(ViewGroup viewGroup) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+
+            if (child instanceof NumberPicker) {
+                NumberPicker numberPicker = (NumberPicker) child;
+
+                // ONLY set text properties and small dividers
+                // DON'T touch any fade settings - let XML theme handle it
+                setNumberPickerText(numberPicker);
+                setSmallDividers(numberPicker);
+
+                // Add spacing between hour and minute pickers
+                addSpacingBetweenPickers(numberPicker);
+
+            } else if (child instanceof ViewGroup) {
+                adjustNumberPickers((ViewGroup) child);
+            }
+        }
+    }
+
+    /**
+     * Add more space between hour and minute NumberPickers
+     */
+    private void addSpacingBetweenPickers(NumberPicker numberPicker) {
+        try {
+            ViewGroup.LayoutParams params = numberPicker.getLayoutParams();
+            if (params instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
+
+                // Add smaller horizontal margin to avoid text cutoff
+                int spacingPx = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 8, // Reduced to 8dp spacing
+                        context.getResources().getDisplayMetrics());
+
+                marginParams.leftMargin = spacingPx;
+                marginParams.rightMargin = spacingPx;
+
+                numberPicker.setLayoutParams(marginParams);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set text size and styling for NumberPicker
+     */
+    private void setNumberPickerText(NumberPicker numberPicker) {
+        try {
+            Field[] fields = NumberPicker.class.getDeclaredFields();
+            for (Field field : fields) {
+                if (field.getName().equals("mInputText")) {
+                    field.setAccessible(true);
+                    EditText inputText = (EditText) field.get(numberPicker);
+                    if (inputText != null) {
+                        inputText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 48);
+                        inputText.setTextColor(ContextCompat.getColor(context, R.color.action_primary));
+                        inputText.setGravity(Gravity.CENTER);
+
+                        // Set bold font
+                        Typeface typeface = ResourcesCompat.getFont(context, R.font.nunito);
+                        inputText.setTypeface(typeface != null ? typeface : Typeface.DEFAULT, Typeface.BOLD);
+                    }
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set small divider height
+     */
+    private void setSmallDividers(NumberPicker numberPicker) {
+        try {
+            @SuppressLint("SoonBlockedPrivateApi") Field heightField = NumberPicker.class.getDeclaredField("mSelectionDividerHeight");
+            heightField.setAccessible(true);
+            heightField.setInt(numberPicker, 6); // Small divider height
+        } catch (Exception e) {
+            // Ignore if field not available
         }
     }
 
@@ -339,7 +456,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
     private void resetData() {
         calendar_date = null;
-        is24HourView = true; // Reset to 12-hour format
+        is24HourView = true;
     }
 
     public static String pad(int integerToPad) {

@@ -164,27 +164,44 @@
     </style>
 
 
-    <!-- Osnovna tema z večjimi številkami -->
-    <style name="CustomTimePickerTheme" parent="android:Theme.Material.Light">
+
+    <!-- Updated Theme Styles -->
+    <style name="CustomTimePickerTheme" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="android:timePickerMode">spinner</item>
 
-        <!-- Barve ostanejo tvoje semantične -->
+        <!-- Colors -->
         <item name="android:colorAccent">@color/action_primary</item>
         <item name="android:colorPrimary">@color/action_primary</item>
-        <item name="android:colorPrimaryDark">@color/blue_600</item>
-        <item name="android:colorControlNormal">@color/content_secondary</item>
-        <item name="android:colorControlActivated">@color/action_primary</item>
-        <item name="android:colorControlHighlight">@color/action_secondary</item>
+        <item name="android:textColorPrimary">@color/action_primary</item>
 
-        <item name="android:textColorPrimary">@color/blue_700</item>      <!-- Glavne številke - temno modra -->
-        <item name="android:textColorSecondary">@color/blue_500</item>    <!-- Sekundarne - srednja modra -->
-        <item name="android:textColorHint">@color/content_tertiary</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
-
-        <!-- Večja velikost besedila za številke -->
-        <item name="android:textSize">36sp</item> <!-- Še večje -->
+        <!-- Text styling -->
+        <item name="android:textSize">48sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/nunito</item>
 
+        <!-- FADE SETTINGS - Let XML handle all fade properties -->
+        <item name="android:fadingEdge">vertical</item>
+        <item name="android:fadingEdgeLength">40dp</item>
+        <item name="android:requiresFadingEdge">vertical</item>
+
+
+    <!-- Small dividers -->
+        <item name="android:dividerHeight">2dp</item>
+    </style>
+
+    <!-- Additional style for better NumberPicker control -->
+    <style name="CustomNumberPickerStyle">
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/blue_700</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fadingEdge">vertical</item>
+        <item name="android:fadingEdgeLength">24dp</item>
+        <item name="android:scrollbarStyle">insideOverlay</item>
     </style>
 
     <!-- DatePicker Theme -->

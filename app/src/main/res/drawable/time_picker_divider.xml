@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/time_picker_divider.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/content_secondary" />
+    <size
+        android:width="200dp"
+        android:height="1dp" />
+</shape>
