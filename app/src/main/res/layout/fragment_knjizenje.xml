@@ -36,7 +36,7 @@
 
     </LinearLayout>
 
-    <!-- Article Info Section - Horizontal Layout -->
+    <!-- Article Info Section - Better organized -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,82 +45,95 @@
         android:padding="12dp"
         android:orientation="horizontal">
 
-        <!-- Info Items in Row -->
+        <!-- Info Items in Grid Layout -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Rack Info -->
+            <!-- Rack and Warehouse in same row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:padding="8dp"
-                android:background="@drawable/bg_card_secondary">
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:text="@string/rack_label"
-                    android:textSize="12sp"
-                    android:maxLines="1" />
-
-                <TextView
-                    android:id="@+id/article_rack"
+                <!-- Rack Info -->
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp"
-                    android:maxLines="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/rack_label"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/article_rack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="13sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+                <!-- Warehouse Info -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/warehouse_label"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/article_warehouse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="13sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Warehouse Info -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:padding="8dp"
-                android:background="@drawable/bg_card_secondary">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:text="@string/warehouse_label"
-                    android:textSize="12sp"
-                    android:maxLines="1" />
-
-                <TextView
-                    android:id="@+id/article_warehouse"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp"
-                    android:maxLines="1" />
-
-            </LinearLayout>
-
-            <!-- Article Minimum Info -->
+            <!-- Article Minimum Info - Full width -->
             <LinearLayout
                 android:id="@+id/articleMinimumLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:background="@drawable/bg_card_secondary">
+                android:background="@drawable/bg_card_secondary"
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -128,26 +141,24 @@
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
                     android:text="@string/article_minimum"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:maxLines="1" />
 
                 <TextView
                     android:id="@+id/articleMinimumTv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:textStyle="bold"
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:maxLines="1" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Gmail Button - Smaller -->
+        <!-- Gmail Button -->
         <ImageButton
             android:id="@+id/sendGmail"
             style="@style/Button.Icon"
@@ -162,7 +173,7 @@
 
     </LinearLayout>
 
-    <!-- Stock Display Section - Compact -->
+    <!-- Stock Display Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -196,6 +207,7 @@
 
     </LinearLayout>
 
+    <!-- Show More Info Button - Fixed height -->
     <TextView
         android:id="@+id/allDataSv"
         android:layout_width="match_parent"
@@ -206,7 +218,7 @@
         android:text="Prikaži več informacij o artiklu"
         android:textColor="@color/content_secondary"
         android:fontFamily="@font/nunito_semibold"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:drawableEnd="@drawable/ic_chevron_right"
         android:drawableTint="@color/content_tertiary"
         android:drawablePadding="12dp"
@@ -214,9 +226,13 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="16dp" />
+        android:paddingVertical="12dp"
+        android:minHeight="48dp" />
 
-    <!-- Stock Control Section - Compact -->
+    <!-- QR Scanner Button - Big and prominent -->
+
+
+    <!-- Stock Control Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -263,7 +279,7 @@
 
     </LinearLayout>
 
-    <!-- Input and Action Section - Compact -->
+    <!-- Input and Action Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -310,7 +326,7 @@
 
     </LinearLayout>
 
-    <!-- Cancel Button - Compact -->
+    <!-- Cancel Button -->
     <Button
         android:id="@+id/cancelBtn"
         style="@style/Button.Destructive"

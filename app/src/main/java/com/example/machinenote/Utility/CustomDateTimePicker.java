@@ -24,7 +24,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
     private final Dialog dialog;
 
-    private boolean is24HourView = false; // Changed to false for 12-hour format
+    private static boolean is24HourView = true; // Changed to false for 12-hour format
     private boolean isAutoDismiss = true;
 
     private int selectedHour, selectedMinute;
@@ -58,7 +58,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
                     }
                 });
 
-        custom.set24HourFormat(false); // Set to 12-hour format
+        custom.set24HourFormat(is24HourView); // Set to 12-hour format
         custom.setDate(Calendar.getInstance());
         clock.setOnClickListener(v -> custom.showDialog());
         textTime.setOnClickListener(v -> custom.showDialog());
@@ -148,7 +148,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
             selectedMinute = calendar_date.get(Calendar.MINUTE);
 
             // Force 12-hour format for digital clock
-            binding.timePicker.setIs24HourView(false);
+            binding.timePicker.setIs24HourView(is24HourView);
 
             // Set current time
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -339,7 +339,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
     private void resetData() {
         calendar_date = null;
-        is24HourView = false; // Reset to 12-hour format
+        is24HourView = true; // Reset to 12-hour format
     }
 
     public static String pad(int integerToPad) {

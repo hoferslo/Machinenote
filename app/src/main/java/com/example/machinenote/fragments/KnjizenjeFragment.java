@@ -77,15 +77,9 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
             mainActivity.onBackPressed();
         });
 
-        binding.articleNameLayout.setOnClickListener(v -> {
-            if (rezervniDel != null) {
-                showBottomSheet();
-            } else {
-                Toast.makeText(context, "No article data available", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        binding.articleName.setOnClickListener(v -> {
+
+        binding.articleNameLayout.setOnClickListener(v -> {
             startQRCodeScanner();
         });
 
@@ -107,12 +101,31 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
     }
 
     private void openGmail() {
-        MailHelper.openEmailClient(
-                context,                              // context
-                "casperkadivec@gmail.com",             // recipient
-                "Subject of the email",            // subject //TODO: add subject and body of email
-                "Body of the email"                // body
-        );
+        if (rezervniDel != null) {
+            // Sestavimo subject z imenom artikla
+            String subject = "Rezervni del pod zalogo: " + rezervniDel.getArtikel();
+
+            // Sestavimo body z vsemi potrebnimi informacijami
+            String body = "Pozdravljeni!\n\n" +
+                    "Opozarjam vas, da je rezervni del pod minimalno zalogo:\n\n" +
+                    "Artikel: " + rezervniDel.getArtikel() + "\n" +
+                    "Trenutna zaloga: " + rezervniDel.getRealZalogo() + "\n" +
+                    "Minimalna zaloga: " + rezervniDel.getMinimalna_zaloga() + "\n" +
+                    "Dobavitelj: " + (rezervniDel.getDobavitelj() != null ? rezervniDel.getDobavitelj() : "Ni podatka") + "\n" +
+                    "Regal: " + rezervniDel.getRegal() + "\n" +
+                    "Skladišče: " + rezervniDel.getSkladišče() + "\n\n" +
+                    "Prosim, poskrbite za dopolnitev zaloge.\n\n" +
+                    "Lep pozdrav";
+
+            MailHelper.openEmailClient(
+                    context,                              // context
+                    "matej.kandare@unichem.si",           // recipient
+                    subject,                              // subject
+                    body                                  // body
+            );
+        } else {
+            Toast.makeText(context, "Ni podatkov o rezervnem delu", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startQRCodeScanner() {
