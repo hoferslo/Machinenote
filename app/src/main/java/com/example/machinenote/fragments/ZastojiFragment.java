@@ -101,16 +101,16 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
         binding.requiredItemsLv.setAdapter(adapter);
 
         // Set up TextWatchers
-        String maintainerName = sharedPreferencesHelper.getUsername();
-        if (maintainerName != null && !maintainerName.isEmpty()) {
-            binding.imeDelavca.setText(maintainerName);
-        }
+
 
         TextWatcherUtil.addTextWatcherToEditText(binding.imeDelavca, 2, adapter); //textWatcher
         TextWatcherUtil.addTextWatcherToEditText(binding.razlogZaustavitveStroja, 3, adapter);
         TextWatcherUtil.addTextWatcherToEditText(binding.opomba, 4, adapter);
 
-
+        String maintainerName = sharedPreferencesHelper.getUsername();
+        if (maintainerName != null && !maintainerName.isEmpty()) {
+            binding.imeDelavca.setText(maintainerName);
+        }
         binding.idOfLineBtn.setOnClickListener(view -> {
             DataPickerDialog.showDialog(view, getString(R.string.pick_line),
                     linije.stream().map(Linija::getLinijeSapAndNames).toArray(String[]::new),

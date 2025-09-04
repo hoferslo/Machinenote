@@ -86,7 +86,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="13sp"
+                        android:textSize="20sp"
                         android:maxLines="1" />
 
                 </LinearLayout>
@@ -115,11 +115,11 @@
                         android:id="@+id/article_warehouse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="13sp"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:textColor="@color/content_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -151,7 +151,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:textSize="13sp"
+                    android:textSize="20sp"
                     android:maxLines="1" />
 
             </LinearLayout>
@@ -198,8 +198,8 @@
             android:id="@+id/article_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:padding="12dp"
+            android:textSize="24sp"
+            android:padding="16dp"
             android:fontFamily="@font/nunito_semibold"
             android:text="0"
             style="@style/primaryButton"
@@ -230,55 +230,70 @@
         android:minHeight="48dp" />
 
     <!-- QR Scanner Button - Big and prominent -->
-
-
-    <!-- Stock Control Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="12dp">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/minusBtn"
-            style="@style/Button.Destructive"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <!-- Naslov/besedilo nad gumbovi -->
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:textSize="18sp"
-            android:text="-"
-            android:minHeight="44dp" />
-
-        <EditText
-            android:id="@+id/stockChangeValue"
-            style="@style/Input.Base"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
+            android:text="Upravljanje zaloge"
             android:textSize="16sp"
-            android:layout_marginBottom="0dp"
-            android:text="1"
-            android:inputType="number"
+            android:textStyle="bold"
             android:gravity="center"
-            android:minHeight="44dp"
-            android:maxLines="1" />
+            android:padding="12dp"
+            android:textColor="@android:color/black" />
 
-        <Button
-            android:id="@+id/plusBtn"
-            style="@style/Button.Success"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <!-- Stock Control Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:textSize="18sp"
-            android:text="+"
-            android:minHeight="44dp" />
+            android:layout_marginBottom="8dp"
+            android:padding="12dp"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/minusBtn"
+                style="@style/Button.Destructive"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:textSize="18sp"
+                android:text="-"
+                android:minHeight="44dp" />
+
+            <EditText
+                android:id="@+id/stockChangeValue"
+                style="@style/Input.Base"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:textSize="24sp"
+                android:layout_marginBottom="0dp"
+                android:text="1"
+                android:inputType="number"
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:maxLines="1" />
+
+            <Button
+                android:id="@+id/plusBtn"
+                style="@style/Button.Success"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textSize="18sp"
+                android:text="+"
+                android:minHeight="44dp" />
+
+        </LinearLayout>
     </LinearLayout>
-
     <!-- Input and Action Section -->
     <LinearLayout
         android:layout_width="match_parent"
