@@ -1,5 +1,48 @@
 # MachineNote - Android Application
 
+# App Update Release Guide
+
+## Quick Steps
+
+### 1. Update Version
+```gradle
+// app/build.gradle
+versionCode 3        // +1 from previous
+versionName "1.2.0"  // New version
+```
+
+### 2. Build & Upload APK
+- Build → Generate Signed APK
+- Upload to: `http://192.168.12.192/MachineNoteV2.apk`
+
+### 3. Database Insert
+```sql
+INSERT INTO app_updates (
+    package_name,
+    version,
+    download_url,
+    is_forced,
+    release_notes,
+    file_size_bytes
+) VALUES (
+    'com.example.machinenote',
+    '1.2.0',
+    'http://192.168.12.192/MachineNoteV2.apk',
+    0,
+    'Bug fixes and improvements',
+    15000000
+);
+```
+
+### 4. Done!
+Users will get update notification automatically.
+
+## Template for Next Release
+1. Change version numbers above
+2. Upload new APK 
+3. Run SQL with new version/URL
+4. Test in app Settings
+
 ## Pregled aplikacije
 
 MachineNote je Android aplikacija za upravljanje strojev in vzdrževalnih del. Aplikacija omogoča uporabnikom upravljanje z naloge, pregledovanje opreme, spremljanje zastojev, upravljanje rezervnih delov in izvajanje preventivnih pregledov.
