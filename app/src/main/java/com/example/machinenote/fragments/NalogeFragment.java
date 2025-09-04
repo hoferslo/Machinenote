@@ -135,6 +135,13 @@ public class NalogeFragment extends BaseFragment {
             @Override
             public void onSuccess(List<Naloga> response) {
                 nalogaList = response;
+                List<Naloga> prikazaneNaloge = new ArrayList<>();
+                for (Naloga n : nalogaList) {
+                    if (n.getIzvedenoBool() == 0) { // če še ni izvedeno
+                        prikazaneNaloge.add(n);
+                    }
+                }
+                nalogaList = prikazaneNaloge;
                 adapter.updateList(nalogaList);
                 setupFilter();
             }

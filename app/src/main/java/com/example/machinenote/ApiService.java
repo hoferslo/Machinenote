@@ -13,6 +13,7 @@ import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.SklopLinije;
 import com.example.machinenote.models.UpdateResponse;
+import com.example.machinenote.models.User;
 import com.example.machinenote.models.Zastoj;
 import com.google.gson.annotations.SerializedName;
 
@@ -40,6 +41,18 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("users.php/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+
+    @Headers("Content-Type: application/json")
+    @GET("users.php")
+    Call<List<User>> getUsers();
+
+    @Headers("Content-Type: application/json")
+    @PUT("users.php/{username}")
+    Call<User> updateUser(@Path("username") String username, @Body User user);
+
+    @Headers("Content-Type: application/json")
+    @DELETE("users.php/{username}")
+    Call<Void> deleteUser(@Path("username") String username);
 
     @Headers("Content-Type: application/json")
     @GET("preventivni_pregledi.php") // Predvidevana pot do vaše PHP skripte
@@ -183,6 +196,14 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("roles.php")
     Call<RoleResponse> createRole(@Body RoleRequest roleRequest);
+
+    @Headers("Content-Type: application/json")
+    @PUT("roles.php/{roleId}")
+    Call<Role> updateRole(@Path("roleId") int roleId, @Body Role role);
+
+    @Headers("Content-Type: application/json")
+    @DELETE("roles.php/{roleId}")
+    Call<Void> deleteRole(@Path("roleId") int roleId);
 
     // Create a new user (modify existing createUser to accept registration data)
     @Headers("Content-Type: application/json")

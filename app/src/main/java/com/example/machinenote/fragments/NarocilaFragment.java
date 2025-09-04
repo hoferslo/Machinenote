@@ -24,9 +24,13 @@ import com.example.machinenote.databinding.FragmentNarocilaBinding;
 import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.Narocila;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class NarocilaFragment extends BaseFragment {
@@ -166,16 +170,18 @@ public class NarocilaFragment extends BaseFragment {
             public void onSuccess(List<Narocila> response) {
                 narocilaList = response;
 
-                // Najprej sortiraj po statusu: "Novo" naj bo najvišje
+                // Sort by priority and date
                 narocilaList.sort((n1, n2) -> {
-                    boolean isN1Novo = n1.getStatus() != null && n1.getStatus().equalsIgnoreCase("Novo");
-                    boolean isN2Novo = n2.getStatus() != null && n2.getStatus().equalsIgnoreCase("Novo");
+                    int priority1 = getStatusPriority(n1.getStatus());
+                    int priority2 = getStatusPriority(n2.getStatus());
 
-                    if (isN1Novo && !isN2Novo) return -1;  // n1 gre gor
-                    if (!isN1Novo && isN2Novo) return 1;   // n2 gre gor
+                    // First sort by priority (higher priority first)
+                    if (priority1 != priority2) {
+                        return Integer.compare(priority2, priority1);
+                    }
 
-                    // Če imata oba isti status, dodatno sortiraj (npr. po IDju ali datumu padajoče)
-                    return Integer.compare(n2.getId(), n1.getId());
+                    // If same priority, sort by date (earliest first)
+                    return compareDates(n1.getRokZaDobavo(), n2.getRokZaDobavo());
                 });
 
                 adapter.updateList(narocilaList);
@@ -189,6 +195,59 @@ public class NarocilaFragment extends BaseFragment {
         });
     }
 
+    /**
+     * Get priority based on status
+     * @param status The status string
+     * @return Priority value (higher = more important)
+     */
+    private int getStatusPriority(String status) {
+        if (status == null) return 0;
+
+        String statusLower = status.toLowerCase().trim();
+        switch (statusLower) {
+            case "novo":
+                return 4; // Most important
+            case "naroceno":
+                return 2; // Third most important
+            case "v_obdelavi":
+                return 3; // Second most important
+            case "dostavljeno":
+            case "preklicano":
+                return 1; // Least important (done)
+            default:
+                return 0; // Unknown status
+        }
+    }
+
+    /**
+     * Compare two date strings
+     * @param date1 First date string (yyyy-MM-dd format)
+     * @param date2 Second date string (yyyy-MM-dd format)
+     * @return Comparison result (-1, 0, 1)
+     */
+    private int compareDates(String date1, String date2) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        try {
+            if (date1 == null && date2 == null) return 0;
+            if (date1 == null) return 1; // null dates go to end
+            if (date2 == null) return -1;
+
+            Date d1 = sdf.parse(date1);
+            Date d2 = sdf.parse(date2);
+
+            if (d1 == null && d2 == null) return 0;
+            if (d1 == null) return 1;
+            if (d2 == null) return -1;
+
+            return d1.compareTo(d2); // Earlier dates first
+
+        } catch (ParseException e) {
+            Log.e(TAG, "Error parsing dates: " + e.getMessage());
+            // Fallback to string comparison
+            return date1.compareTo(date2);
+        }
+    }
 
     private void setupFilter() {
         if (narocilaList == null || narocilaList.isEmpty()) {
@@ -260,8 +319,6 @@ public class NarocilaFragment extends BaseFragment {
             updateRecyclerView(currentData);
         }
     }
-
-
 
     @Override
     public void onResume() {

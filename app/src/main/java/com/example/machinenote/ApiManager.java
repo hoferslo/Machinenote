@@ -18,6 +18,7 @@ import com.example.machinenote.models.Role;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.SklopLinije;
 import com.example.machinenote.models.UpdateResponse;
+import com.example.machinenote.models.User;
 import com.example.machinenote.models.Zastoj;
 import com.google.gson.Gson;
 
@@ -959,6 +960,113 @@ public class ApiManager {
             public void onFailure(Call<RoleResponse> call, Throwable t) {
                 Log.e("ApiManager", "Role creation error: " + t.getMessage());
                 callback.onFailure("Role creation error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getUsers(Callback<List<User>> callback) {
+        Call<List<User>> call = apiService.getUsers();
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResponse(call, response);
+                } else {
+                    callback.onFailure(call, new Throwable("Failed to retrieve users: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    /**
+     * Update existing user TODO: NEED TO ADD THIS TO PHP
+     */
+    public void updateUser(String username, User user, Callback<User> callback) {
+        Call<User> call = apiService.updateUser(username, user);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResponse(call, response);
+                } else {
+                    callback.onFailure(call, new Throwable("Failed to update user: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    /**
+     * Delete user TODO: NEED TO ADD THIS TO PHP
+     */
+    public void deleteUser(String username, Callback<Void> callback) {
+        Call<Void> call = apiService.deleteUser(username);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onResponse(call, response);
+                } else {
+                    callback.onFailure(call, new Throwable("Failed to delete user: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    /**
+     * Update existing role TODO: NEED TO ADD THIS TO PHP
+     */
+    public void updateRole(int roleId, Role role, Callback<Role> callback) {
+        Call<Role> call = apiService.updateRole(roleId, role);
+        call.enqueue(new Callback<Role>() {
+            @Override
+            public void onResponse(Call<Role> call, Response<Role> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResponse(call, response);
+                } else {
+                    callback.onFailure(call, new Throwable("Failed to update role: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Role> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
+    }
+    /**
+     * Delete existing role TODO: NEED TO ADD THIS TO PHP
+     */
+
+    public void deleteRole(int roleId, Callback<Void> callback) {
+        Call<Void> call = apiService.deleteRole(roleId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onResponse(call, response);
+                } else {
+                    callback.onFailure(call, new Throwable("Failed to delete role: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(call, t);
             }
         });
     }
