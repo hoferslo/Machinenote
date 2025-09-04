@@ -1,5 +1,6 @@
 package com.example.machinenote.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,6 +57,26 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         super.onSaveInstanceState(outState);
         outState.putString("toolbar_title", binding.toolbarTitle.getText().toString());
         outState.putBoolean("back_arrow_visible", binding.toolbar.getNavigationIcon() != null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Forward to UpdateManager
+        if (updateManager != null) {
+            updateManager.onActivityResult(requestCode, resultCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward to UpdateManager
+        if (updateManager != null) {
+            updateManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override
