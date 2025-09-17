@@ -1,7 +1,7 @@
 package com.example.machinenote.Utility;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +114,7 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
     }
 
     /**
-     * Get color based on status for Narocila items
+     * Get color based on status for Narocila items - using semantic color tokens
      */
     private int getStatusColor(String status) {
         if (status == null) return ContextCompat.getColor(context, R.color.content_primary);
@@ -122,22 +122,24 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
         String statusLower = status.toLowerCase().trim();
         switch (statusLower) {
             case "novo":
-                return Color.parseColor("#FF6B35"); // Orange - urgent/new
+                return ContextCompat.getColor(context, R.color.soonColor); // Orange - urgent/new
             case "naročeno":
-                return Color.parseColor("#4169E1"); // Blue - ordered
+            case "naroceno":
+                return ContextCompat.getColor(context, R.color.action_primary); // Primary blue - ordered
             case "v obdelavi":
-                return Color.parseColor("#32CD32"); // Green - in progress
+            case "v_obdelavi":
+                return ContextCompat.getColor(context, R.color.success_primary); // Green - in progress
             case "dostavljeno":
-                return Color.parseColor("#808080"); // Gray - completed
+                return ContextCompat.getColor(context, R.color.finishedColor); // Gray - completed
             case "preklicano":
-                return Color.parseColor("#DC143C"); // Red - cancelled
+                return ContextCompat.getColor(context, R.color.error_primary); // Red - cancelled
             default:
                 return ContextCompat.getColor(context, R.color.content_primary);
         }
     }
 
     /**
-     * Get background color based on priority
+     * Get background color based on priority - using semantic color tokens
      */
     private int getBackgroundColor(T item) {
         // Only apply special background for Narocila items
@@ -149,18 +151,25 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
                 String statusLower = status.toLowerCase().trim();
                 switch (statusLower) {
                     case "novo":
-                        return Color.parseColor("#FFF3E0"); // Light orange background
+                        // Light tinted background for new items
+                        return ContextCompat.getColor(context, R.color.surface_secondary);
                     case "naroceno":
+                    case "naročeno":
                     case "v_obdelavi":
-                        return Color.parseColor("#E8F5E8"); // Light green background
+                    case "v obdelavi":
+                        // Light tinted background for active items
+                        return ContextCompat.getColor(context, R.color.surface_tertiary);
                     case "dostavljeno":
-                        return Color.parseColor("#F5F5F5"); // Light gray background
+                        // Neutral background for completed items
+                        return ContextCompat.getColor(context, R.color.background_section);
                     case "preklicano":
-                        return Color.parseColor("#FFEBEE"); // Light red background
+                        // Subtle error background for cancelled items
+                        return ContextCompat.getColor(context, R.color.surface_secondary);
                 }
             }
         }
-        return Color.TRANSPARENT;
+        // Return transparent to use default background
+        return ContextCompat.getColor(context, android.R.color.transparent);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -178,14 +187,8 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
 
             // Only modify background for Narocila items
             if (item instanceof Narocila) {
-                Integer backgroundColor = getBackgroundColor(item);
-                if (backgroundColor != null) {
-                    // Apply custom color for specific status
-                    itemView.setBackgroundColor(backgroundColor);
-                } else {
-                    // Reset to default for Narocila with unknown status
-                    itemView.setBackground(null);
-                }
+                int backgroundColor = getBackgroundColor(item);
+                itemView.setBackgroundColor(backgroundColor);
             }
             // For non-Narocila items, don't modify background - keep the XML drawable
 
@@ -213,12 +216,15 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
                 // Create a horizontal layout for each field
                 LinearLayout fieldLayout = new LinearLayout(context);
                 fieldLayout.setOrientation(LinearLayout.HORIZONTAL);
-                fieldLayout.setPadding(0, 4, 0, 4);
+
+                // Convert dp to pixels for padding
+                int paddingVertical = (int) (4 * context.getResources().getDisplayMetrics().density);
+                fieldLayout.setPadding(0, paddingVertical, 0, paddingVertical);
 
                 // Label
                 TextView labelView = new TextView(context);
                 labelView.setText(label + ": ");
-                labelView.setTextColor(ContextCompat.getColorStateList(context, R.color.content_secondary));
+                labelView.setTextColor(ContextCompat.getColor(context, R.color.content_secondary));
                 labelView.setTextSize(14);
                 labelView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f));
 
@@ -234,7 +240,7 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
                     // Make status text bold
                     valueView.setTypeface(null, android.graphics.Typeface.BOLD);
                 } else {
-                    valueView.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+                    valueView.setTextColor(ContextCompat.getColor(context, R.color.content_primary));
                 }
 
                 fieldLayout.addView(labelView);

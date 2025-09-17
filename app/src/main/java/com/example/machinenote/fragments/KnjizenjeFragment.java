@@ -153,6 +153,7 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
     private void updateUI() {
         binding.articleName.setText(rezervniDel.getArtikel());
         binding.articleRack.setText(rezervniDel.getRegal());
+        binding.articleId.setText(String.valueOf(rezervniDel.getId()));
         binding.articleWarehouse.setText(String.valueOf(rezervniDel.getSkladišče()));
         binding.articleMinimumTv.setText(String.valueOf(rezervniDel.getMinimalna_zaloga()));
         binding.articleStock.setText(String.valueOf(rezervniDel.getRealZalogo()));

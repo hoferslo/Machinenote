@@ -91,7 +91,7 @@ public class PregledExecutionFragment extends BaseFragment {
         binding.switchTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 MainActivity mainActivity = (MainActivity) requireActivity();
-                if (checkedId == R.id.tabBack) {
+                if (checkedId == R.id.btnCancel) {
                     mainActivity.getSupportFragmentManager().popBackStack();
                 }
             }

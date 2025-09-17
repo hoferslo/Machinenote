@@ -125,34 +125,78 @@
 
             </LinearLayout>
 
-            <!-- Article Minimum Info - Full width -->
+            <!-- Article ID and Minimum Info Row -->
             <LinearLayout
-                android:id="@+id/articleMinimumLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@drawable/bg_card_secondary"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Article ID Info -->
+                <LinearLayout
+                    android:id="@+id/articleIdLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/content_secondary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:text="@string/article_minimum"
-                    android:textSize="11sp"
-                    android:maxLines="1" />
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/articleMinimumTv"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/articleIdLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="ID"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/article_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="20sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+                <!-- Article Minimum Info -->
+                <LinearLayout
+                    android:id="@+id/articleMinimumLl"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:textSize="20sp"
-                    android:maxLines="1" />
+                    android:layout_marginStart="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/article_minimum"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/articleMinimumTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="20sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -213,7 +257,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         style="@style/Input.Base"
         android:text="Prikaži več informacij o artiklu"
         android:textColor="@color/content_secondary"
@@ -234,7 +278,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_card_primary"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
 
         <!-- Naslov/besedilo nad gumbovi -->
         <TextView
@@ -251,7 +296,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+
             android:padding="12dp"
             android:orientation="horizontal">
 
@@ -294,6 +339,7 @@
 
         </LinearLayout>
     </LinearLayout>
+
     <!-- Input and Action Section -->
     <LinearLayout
         android:layout_width="match_parent"

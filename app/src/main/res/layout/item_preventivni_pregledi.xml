@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="false"
+    app:cardBackgroundColor="@color/surface_primary"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header section with Opis and Status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical">
+
+            <!-- Status indicator dot -->
+            <View
+                android:id="@+id/statusIndicator"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/status"
+                android:backgroundTint="@color/action_primary" />
+
+            <!-- Main title (Opis) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/opisText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Opis preventivnega pregleda"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/content_primary"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                <TextView
+                    android:id="@+id/sklopText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sklop"
+                    android:textSize="14sp"
+                    android:textColor="@color/content_secondary"
+                    android:layout_marginTop="2dp"
+                    android:layout_gravity="center"
+                    android:gravity="left"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/statusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textColor="@color/action_primary"
+                    android:background="@drawable/bg_card_nav"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:gravity="right"
+                    android:layout_gravity="center"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Status badge -->
+
+
+        </LinearLayout>
+
+        <!-- Date information grid -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:baselineAligned="false">
+
+            <!-- Zadnji Pregled -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="@drawable/bg_card_secondary"
+                android:layout_marginEnd="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ZADNJI PREGLED"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/content_secondary"
+                    android:textAllCaps="true"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/zadnjiPregledText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="15.03.2024"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/content_primary"
+                    android:gravity="center"
+                    android:layout_marginTop="6dp" />
+
+            </LinearLayout>
+
+            <!-- Naslednji Pregled -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="@drawable/bg_card_secondary"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NASLEDNJI PREGLED"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/content_secondary"
+                    android:textAllCaps="true"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/naslenjdiPregledText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="15.06.2024"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/action_primary"
+                    android:gravity="center"
+                    android:layout_marginTop="6dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
