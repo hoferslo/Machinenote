@@ -175,7 +175,7 @@ public class PublicRegisterFragment extends BaseFragment {
         // Create registration request with "Gost" role (guest role with no permissions)
         RegistrationRequest registrationRequest = new RegistrationRequest(username, password, "Gost", new ArrayList<>());
 
-        apiManager.registerUser(registrationRequest, new ApiManager.RegistrationCallback() {
+        apiManager.createUser(registrationRequest, new ApiManager.RegistrationCallback() {
             @Override
             public void onSuccess() {
                 if (!isAdded()) return;

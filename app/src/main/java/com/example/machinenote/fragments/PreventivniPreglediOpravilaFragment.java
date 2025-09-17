@@ -81,6 +81,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
                 "Frekvenca",         // -> pregled.getFrekvenca() + " dni"
                 "Trajanje",          // -> pregled.getTrajanjeStdMin() + " min"
                 "Status",            // -> pregled.getStatusText()
+                "Sklop",
                 "Naslednji pregled"  // -> pregled.getNaslenjniPregled()
         );
 

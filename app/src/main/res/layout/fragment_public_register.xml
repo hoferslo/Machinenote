@@ -6,196 +6,230 @@
     tools:context=".fragments.PublicRegisterFragment">
 
     <!-- Main Content Container -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:fillViewport="true">
 
-        <!-- Registration Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_secondary"
+            android:gravity="center"
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Title -->
+            <!-- Registration Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_secondary"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Title -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Registracija"
+                    android:textSize="24sp"
+                    android:textColor="@color/content_primary"
+                    android:fontFamily="@font/nunito"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Username Input -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_card_primary"
+                    android:padding="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@mipmap/person"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/username" />
+
+                    <EditText
+                        android:id="@+id/editTextUsername"
+                        android:cursorVisible="true"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/username"
+                        android:textColor="@color/content_primary"
+                        android:textColorHint="@color/content_tertiary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textCursorDrawable="@null"
+                        android:inputType="textPersonName"
+                        android:importantForAutofill="no"
+                        android:minHeight="48dp"
+                        android:gravity="center_vertical" />
+
+                </LinearLayout>
+
+                <!-- Username Requirements -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Najmanj 3 znaki"
+                    android:textColor="@color/content_secondary"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/nunito"
+                    android:layout_marginBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
+
+                <!-- Password Input -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_card_primary"
+                    android:padding="16dp"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@mipmap/lock"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/password" />
+
+                    <EditText
+                        android:id="@+id/editTextPassword"
+                        android:cursorVisible="true"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:textCursorDrawable="@null"
+                        android:hint="@string/password"
+                        android:textColor="@color/content_primary"
+                        android:textColorHint="@color/content_tertiary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:inputType="textPassword"
+                        android:minHeight="48dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:id="@+id/togglePasswordVisibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:drawableRight="@mipmap/visibility_off"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                </LinearLayout>
+
+
+
+                <!-- Confirm Password Input -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_card_primary"
+                    android:padding="16dp"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@mipmap/lock"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="Potrdi geslo" />
+
+                    <EditText
+                        android:id="@+id/editTextConfirmPassword"
+                        android:cursorVisible="true"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:textCursorDrawable="@null"
+                        android:hint="Potrdi geslo"
+                        android:textColor="@color/content_primary"
+                        android:textColorHint="@color/content_tertiary"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:inputType="textPassword"
+                        android:minHeight="48dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:id="@+id/toggleConfirmPasswordVisibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:drawableRight="@mipmap/visibility_off"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+
+                </LinearLayout>
+
+                <!-- Password Requirements -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Geslo mora vsebovati:\n• Najmanj 8 znakov\n• Vsaj eno veliko črko (A-Z)\n• Vsaj eno malo črko (a-z)\n• Vsaj eno številko (0-9)"
+                    android:textColor="@color/content_secondary"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/nunito"
+                    android:layout_marginBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:lineSpacingExtra="2dp" />
+
+                <!-- Register Button -->
+                <Button
+                    android:id="@+id/registerButton"
+                    style="@style/Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Registriraj se"
+                    android:minHeight="56dp"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Back to Login Button -->
+                <Button
+                    android:id="@+id/backToLoginButton"
+                    style="@style/Button.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nazaj na prijavo"
+                    android:minHeight="48dp" />
+
+            </LinearLayout>
+
+            <!-- Info Text -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Registracija"
-                android:textSize="24sp"
-                android:textColor="@color/content_primary"
-                android:fontFamily="@font/nunito"
-                android:layout_gravity="center"
-                android:layout_marginBottom="24dp" />
-
-            <!-- Username Input -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@mipmap/person"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="@string/username" />
-
-                <EditText
-                    android:id="@+id/editTextUsername"
-                    android:cursorVisible="true"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/username"
-                    android:textColor="@color/content_primary"
-                    android:textColorHint="@color/content_tertiary"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:textCursorDrawable="@null"
-                    android:inputType="textPersonName"
-                    android:importantForAutofill="no"
-                    android:minHeight="48dp"
-                    android:gravity="center_vertical" />
-
-            </LinearLayout>
-
-            <!-- Password Input -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@mipmap/lock"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="@string/password" />
-
-                <EditText
-                    android:id="@+id/editTextPassword"
-                    android:cursorVisible="true"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:textCursorDrawable="@null"
-                    android:hint="@string/password"
-                    android:textColor="@color/content_primary"
-                    android:textColorHint="@color/content_tertiary"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:inputType="textPassword"
-                    android:minHeight="48dp"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/togglePasswordVisibility"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:drawableRight="@mipmap/visibility_off"
-                    android:padding="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?android:attr/selectableItemBackgroundBorderless" />
-
-            </LinearLayout>
-
-            <!-- Confirm Password Input -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="24dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@mipmap/lock"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="Potrdi geslo" />
-
-                <EditText
-                    android:id="@+id/editTextConfirmPassword"
-                    android:cursorVisible="true"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:textCursorDrawable="@null"
-                    android:hint="Potrdi geslo"
-                    android:textColor="@color/content_primary"
-                    android:textColorHint="@color/content_tertiary"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:inputType="textPassword"
-                    android:minHeight="48dp"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/toggleConfirmPasswordVisibility"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:drawableRight="@mipmap/visibility_off"
-                    android:padding="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?android:attr/selectableItemBackgroundBorderless" />
-
-            </LinearLayout>
-
-            <!-- Register Button -->
-            <Button
-                android:id="@+id/registerButton"
-                style="@style/Button.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Registriraj se"
-                android:minHeight="56dp"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Back to Login Button -->
-            <Button
-                android:id="@+id/backToLoginButton"
-                style="@style/Button.Secondary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nazaj na prijavo"
-                android:minHeight="48dp" />
+                android:layout_marginTop="24dp"
+                android:text="Po registraciji boste dobili osnovni dostop. Za dodatne pravice se obrnite na administratorja."
+                android:textColor="@color/content_tertiary"
+                android:textSize="14sp"
+                android:fontFamily="@font/nunito_semibold"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:padding="16dp" />
 
         </LinearLayout>
-
-        <!-- Info Text -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Po registraciji boste dobili osnovni dostop. Za dodatne pravice se obrnite na administratorja."
-            android:textColor="@color/content_tertiary"
-            android:textSize="14sp"
-            android:fontFamily="@font/nunito_semibold"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:padding="16dp" />
-
-    </LinearLayout>
+    </ScrollView>
 </FrameLayout>

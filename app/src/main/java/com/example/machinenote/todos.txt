@@ -1,28 +1,21 @@
 - make settings for bitmap commpression quality
 
-- upravljanje (brisanje in preimenovanje) uporabnikov in posodabljanje rol
 - nared settingse za aplikacijo (spremenis ime userja, spremeni ime / pozabljeno geslo? mogoce direkt na kandareta. ;D )
 
 
 - navodila za aplikacijo
-- excel / grafi za podatke (statistika in grafika)
 - mogoce dam na net pa nardim ai da samo nardi grafe glede na podatke da ni treba excel k je glup saj men
 - bolsi ui za orodja pa pac navodila na splet mogoce iz sharepointa ker je mau cudn pa dostop do tega
 - dostop do vseh slik a je na netu? mogoce dam tud v aplikacijo
 
--Mogoce da se slika pojav za vsak rezervni del? treba vprasat
-
-Treba testirat qr kode
-- Vprasej kere stvari pokazat samo - rezervni deli in drobni material
-- vprasej ce je ura uredu?
-- a je knjizenje uredu al ga nekak zbolsam?
-
-
-Potrjena dobava v manage more actually bit predvidena
-
-Popravi dodajanje naročil in managanje naročil v registriranju
-
 
 Naredi za updejtat
+
+
+Narocila barva
+
+Obvestila
+Knjizenje informacije
+Custom vievCard za preventivne preglede
 
 

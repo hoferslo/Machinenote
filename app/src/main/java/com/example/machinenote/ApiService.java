@@ -207,7 +207,7 @@ public interface ApiService {
 
     // Create a new user (modify existing createUser to accept registration data)
     @Headers("Content-Type: application/json")
-    @POST("users.php")
+    @POST("users.php/register")
     Call<RegistrationResponse> createUser(@Body UserCreationRequest userRequest);
 
     @Headers("Content-Type: application/json")
