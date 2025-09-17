@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
-import com.example.machinenote.Utility.GenericAdapter;
+import com.example.machinenote.Utility.PreventivniPreglediAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentPreventivniPreglediBinding;
@@ -35,14 +35,15 @@ public class PreventivniPreglediFragment extends BaseFragment {
     private FragmentPreventivniPreglediBinding binding;
     private ApiManager apiManager;
     private List<Linija> linijeList;
-    private GenericAdapter<Linija> adapter;
+    private List<Linija> allLinijeList; // Za filtriranje
+    private PreventivniPreglediAdapter adapter;
 
     public PreventivniPreglediFragment() {}
 
     public static PreventivniPreglediFragment newInstance(Context context) {
         PreventivniPreglediFragment fragment = new PreventivniPreglediFragment();
         fragment.apiManager = new ApiManager(context);
-        fragment.TAG = "Preventivni pregledi"; // Ali uporabi context.getString(R.string.tag_linije)
+        fragment.TAG = "Preventivni pregledi";
         return fragment;
     }
 
@@ -51,42 +52,50 @@ public class PreventivniPreglediFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         binding = FragmentPreventivniPreglediBinding.inflate(inflater, container, false);
 
+        setupRecyclerView();
+        setupSearchView();
+        fetchLinije();
+
+        return binding.getRoot();
+    }
+
+    private void setupRecyclerView() {
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = GenericAdapter.create(
-                getContext(),
-                new ArrayList<>(),
-                new GenericAdapter.OnItemClickListener<Linija>() {
-                    @Override
-                    public void onItemClick(Linija linija) {
-                        // Navigacija na fragment s preventivnimi pregledi za to linijo
-                        MainActivity mainActivity = (MainActivity) requireActivity();
-                        PreventivniPreglediOpravilaFragment pregledFragment =
-                                PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
-                        mainActivity.loadFragment(pregledFragment);
-                    }
+        // Uporabi novi adapter
+        adapter = new PreventivniPreglediAdapter(getContext(), new ArrayList<>());
 
-                    @Override
-                    public void onButtonClick(Linija linija) {
-                        // Hitro dejanje - odpri preventivne preglede
-                        MainActivity mainActivity = (MainActivity) requireActivity();
-                        PreventivniPreglediOpravilaFragment pregledFragment =
-                                PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
-                        mainActivity.loadFragment(pregledFragment);
-                    }
-                },
-                // Mapiranje polj za GenericAdapter - prilagojeno za Linijo
-                "SAP Koda",        // -> linija.getLinija_SAP()
-                "Naziv Linije",      // -> linija.getNaziv_linije()
-                "Lokacija",          // -> linija.getFullLocationInfo()
-                "Število Sklopov",       // -> String.valueOf(linija.getStevilo_sklopov())
-                "Aktivna",            // -> linija.getLinija_aktivna()
-                ""                   // Prazen za zadnje polje
-        );
+        adapter.setOnItemClickListener(new PreventivniPreglediAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Object item) {
+                if (item instanceof Linija) {
+                    Linija linija = (Linija) item;
+                    // Navigacija na fragment s preventivnimi pregledi za to linijo
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    PreventivniPreglediOpravilaFragment pregledFragment =
+                            PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
+                    mainActivity.loadFragment(pregledFragment);
+                }
+            }
+
+            @Override
+            public void onButtonClick(Object item) {
+                if (item instanceof Linija) {
+                    Linija linija = (Linija) item;
+                    // Hitro dejanje - odpri preventivne preglede
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    PreventivniPreglediOpravilaFragment pregledFragment =
+                            PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
+                    mainActivity.loadFragment(pregledFragment);
+                }
+            }
+        });
 
         recyclerView.setAdapter(adapter);
+    }
 
+    private void setupSearchView() {
         binding.idOfDuty.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -105,13 +114,7 @@ public class PreventivniPreglediFragment extends BaseFragment {
                 binding.idOfDuty.clearFocus();
             }
         });
-
-        fetchLinije();
-
-        return binding.getRoot();
     }
-
-
 
     private void fetchLinije() {
         MainActivity mainActivity = (MainActivity) requireActivity();
@@ -122,7 +125,8 @@ public class PreventivniPreglediFragment extends BaseFragment {
                 @Override
                 public void onSuccess(List<Linija> response) {
                     linijeList = response;
-                    adapter.updateList(linijeList);
+                    allLinijeList = new ArrayList<>(response); // Copy for filtering
+                    adapter.updateList(new ArrayList<Object>(linijeList));
 
                     // Shrani podatke v cache
                     String json = new Gson().toJson(linijeList);
@@ -155,7 +159,8 @@ public class PreventivniPreglediFragment extends BaseFragment {
                 Type type = new TypeToken<List<Linija>>() {}.getType();
                 linijeList = new Gson().fromJson(json, type);
                 if (linijeList != null && !linijeList.isEmpty()) {
-                    adapter.updateList(linijeList);
+                    allLinijeList = new ArrayList<>(linijeList); // Copy for filtering
+                    adapter.updateList(new ArrayList<Object>(linijeList));
                     Log.i(TAG, "Loaded " + linijeList.size() + " linij from cache");
                 } else {
                     Log.e(TAG, "Parsed linijeList is empty or null.");
@@ -173,31 +178,36 @@ public class PreventivniPreglediFragment extends BaseFragment {
 
     private void showEmptyState() {
         linijeList = new ArrayList<>();
-        adapter.updateList(linijeList);
+        allLinijeList = new ArrayList<>();
+        adapter.updateList(new ArrayList<Object>(linijeList));
         Toast.makeText(getContext(), "Ni podatkov za prikaz", Toast.LENGTH_SHORT).show();
     }
 
     private void filterLinije(String query) {
-        if (linijeList != null) {
-            List<Linija> filtered;
-
-            if (query == null || query.trim().isEmpty()) {
-                filtered = new ArrayList<>(linijeList);
-            } else {
-                String lowerQuery = query.toLowerCase().trim();
-                filtered = linijeList.stream()
-                        .filter(l ->
-                                (l.getLinija_SAP() != null && l.getLinija_SAP().toLowerCase().contains(lowerQuery)) ||
-                                        (l.getNaziv_linije() != null && l.getNaziv_linije().toLowerCase().contains(lowerQuery)) ||
-                                        (l.getLokacija_naziv() != null && l.getLokacija_naziv().toLowerCase().contains(lowerQuery)) ||
-                                        (l.getProstor_naziv() != null && l.getProstor_naziv().toLowerCase().contains(lowerQuery))
-                        )
-                        .collect(Collectors.toList());
-            }
-
-            adapter.updateList(filtered);
-            Log.d(TAG, "Filtered " + filtered.size() + " items from " + linijeList.size());
+        if (allLinijeList == null) {
+            Log.w(TAG, "allLinijeList is null, cannot filter");
+            return;
         }
+
+        List<Linija> filtered;
+
+        if (query == null || query.trim().isEmpty()) {
+            filtered = new ArrayList<>(allLinijeList);
+        } else {
+            String lowerQuery = query.toLowerCase().trim();
+            filtered = allLinijeList.stream()
+                    .filter(l ->
+                            (l.getLinija_SAP() != null && l.getLinija_SAP().toLowerCase().contains(lowerQuery)) ||
+                                    (l.getNaziv_linije() != null && l.getNaziv_linije().toLowerCase().contains(lowerQuery)) ||
+                                    (l.getLokacija_naziv() != null && l.getLokacija_naziv().toLowerCase().contains(lowerQuery)) ||
+                                    (l.getProstor_naziv() != null && l.getProstor_naziv().toLowerCase().contains(lowerQuery))
+                    )
+                    .collect(Collectors.toList());
+        }
+
+        linijeList = filtered;
+        adapter.updateList(new ArrayList<Object>(filtered));
+        Log.d(TAG, "Filtered " + filtered.size() + " items from " + allLinijeList.size());
     }
 
     @Override

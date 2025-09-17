@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,61 +12,69 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.machinenote.R;
 import com.example.machinenote.models.PreventivniPregled;
+import com.example.machinenote.models.Linija;
 
 import java.util.List;
 
-public class PreventivniPreglediAdapter extends RecyclerView.Adapter<PreventivniPreglediAdapter.PreventivniPregledViewHolder> {
+public class PreventivniPreglediAdapter extends RecyclerView.Adapter<PreventivniPreglediAdapter.ViewHolder> {
 
     private Context context;
-    private List<PreventivniPregled> preventivniPreglediList;
+    private List<Object> itemList;
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(PreventivniPregled pregled);
-        void onButtonClick(PreventivniPregled pregled);
+        void onItemClick(Object item);
+        void onButtonClick(Object item);
     }
 
-    public PreventivniPreglediAdapter(Context context, List<PreventivniPregled> preventivniPreglediList) {
+    public PreventivniPreglediAdapter(Context context, List<Object> itemList) {
         this.context = context;
-        this.preventivniPreglediList = preventivniPreglediList;
+        this.itemList = itemList;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    public void updateList(List<PreventivniPregled> newList) {
-        this.preventivniPreglediList = newList;
+    public void updateList(List<Object> newList) {
+        this.itemList = newList;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public PreventivniPregledViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_preventivni_pregledi, parent, false);
-        return new PreventivniPregledViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PreventivniPregledViewHolder holder, int position) {
-        PreventivniPregled pregled = preventivniPreglediList.get(position);
-        holder.bind(pregled);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Object item = itemList.get(position);
+        if (item instanceof PreventivniPregled) {
+            holder.bindPreventivniPregled((PreventivniPregled) item);
+        } else if (item instanceof Linija) {
+            holder.bindLinija((Linija) item);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return preventivniPreglediList != null ? preventivniPreglediList.size() : 0;
+        return itemList != null ? itemList.size() : 0;
     }
 
-    public class PreventivniPregledViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView opisText;
         private TextView sklopText;
         private TextView statusText;
         private TextView zadnjiPregledText;
+        private TextView zadnjiPregled;
+        private TextView naslednjiPregledText;
         private TextView naslenjdiPregledText;
+        private LinearLayout naslednjiPregledTab;
         private View statusIndicator;
 
-        public PreventivniPregledViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             opisText = itemView.findViewById(R.id.opisText);
             sklopText = itemView.findViewById(R.id.sklopText);
@@ -73,23 +82,25 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
             zadnjiPregledText = itemView.findViewById(R.id.zadnjiPregledText);
             naslenjdiPregledText = itemView.findViewById(R.id.naslenjdiPregledText);
             statusIndicator = itemView.findViewById(R.id.statusIndicator);
+            zadnjiPregled = itemView.findViewById(R.id.zadnjiPregled);
+            naslednjiPregledTab = itemView.findViewById(R.id.naslednjiPregledTab);
 
             // Set click listeners
             itemView.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(preventivniPreglediList.get(getAdapterPosition()));
+                    listener.onItemClick(itemList.get(getAdapterPosition()));
                 }
             });
 
-            // Lahko dodaš še dodatne click listenere za različne dele CardView-a
+            // Click listener za status/SAP text
             statusText.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onButtonClick(preventivniPreglediList.get(getAdapterPosition()));
+                    listener.onButtonClick(itemList.get(getAdapterPosition()));
                 }
             });
         }
 
-        public void bind(PreventivniPregled pregled) {
+        public void bindPreventivniPregled(PreventivniPregled pregled) {
             // Nastavi opis
             if (pregled.getOpis() != null && !pregled.getOpis().isEmpty()) {
                 opisText.setText(pregled.getOpis());
@@ -109,9 +120,7 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
             if (pregled.getStatusText() != null && !pregled.getStatusText().isEmpty()) {
                 statusText.setText(pregled.getStatusText());
                 statusText.setVisibility(View.VISIBLE);
-
-                // Nastavi barvo status indicator-ja glede na status
-                updateStatusIndicator(pregled.getStatusText());
+                updateStatusIndicatorForPregled(pregled.getStatusText());
             } else {
                 statusText.setVisibility(View.GONE);
             }
@@ -131,7 +140,53 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
             }
         }
 
-        private void updateStatusIndicator(String status) {
+        public void bindLinija(Linija linija) {
+            // Nastavi ime linije (opisText)
+            if (linija.getNaziv_linije() != null && !linija.getNaziv_linije().isEmpty()) {
+                opisText.setText(linija.getNaziv_linije());
+            } else {
+                opisText.setText("Linija");
+            }
+
+            // Nastavi lokacijo (sklopText)
+            String lokacija = "";
+            if (linija.getLokacija_naziv() != null && !linija.getLokacija_naziv().isEmpty()) {
+                lokacija = linija.getLokacija_naziv();
+                if (linija.getProstor_naziv() != null && !linija.getProstor_naziv().isEmpty()) {
+                    lokacija += " - " + linija.getProstor_naziv();
+                }
+            } else if (linija.getProstor_naziv() != null && !linija.getProstor_naziv().isEmpty()) {
+                lokacija = linija.getProstor_naziv();
+            }
+
+            if (!lokacija.isEmpty()) {
+                sklopText.setText(lokacija);
+                sklopText.setVisibility(View.VISIBLE);
+            } else {
+                sklopText.setVisibility(View.GONE);
+            }
+
+            // Nastavi SAP kodo (statusText)
+            if (linija.getLinija_SAP() != null && !linija.getLinija_SAP().isEmpty()) {
+                statusText.setText(linija.getLinija_SAP());
+                statusText.setVisibility(View.VISIBLE);
+                updateStatusIndicatorForLinija(linija);
+            } else {
+                statusText.setVisibility(View.GONE);
+            }
+
+            // Nastavi število sklopov (zadnjiPregledText)
+            if (linija.getStevilo_sklopov() > 0) {
+                zadnjiPregled.setText("Število sklopov");
+                zadnjiPregledText.setText(String.valueOf(linija.getStevilo_sklopov()));
+            } else {
+                zadnjiPregledText.setText("0");
+            }
+
+            naslednjiPregledTab.setVisibility(View.GONE);
+        }
+
+        private void updateStatusIndicatorForPregled(String status) {
             if (status == null) return;
 
             int colorResource;
@@ -151,6 +206,24 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
                 default:
                     colorResource = R.color.action_primary;
                     break;
+            }
+
+            statusIndicator.setBackgroundTintList(
+                    context.getResources().getColorStateList(colorResource, null)
+            );
+        }
+
+        private void updateStatusIndicatorForLinija(Linija linija) {
+            int colorResource;
+
+            // Preveri če je linija aktivna
+            if (linija.getLinija_aktivna() != null &&
+                    (linija.getLinija_aktivna().equalsIgnoreCase("true") ||
+                            linija.getLinija_aktivna().equalsIgnoreCase("aktivna") ||
+                            linija.getLinija_aktivna().equals("1"))) {
+                colorResource = R.color.success_primary; // Zelena za aktivne
+            } else {
+                colorResource = R.color.error_primary; // Rdeča za neaktivne
             }
 
             statusIndicator.setBackgroundTintList(

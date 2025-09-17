@@ -92,13 +92,17 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
         // Nastavi click listener-je
         adapter.setOnItemClickListener(new PreventivniPreglediAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(PreventivniPregled pregled) {
-                showExecutionDialog(pregled);
+            public void onItemClick(Object item) {
+                if (item instanceof PreventivniPregled) {
+                    showExecutionDialog((PreventivniPregled) item);
+                }
             }
 
             @Override
-            public void onButtonClick(PreventivniPregled pregled) {
-                showExecutionDialog(pregled);
+            public void onButtonClick(Object item) {
+                if (item instanceof PreventivniPregled) {
+                    showExecutionDialog((PreventivniPregled) item);
+                }
             }
         });
 
@@ -170,7 +174,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
 
         preventivniPreglediList = filteredPregledi;
         allPreventivniPreglediList = new ArrayList<>(filteredPregledi); // Copy for filtering
-        adapter.updateList(preventivniPreglediList);
+        adapter.updateList(new ArrayList<Object>(preventivniPreglediList));
 
         // Shrani podatke v cache z ključem, ki vsebuje linija_sap
         savePregledToCache(filteredPregledi, sharedPreferencesHelper);
@@ -224,7 +228,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
 
                 if (preventivniPreglediList != null && !preventivniPreglediList.isEmpty()) {
                     allPreventivniPreglediList = new ArrayList<>(preventivniPreglediList);
-                    adapter.updateList(preventivniPreglediList);
+                    adapter.updateList(new ArrayList<Object>(preventivniPreglediList));
                     Log.i(TAG, "Loaded " + preventivniPreglediList.size() + " pregledi from cache for linija " + selectedLinija.getLinija_SAP());
                 } else {
                     Log.e(TAG, "Parsed preventivniPreglediList is empty or null.");
@@ -243,7 +247,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
     private void showEmptyState() {
         preventivniPreglediList = new ArrayList<>();
         allPreventivniPreglediList = new ArrayList<>();
-        adapter.updateList(preventivniPreglediList);
+        adapter.updateList(new ArrayList<Object>(preventivniPreglediList));
 
         String message = selectedLinija != null ?
                 "Ni preventivnih pregledov za linijo " + selectedLinija.getLinija_SAP() :
@@ -372,7 +376,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
         }
 
         preventivniPreglediList = filtered;
-        adapter.updateList(filtered);
+        adapter.updateList(new ArrayList<Object>(filtered));
         Log.d(TAG, "Filtered " + filtered.size() + " items from " + allPreventivniPreglediList.size());
     }
 
