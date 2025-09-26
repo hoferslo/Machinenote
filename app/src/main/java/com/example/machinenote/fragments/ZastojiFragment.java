@@ -41,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFragment.QRCodeScanCallback {
+public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragment.QRCodeScanCallback {
 
     private List<Linija> linije;
     private Linija linija;
@@ -101,8 +101,6 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
         binding.requiredItemsLv.setAdapter(adapter);
 
         // Set up TextWatchers
-
-
         TextWatcherUtil.addTextWatcherToEditText(binding.imeDelavca, 2, adapter); //textWatcher
         TextWatcherUtil.addTextWatcherToEditText(binding.razlogZaustavitveStroja, 3, adapter);
         TextWatcherUtil.addTextWatcherToEditText(binding.opomba, 4, adapter);
@@ -123,7 +121,6 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
                     });
         });
 
-
         binding.sifrantBtn.setOnClickListener(view -> {
             DataPickerDialog.showDialog(view, getString(R.string.pick_sifrant),
                     sifranti.stream().map(Sifrant::getNaziv).toArray(String[]::new),
@@ -141,12 +138,6 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
 
         binding.sendBtn.setOnClickListener(v -> {
             try {
-                /*
-                if(TimeDifferenceCalculator.getMinutesBetweenDates(binding.textBeforeTime.getText().toString(), binding.textAfterTime.getText().toString()) < 0){
-                    Toast.makeText(context, "Čas je narobe nastavljen", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                */
                 sendZastoj();
             } catch (ParseException e) {
                 Log.e("error", e.getMessage());
@@ -162,7 +153,13 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
             @Override
             public void onImageCaptured(Bitmap bitmap) {
                 Log.d(TAG, "Image captured successfully.");
+                // Always use the single imagesContainer regardless of current tab
                 ImageHelper.handleImage(context, bitmap, binding.imagesContainer);
+                // Show the container if it was hidden
+                binding.imagesContainer.setVisibility(View.VISIBLE);
+
+                // Update the images display on the pictures tab if needed
+                updateImagesTab();
             }
 
             @Override
@@ -172,7 +169,7 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
             }
         });
 
-
+        // Both camera buttons now do the same thing - add to the single container
         binding.cameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
         binding.ImagesCameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
 
@@ -184,11 +181,9 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
         adapter.updateItemStatus(6, false);
         adapter.updateItemStatus(7, false);
 
-
         binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(!binding.dezurstvoCheckBox.isChecked()));
 
         binding.scanBtn.setOnClickListener(v -> startQRCodeScanner());
-
 
         TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 
@@ -220,7 +215,7 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
                 "",
                 getDezurstvo(),
                 TimeDifferenceCalculator.getMinutesBetweenDates(binding.textBeforeTime.getText().toString(), binding.textAfterTime.getText().toString()),
-                TimeDifferenceCalculator.getYearFromDateString(binding.textBeforeTime.getText().toString()), //a sploh hocem to
+                TimeDifferenceCalculator.getYearFromDateString(binding.textBeforeTime.getText().toString()),
                 TimeDifferenceCalculator.getMonthFromDateString(binding.textBeforeTime.getText().toString()),
                 qrKoda);
     }
@@ -235,11 +230,12 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
 
     private void sendZastoj() throws ParseException {
         if (adapter.areAllItemsComplete()) {
+            // Always get images from the single container
             List<File> imageFiles = ImageHelper.getImagesFromLayout(context, binding.imagesContainer);
 
             zastoj = createZastoj();
             ((MainActivity) context).showLoadingBar(true, getString(R.string.sending_stoppage));
-            // Call sendZastojWithImages
+
             apiManager.sendZastojWithImages(zastoj, imageFiles, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -259,10 +255,6 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
                     ((MainActivity) context).showLoadingBar(false, "");
                 }
             });
-        } else {
-            //Toast.makeText(context, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
-            //            ((MainActivity) context).showLoadingBar(false, "");
-            // premaknu v ListViewAdapter zarad vec errorjev
         }
     }
 
@@ -298,10 +290,7 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
                 if (response != null && !response.isEmpty()) {
                     linije = response;
                     binding.idOfLineBtn.setEnabled(true);
-
-                    // Optional: Update button text to show data is loaded
                     binding.idOfLineBtn.setText(getString(R.string.pick_line));
-
                     Log.d(TAG, "Linije loaded: " + response.size());
                     Log.d(TAG, "First linija: " + response.get(0).toString());
                 } else {
@@ -314,8 +303,6 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
             public void onFailure(String errorMessage) {
                 Toast.makeText(context, "Napaka pri nalaganju linij: " + errorMessage, Toast.LENGTH_LONG).show();
                 Log.e(TAG, "Linije fetch failed: " + errorMessage);
-
-                // Keep button disabled on error
                 binding.idOfLineBtn.setEnabled(false);
             }
         });
@@ -324,11 +311,29 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
     public void handleTabPress(int position) {
         binding.entryLl.setVisibility(View.INVISIBLE);
         binding.imagesLl.setVisibility(View.INVISIBLE);
+
         if (position == 1) {
             binding.entryLl.setVisibility(View.VISIBLE);
         } else if (position == 2) {
             binding.imagesLl.setVisibility(View.VISIBLE);
+            // Update the images display when switching to images tab
+            updateImagesTab();
         }
+    }
+
+    /**
+     * Update the images tab to reflect the current state of images
+     * This method can be used to sync the images display between tabs
+     */
+    private void updateImagesTab() {
+        // You can implement logic here to show a summary or preview of images
+        // in the images tab if needed. For now, the images are stored in the single container
+        // and can be accessed from ImageHelper.getImagesFromLayout(context, binding.imagesContainer)
+
+        // Example: Update a text view to show number of images
+        int imageCount = ImageHelper.getImagesFromLayout(context, binding.imagesContainer).size();
+        // You could update a TextView here if you add one to show image count
+        Log.d(TAG, "Current image count: " + imageCount);
     }
 
     @Override
@@ -345,7 +350,7 @@ public class    ZastojiFragment extends BaseFragment implements QRCodeScannerFra
             for (Linija l : linije) {
                 if (l.getLinija_SAP().equals(linijaSap)) {
                     setLinija(l);
-                    binding.idOfLineBtn.setText(linija.getLinijeSapAndNames()); // TODO: dodaj ko je qr scanned da ti nastela uro
+                    binding.idOfLineBtn.setText(linija.getLinijeSapAndNames());
                     adapter.updateItemStatus(5, true);
                     success = true;
                     qrKoda = getString(R.string.QR_koda_value_positive);

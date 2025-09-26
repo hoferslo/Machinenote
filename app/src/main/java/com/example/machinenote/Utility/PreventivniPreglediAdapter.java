@@ -177,7 +177,7 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
 
             // Nastavi število sklopov (zadnjiPregledText)
             if (linija.getStevilo_sklopov() > 0) {
-                zadnjiPregled.setText("Število sklopov");
+                zadnjiPregled.setText("Število opravil");
                 zadnjiPregledText.setText(String.valueOf(linija.getStevilo_sklopov()));
             } else {
                 zadnjiPregledText.setText("0");

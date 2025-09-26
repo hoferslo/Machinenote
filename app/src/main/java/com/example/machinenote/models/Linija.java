@@ -2,10 +2,11 @@ package com.example.machinenote.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Linija  implements DisplayableItem{
+public class Linija  implements DisplayableItem, Serializable {
     // Use @SerializedName to match PHP response field names
     @SerializedName("id")
     private int linija_id;

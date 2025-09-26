@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:nestedScrollingEnabled="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/surface_primary"
+        android:padding="16dp">
+
+        <!-- Header z ID linije -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_card_primary"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/linijaIdHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/id_linije"
+                android:textSize="24sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+
+        <!-- Slika linije -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/slika_linije"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/bg_image"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <ImageView
+                android:id="@+id/linijaImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/bg_card_primary"
+                android:padding="8dp"
+                android:contentDescription="@string/slika_linije_opis"
+                android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/imageStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/slika_ni_na_voljo"
+                android:textSize="14sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito"
+                android:gravity="center"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <!-- Osnovni podatki - SAP koda in Status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/osnovni_podatki"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/assignment_icon"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sap_koda"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/sapCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_sap_kode"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/aktivna"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/activeStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_statusa"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Naziv linije -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/naziv_linije"
+                android:textSize="16sp"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/ic_factory"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/content_secondary"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <TextView
+                android:id="@+id/lineName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:text="@string/ni_naziva_linije"
+                android:textSize="18sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+
+        <!-- Lokacijski podatki -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/lokacijski_podatki"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/location_on"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <!-- Prostor in Lokacija -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prostor"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/spaceName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_prostora"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lokacija"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/locationName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ni_lokacije"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Polna lokacija -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_primary"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/polna_lokacija"
+                    android:textSize="14sp"
+                    android:textColor="@color/content_secondary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/fullLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ni_polne_lokacije"
+                    android:textSize="18sp"
+                    android:textColor="@color/content_primary"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Dodatni podatki -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/dodatni_podatki"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@mipmap/settings"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prostor_id"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/prostorId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stevilo_sklopov"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/assemblyCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

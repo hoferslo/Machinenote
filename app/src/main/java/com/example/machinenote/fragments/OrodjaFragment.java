@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentOrodjaBinding;
@@ -21,7 +24,6 @@ public class OrodjaFragment extends BaseFragment {
     Context context;
 
     // SharePoint povezave - prilagodi po potrebi
-    private static final String SHAREPOINT_SLIKE_LINIJ = "https://youtube.com"; //TODO: CHANGE TO ACTUAL FRAGMENT WITH SLIKE LINIJ
     private static final String SHAREPOINT_NAVODILA = "https://unichemsi.sharepoint.com/sites/TehnicnaDokumentacija/Delovna%20navodila/Forms/AllItems.aspx";
     private static final String SHAREPOINT_VARNOSTNI_LISTI = "https://unichemsi.sharepoint.com/sites/Vzdrevanje/Shared%20Documents/Forms/AllItems.aspx?newTargetListUrl=%2Fsites%2FVzdrevanje%2FShared%20Documents&viewpath=%2Fsites%2FVzdrevanje%2FShared%20Documents%2FForms%2FAllItems%2Easpx&id=%2Fsites%2FVzdrevanje%2FShared%20Documents%2FVPD%5FVPP%2Fvarnost%20pri%20delu%2Fnavodila%5Fza%5Fvarno%5Fdelo%2FVL&viewid=0c6ba4ea%2D9c32%2D485f%2D9b2c%2D90125bc183c3";
     private static final String SHAREPOINT_FILMI = "https://unichemsi.sharepoint.com/sites/Vzdrevanje/SitePages/Vzdr%C5%BEevanje.aspx";
@@ -54,9 +56,8 @@ public class OrodjaFragment extends BaseFragment {
     }
 
     private void setupClickListeners() {
-        // Slike Linij kartica
-        binding.cardSlikeLinij.setOnClickListener(v ->
-                openSharePointLink(SHAREPOINT_SLIKE_LINIJ, "Slike Linij"));
+        // Slike Linij kartica - now opens Linije fragment
+        binding.cardSlikeLinij.setOnClickListener(v -> openLinijeFragment());
 
         // Navodila kartica
         binding.cardNavodila.setOnClickListener(v ->
@@ -69,6 +70,24 @@ public class OrodjaFragment extends BaseFragment {
         // Filmi kartica
         binding.cardFilmi.setOnClickListener(v ->
                 openSharePointLink(SHAREPOINT_FILMI, "Filmi"));
+    }
+
+    private void openLinijeFragment() {
+        try {
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+
+            // Create new instance of LinijeFragment
+            Fragment linijeFragment = LinijeFragment.newInstance(mainActivity);
+
+            // Load the fragment
+            mainActivity.loadFragment(linijeFragment);
+
+        } catch (Exception e) {
+            Toast.makeText(getContext(),
+                    "Napaka pri odpiranju Linij: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     private void openSharePointLink(String url, String title) {

@@ -290,7 +290,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:padding="12dp"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/action_primary" />
 
         <!-- Stock Control Section -->
         <LinearLayout

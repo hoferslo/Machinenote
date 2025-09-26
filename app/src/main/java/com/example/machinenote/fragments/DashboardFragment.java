@@ -1,6 +1,8 @@
 package com.example.machinenote.fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -10,19 +12,25 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
+import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Role;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +46,9 @@ public class DashboardFragment extends BaseFragment {
     public String TAG = "Glavna stran";
     FragmentDashboardBinding binding;
     Context context;
+    private ApiManager apiManager;
+    private List<Linija> linijeList;
+    private int preventivniPreglediCount = 0;
     private final List<MaterialButton> buttonList = new ArrayList<>();
     public int iconResourceId = 0;;
 
@@ -47,6 +58,7 @@ public class DashboardFragment extends BaseFragment {
 
     public static DashboardFragment newInstance(Context context) {
         DashboardFragment fragment = new DashboardFragment();
+        fragment.apiManager = new ApiManager(context);
         fragment.context = context;
         return fragment;
     }
@@ -54,6 +66,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -63,8 +76,9 @@ public class DashboardFragment extends BaseFragment {
         // Inflate the layout for this fragment
 
         binding = FragmentDashboardBinding.inflate(getLayoutInflater());
-
+        fetchLinije();
         initButtons();
+
 
         return binding.getRoot();
     }
@@ -175,21 +189,18 @@ public class DashboardFragment extends BaseFragment {
 
 
     private MaterialButton addButtonToLayout(String name) {
-        // Check if the current LinearLayout has exactly two buttons
-
         if (binding.scrollViewLl.getChildCount() == 0 || getLastLinearLayout().getChildCount() == 2) {
-            // Create a new LinearLayout to hold buttons
             LinearLayout newLinearLayout = createNewLinearLayout();
-
             binding.scrollViewLl.addView(newLinearLayout);
         }
 
-        // Add buttons to the last LinearLayout in scrollViewLl
+        // Always get a plain MaterialButton
         MaterialButton button = createButton(name);
         getLastLinearLayout().addView(button);
 
         return button;
     }
+
 
     private LinearLayout createNewLinearLayout() {
         if (context == null) {
@@ -205,6 +216,45 @@ public class DashboardFragment extends BaseFragment {
         newLinearLayout.setGravity(Gravity.CENTER);
         return newLinearLayout;
     }
+
+    private void addBadgeToButton(MaterialButton button, int count) {
+        // Find parent (LinearLayout) and replace button with FrameLayout
+        ViewGroup parent = (ViewGroup) button.getParent();
+        if (parent == null) return;
+
+        int index = parent.indexOfChild(button);
+        parent.removeView(button);
+
+        FrameLayout container = new FrameLayout(context);
+        container.setLayoutParams(button.getLayoutParams());
+        container.addView(button);
+
+        TextView badge = new TextView(context);
+        badge.setText(String.valueOf(count));
+        badge.setTextColor(getResources().getColor(R.color.content_primary));
+        badge.setTextSize(12);
+        badge.setTypeface(Typeface.DEFAULT_BOLD);
+        badge.setGravity(Gravity.CENTER);
+
+        int size = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 24,
+                context.getResources().getDisplayMetrics()
+        );
+
+        FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(size, size);
+        badgeParams.gravity = Gravity.END | Gravity.TOP;
+        badgeParams.setMargins(0, 8, 8, 0);
+
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(ContextCompat.getColor(context, R.color.action_primary));
+        bg.setShape(GradientDrawable.OVAL);
+        badge.setBackground(bg);
+
+        container.addView(badge, badgeParams);
+
+        parent.addView(container, index);
+    }
+
 
 
     private MaterialButton createButton(String text) {
@@ -513,6 +563,29 @@ public class DashboardFragment extends BaseFragment {
 
         if (iconColorResourceId != 0) {
             button.setIconTint(ContextCompat.getColorStateList(context, iconColorResourceId));
+        }
+    }
+
+    private void fetchLinije() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+
+        if (mainActivity.serverConnection) {
+            apiManager.fetchLinije(new ApiManager.LinijeCallback() {
+                @Override
+                public void onSuccess(List<Linija> response) {
+                    linijeList = response;
+                    for (Linija linija : linijeList) {
+                        preventivniPreglediCount = preventivniPreglediCount + linija.getStevilo_sklopov();
+                    }
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Log.d("TAG", "onFailure: " + errorMessage);
+                }
+            });
+        } else {
+            Log.d("TAG", "fetchLinije: offline");
         }
     }
 

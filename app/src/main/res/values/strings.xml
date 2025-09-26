@@ -369,5 +369,52 @@
     <string name="descending">Descending (Z-A)</string>
     <string name="apply_sort">Apply Sort</string>
 
+    <string name="ni_sap_kode">-</string>
+    <string name="ni_statusa">-</string>
+    <string name="ni_naziva_linije">-</string>
+    <string name="ni_prostora">-</string>
+    <string name="ni_lokacije">-</string>
+    <string name="ni_polne_lokacije">-</string>
+    <string name="prostor_id">Prostor ID</string>
+    <string name="stevilo_sklopov">Število sklopov</string>
+
+    <!-- Linije Fragment Strings -->
+    <string name="tag_linije">Linije</string>
+    <string name="search_linije_hint">Poišči linije...</string>
+    <string name="filter_linije">Filtriraj linije</string>
+    <string name="empty_linije_list">Prazen seznam linij</string>
+    <string name="empty_linije_message">Ni najdenih linij</string>
+    <string name="loading_linije">Nalagam linije...</string>
+
+    <!-- Linije Bottom Sheet Strings -->
+    <string name="id_linije">ID Linije</string>
+    <string name="lokacijski_podatki">Lokacijski podatki</string>
+    <string name="dodatni_podatki">Dodatni podatki</string>
+
+    <!-- Basic Info -->
+    <string name="sap_koda">SAP koda</string>
+    <string name="naziv_linije">Naziv linije</string>
+    <string name="aktivna">Aktivna</string>
+
+    <!-- Location Info -->
+    <string name="prostor">Prostor</string>
+    <string name="polna_lokacija">Polna lokacija</string>
+
+    <!-- Status Messages -->
+    <string name="status_linije">Status linije</string>
+    <string name="linija_je_aktivna">Linija je aktivna</string>
+    <string name="linija_ni_aktivna">Linija ni aktivna</string>
+    <string name="podrobnosti_linije">Podrobnosti linije</string>
+    <string name="klikni_za_prikaz_sklopov">Klikni za prikaz povezanih sklopov</string>
+    <string name="ni_sklopov_na_liniji">Ni povezanih sklopov na tej liniji</string>
+
+    <!-- Image Section -->
+    <string name="slika_linije">Slika linije</string>
+    <string name="slika_linije_opis">Slika proizvodne linije</string>
+    <string name="slika_ni_na_voljo">Slika ni na voljo</string>
+    <string name="nalagam_sliko">Nalagam sliko...</string>
+    <string name="napaka_pri_nalaganju_slike">Napaka pri nalaganju slike</string>
+    <string name="klikni_za_povecavo">Klikni za povečavo slike</string>
+
 </resources>
 
