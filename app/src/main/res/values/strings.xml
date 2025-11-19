@@ -416,5 +416,15 @@
     <string name="napaka_pri_nalaganju_slike">Napaka pri nalaganju slike</string>
     <string name="klikni_za_povecavo">Klikni za povečavo slike</string>
 
+    <string name="trenutna_zaloga">Trenutna zaloga: </string>
+    <string name="rok_izteka">Rok izteka</string>
+    <string name="CAS">CAS</string>
+    <string name="formula">Formula</string>
+    <string name="poisci_kemikalijo">Poišči kemikalijo</string>
+
+
+
+
+
 </resources>
 
