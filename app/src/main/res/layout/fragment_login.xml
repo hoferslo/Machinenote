@@ -125,5 +125,21 @@
             android:clickable="true"
             android:focusable="true" />
 
+        <!-- Registration Info -->
+        <Button
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:textColor="@color/content_tertiary"
+            android:textSize="11sp"
+            android:fontFamily="@font/nunito_semibold"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
     </LinearLayout>
 </FrameLayout>

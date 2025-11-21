@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -11,8 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -89,7 +94,127 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
+        binding.forgotPassword.setOnClickListener(
+                v -> displayUserInput()
+        );
+
         return binding.getRoot();
+    }
+
+    private void displayUserInput(){
+        // Create a LinearLayout to hold both EditTexts
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 40, 50, 10);
+
+        // Create EditText for username
+        final EditText editTextUsername = new EditText(context);
+        editTextUsername.setHint("Uporabniško ime");
+        editTextUsername.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
+        editTextUsername.setTextCursorDrawable(null);
+
+        // Create EditText for password - VISIBLE TEXT (not hidden)
+        final EditText editTextPassword = new EditText(context);
+        editTextPassword.setHint("Novo geslo");
+        editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
+        editTextPassword.setTextCursorDrawable(null);
+
+        // Add both EditTexts to the layout
+        layout.addView(editTextUsername);
+        layout.addView(editTextPassword);
+
+        // Create and show the AlertDialog
+        AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle("Pozabljeno geslo")
+                .setMessage("Vnesite svoje podatke za ponastavitev gesla:")
+                .setView(layout)
+                .setPositiveButton("Pošlji", null)
+                .setNegativeButton("Prekliči", null)
+                .show();
+
+        // Request focus and show keyboard for username field
+        editTextUsername.requestFocus();
+        editTextUsername.postDelayed(() -> {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editTextUsername, InputMethodManager.SHOW_IMPLICIT);
+        }, 200);
+
+        // Override the positive button to prevent dialog from closing on validation error
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String username = editTextUsername.getText().toString().trim();
+            String password = editTextPassword.getText().toString().trim();
+
+            // Clear previous errors
+            editTextUsername.setError(null);
+            editTextPassword.setError(null);
+
+            // Validate username
+            if (username.isEmpty()) {
+                editTextUsername.setError("Prosim vnesite uporabniško ime");
+                editTextUsername.requestFocus();
+                return;
+            }
+
+            // Validate password
+            if (!isValidPassword(password)) {
+                editTextPassword.setError("Geslo mora imeti vsaj 8 znakov, vsebovati mora vsaj eno veliko črko, eno malo črko in eno številko");
+                editTextPassword.requestFocus();
+                return;
+            }
+
+            // If both are valid, proceed and close dialog
+            sendPasswordResetEmail(username, password);
+            dialog.dismiss();
+        });
+    }
+
+    private boolean isValidPassword(String password) {
+        if (password.length() < 8) {
+            return false;
+        }
+
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasDigit = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUpperCase = true;
+            } else if (Character.isLowerCase(c)) {
+                hasLowerCase = true;
+            } else if (Character.isDigit(c)) {
+                hasDigit = true;
+            }
+        }
+
+        return hasUpperCase && hasLowerCase && hasDigit;
+    }
+
+    private void sendPasswordResetEmail(String username, String password) {
+        String recipient = "matej.kandare@unichem.si";
+        String subject = "Pozabljeno geslo";
+        String encodedUsername = Uri.encode(username);
+        String encodedPassword = Uri.encode(password);
+
+        String message = "Pozdravljeni!\n\n" +
+                "Prosim za ponastavitev gesla\n\n" +
+                "Uporabnik: " + username + "\n" +
+                "Geslo: " + password + "\n" +
+                "Povezava za resetiranje: http://192.168.12.192/apiv2/resetPassword.php?username=" +
+                encodedUsername + "&password=" + encodedPassword + "\n\n" +
+                "Lep pozdrav";
+        // Use ACTION_SENDTO with mailto: URI to open email apps directly
+        android.content.Intent emailIntent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
+        emailIntent.setData(android.net.Uri.parse("mailto:")); // Only email apps handle this
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{recipient});
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+
+        try {
+            startActivity(emailIntent);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(context, "Ni nameščenega e-poštnega odjemalca", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loginUsingTextviewUsernameAndPassword() {

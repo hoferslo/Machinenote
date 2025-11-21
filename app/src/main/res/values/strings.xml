@@ -127,6 +127,7 @@
 
     <string name="Login">Login</string>
     <string name="register_help_info">Niste registrirani? Registriraj se tukaj!</string>
+    <string name="forgot_password">Resetiraj geslo!</string>
     <string name="available_tasks">Mozne naloge</string>
 
     <string name="id_rezervnega_dela">ID</string>
