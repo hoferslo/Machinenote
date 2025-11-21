@@ -25,7 +25,7 @@ public class OrodjaFragment extends BaseFragment {
 
     // SharePoint povezave - prilagodi po potrebi
     private static final String SHAREPOINT_NAVODILA = "https://unichemsi.sharepoint.com/sites/TehnicnaDokumentacija/Delovna%20navodila/Forms/AllItems.aspx";
-    private static final String SHAREPOINT_VARNOSTNI_LISTI = "https://unichemsi.sharepoint.com/sites/Vzdrevanje/Shared%20Documents/Forms/AllItems.aspx?newTargetListUrl=%2Fsites%2FVzdrevanje%2FShared%20Documents&viewpath=%2Fsites%2FVzdrevanje%2FShared%20Documents%2FForms%2FAllItems%2Easpx&id=%2Fsites%2FVzdrevanje%2FShared%20Documents%2FVPD%5FVPP%2Fvarnost%20pri%20delu%2Fnavodila%5Fza%5Fvarno%5Fdelo%2FVL&viewid=0c6ba4ea%2D9c32%2D485f%2D9b2c%2D90125bc183c3";
+    private static final String SHAREPOINT_VARNOSTNI_LISTI = "https://unichemsi.sharepoint.com/:f:/s/Razvoj/Varnostni_listi/IgBBPdBdhFO0Sa8YjLOSesydASTshyV05IW0v9R2LG1xal4?e=iXJNsY";
     private static final String SHAREPOINT_FILMI = "https://unichemsi.sharepoint.com/sites/Vzdrevanje/SitePages/Vzdr%C5%BEevanje.aspx";
 
     public OrodjaFragment() {
