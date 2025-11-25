@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true"
+    android:padding="12dp"
+    tools:context=".fragments.KemikalijeFragment">
+
+    <!-- Article Name Header - Compact -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:paddingRight="8dp">
+            <SearchView
+                android:id="@+id/idOfDuty"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:hint="@string/poisci_kemikalijo"
+                android:background="@drawable/bg_input"
+                android:iconifiedByDefault="false"
+                android:queryHint="@string/poisci_kemikalijo"
+                android:theme="@style/SearchViewTheme" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/filterSortToggleBtn"
+            style="@style/Button.Secondary"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:drawableEnd="@drawable/ic_filter"
+            android:drawablePadding="8dp"
+            android:gravity="start|center_vertical"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+    <!-- Article Info Section - Better organized -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_card_primary"
+        android:padding="12dp"
+        android:orientation="horizontal">
+
+        <!-- Info Items in Grid Layout -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Rack and Warehouse in same row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <!-- Rack Info -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/lokacija"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/article_rack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="20sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+                <!-- Warehouse Info -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/rok_izteka"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/article_warehouse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:maxLines="1"
+                        android:textColor="@color/content_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Article ID and Minimum Info Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Article ID Info -->
+                <LinearLayout
+                    android:id="@+id/articleIdLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/articleIdLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/CAS"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/article_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="20sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+                <!-- Article Minimum Info -->
+                <LinearLayout
+                    android:id="@+id/articleMinimumLl"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card_secondary"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="@string/formula"
+                        android:textSize="11sp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/articleMinimumTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="20sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Gmail Button -->
+        <ImageButton
+            android:id="@+id/sendGmail"
+            style="@style/Button.Icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:contentDescription="@string/send"
+            android:src="@mipmap/mail"
+            app:tint="@color/content_inverse" />
+
+    </LinearLayout>
+
+    <!-- Stock Display Section -->
+
+    <!-- Chemical Info Card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_card_primary"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <!-- Chemical Name -->
+        <TextView
+            android:id="@+id/chemicalName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ime kemikalije"
+            android:textColor="@color/content_primary"
+            android:fontFamily="@font/nunito_semibold"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <!-- CAS Number with purity -->
+        <TextView
+            android:id="@+id/chemicalCasPurity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kemijska čistotost"
+            android:textColor="@color/content_secondary"
+            android:fontFamily="@font/nunito_semibold"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Hazard symbols and info row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <!-- Placeholder for hazard symbols (you'll need to add actual drawables) -->
+            <ImageView
+                android:id="@+id/hazardSymbol1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Hazard symbol 1"
+                android:src="@drawable/baseline_warning_amber_24"
+                />
+
+            <ImageView
+                android:id="@+id/hazardSymbol2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="Hazard symbol 2"
+                android:src="@drawable/baseline_warning_amber_24" />
+
+            <!-- Hazard text -->
+            <TextView
+                android:id="@+id/hazardInfo"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Opozorilo"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="14sp"
+                android:lineSpacingExtra="2dp" />
+
+        </LinearLayout>
+
+        <!-- SDS Button -->
+        <Button
+            android:id="@+id/sdsButton"
+            style="@style/Button.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Varnostni list (SDS)"
+            android:drawableEnd="@drawable/ic_chevron_right"
+            android:drawablePadding="8dp"
+            android:textAllCaps="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:minHeight="44dp" />
+
+    </LinearLayout>
+
+    <!-- Show More Info Button - Fixed height -->
+
+    <!-- Show More Info Button - Fixed height -->
+    <TextView
+        android:id="@+id/allDataSv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="8dp"
+        style="@style/Input.Base"
+        android:text="Prikaži več informacij o artiklu"
+        android:textColor="@color/content_secondary"
+        android:fontFamily="@font/nunito_semibold"
+        android:textSize="14sp"
+        android:drawableEnd="@drawable/ic_chevron_right"
+        android:drawableTint="@color/content_tertiary"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:minHeight="48dp" />
+
+    <!-- QR Scanner Button - Big and prominent -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card_primary"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
+
+        <!-- Naslov/besedilo nad gumbovi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="@string/trenutna_zaloga"
+                android:textSize="24sp"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:gravity="right"/>
+
+            <TextView
+                android:id="@+id/zaloga"
+                android:padding="16dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:textSize="24sp"
+                android:layout_marginBottom="0dp"
+                android:text="100 g"
+                android:gravity="left"
+                android:minHeight="44dp"
+                android:maxLines="1"
+                />
+
+        </LinearLayout>
+
+
+        <!-- Stock Control Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/minusBtn"
+                style="@style/Button.Destructive"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:textSize="18sp"
+                android:text="-"
+                android:minHeight="44dp" />
+
+            <EditText
+                android:id="@+id/stockChangeValue"
+                style="@style/Input.Base"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:textSize="24sp"
+                android:layout_marginBottom="0dp"
+                android:text="1"
+                android:inputType="number"
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:maxLines="1" />
+
+            <Button
+                android:id="@+id/plusBtn"
+                style="@style/Button.Success"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textSize="18sp"
+                android:text="+"
+                android:minHeight="44dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Input and Action Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        >
+        <!-- Cancel Button -->
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/Button.Destructive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:height="64dp"
+            android:layout_weight="1"
+            android:layout_marginRight="4dp"/>
+
+        <ImageButton
+            android:layout_marginLeft="4dp"
+            android:id="@+id/scanQRBtn"
+            style="@style/Button.Icon"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:contentDescription="@string/scan_qr_code"
+            android:src="@mipmap/qr_code_scanner"
+            app:tint="@color/content_inverse"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+</LinearLayout>

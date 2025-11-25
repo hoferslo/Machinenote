@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:nestedScrollingEnabled="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/surface_primary"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_card_primary"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/chemicalIdHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Podrobnosti o kemikaliji"
+                android:textSize="24sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+
+        <!-- Osnovni podatki -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Osnovni podatki"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/ic_science"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="12dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <TextView
+                android:id="@+id/tv_ime_slo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Slovensko ime: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_ime_eng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Angleško ime: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_formula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Formula: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_cas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CAS številka: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+
+        <!-- Firma in skladiščenje -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Firma in skladiščenje"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/business"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="12dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <TextView
+                android:id="@+id/tv_firma"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Firma: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_rok_uporabe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rok uporabe: -"
+                        android:textSize="16sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_teza"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Teža: -"
+                        android:textSize="16sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_agregatno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Agregatno stanje: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+
+        <!-- Lokacija -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Lokacija"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/location_on"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="12dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Polica"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tv_polica"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ni podatka"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Omara"
+                        android:textSize="14sp"
+                        android:textColor="@color/content_secondary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tv_omara"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ni podatka"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_program"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Program: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+
+        <!-- Dodatne informacije -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Dodatne informacije"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/info"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="12dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <TextView
+                android:id="@+id/tv_ident_unichem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ident Unichem: -"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Opombe"
+                android:textSize="14sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tv_opombe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ni podatka"
+                android:textSize="16sp"
+                android:textColor="@color/content_primary"
+                android:fontFamily="@font/nunito_semibold"
+                android:minHeight="60dp"
+                android:gravity="start|top" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
