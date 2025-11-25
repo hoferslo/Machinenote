@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
+import com.example.machinenote.models.Kemikalija;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Naloga;
@@ -352,6 +353,28 @@ public class ApiManager {
 
             @Override
             public void onFailure(Call<List<RezervniDel>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void fetchKemikalijaId(KemikalijaIdCallback callback, int id) {
+        Call<Kemikalija> call = apiService.getKemikalijaById(id);
+        call.enqueue(new Callback<Kemikalija>() {
+            @Override
+            public void onResponse(Call<Kemikalija> call, Response<Kemikalija> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Kemikalija kemikalija = response.body();
+                    Log.d("ApiManager", "Kemikalija retrieved successfully");
+                    Log.d("ApiManager", "Kemikalija list: " + kemikalija);
+                    callback.onSuccess(kemikalija);
+                } else {
+                    callback.onFailure("Failed to retrieve Kemikalije");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Kemikalija> call, Throwable t) {
                 callback.onFailure(t.getMessage());
             }
         });
@@ -1142,6 +1165,16 @@ public class ApiManager {
                 callback.onFailure(call, t);
             }
         });
+    }
+
+    public interface KemikalijeCallback{
+        void onSuccess(List<Kemikalija> response);
+        void onFailure(String errorMessage);
+    }
+
+    public interface KemikalijaIdCallback{
+        void onSuccess(Kemikalija response);
+        void onFailure(String errorMessage);
     }
 
     // Callback interface

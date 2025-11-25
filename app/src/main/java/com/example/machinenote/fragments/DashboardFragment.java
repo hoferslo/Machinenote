@@ -179,6 +179,18 @@ public class DashboardFragment extends BaseFragment {
             }
         }
 
+        {
+            Log.d("TAG", "initButtons: " + role.isKemikalije());
+            if (role.isKemikalije()) {
+
+                MaterialButton btn = addButtonToLayout("Kemikalije");
+                btn.setOnClickListener(view -> {
+                    MainActivity mainActivity = (MainActivity) requireActivity();
+                    mainActivity.loadFragment(KemikalijeFragment.newInstance(context));
+                });
+            }
+        }
+
         if (getLastLinearLayout().getChildCount() == 1) {
             MaterialButton button = createButton("invisibleBtn");
             getLastLinearLayout().addView(button);
@@ -303,6 +315,7 @@ public class DashboardFragment extends BaseFragment {
         int iconResourceId = 0;
         Log.d("TAG", "setButtonIcon: " + text);
         switch (text) {
+
             case "Knjiženje":
                 iconResourceId = R.drawable.book_icon;
                 break;
@@ -332,6 +345,9 @@ public class DashboardFragment extends BaseFragment {
                 break;
             case "Naročila":
                 iconResourceId = R.drawable.assignment_icon;
+                break;
+            case "Kemikalije":
+                iconResourceId = R.drawable.ic_science;
                 break;
             default:
                 // Ni ikone za neznane gumbove
@@ -375,8 +391,11 @@ public class DashboardFragment extends BaseFragment {
                 case "Registracija":
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
                     break;
-                case "Naroičila":
+                case "Naročila":
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
+                    break;
+                case "Kemikalije":
+                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
                     break;
                 default:
                     button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
@@ -407,7 +426,7 @@ public class DashboardFragment extends BaseFragment {
             if (button != null) {
                 switch (button.getText().toString()) {
                     case "Zastoji", "Knjiženje", "Remonti", "Preventivni pregledi", "Naloge",
-                         "Registracija", "Rezervni deli", "Imenik", "Orodja","Naročila" -> makeButtonOnline(online, button);
+                         "Registracija", "Rezervni deli", "Imenik", "Orodja","Naročila", "Kemikalije" -> makeButtonOnline(online, button);
                 }
             }
         });
@@ -468,6 +487,9 @@ public class DashboardFragment extends BaseFragment {
                 case "Naročila":
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
                     break;
+                case "Kemikalije":
+                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
+                    break;
                 default:
                     button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
                     break;
@@ -511,6 +533,9 @@ public class DashboardFragment extends BaseFragment {
                 case "Naročila":
                     button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
                     break;
+                case "Kemikalije":
+                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
+                    break;
                 default:
                     button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
                     break;
@@ -521,50 +546,6 @@ public class DashboardFragment extends BaseFragment {
         button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
     }
 
-    private void restoreOriginalIconColor(MaterialButton button) {
-        String text = button.getText().toString();
-        int iconColorResourceId = 0;
-
-        switch (text) {
-            case "Knjiženje":
-                iconColorResourceId = android.R.color.holo_blue_dark;
-                break;
-            case "Zastoji":
-                iconColorResourceId = android.R.color.holo_orange_dark;
-                break;
-            case "Remonti":
-                iconColorResourceId = android.R.color.holo_red_dark;
-                break;
-            case "Imenik":
-                iconColorResourceId = android.R.color.holo_green_dark;
-                break;
-            case "Naloge":
-                iconColorResourceId = android.R.color.holo_purple;
-                break;
-            case "Preventivni pregledi":
-                iconColorResourceId = android.R.color.darker_gray;
-                break;
-            case "Orodja":
-                iconColorResourceId = android.R.color.holo_blue_light;
-                break;
-            case "Rezervni deli":
-                iconColorResourceId = android.R.color.holo_green_light;
-                break;
-            case "Registracija":
-                iconColorResourceId = android.R.color.holo_orange_light;
-                break;
-            case "Naročila":
-                iconColorResourceId = android.R.color.holo_orange_light;
-                break;
-            default:
-                iconColorResourceId = R.color.action_primary; // Fallback to original color
-                break;
-        }
-
-        if (iconColorResourceId != 0) {
-            button.setIconTint(ContextCompat.getColorStateList(context, iconColorResourceId));
-        }
-    }
 
     private void fetchLinije() {
         MainActivity mainActivity = (MainActivity) requireActivity();

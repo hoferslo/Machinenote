@@ -1,19 +1,44 @@
 package com.example.machinenote.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class Kemikalija {
+    @SerializedName("ID")
     private int id;
+
+    @SerializedName("ime_SLO")
     private String ime_SLO;
+
+    @SerializedName("ime_ENG")
     private String ime_ENG;
+
+    @SerializedName("Formula")
     private String formula;
+
+    @SerializedName("CAS_stevilo")
     private String cas_stevilo;
+
+    @SerializedName("Firma")
     private String firma;
+
+    @SerializedName("Rok_uporabe")
     private Date rok_uporabe;
+
+    @SerializedName("Teza")
     private String teza;
+
+    @SerializedName("Agregatno_stanje")
     private String agregatno_stanje;
+
+    @SerializedName("Ident_Unichem")
     private int ident_Unichem;
+
+    @SerializedName("Opombe")
     private String opombe;
+
+    @SerializedName("Polica_ID")
     private int polica_ID;
 
     // Additional fields for joined data

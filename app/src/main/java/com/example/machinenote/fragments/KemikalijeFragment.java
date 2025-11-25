@@ -3,6 +3,7 @@ package com.example.machinenote.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.machinenote.models.Kemikalija;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -82,7 +84,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         // Filter/Sort button
         binding.filterSortToggleBtn.setOnClickListener(v -> {
             // Implement filter/sort functionality
-            Toast.makeText(context, "Filter functionality - coming soon", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
         });
 
         // Stock adjustment buttons
@@ -169,7 +171,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
 
     private void fetchKemikalijaById(int id) {
         // You'll need to add this method to ApiManager
-        apiManager.fetchKemikalijaById(id, new ApiManager.KemikalijaByIdCallback() {
+        apiManager.fetchKemikalijaId(new ApiManager.KemikalijaIdCallback() {
             @Override
             public void onSuccess(Kemikalija kemikalijaData) {
                 kemikalija = kemikalijaData;
@@ -181,7 +183,8 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
                 System.err.println(getString(R.string.error) + errorMessage);
                 Toast.makeText(context, "Napaka pri pridobivanju kemikalije", Toast.LENGTH_SHORT).show();
             }
-        });
+        }, id);
+
     }
 
     private void searchKemikalijaByName(String name) {
@@ -191,7 +194,6 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
 
     private void updateUI() {
         if (kemikalija == null) return;
-
         // Update chemical name
         binding.chemicalName.setText(kemikalija.getIme_SLO() != null ? kemikalija.getIme_SLO() : "");
 
@@ -274,10 +276,11 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         }
     }
 
+
     @Override
     public void onQRCodeScanned(String qrCode) {
         requireActivity().runOnUiThread(() -> {
-            int id = HandleQRCode.getKemikalijaIdFromQR(qrCode); // You may need to create this method
+            int id = HandleQRCode.getKemikalijaIdFromQR(qrCode);
             if (id != 0) {
                 fetchKemikalijaById(id);
             } else {

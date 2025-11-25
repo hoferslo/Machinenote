@@ -22,4 +22,17 @@ public class HandleQRCode {
             return 0;
         }
     }
+
+    public static int getKemikalijaIdFromQR(String qr) {
+        if (qr == null || qr.length() <= 6) {
+            // Handle the case where the QR code string is null or too short
+            return 0;
+        }
+        // Return the substring starting from the fourth character (index 3)
+        try {
+            return Integer.parseInt(qr.substring(2, 7));
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 }

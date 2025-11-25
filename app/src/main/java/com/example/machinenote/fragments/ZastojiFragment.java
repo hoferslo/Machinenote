@@ -346,17 +346,26 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
     public void onQRCodeScanned(String qrCode) {
         requireActivity().runOnUiThread(() -> {
             boolean success = false;
-            String linijaSap = HandleQRCode.getLinijaSapFromQR(qrCode);
+            Log.d("I HATE N", "QR code scanned: " + qrCode.substring(3));
+            String linijaID = HandleQRCode.getLinijaSapFromQR(qrCode);
+
             for (Linija l : linije) {
-                if (l.getLinija_SAP().equals(linijaSap)) {
+                if (String.valueOf(l.getLinija_id()).equals(linijaID)) {
                     setLinija(l);
+
+                    // Update UI elements BEFORE going back
                     binding.idOfLineBtn.setText(linija.getLinijeSapAndNames());
                     adapter.updateItemStatus(5, true);
+                    TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
+
                     success = true;
                     qrKoda = getString(R.string.QR_koda_value_positive);
+
+                    Toast.makeText(context, "getString(R.string.line_set_successfully)", Toast.LENGTH_SHORT).show();
                     break;
                 }
             }
+
             if (!success) {
                 Toast.makeText(context, getString(R.string.line_not_exist), Toast.LENGTH_SHORT).show();
             }

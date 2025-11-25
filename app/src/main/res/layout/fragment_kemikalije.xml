@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             <SearchView
                 android:id="@+id/idOfDuty"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:hint="@string/poisci_kemikalijo"
                 android:background="@drawable/bg_input"
                 android:iconifiedByDefault="false"
@@ -36,8 +36,8 @@
         <Button
             android:id="@+id/filterSortToggleBtn"
             style="@style/Button.Secondary"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:drawableEnd="@drawable/ic_filter"
             android:drawablePadding="8dp"
             android:gravity="start|center_vertical"
@@ -45,13 +45,13 @@
 
     </LinearLayout>
 
-    <!-- Article Info Section - Better organized -->
+    <!-- Article Info Section - Compact -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="12dp"
+        android:padding="8dp"
         android:orientation="horizontal">
 
         <!-- Info Items in Grid Layout -->
@@ -65,7 +65,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <!-- Rack Info -->
@@ -73,8 +73,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:padding="8dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="6dp"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -85,7 +85,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/lokacija"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:maxLines="1" />
 
                     <TextView
@@ -95,7 +95,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:maxLines="1" />
 
                 </LinearLayout>
@@ -105,8 +105,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:padding="8dp"
+                    android:layout_marginStart="2dp"
+                    android:padding="6dp"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -117,7 +117,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/rok_izteka"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:maxLines="1" />
 
                     <TextView
@@ -127,7 +127,7 @@
                         android:fontFamily="@font/nunito_semibold"
                         android:maxLines="1"
                         android:textColor="@color/content_primary"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -146,8 +146,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:padding="8dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="6dp"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -159,7 +159,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/CAS"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:maxLines="1" />
 
                     <TextView
@@ -169,7 +169,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:maxLines="1" />
 
                 </LinearLayout>
@@ -180,8 +180,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:padding="8dp"
+                    android:layout_marginStart="2dp"
+                    android:padding="6dp"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -192,7 +192,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/formula"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:maxLines="1" />
 
                     <TextView
@@ -202,7 +202,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:maxLines="1" />
 
                 </LinearLayout>
@@ -215,9 +215,9 @@
         <ImageButton
             android:id="@+id/sendGmail"
             style="@style/Button.Icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="12dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
             android:layout_gravity="center_vertical"
             android:visibility="gone"
             android:contentDescription="@string/send"
@@ -226,15 +226,13 @@
 
     </LinearLayout>
 
-    <!-- Stock Display Section -->
-
-    <!-- Chemical Info Card -->
+    <!-- Chemical Info Card - Compact -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp"
+        android:padding="10dp"
         android:orientation="vertical">
 
         <!-- Chemical Name -->
@@ -245,9 +243,11 @@
             android:text="Ime kemikalije"
             android:textColor="@color/content_primary"
             android:fontFamily="@font/nunito_semibold"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="2dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
         <!-- CAS Number with purity -->
         <TextView
@@ -257,8 +257,10 @@
             android:text="Kemijska čistotost"
             android:textColor="@color/content_secondary"
             android:fontFamily="@font/nunito_semibold"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp" />
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
         <!-- Hazard symbols and info row -->
         <LinearLayout
@@ -266,23 +268,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="6dp">
 
-            <!-- Placeholder for hazard symbols (you'll need to add actual drawables) -->
+            <!-- Hazard symbols -->
             <ImageView
                 android:id="@+id/hazardSymbol1"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="4dp"
                 android:contentDescription="Hazard symbol 1"
-                android:src="@drawable/baseline_warning_amber_24"
-                />
+                android:src="@drawable/baseline_warning_amber_24" />
 
             <ImageView
                 android:id="@+id/hazardSymbol2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="Hazard symbol 2"
                 android:src="@drawable/baseline_warning_amber_24" />
 
@@ -295,8 +296,9 @@
                 android:text="Opozorilo"
                 android:textColor="@color/content_primary"
                 android:fontFamily="@font/nunito_semibold"
-                android:textSize="14sp"
-                android:lineSpacingExtra="2dp" />
+                android:textSize="11sp"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
         </LinearLayout>
 
@@ -308,92 +310,87 @@
             android:layout_height="wrap_content"
             android:text="Varnostni list (SDS)"
             android:drawableEnd="@drawable/ic_chevron_right"
-            android:drawablePadding="8dp"
+            android:drawablePadding="4dp"
             android:textAllCaps="false"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:minHeight="44dp" />
+            android:paddingStart="12dp"
+            android:paddingEnd="8dp"
+            android:minHeight="36dp"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-    <!-- Show More Info Button - Fixed height -->
-
-    <!-- Show More Info Button - Fixed height -->
+    <!-- Show More Info Button -->
     <TextView
         android:id="@+id/allDataSv"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
         style="@style/Input.Base"
         android:text="Prikaži več informacij o artiklu"
         android:textColor="@color/content_secondary"
         android:fontFamily="@font/nunito_semibold"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:drawableEnd="@drawable/ic_chevron_right"
         android:drawableTint="@color/content_tertiary"
-        android:drawablePadding="12dp"
+        android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:clickable="true"
         android:focusable="true"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
-        android:minHeight="48dp" />
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:minHeight="40dp"
+        android:layout_weight="1"
+        android:maxLines="1" />
 
-    <!-- QR Scanner Button - Big and prominent -->
+    <!-- Stock Section - Compact -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_card_primary"
         android:orientation="vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="6dp"
 
-        <!-- Naslov/besedilo nad gumbovi -->
+        android:padding="8dp">
+
+        <!-- Current stock display -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center"
-            >
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textColor="@color/content_secondary"
                 android:fontFamily="@font/nunito_semibold"
                 android:text="@string/trenutna_zaloga"
-                android:textSize="24sp"
-                android:maxLines="1"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dp"
-                android:gravity="right"/>
+                android:textSize="16sp"
+                android:gravity="end"
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/zaloga"
-                android:padding="16dp"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_weight="0.75"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:textSize="24sp"
-                android:layout_marginBottom="0dp"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
                 android:text="100 g"
-                android:gravity="left"
-                android:minHeight="44dp"
-                android:maxLines="1"
-                />
+                android:fontFamily="@font/nunito_semibold"
+                android:textColor="@color/content_primary"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:maxLines="1" />
 
         </LinearLayout>
-
 
         <!-- Stock Control Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingBottom="12dp"
             android:orientation="horizontal">
 
             <Button
@@ -402,10 +399,10 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:textSize="18sp"
+                android:layout_marginEnd="4dp"
+                android:textSize="16sp"
                 android:text="-"
-                android:minHeight="44dp" />
+                android:minHeight="40dp" />
 
             <EditText
                 android:id="@+id/stockChangeValue"
@@ -413,13 +410,12 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:textSize="24sp"
-                android:layout_marginBottom="0dp"
+                android:layout_marginHorizontal="4dp"
+                android:textSize="18sp"
                 android:text="1"
                 android:inputType="number"
                 android:gravity="center"
-                android:minHeight="44dp"
+                android:minHeight="40dp"
                 android:maxLines="1" />
 
             <Button
@@ -428,44 +424,41 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:textSize="18sp"
+                android:layout_marginStart="4dp"
+                android:textSize="16sp"
                 android:text="+"
-                android:minHeight="44dp" />
+                android:minHeight="40dp" />
 
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Input and Action Section -->
+    <!-- Bottom Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <!-- Cancel Button -->
         <Button
             android:id="@+id/cancelBtn"
             style="@style/Button.Destructive"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:height="64dp"
+            android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginRight="4dp"/>
+            android:layout_height="56dp"
+            android:text="@string/cancel"
+            android:layout_marginEnd="4dp" />
 
+        <!-- QR Scanner Button -->
         <ImageButton
-            android:layout_marginLeft="4dp"
             android:id="@+id/scanQRBtn"
             style="@style/Button.Icon"
+            android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/scan_qr_code"
             android:src="@mipmap/qr_code_scanner"
-            app:tint="@color/content_inverse"
-            android:layout_gravity="center_vertical"
-            />
+            app:tint="@color/content_inverse" />
 
     </LinearLayout>
 </LinearLayout>

@@ -297,10 +297,8 @@
                 android:textSize="16sp"
                 android:textColor="@color/content_secondary"
                 android:fontFamily="@font/nunito_semibold"
-                android:drawableStart="@drawable/info"
-                android:drawablePadding="8dp"
                 android:layout_marginBottom="12dp"
-                android:drawableTint="?attr/colorControlNormal" />
+                 />
 
             <TextView
                 android:id="@+id/tv_ident_unichem"

@@ -48,8 +48,11 @@ public class Role {
     @SerializedName("upravljanje_narocil")
     private boolean upravljanje_narocil;
 
+    @SerializedName("kemikalije")
+    private boolean kemikalije;
+
     // Updated constructor to include dodajanje_nalog
-    public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register, boolean narocila, boolean dodajanjeNarocil, boolean upravljanjeNarocil) {
+    public Role(int role_Id, String role, boolean knjizenje, boolean rezervniDeli, boolean imenik, boolean preventivniPregledi, boolean zastoji, boolean naloge, boolean dodajanjeNalog, boolean remonti, boolean orodja, boolean register, boolean narocila, boolean dodajanjeNarocil, boolean upravljanjeNarocil, boolean kemikalije) {
         this.role_Id = role_Id;
         this.role = role;
         this.knjizenje = knjizenje;
@@ -65,7 +68,7 @@ public class Role {
         this.narocila = narocila;
         this.dodajanje_narocil = dodajanjeNarocil;
         this.upravljanje_narocil = upravljanjeNarocil;
-
+        this.kemikalije = kemikalije;
     }
 
     // Getters and Setters
@@ -189,6 +192,14 @@ public class Role {
         this.narocila = narocila;
     }
 
+    public boolean isKemikalije(){
+        return kemikalije;
+    }
+    public void setKemikalije(boolean kemikalije){
+        this.kemikalije = kemikalije;
+    }
+
+
     @Override
     public String toString() {
         return "Role{" +
@@ -207,6 +218,7 @@ public class Role {
                 ", narocila=" + narocila +
                 ", dodajanje_narocil=" + dodajanje_narocil +
                 ", upravljanje_narocil=" + upravljanje_narocil +
+                ", kemikalije=" + kemikalije +
                 '}';
     }
 }

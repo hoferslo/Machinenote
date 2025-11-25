@@ -2,6 +2,7 @@ package com.example.machinenote;
 
 import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Imenik;
+import com.example.machinenote.models.Kemikalija;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Naloga;
@@ -55,7 +56,7 @@ public interface ApiService {
     Call<Void> deleteUser(@Path("username") String username);
 
     @Headers("Content-Type: application/json")
-    @GET("preventivni_pregledi.php") // Predvidevana pot do vaše PHP skripte
+    @GET("preventivni_pregledi.php")
     Call<List<PreventivniPregled>> getPreventivniPregledi();
 
     @Headers("Content-Type: application/json")
@@ -65,6 +66,15 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("rezervni_deli.php")
     Call<List<RezervniDel>> getRezervniDel();
+
+    @Headers("Content-Type: application/json")
+    @GET("Razvoj/kemikalije.php")
+    Call<List<Kemikalija>> getKemikalije();
+
+    @Headers("Content-Type: application/json")
+    @GET("Razvoj/kemikalije.php/{id}")
+    Call<Kemikalija> getKemikalijaById(@Path("id") int id);
+
 
     @Headers("Content-Type: application/json")
     @POST("rezervni_deli.php")
@@ -350,6 +360,7 @@ class RoleRequest {
     private boolean narocila;
     private boolean dodajanje_narocil;
     private boolean upravljanje_narocil;
+    private boolean kemikalije;
 
     public RoleRequest(String role, List<String> permissions) {
         this.role = role;
@@ -366,6 +377,7 @@ class RoleRequest {
         this.narocila = permissions.contains("Naročila");
         this.dodajanje_narocil = permissions.contains("Dodajanje Naročil");
         this.upravljanje_narocil = permissions.contains("Upravljanje Naročil");
+        this.kemikalije = permissions.contains("Kemikalije");
     }
 
     // Getters and setters...
@@ -397,6 +409,8 @@ class RoleRequest {
     public void setDodajanje_narocil(boolean dodajanje_narocil) { this.dodajanje_narocil = dodajanje_narocil; }
     public boolean isUpravljanje_narocil() { return upravljanje_narocil; }
     public void setUpravljanje_narocil(boolean upravljanje_narocil) { this.upravljanje_narocil = upravljanje_narocil; }
+    public boolean isKemikalije() { return kemikalije; }
+    public void setKemikalije(boolean kemikalije) { this.kemikalije = kemikalije; }
 }
 
 class UserCreationRequest {
