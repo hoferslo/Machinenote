@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.net.ParseException;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -69,6 +71,69 @@ public class CustomDateTimePicker implements View.OnClickListener {
         textTime.setOnClickListener(v -> custom.showDialog());
         return custom;
     }
+
+    public static String getCurrentDateTime() {
+        // Use TimeDifferenceCalculator.pattern to ensure format consistency
+        SimpleDateFormat dateFormat = new SimpleDateFormat(TimeDifferenceCalculator.pattern, Locale.getDefault());
+        return dateFormat.format(new Date());
+    }
+
+    /**
+     * Sets the time directly and updates the clock and validation
+     * This ensures the analog clock is updated and time validation is triggered
+     *
+     * @param textView The TextView to update
+     * @param clock The SimpleAnalogClock to update
+     * @param dateTime The date/time string to set
+     * @param adapter The ListViewAdapter for status updates
+     * @param adapterPosition The position in the adapter to update
+     * @param beforeTimeView The "before time" TextView (for validation)
+     * @param afterTimeView The "after time" TextView (for validation)
+     */
+    public static void setTimeDirectly(
+            TextView textView,
+            SimpleAnalogClock clock,
+            String dateTime,
+            ListViewAdapter adapter,
+            int adapterPosition,
+            TextView beforeTimeView,
+            TextView afterTimeView
+    ) {
+        try {
+            // Parse the date time string using the pattern from TimeDifferenceCalculator
+            SimpleDateFormat dateFormat = new SimpleDateFormat(TimeDifferenceCalculator.pattern, Locale.getDefault());
+            Date date = dateFormat.parse(dateTime);
+
+            if (date != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+
+                // Update the TextView
+                textView.setText(dateTime);
+
+                // Update the SimpleAnalogClock
+                // Note: setTime expects hours, minutes, seconds
+                clock.setTime(
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE),
+                        calendar.get(Calendar.SECOND)
+                );
+
+                // Update adapter status
+                adapter.updateItemStatus(adapterPosition, true);
+
+                // Trigger time validation
+                TextWatcherUtil.validateTimeOrderWithCalculator(beforeTimeView, afterTimeView, adapter);
+
+                Log.d("CustomDateTimePicker", "Time set successfully: " + dateTime);
+            }
+        } catch (ParseException | java.text.ParseException e) {
+            Log.e("CustomDateTimePicker", "Error parsing date: " + dateTime, e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     public CustomDateTimePicker(Context a, ICustomDateTimeListener customDateTimeListener) {
         context = a;

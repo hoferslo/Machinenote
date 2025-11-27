@@ -321,16 +321,8 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         }
     }
 
-    /**
-     * Update the images tab to reflect the current state of images
-     * This method can be used to sync the images display between tabs
-     */
     private void updateImagesTab() {
-        // You can implement logic here to show a summary or preview of images
-        // in the images tab if needed. For now, the images are stored in the single container
-        // and can be accessed from ImageHelper.getImagesFromLayout(context, binding.imagesContainer)
 
-        // Example: Update a text view to show number of images
         int imageCount = ImageHelper.getImagesFromLayout(context, binding.imagesContainer).size();
         // You could update a TextView here if you add one to show image count
         Log.d(TAG, "Current image count: " + imageCount);
@@ -342,26 +334,75 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         ((MainActivity) context).binding.toolbarTitle.setText(TAG);
     }
 
+
+    /**
+     * Updates the UI when a line is selected via QR code scanning
+     * Sets the line, šifrant, and start time automatically
+     * @param selectedIndex The index of the selected line in the linije list
+     */
+    public void updateUI(int selectedIndex) {
+        // Validate the selected index
+        if (selectedIndex < 0 || selectedIndex >= linije.size()) {
+            Log.e(TAG, "Invalid line index: " + selectedIndex);
+            Toast.makeText(context, "Neveljavnja linija", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Set the selected line
+        Linija selectedLinija = linije.get(selectedIndex);
+        setLinija(selectedLinija);
+
+        // Update the line button text to show the selected line
+        String linijaDisplay = selectedLinija.getLinijeSapAndNames();
+        binding.idOfLineBtn.setText(linijaDisplay);
+
+        // Update the adapter status for the line item
+        adapter.updateItemStatus(5, true);
+
+        // Set the start time to current time
+        String currentDateTime = CustomDateTimePicker.getCurrentDateTime();
+
+        // Update the time through CustomDateTimePicker to ensure clock and validation update
+        CustomDateTimePicker.setTimeDirectly(
+                binding.textBeforeTime,
+                binding.analogClockBefore,
+                currentDateTime,
+                adapter,
+                6,
+                binding.textBeforeTime,
+                binding.textAfterTime
+        );
+
+        Log.d(TAG, "Start time set to: " + currentDateTime);
+
+        // Mark QR code as used
+        qrKoda = getString(R.string.QR_koda_value_positive);
+
+        // Recalculate and adjust the layout height
+        TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
+
+        Log.d(TAG, "Line updated via QR: " + linijaDisplay + " (Index: " + selectedIndex + ")");
+    }
+
     @Override
     public void onQRCodeScanned(String qrCode) {
-        requireActivity().runOnUiThread(() -> {
+
+        // Then update UI after a short delay to ensure fragment is visible
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
             boolean success = false;
-            Log.d("I HATE N", "QR code scanned: " + qrCode.substring(3));
+            Log.d(TAG, "QR code scanned: " + qrCode.substring(3));
             String linijaID = HandleQRCode.getLinijaSapFromQR(qrCode);
 
-            for (Linija l : linije) {
+            for (int i = 0; i < linije.size(); i++) {
+                Linija l = linije.get(i);
                 if (String.valueOf(l.getLinija_id()).equals(linijaID)) {
-                    setLinija(l);
-
-                    // Update UI elements BEFORE going back
-                    binding.idOfLineBtn.setText(linija.getLinijeSapAndNames());
-                    adapter.updateItemStatus(5, true);
-                    TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
-
                     success = true;
                     qrKoda = getString(R.string.QR_koda_value_positive);
 
-                    Toast.makeText(context, "getString(R.string.line_set_successfully)", Toast.LENGTH_SHORT).show();
+                    // Update UI with the found line index
+                    updateUI(i);
+
+                    Toast.makeText(context, "Line set successfully", Toast.LENGTH_SHORT).show();
                     break;
                 }
             }
@@ -369,7 +410,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
             if (!success) {
                 Toast.makeText(context, getString(R.string.line_not_exist), Toast.LENGTH_SHORT).show();
             }
-        });
+        }, 300); // 300ms delay to ensure fragment transition is complete
     }
 
     @Override

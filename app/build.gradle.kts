@@ -11,8 +11,8 @@ android {
         applicationId = "com.example.machinenote"
         minSdk = 24
         targetSdk = 34
-        versionCode = 12
-        versionName = "1.2.6"
+        versionCode = 13
+        versionName = "1.2.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
