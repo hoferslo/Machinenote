@@ -380,6 +380,28 @@ public class ApiManager {
         });
     }
 
+    public void fetchAllKemikalije(KemikalijeListCallback callback) {
+        Call<List<Kemikalija>> call = apiService.getKemikalije();
+        call.enqueue(new Callback<List<Kemikalija>>() {
+            @Override
+            public void onResponse(Call<List<Kemikalija>>  call, Response<List<Kemikalija>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Kemikalija> kemikalija = response.body();
+                    Log.d("ApiManager", "Kemikalija retrieved successfully");
+                    Log.d("ApiManager", "Kemikalija list: " + kemikalija);
+                    callback.onSuccess(kemikalija);
+                } else {
+                    callback.onFailure("Failed to retrieve Kemikalije");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Kemikalija>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
     public void createRezervniDeli(RezervniDel rezervniDel, final Callback<Void> callback) {
         Call<Void> call = apiService.createRezervniDeli(rezervniDel);
         call.enqueue(new Callback<Void>() {
@@ -1167,7 +1189,7 @@ public class ApiManager {
         });
     }
 
-    public interface KemikalijeCallback{
+    public interface KemikalijeListCallback{
         void onSuccess(List<Kemikalija> response);
         void onFailure(String errorMessage);
     }

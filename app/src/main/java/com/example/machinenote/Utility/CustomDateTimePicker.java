@@ -78,18 +78,6 @@ public class CustomDateTimePicker implements View.OnClickListener {
         return dateFormat.format(new Date());
     }
 
-    /**
-     * Sets the time directly and updates the clock and validation
-     * This ensures the analog clock is updated and time validation is triggered
-     *
-     * @param textView The TextView to update
-     * @param clock The SimpleAnalogClock to update
-     * @param dateTime The date/time string to set
-     * @param adapter The ListViewAdapter for status updates
-     * @param adapterPosition The position in the adapter to update
-     * @param beforeTimeView The "before time" TextView (for validation)
-     * @param afterTimeView The "after time" TextView (for validation)
-     */
     public static void setTimeDirectly(
             TextView textView,
             SimpleAnalogClock clock,
