@@ -1,8 +1,6 @@
 package com.example.machinenote.fragments;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -30,17 +27,12 @@ import com.example.machinenote.databinding.FragmentDashboardBinding;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Role;
 import com.google.android.material.button.MaterialButton;
-import com.google.gson.Gson;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DashboardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DashboardFragment extends BaseFragment {
 
     public String TAG = "Glavna stran";
@@ -48,9 +40,45 @@ public class DashboardFragment extends BaseFragment {
     Context context;
     private ApiManager apiManager;
     private List<Linija> linijeList;
-    private int preventivniPreglediCount = 0;
-    private final List<MaterialButton> buttonList = new ArrayList<>();
-    public int iconResourceId = 0;;
+    private int preventivniPreglediCountPonikva = 0;
+    private int preventivniPreglediCountSinjaGorica = 0;
+    private int preventivniPreglediCountLogatec = 0;
+    private final Map<String, MaterialButton> buttonMap = new HashMap<>();
+
+    // Button configuration data
+    private static class ButtonConfig {
+        String name;
+        int iconRes;
+        int iconColor;
+        RoleChecker roleChecker;
+
+        ButtonConfig(String name, int iconRes, int iconColor, RoleChecker roleChecker) {
+            this.name = name;
+            this.iconRes = iconRes;
+            this.iconColor = iconColor;
+            this.roleChecker = roleChecker;
+        }
+    }
+
+    @FunctionalInterface
+    interface RoleChecker {
+        boolean check(Role role);
+    }
+
+    // Define all buttons in one place
+    private final ButtonConfig[] buttonConfigs = {
+            new ButtonConfig("Knjiženje", R.drawable.book_icon, android.R.color.holo_blue_dark, Role::isKnjizenje),
+            new ButtonConfig("Zastoji", R.drawable.schedule_icon, android.R.color.holo_orange_dark, Role::isZastoji),
+            new ButtonConfig("Remonti", R.drawable.handyman, android.R.color.holo_red_dark, Role::isRemonti),
+            new ButtonConfig("Imenik", R.drawable.contacts, android.R.color.holo_green_dark, Role::isImenik),
+            new ButtonConfig("Naloge", R.drawable.assignment_icon, android.R.color.holo_purple, Role::isNaloge),
+            new ButtonConfig("Preventivni pregledi", R.drawable.build_icon, android.R.color.darker_gray, Role::isPreventivniPregledi),
+            new ButtonConfig("Orodja", R.drawable.quick_reference, android.R.color.holo_blue_light, Role::isOrodja),
+            new ButtonConfig("Rezervni deli", R.drawable.home_repair, android.R.color.holo_green_light, Role::isRezervniDeli),
+            new ButtonConfig("Registracija", R.drawable.person_add, android.R.color.holo_orange_light, Role::isRegister),
+            new ButtonConfig("Naročila", R.drawable.assignment_icon, android.R.color.holo_orange_light, Role::isNarocila),
+            new ButtonConfig("Kemikalije", R.drawable.ic_science, android.R.color.holo_blue_light, Role::isKemikalije)
+    };
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -58,28 +86,28 @@ public class DashboardFragment extends BaseFragment {
 
     public static DashboardFragment newInstance(Context context) {
         DashboardFragment fragment = new DashboardFragment();
-        fragment.apiManager = new ApiManager(context);
         fragment.context = context;
+        fragment.apiManager = new ApiManager(context);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         binding = FragmentDashboardBinding.inflate(getLayoutInflater());
+
+        // Initialize context if null
+        if (context == null) {
+            context = requireContext();
+        }
+
         fetchLinije();
         initButtons();
-
-
         return binding.getRoot();
     }
 
@@ -87,132 +115,113 @@ public class DashboardFragment extends BaseFragment {
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
         Role role = sharedPreferencesHelper.getRole();
 
-        {
-            if (role.isKnjizenje()) {
-                MaterialButton btn = addButtonToLayout("Knjiženje");
-                btn.setOnClickListener(view -> {
+        Log.d(TAG, "========== initButtons START ==========");
+        Log.d(TAG, "Role: " + role);
+
+        for (ButtonConfig config : buttonConfigs) {
+            boolean hasPermission = config.roleChecker.check(role);
+            Log.d(TAG, config.name + " - has permission: " + hasPermission);
+
+            if (hasPermission) {
+                MaterialButton button = addButtonToLayout(config);
+                Log.d(TAG, config.name + " button created and added to layout");
+
+                button.setOnClickListener(view -> {
                     MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(KnjizenjeFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isZastoji()) {
-                MaterialButton btn = addButtonToLayout("Zastoji");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(ZastojiFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isRemonti()) {
-                MaterialButton btn = addButtonToLayout("Remonti");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(RemontiFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isImenik()) {
-                MaterialButton btn = addButtonToLayout("Imenik");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(ImenikFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isNaloge()) {
-                MaterialButton btn = addButtonToLayout("Naloge");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(NalogeFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isPreventivniPregledi()) {
-                MaterialButton btn = addButtonToLayout("Preventivni pregledi");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(PreventivniPreglediFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isOrodja()) {
-                MaterialButton btn = addButtonToLayout("Orodja");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(OrodjaFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isRezervniDeli()) {
-                MaterialButton btn = addButtonToLayout("Rezervni deli");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(RezervniDeliFragment.newInstance(context));
-                });
-            }
-        }
-        {
-            if (role.isRegister()) {
-                MaterialButton btn = addButtonToLayout("Registracija");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(RegisterFragment.newInstance(context));
+                    mainActivity.loadFragment(getFragmentForButton(config.name));
                 });
             }
         }
 
-        {
-            if (role.isNarocila()) {
-                MaterialButton btn = addButtonToLayout("Naročila");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(NarocilaFragment.newInstance(context));
-                });
-            }
+        // Add invisible button if last row has only one button
+        if (binding.scrollViewLl.getChildCount() > 0 && getLastLinearLayout().getChildCount() == 1) {
+            MaterialButton invisibleButton = createButton("invisibleBtn", 0, 0);
+            getLastLinearLayout().addView(invisibleButton);
+            invisibleButton.setVisibility(View.INVISIBLE);
+            Log.d(TAG, "Invisible button added for layout balance");
         }
 
-        {
-            Log.d("TAG", "initButtons: " + role.isKemikalije());
-            if (role.isKemikalije()) {
-
-                MaterialButton btn = addButtonToLayout("Kemikalije");
-                btn.setOnClickListener(view -> {
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    mainActivity.loadFragment(KemikalijeFragment.newInstance(context));
-                });
-            }
-        }
-
-        if (getLastLinearLayout().getChildCount() == 1) {
-            MaterialButton button = createButton("invisibleBtn");
-            getLastLinearLayout().addView(button);
-            button.setVisibility(View.INVISIBLE);
-        }
-
+        Log.d(TAG, "Total buttons in buttonMap: " + buttonMap.size());
+        Log.d(TAG, "ButtonMap keys: " + buttonMap.keySet());
+        Log.d(TAG, "========== initButtons END ==========");
     }
 
+    private Fragment getFragmentForButton(String buttonName) {
+        switch (buttonName) {
+            case "Knjiženje": return KnjizenjeFragment.newInstance(context);
+            case "Zastoji": return ZastojiFragment.newInstance(context);
+            case "Remonti": return RemontiFragment.newInstance(context);
+            case "Imenik": return ImenikFragment.newInstance(context);
+            case "Naloge": return NalogeFragment.newInstance(context);
+            case "Preventivni pregledi": return PreventivniPreglediFragment.newInstance(context);
+            case "Orodja": return OrodjaFragment.newInstance(context);
+            case "Rezervni deli": return RezervniDeliFragment.newInstance(context);
+            case "Registracija": return RegisterFragment.newInstance(context);
+            case "Naročila": return NarocilaFragment.newInstance(context);
+            case "Kemikalije": return KemikalijeFragment.newInstance(context);
+            default: return null;
+        }
+    }
 
-    private MaterialButton addButtonToLayout(String name) {
+    private MaterialButton addButtonToLayout(ButtonConfig config) {
         if (binding.scrollViewLl.getChildCount() == 0 || getLastLinearLayout().getChildCount() == 2) {
             LinearLayout newLinearLayout = createNewLinearLayout();
             binding.scrollViewLl.addView(newLinearLayout);
         }
 
-        // Always get a plain MaterialButton
-        MaterialButton button = createButton(name);
+        MaterialButton button = createButton(config.name, config.iconRes, config.iconColor);
         getLastLinearLayout().addView(button);
+        buttonMap.put(config.name, button);
 
         return button;
     }
 
+    private MaterialButton createButton(String text, int iconRes, int iconColor) {
+        if (context == null) {
+            context = requireContext();
+        }
+
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.secondaryButton);
+        MaterialButton button = new MaterialButton(contextThemeWrapper);
+
+        button.setText(text);
+
+        // Set layout params
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                0, // width (0 with weight = equal distribution)
+                (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 120,
+                        context.getResources().getDisplayMetrics()),
+                1 // weight
+        );
+
+        int margins = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 8,
+                context.getResources().getDisplayMetrics()
+        );
+        layoutParams.setMargins(margins, margins, margins, margins);
+
+        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.bg_button_secondary)));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
+
+        button.setLayoutParams(layoutParams);
+        button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+        button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
+        button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+
+        // Set icon if provided
+        if (iconRes != 0) {
+            button.setIcon(ContextCompat.getDrawable(context, iconRes));
+            int iconSizeInPx = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                    context.getResources().getDisplayMetrics()
+            );
+            button.setIconSize(iconSizeInPx);
+            button.setIconTint(ContextCompat.getColorStateList(context, iconColor));
+        }
+
+        return button;
+    }
 
     private LinearLayout createNewLinearLayout() {
         if (context == null) {
@@ -228,182 +237,6 @@ public class DashboardFragment extends BaseFragment {
         newLinearLayout.setGravity(Gravity.CENTER);
         return newLinearLayout;
     }
-
-    private void addBadgeToButton(MaterialButton button, int count) {
-        // Find parent (LinearLayout) and replace button with FrameLayout
-        ViewGroup parent = (ViewGroup) button.getParent();
-        if (parent == null) return;
-
-        int index = parent.indexOfChild(button);
-        parent.removeView(button);
-
-        FrameLayout container = new FrameLayout(context);
-        container.setLayoutParams(button.getLayoutParams());
-        container.addView(button);
-
-        TextView badge = new TextView(context);
-        badge.setText(String.valueOf(count));
-        badge.setTextColor(getResources().getColor(R.color.content_primary));
-        badge.setTextSize(12);
-        badge.setTypeface(Typeface.DEFAULT_BOLD);
-        badge.setGravity(Gravity.CENTER);
-
-        int size = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 24,
-                context.getResources().getDisplayMetrics()
-        );
-
-        FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(size, size);
-        badgeParams.gravity = Gravity.END | Gravity.TOP;
-        badgeParams.setMargins(0, 8, 8, 0);
-
-        GradientDrawable bg = new GradientDrawable();
-        bg.setColor(ContextCompat.getColor(context, R.color.action_primary));
-        bg.setShape(GradientDrawable.OVAL);
-        badge.setBackground(bg);
-
-        container.addView(badge, badgeParams);
-
-        parent.addView(container, index);
-    }
-
-
-
-    private MaterialButton createButton(String text) {
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.secondaryButton);
-        MaterialButton button = new MaterialButton(contextThemeWrapper);
-
-        // Set text
-        button.setText(text);
-
-        // Set icon based on button text
-        setButtonIcon(button, text);
-
-        // Set margins and width/weight
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                0, // width (0 means MATCH_PARENT based on weight)
-                (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 120,
-                        context.getResources().getDisplayMetrics()),
-                1 // weight (1 for equal distribution)
-        );
-
-        int margins = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 8,
-                context.getResources().getDisplayMetrics()
-        );
-        layoutParams.setMargins(margins, margins, margins, margins);
-
-        button.setBackgroundDrawable(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.bg_button_secondary)));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
-
-        button.setLayoutParams(layoutParams);
-
-        button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
-
-        // Set icon gravity to show icon above text
-        button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
-
-        button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
-        button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
-
-        buttonList.add(button);
-        return button;
-    }
-
-    private void setButtonIcon(MaterialButton button, String text) {
-        int iconResourceId = 0;
-        Log.d("TAG", "setButtonIcon: " + text);
-        switch (text) {
-
-            case "Knjiženje":
-                iconResourceId = R.drawable.book_icon;
-                break;
-            case "Zastoji":
-                iconResourceId = R.drawable.schedule_icon;
-                break;
-            case "Remonti":
-                iconResourceId = R.drawable.handyman;
-                break;
-            case "Imenik":
-                iconResourceId = R.drawable.contacts;
-                break;
-            case "Naloge":
-                iconResourceId = R.drawable.assignment_icon;
-                break;
-            case "Preventivni pregledi":
-                iconResourceId = R.drawable.build_icon;
-                break;
-            case "Orodja":
-                iconResourceId = R.drawable.quick_reference;
-                break;
-            case "Rezervni deli":
-                iconResourceId = R.drawable.home_repair;
-                break;
-            case "Registracija":
-                iconResourceId = R.drawable.person_add;
-                break;
-            case "Naročila":
-                iconResourceId = R.drawable.assignment_icon;
-                break;
-            case "Kemikalije":
-                iconResourceId = R.drawable.ic_science;
-                break;
-            default:
-                // Ni ikone za neznane gumbove
-                break;
-        }
-
-        if (iconResourceId != 0) {
-            button.setIcon(ContextCompat.getDrawable(context, iconResourceId));
-            int iconSizeInPx = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 40,
-                    context.getResources().getDisplayMetrics()
-            );
-            button.setIconSize(iconSizeInPx);
-
-            // Set unique color for each icon
-            switch (text) {
-                case "Knjiženje":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_dark));
-                    break;
-                case "Zastoji":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_dark));
-                    break;
-                case "Remonti":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_red_dark));
-                    break;
-                case "Imenik":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_dark));
-                    break;
-                case "Naloge":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_purple));
-                    break;
-                case "Preventivni pregledi":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.darker_gray));
-                    break;
-                case "Orodja":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
-                    break;
-                case "Rezervni deli":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_light));
-                    break;
-                case "Registracija":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
-                    break;
-                case "Naročila":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
-                    break;
-                case "Kemikalije":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
-                    break;
-                default:
-                    button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
-                    break;
-            }
-        }
-    }
-
 
     private LinearLayout getLastLinearLayout() {
         return (LinearLayout) binding.scrollViewLl.getChildAt(binding.scrollViewLl.getChildCount() - 1);
@@ -421,29 +254,267 @@ public class DashboardFragment extends BaseFragment {
         makeOnline(mainActivity.serverConnection);
     }
 
-    public void makeOnline(boolean online) {
-        buttonList.forEach(button -> {
-            if (button != null) {
-                switch (button.getText().toString()) {
-                    case "Zastoji", "Knjiženje", "Remonti", "Preventivni pregledi", "Naloge",
-                         "Registracija", "Rezervni deli", "Imenik", "Orodja","Naročila", "Kemikalije" -> makeButtonOnline(online, button);
-                }
-            }
-        });
-
-        buttonList.forEach(button -> {
-            if (button != null) {
-                switch (button.getText().toString()) {
-                    case "Naloge" -> getNalogeCount();
-                }
-            }
-        });
-    }
 
     private void getNalogeCount() {
         //todo naredi najprej naloge tab, potem šele to
     }
 
+    public void makeOnline(boolean online) {
+        for (MaterialButton button : buttonMap.values()) {
+            if (button != null) {
+                makeButtonOnline(online, button);
+            }
+        }
+
+        // Update for specific buttons
+        MaterialButton nalogeButton = buttonMap.get("Naloge");
+        if (nalogeButton != null) {
+            getNalogeCount();
+        }
+
+        MaterialButton prevPreglediButton = buttonMap.get("Preventivni pregledi");
+        if (prevPreglediButton != null) {
+            updatePreventivniPregledi();
+        }
+    }
+
+    private void updatePreventivniPregledi() {
+        Log.d(TAG, "========== updatePreventivniPregledi START ==========");
+
+        MaterialButton button = buttonMap.get("Preventivni pregledi");
+        Log.d(TAG, "Button from map: " + (button != null ? "FOUND" : "NULL"));
+
+        if (button == null) {
+            Log.e(TAG, "ERROR: Button is NULL - cannot proceed");
+            Log.d(TAG, "ButtonMap contents: " + buttonMap.keySet());
+            return;
+        }
+
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
+        Role role = sharedPreferencesHelper.getRole();
+        String userLocation = sharedPreferencesHelper.getLokacija();
+        boolean isAdmin = role.isRegister();
+
+        Log.d(TAG, "User isAdmin: " + isAdmin);
+        Log.d(TAG, "User location: " + userLocation);
+        Log.d(TAG, "Count Ponikva: " + preventivniPreglediCountPonikva);
+        Log.d(TAG, "Count Logatec: " + preventivniPreglediCountLogatec);
+        Log.d(TAG, "Count Sinja Gorica: " + preventivniPreglediCountSinjaGorica);
+
+        // Wrap button in FrameLayout if not already wrapped
+        ViewGroup parent = (ViewGroup) button.getParent();
+        FrameLayout container;
+
+        if (parent instanceof FrameLayout) {
+            Log.d(TAG, "Parent is already FrameLayout");
+            container = (FrameLayout) parent;
+            Log.d(TAG, "FrameLayout child count BEFORE removing circles: " + container.getChildCount());
+
+            // Remove existing circles (but keep the button!)
+            int childCount = container.getChildCount();
+            for (int i = childCount - 1; i >= 0; i--) {
+                View child = container.getChildAt(i);
+                Log.d(TAG, "Child " + i + ": " + child.getClass().getSimpleName());
+
+                // Only remove TextViews that are NOT MaterialButtons
+                if (child instanceof TextView && !(child instanceof MaterialButton)) {
+                    Log.d(TAG, "Removing TextView circle at index " + i);
+                    container.removeViewAt(i);
+                } else {
+                    Log.d(TAG, "Keeping child at index " + i);
+                }
+            }
+
+            Log.d(TAG, "FrameLayout child count AFTER removing circles: " + container.getChildCount());
+        } else if (parent instanceof LinearLayout) {
+            Log.d(TAG, "Parent is LinearLayout - need to wrap in FrameLayout");
+            LinearLayout linearParent = (LinearLayout) parent;
+            int index = linearParent.indexOfChild(button);
+            ViewGroup.LayoutParams buttonParams = button.getLayoutParams();
+
+            Log.d(TAG, "Button index in LinearLayout: " + index);
+
+            // Store ALL original properties
+            float weight = 0;
+            int originalHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+            int[] originalMargins = new int[4];
+
+            if (buttonParams instanceof LinearLayout.LayoutParams) {
+                LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) buttonParams;
+                weight = llp.weight;
+                originalHeight = llp.height;
+                originalMargins[0] = llp.leftMargin;
+                originalMargins[1] = llp.topMargin;
+                originalMargins[2] = llp.rightMargin;
+                originalMargins[3] = llp.bottomMargin;
+                Log.d(TAG, "Original weight: " + weight + ", height: " + originalHeight);
+            }
+
+            // Remove button from LinearLayout
+            linearParent.removeView(button);
+            Log.d(TAG, "Button removed from LinearLayout");
+
+            // Create FrameLayout container
+            container = new FrameLayout(context);
+            LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
+                    16, // width with weight
+                    originalHeight + 16
+            );
+            containerParams.weight = weight;
+            containerParams.setMargins(originalMargins[0], originalMargins[1],
+                    originalMargins[2], originalMargins[3]);
+            container.setLayoutParams(containerParams);
+
+            FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            );
+            frameParams.setMargins(8, 8, 8, 8); // Add inner space
+            button.setLayoutParams(frameParams);
+
+
+
+            button.setBackgroundDrawable(Objects.requireNonNull(
+                    ContextCompat.getDrawable(context, R.drawable.bg_button_secondary)));
+            button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
+            button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+            button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.darker_gray));
+            button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
+            button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+
+
+
+
+            Log.d(TAG, "Button style properties re-applied");
+
+            // Add button to container
+            container.addView(button);
+            Log.d(TAG, "Button added to FrameLayout, child count: " + container.getChildCount());
+
+            // Add container back to LinearLayout
+            linearParent.addView(container, index);
+            Log.d(TAG, "FrameLayout added back to LinearLayout at index: " + index);
+        } else {
+            Log.e(TAG, "ERROR: Parent is neither FrameLayout nor LinearLayout! Parent type: " + parent.getClass().getSimpleName());
+            return;
+        }
+
+        // Ensure button is visible
+        button.setVisibility(View.VISIBLE);
+        button.setElevation(4f);
+        Log.d(TAG, "Button visibility set to VISIBLE, elevation set to 4f");
+
+        int circleSize = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 32,
+                context.getResources().getDisplayMetrics()
+        );
+        Log.d(TAG, "Circle size in pixels: " + circleSize);
+
+        int circlesAdded = 0;
+
+        if (isAdmin) {
+            Log.d(TAG, "Admin mode - checking all three locations");
+
+            if (preventivniPreglediCountPonikva > 0) {
+                Log.d(TAG, "Adding Ponikva circle (upper left)");
+                addCircleToContainer(container, "Pon\n" + String.valueOf(preventivniPreglediCountPonikva),
+                        circleSize, Gravity.START | Gravity.TOP, 8, 8, 0, 0,
+                        android.R.color.holo_blue_dark);
+                circlesAdded++;
+            }
+
+            if (preventivniPreglediCountLogatec > 0) {
+                Log.d(TAG, "Adding Logatec circle (upper right)");
+                addCircleToContainer(container, "Log\n" + String.valueOf(preventivniPreglediCountLogatec),
+                        circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0,
+                        android.R.color.holo_orange_dark);
+                circlesAdded++;
+            }
+
+            if (preventivniPreglediCountSinjaGorica > 0) {
+                Log.d(TAG, "Adding Sinja Gorica circle (lower left)");
+                addCircleToContainer(container, "SG\n" + String.valueOf(preventivniPreglediCountSinjaGorica),
+                        circleSize, Gravity.START | Gravity.BOTTOM, 8, 0, 0, 8,
+                        android.R.color.holo_green_dark);
+                circlesAdded++;
+            }
+        } else {
+            Log.d(TAG, "Regular user mode - checking user's location only");
+
+            int count = 0;
+            int color = android.R.color.holo_blue_dark;
+
+            if ("Ponikva".equalsIgnoreCase(userLocation)) {
+                count = preventivniPreglediCountPonikva;
+                color = android.R.color.holo_blue_dark;
+                Log.d(TAG, "User location is Ponikva, count: " + count);
+            } else if ("Logatec".equalsIgnoreCase(userLocation)) {
+                count = preventivniPreglediCountLogatec;
+                color = android.R.color.holo_orange_dark;
+                Log.d(TAG, "User location is Logatec, count: " + count);
+            } else if ("Sinja Gorica".equalsIgnoreCase(userLocation)) {
+                count = preventivniPreglediCountSinjaGorica;
+                color = android.R.color.holo_green_dark;
+                Log.d(TAG, "User location is Sinja Gorica, count: " + count);
+            } else {
+                Log.d(TAG, "User location doesn't match any known location: " + userLocation);
+            }
+
+            if (count > 0) {
+                Log.d(TAG, "Adding circle for user's location (upper right)");
+                addCircleToContainer(container, String.valueOf(count),
+                        circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0, color);
+                circlesAdded++;
+            }
+        }
+
+        Log.d(TAG, "Total circles added: " + circlesAdded);
+        Log.d(TAG, "Container child count after adding circles: " + container.getChildCount());
+
+        container.requestLayout();
+        Log.d(TAG, "requestLayout() called on container");
+
+        Log.d(TAG, "========== updatePreventivniPregledi END ==========");
+    }
+
+    private void addCircleToContainer(FrameLayout container, String text, int size,
+                                      int gravity, int left, int top, int right, int bottom,
+                                      int colorRes) {
+        Log.d(TAG, "addCircleToContainer: text=" + text + ", size=" + size + ", gravity=" + gravity);
+
+        TextView circle = new TextView(context);
+        circle.setText(text);
+        circle.setTextColor(context.getResources().getColor(android.R.color.white));
+        circle.setTextSize(10);
+        circle.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+        circle.setGravity(Gravity.CENTER);
+        circle.setElevation(8f); // Higher than button
+        circle.setClickable(false);
+        circle.setFocusable(false);
+
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(ContextCompat.getColor(context, colorRes));
+        bg.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+        bg.setStroke(2, context.getResources().getColor(android.R.color.white));
+        circle.setBackground(bg);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(size, size);
+        params.gravity = gravity;
+
+        // Convert DP to PX for margins
+        int leftPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, left, context.getResources().getDisplayMetrics());
+        int topPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, top, context.getResources().getDisplayMetrics());
+        int rightPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, right, context.getResources().getDisplayMetrics());
+        int bottomPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, bottom, context.getResources().getDisplayMetrics());
+
+        params.setMargins(leftPx, topPx, rightPx, bottomPx);
+
+        Log.d(TAG, "Circle margins (px): " + leftPx + "," + topPx + "," + rightPx + "," + bottomPx);
+
+        container.addView(circle, params);
+
+        Log.d(TAG, "Circle added to container, container now has " + container.getChildCount() + " children");
+    }
 
     private void makeButtonOnline(boolean online, MaterialButton button) {
         button.setClickable(online);
@@ -454,46 +525,8 @@ public class DashboardFragment extends BaseFragment {
             button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
             button.setAlpha(1.0f); // Full opacity
 
-            // Restore original icon color
-            String text = button.getText().toString();
-            switch (text) {
-                case "Knjiženje":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_dark));
-                    break;
-                case "Zastoji":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_dark));
-                    break;
-                case "Remonti":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_red_dark));
-                    break;
-                case "Imenik":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_dark));
-                    break;
-                case "Naloge":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_purple));
-                    break;
-                case "Preventivni pregledi":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.darker_gray));
-                    break;
-                case "Orodja":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
-                    break;
-                case "Rezervni deli":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_light));
-                    break;
-                case "Registracija":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
-                    break;
-                case "Naročila":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
-                    break;
-                case "Kemikalije":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
-                    break;
-                default:
-                    button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
-                    break;
-            }
+            // Restore original icon color based on button text
+            restoreIconColor(button);
         } else {
             // Apply subtle gray overlay effect - keep original colors but reduce opacity
             button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
@@ -501,51 +534,54 @@ public class DashboardFragment extends BaseFragment {
             button.setAlpha(0.3f); // Reduced opacity creates gray overlay effect
 
             // Keep the original icon color when offline too
-            String text = button.getText().toString();
-            switch (text) {
-                case "Knjiženje":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_dark));
-                    break;
-                case "Zastoji":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_dark));
-                    break;
-                case "Remonti":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_red_dark));
-                    break;
-                case "Imenik":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_dark));
-                    break;
-                case "Naloge":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_purple));
-                    break;
-                case "Preventivni pregledi":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.darker_gray));
-                    break;
-                case "Orodja":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
-                    break;
-                case "Rezervni deli":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_light));
-                    break;
-                case "Registracija":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
-                    break;
-                case "Naročila":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
-                    break;
-                case "Kemikalije":
-                    button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
-                    break;
-                default:
-                    button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
-                    break;
-            }
+            restoreIconColor(button);
         }
 
-        // Keep the original icon (no need to change it)
+        // Keep the original icon gravity
         button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
     }
 
+    private void restoreIconColor(MaterialButton button) {
+        String text = button.getText().toString();
+        switch (text) {
+            case "Knjiženje":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_dark));
+                break;
+            case "Zastoji":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_dark));
+                break;
+            case "Remonti":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_red_dark));
+                break;
+            case "Imenik":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_dark));
+                break;
+            case "Naloge":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_purple));
+                break;
+            case "Preventivni pregledi":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.darker_gray));
+                break;
+            case "Orodja":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
+                break;
+            case "Rezervni deli":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_green_light));
+                break;
+            case "Registracija":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
+                break;
+            case "Naročila":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
+                break;
+            case "Kemikalije":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
+                break;
+            default:
+                button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
+                break;
+        }
+    }
 
     private void fetchLinije() {
         MainActivity mainActivity = (MainActivity) requireActivity();
@@ -555,9 +591,31 @@ public class DashboardFragment extends BaseFragment {
                 @Override
                 public void onSuccess(List<Linija> response) {
                     linijeList = response;
+                    preventivniPreglediCountPonikva = 5;
+                    preventivniPreglediCountSinjaGorica = 0;
+                    preventivniPreglediCountLogatec = 0;
+
                     for (Linija linija : linijeList) {
-                        preventivniPreglediCount = preventivniPreglediCount + linija.getStevilo_sklopov();
+                        Log.d("Linija:", String.valueOf(linija));
+                        Log.d("Lokacija za to linijo:", linija.getLokacija_naziv());
+                        if ("Ponikva".equalsIgnoreCase(linija.getLokacija_naziv())) {
+                            preventivniPreglediCountPonikva += linija.getStevilo_sklopov();
+                        } else if ("Sinja Gorica".equalsIgnoreCase(linija.getLokacija_naziv())) {
+                            preventivniPreglediCountSinjaGorica += linija.getStevilo_sklopov();
+                        } else if ("Logatec".equalsIgnoreCase(linija.getLokacija_naziv())) {
+                            preventivniPreglediCountLogatec += linija.getStevilo_sklopov();
+                        } else if ("Vse Lokacije".equalsIgnoreCase(linija.getLokacija_naziv())) {
+                            preventivniPreglediCountSinjaGorica += linija.getStevilo_sklopov();
+                            preventivniPreglediCountPonikva += linija.getStevilo_sklopov();
+                            preventivniPreglediCountLogatec += linija.getStevilo_sklopov();
+                        }
                     }
+
+                    Log.d("Število za ponikvo", String.valueOf(preventivniPreglediCountPonikva));
+                    Log.d("Število za logatec", String.valueOf(preventivniPreglediCountLogatec));
+                    Log.d("Število za sinjo gorico", String.valueOf(preventivniPreglediCountSinjaGorica));
+
+                    updatePreventivniPregledi();
                 }
 
                 @Override

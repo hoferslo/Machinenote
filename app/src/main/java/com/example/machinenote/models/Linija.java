@@ -42,13 +42,13 @@ public class Linija  implements DisplayableItem, Serializable {
 
     // Constructor with all fields
     public Linija(int linija_id, String linija_SAP, String naziv_linije, String linija_aktivna,
-                  int prostor_id, String lokacija) {
+                  int prostor_id, String lokacija_naziv) {
         this.linija_id = linija_id;
         this.linija_SAP = linija_SAP;
         this.naziv_linije = naziv_linije;
         this.linija_aktivna = linija_aktivna;
         this.prostor_id = prostor_id;
-        this.lokacija = lokacija;
+        this.lokacija = lokacija_naziv;
     }
 
     // Getters and Setters

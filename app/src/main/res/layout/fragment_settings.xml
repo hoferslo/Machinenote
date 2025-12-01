@@ -130,6 +130,36 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/changeLocationSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp"
+                    android:padding="16dp"
+                    android:background="@drawable/bg_card_secondary">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Spremeni lokacijo"
+                        android:textSize="18sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginBottom="16dp" />
+
+                    <Spinner
+                        android:id="@+id/changeLocationSpinner"
+                        style="@style/Input.Base"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Izberite lokacijo"
+                        android:drawableStart="@mipmap/person"
+                        android:drawablePadding="12dp"
+                        android:gravity="start|center_vertical" />
+
+                </LinearLayout>
+
                 <!-- Change Password Section -->
                 <LinearLayout
                     android:id="@+id/changePasswordSection"
