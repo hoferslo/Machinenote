@@ -11,6 +11,8 @@ import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.Narocila;
+import com.example.machinenote.models.OmaraKemikalije;
+import com.example.machinenote.models.PolicaKemikalije;
 import com.example.machinenote.models.PregledOpravilo;
 import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.Remont;
@@ -401,6 +403,81 @@ public class ApiManager {
             }
         });
     }
+
+    public void createKemikalija(Kemikalija kemikalija, final Callback<Void> callback) {
+        Call<Void> call = apiService.createKemikalija(kemikalija);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Kemikalija", "Kemikalija created successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("Kemikalija", "Failed to create Kemikalija: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Kemikalija", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    // Fetch all Police (Shelves)
+    public void fetchAllPoliceKemikalije(final PoliceListCallback callback) {
+        Call<List<PolicaKemikalije>> call = apiService.fetchAllPoliceKemikalije();
+        call.enqueue(new Callback<List<PolicaKemikalije>>() {
+            @Override
+            public void onResponse(Call<List<PolicaKemikalije>> call, Response<List<PolicaKemikalije>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<PolicaKemikalije> police = response.body();
+                    Log.d("ApiManager", "Fetched " + police.size() + " police");
+                    callback.onSuccess(police);
+                } else {
+                    String errorMsg = "Failed to fetch police: " + response.message();
+                    Log.e("ApiManager", errorMsg);
+                    callback.onFailure(errorMsg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PolicaKemikalije>> call, Throwable t) {
+                String errorMsg = "Error fetching police: " + t.getMessage();
+                Log.e("ApiManager", errorMsg, t);
+                callback.onFailure(errorMsg);
+            }
+        });
+    }
+
+    // Fetch all Omare (Cabinets)
+    public void fetchAllOmareKemikalije(final OmareListCallback callback) {
+        Call<List<OmaraKemikalije>> call = apiService.fetchAllOmareKemikalije();
+        call.enqueue(new Callback<List<OmaraKemikalije>>() {
+            @Override
+            public void onResponse(Call<List<OmaraKemikalije>> call, Response<List<OmaraKemikalije>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<OmaraKemikalije> omare = response.body();
+                    Log.d("ApiManager", "Fetched " + omare.size() + " omare");
+                    callback.onSuccess(omare);
+                } else {
+                    String errorMsg = "Failed to fetch omare: " + response.message();
+                    Log.e("ApiManager", errorMsg);
+                    callback.onFailure(errorMsg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<OmaraKemikalije>> call, Throwable t) {
+                String errorMsg = "Error fetching omare: " + t.getMessage();
+                Log.e("ApiManager", errorMsg, t);
+                callback.onFailure(errorMsg);
+            }
+        });
+    }
+
 
     public void createRezervniDeli(RezervniDel rezervniDel, final Callback<Void> callback) {
         Call<Void> call = apiService.createRezervniDeli(rezervniDel);
@@ -1187,6 +1264,17 @@ public class ApiManager {
                 callback.onFailure(call, t);
             }
         });
+    }
+
+
+    public interface PoliceListCallback {
+        void onSuccess(List<PolicaKemikalije> police);
+        void onFailure(String errorMessage);
+    }
+
+    public interface OmareListCallback {
+        void onSuccess(List<OmaraKemikalije> omare);
+        void onFailure(String errorMessage);
     }
 
     public interface KemikalijeListCallback{

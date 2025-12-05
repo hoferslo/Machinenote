@@ -2,20 +2,27 @@ package com.example.machinenote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.UpdateManager;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentSettingsBinding;
+import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SettingsFragment extends BaseFragment {
@@ -24,6 +31,10 @@ public class SettingsFragment extends BaseFragment {
     FragmentSettingsBinding binding;
     Context context;
     private SharedPreferencesHelper prefsHelper;
+    private ApiManager apiManager;
+    private List<Lokacija> lokacije;
+    private List<String> locations = new ArrayList<>();
+    private ArrayAdapter<String> locationAdapter;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -39,6 +50,7 @@ public class SettingsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefsHelper = SharedPreferencesHelper.getInstance(requireContext());
+        apiManager = new ApiManager(context);
     }
 
     @Override
@@ -47,7 +59,7 @@ public class SettingsFragment extends BaseFragment {
 
         // Inflate the layout for this fragment
         binding = FragmentSettingsBinding.inflate(getLayoutInflater());
-
+        setupApiCalls();
         setupViews();
         setupClickListeners();
         loadUserInfo();
@@ -99,6 +111,50 @@ public class SettingsFragment extends BaseFragment {
         // Check for updates button click listener
         binding.checkUpdateBtn.setOnClickListener(v -> {
             checkForUpdates();
+        });
+
+        locationAdapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_spinner_item, locations);
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.changeLocationSpinner.setAdapter(locationAdapter);
+
+    }
+
+    private void setupApiCalls(){
+        apiManager.fetchLokacije(new ApiManager.LokacijeCallback() {
+            @Override
+            public void onSuccess(List<Lokacija> response) {
+                lokacije = response;
+                locations.clear(); // Počistimo seznam
+
+                for (Lokacija l : lokacije) {
+                    locations.add(l.getNaziv());
+                }
+
+                // Posodobimo adapter POTEM ko imamo podatke
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        locationAdapter.notifyDataSetChanged();
+
+                        // Če imamo lokacije, nastavimo prvo kot privzeto
+                        if (!locations.isEmpty()) {
+                            binding.changeLocationSpinner.setSelection(0);
+                        }
+                    });
+                }
+
+                Log.e("lokacije", "lokacije: " + lokacije.toString());
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("lokacije", "Error: " + errorMessage);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(context, "Napaka pri nalaganju lokacij: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
         });
     }
 

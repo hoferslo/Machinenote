@@ -7,6 +7,8 @@ import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.Lokacija;
 import com.example.machinenote.models.Naloga;
 import com.example.machinenote.models.Narocila;
+import com.example.machinenote.models.OmaraKemikalije;
+import com.example.machinenote.models.PolicaKemikalije;
 import com.example.machinenote.models.PregledOpravilo;
 import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.RezervniDel;
@@ -75,6 +77,17 @@ public interface ApiService {
     @GET("Razvoj/kemikalije.php/{id}")
     Call<Kemikalija> getKemikalijaById(@Path("id") int id);
 
+    @Headers("Content-Type: application/json")
+    @POST("Razvoj/kemikalije.php.php")
+    Call<Void> createKemikalija(@Body Kemikalija kemikalija);
+
+    @Headers("Content-Type: application/json")
+    @GET("Razvoj/polica.php")
+    Call<List<PolicaKemikalije>> fetchAllPoliceKemikalije();
+
+    @Headers("Content-Type: application/json")
+    @GET("Razvoj/omara.php")
+    Call<List<OmaraKemikalije>> fetchAllOmareKemikalije();
 
     @Headers("Content-Type: application/json")
     @POST("rezervni_deli.php")

@@ -77,7 +77,8 @@ public class DashboardFragment extends BaseFragment {
             new ButtonConfig("Rezervni deli", R.drawable.home_repair, android.R.color.holo_green_light, Role::isRezervniDeli),
             new ButtonConfig("Registracija", R.drawable.person_add, android.R.color.holo_orange_light, Role::isRegister),
             new ButtonConfig("Naročila", R.drawable.assignment_icon, android.R.color.holo_orange_light, Role::isNarocila),
-            new ButtonConfig("Kemikalije", R.drawable.ic_science, android.R.color.holo_blue_light, Role::isKemikalije)
+            new ButtonConfig("Kemikalije", R.drawable.ic_science, android.R.color.holo_blue_light, Role::isKemikalije),
+            new ButtonConfig("KemikalijeAdd", R.drawable.ic_science, android.R.color.holo_blue_light, Role::isKemikalije)
     };
 
     public DashboardFragment() {
@@ -159,6 +160,7 @@ public class DashboardFragment extends BaseFragment {
             case "Registracija": return RegisterFragment.newInstance(context);
             case "Naročila": return NarocilaFragment.newInstance(context);
             case "Kemikalije": return KemikalijeFragment.newInstance(context);
+            case "KemikalijeAdd": return KemikalijeAddFragment.newInstance(context);
             default: return null;
         }
     }
@@ -279,10 +281,7 @@ public class DashboardFragment extends BaseFragment {
     }
 
     private void updatePreventivniPregledi() {
-        Log.d(TAG, "========== updatePreventivniPregledi START ==========");
-
         MaterialButton button = buttonMap.get("Preventivni pregledi");
-        Log.d(TAG, "Button from map: " + (button != null ? "FOUND" : "NULL"));
 
         if (button == null) {
             Log.e(TAG, "ERROR: Button is NULL - cannot proceed");
@@ -295,44 +294,28 @@ public class DashboardFragment extends BaseFragment {
         String userLocation = sharedPreferencesHelper.getLokacija();
         boolean isAdmin = role.isRegister();
 
-        Log.d(TAG, "User isAdmin: " + isAdmin);
-        Log.d(TAG, "User location: " + userLocation);
-        Log.d(TAG, "Count Ponikva: " + preventivniPreglediCountPonikva);
-        Log.d(TAG, "Count Logatec: " + preventivniPreglediCountLogatec);
-        Log.d(TAG, "Count Sinja Gorica: " + preventivniPreglediCountSinjaGorica);
-
         // Wrap button in FrameLayout if not already wrapped
         ViewGroup parent = (ViewGroup) button.getParent();
         FrameLayout container;
 
         if (parent instanceof FrameLayout) {
-            Log.d(TAG, "Parent is already FrameLayout");
             container = (FrameLayout) parent;
-            Log.d(TAG, "FrameLayout child count BEFORE removing circles: " + container.getChildCount());
 
             // Remove existing circles (but keep the button!)
             int childCount = container.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {
                 View child = container.getChildAt(i);
-                Log.d(TAG, "Child " + i + ": " + child.getClass().getSimpleName());
 
                 // Only remove TextViews that are NOT MaterialButtons
                 if (child instanceof TextView && !(child instanceof MaterialButton)) {
-                    Log.d(TAG, "Removing TextView circle at index " + i);
                     container.removeViewAt(i);
-                } else {
-                    Log.d(TAG, "Keeping child at index " + i);
                 }
             }
 
-            Log.d(TAG, "FrameLayout child count AFTER removing circles: " + container.getChildCount());
         } else if (parent instanceof LinearLayout) {
-            Log.d(TAG, "Parent is LinearLayout - need to wrap in FrameLayout");
             LinearLayout linearParent = (LinearLayout) parent;
             int index = linearParent.indexOfChild(button);
             ViewGroup.LayoutParams buttonParams = button.getLayoutParams();
-
-            Log.d(TAG, "Button index in LinearLayout: " + index);
 
             // Store ALL original properties
             float weight = 0;
@@ -347,12 +330,10 @@ public class DashboardFragment extends BaseFragment {
                 originalMargins[1] = llp.topMargin;
                 originalMargins[2] = llp.rightMargin;
                 originalMargins[3] = llp.bottomMargin;
-                Log.d(TAG, "Original weight: " + weight + ", height: " + originalHeight);
             }
 
             // Remove button from LinearLayout
             linearParent.removeView(button);
-            Log.d(TAG, "Button removed from LinearLayout");
 
             // Create FrameLayout container
             container = new FrameLayout(context);
@@ -382,18 +363,11 @@ public class DashboardFragment extends BaseFragment {
             button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
             button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
 
-
-
-
-            Log.d(TAG, "Button style properties re-applied");
-
             // Add button to container
             container.addView(button);
-            Log.d(TAG, "Button added to FrameLayout, child count: " + container.getChildCount());
 
             // Add container back to LinearLayout
             linearParent.addView(container, index);
-            Log.d(TAG, "FrameLayout added back to LinearLayout at index: " + index);
         } else {
             Log.e(TAG, "ERROR: Parent is neither FrameLayout nor LinearLayout! Parent type: " + parent.getClass().getSimpleName());
             return;
@@ -402,21 +376,16 @@ public class DashboardFragment extends BaseFragment {
         // Ensure button is visible
         button.setVisibility(View.VISIBLE);
         button.setElevation(4f);
-        Log.d(TAG, "Button visibility set to VISIBLE, elevation set to 4f");
 
         int circleSize = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 32,
                 context.getResources().getDisplayMetrics()
         );
-        Log.d(TAG, "Circle size in pixels: " + circleSize);
 
         int circlesAdded = 0;
 
         if (isAdmin) {
-            Log.d(TAG, "Admin mode - checking all three locations");
-
             if (preventivniPreglediCountPonikva > 0) {
-                Log.d(TAG, "Adding Ponikva circle (upper left)");
                 addCircleToContainer(container, "Pon\n" + String.valueOf(preventivniPreglediCountPonikva),
                         circleSize, Gravity.START | Gravity.TOP, 8, 8, 0, 0,
                         android.R.color.holo_blue_dark);
@@ -424,7 +393,6 @@ public class DashboardFragment extends BaseFragment {
             }
 
             if (preventivniPreglediCountLogatec > 0) {
-                Log.d(TAG, "Adding Logatec circle (upper right)");
                 addCircleToContainer(container, "Log\n" + String.valueOf(preventivniPreglediCountLogatec),
                         circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0,
                         android.R.color.holo_orange_dark);
@@ -432,55 +400,38 @@ public class DashboardFragment extends BaseFragment {
             }
 
             if (preventivniPreglediCountSinjaGorica > 0) {
-                Log.d(TAG, "Adding Sinja Gorica circle (lower left)");
                 addCircleToContainer(container, "SG\n" + String.valueOf(preventivniPreglediCountSinjaGorica),
                         circleSize, Gravity.START | Gravity.BOTTOM, 8, 0, 0, 8,
                         android.R.color.holo_green_dark);
                 circlesAdded++;
             }
         } else {
-            Log.d(TAG, "Regular user mode - checking user's location only");
-
             int count = 0;
             int color = android.R.color.holo_blue_dark;
 
             if ("Ponikva".equalsIgnoreCase(userLocation)) {
                 count = preventivniPreglediCountPonikva;
                 color = android.R.color.holo_blue_dark;
-                Log.d(TAG, "User location is Ponikva, count: " + count);
             } else if ("Logatec".equalsIgnoreCase(userLocation)) {
                 count = preventivniPreglediCountLogatec;
                 color = android.R.color.holo_orange_dark;
-                Log.d(TAG, "User location is Logatec, count: " + count);
             } else if ("Sinja Gorica".equalsIgnoreCase(userLocation)) {
                 count = preventivniPreglediCountSinjaGorica;
                 color = android.R.color.holo_green_dark;
-                Log.d(TAG, "User location is Sinja Gorica, count: " + count);
-            } else {
-                Log.d(TAG, "User location doesn't match any known location: " + userLocation);
             }
 
             if (count > 0) {
-                Log.d(TAG, "Adding circle for user's location (upper right)");
                 addCircleToContainer(container, String.valueOf(count),
                         circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0, color);
                 circlesAdded++;
             }
         }
-
-        Log.d(TAG, "Total circles added: " + circlesAdded);
-        Log.d(TAG, "Container child count after adding circles: " + container.getChildCount());
-
         container.requestLayout();
-        Log.d(TAG, "requestLayout() called on container");
-
-        Log.d(TAG, "========== updatePreventivniPregledi END ==========");
     }
 
     private void addCircleToContainer(FrameLayout container, String text, int size,
                                       int gravity, int left, int top, int right, int bottom,
                                       int colorRes) {
-        Log.d(TAG, "addCircleToContainer: text=" + text + ", size=" + size + ", gravity=" + gravity);
 
         TextView circle = new TextView(context);
         circle.setText(text);
@@ -509,11 +460,7 @@ public class DashboardFragment extends BaseFragment {
 
         params.setMargins(leftPx, topPx, rightPx, bottomPx);
 
-        Log.d(TAG, "Circle margins (px): " + leftPx + "," + topPx + "," + rightPx + "," + bottomPx);
-
         container.addView(circle, params);
-
-        Log.d(TAG, "Circle added to container, container now has " + container.getChildCount() + " children");
     }
 
     private void makeButtonOnline(boolean online, MaterialButton button) {
@@ -577,6 +524,9 @@ public class DashboardFragment extends BaseFragment {
             case "Kemikalije":
                 button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
                 break;
+            case "KemikalijeAdd":
+                button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
+                break;
             default:
                 button.setIconTint(ContextCompat.getColorStateList(context, R.color.action_primary));
                 break;
@@ -610,10 +560,6 @@ public class DashboardFragment extends BaseFragment {
                             preventivniPreglediCountLogatec += linija.getStevilo_sklopov();
                         }
                     }
-
-                    Log.d("Število za ponikvo", String.valueOf(preventivniPreglediCountPonikva));
-                    Log.d("Število za logatec", String.valueOf(preventivniPreglediCountLogatec));
-                    Log.d("Število za sinjo gorico", String.valueOf(preventivniPreglediCountSinjaGorica));
 
                     updatePreventivniPregledi();
                 }

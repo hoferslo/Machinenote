@@ -423,9 +423,35 @@
     <string name="formula">Formula</string>
     <string name="poisci_kemikalijo">Poišči kemikalijo</string>
 
+    <string name="podatki_o_kemikaliji">Podatki o kemikaliji</string>
 
+        <!-- Oznake polj - Ime -->
+    <string name="vpisite_ime">Vpišite ime kemikalije</string>
+    <string name="ime_slo_kemikalije">Ime kemikalije (SLO)</string>
+    <string name="ime_eng_kemikalije">Ime kemikalije (ENG)</string>
 
+        <!-- Oznake polj - Količina in enota -->
+    <string name="vpisite_kolicino_in_enoto">Vpišite količino in enoto</string>
 
+        <!-- Oznake polj - Formula in CAS -->
+    <string name="vpisite_formulo_in_cas_st">Vpišite formulo in CAS številko</string>
+
+        <!-- Oznake polj - Omara in policaKemikalije -->
+    <string name="vpisite_omaro_in_polico">Vpišite omaro in polico</string>
+
+    <string name="izberite_rok_uporabe">Izberite rok uporabe</string>
+
+        <!-- Oznake polj - Firma in agregatno stanje -->
+    <string name="vpisite_firmo_in_agregatno_stanje">Vpišite firmo in agregatno stanje</string>
+    <string name="vpisi_firmo">Firma</string>
+    <string name="vpisi_agregatno_stanje">Agregatno stanje</string>
+
+        <!-- Opombe -->
+    <string name="vnesite_opombe">Vnesite opombe</string>
+    <string name="opombe">Opombe</string>
+
+    <string name="vnesite_unichem_ident">Vnesite unichemov ident</string>
+    <string name="unichem_ident">Unichem ident</string>
 
 </resources>
 
