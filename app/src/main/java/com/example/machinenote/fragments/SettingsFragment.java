@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.R;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.UpdateManager;
 import com.example.machinenote.activities.MainActivity;
@@ -23,6 +25,10 @@ import com.example.machinenote.models.Role;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SettingsFragment extends BaseFragment {
@@ -113,6 +119,20 @@ public class SettingsFragment extends BaseFragment {
             checkForUpdates();
         });
 
+        binding.changeLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedLocation = locations.get(position);
+                prefsHelper.putString(SharedPreferencesHelper.Location, selectedLocation);
+                updateUserLocation(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+
         locationAdapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_item, locations);
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -120,24 +140,54 @@ public class SettingsFragment extends BaseFragment {
 
     }
 
+    private void updateUserLocation(int position) {
+        String username = prefsHelper.getUsername();
+        Lokacija selectedLokacija = lokacije.get(position);
+        int lokacijaId = selectedLokacija.getId();
+
+        apiManager.updateUserLocation(lokacijaId, username,
+                new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d("updateUserLocation", "Response: " + response.code());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e("updateUserLocation", "Error: " + t.getMessage());
+                    }
+                });
+    }
+
     private void setupApiCalls(){
         apiManager.fetchLokacije(new ApiManager.LokacijeCallback() {
             @Override
             public void onSuccess(List<Lokacija> response) {
                 lokacije = response;
-                locations.clear(); // Počistimo seznam
+                locations.clear();
 
                 for (Lokacija l : lokacije) {
                     locations.add(l.getNaziv());
                 }
 
-                // Posodobimo adapter POTEM ko imamo podatke
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         locationAdapter.notifyDataSetChanged();
 
-                        // Če imamo lokacije, nastavimo prvo kot privzeto
-                        if (!locations.isEmpty()) {
+                        // Get the saved location name from SharedPreferences
+                        String savedLocationName = SharedPreferencesHelper.getInstance(context).getLokacija();
+
+                        // Find the position of this location in the list
+                        if (!savedLocationName.isEmpty() && !locations.isEmpty()) {
+                            int position = locations.indexOf(savedLocationName);
+                            if (position >= 0) {
+                                binding.changeLocationSpinner.setSelection(position);
+                            } else {
+                                // If saved location not found, select first item
+                                binding.changeLocationSpinner.setSelection(0);
+                            }
+                        } else if (!locations.isEmpty()) {
+                            // No saved location, select first item
                             binding.changeLocationSpinner.setSelection(0);
                         }
                     });

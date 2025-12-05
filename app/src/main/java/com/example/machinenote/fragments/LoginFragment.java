@@ -1,5 +1,7 @@
 package com.example.machinenote.fragments;
 
+import static java.lang.Integer.parseInt;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -30,6 +32,9 @@ import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.ConfettiHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
+import com.example.machinenote.models.Lokacija;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -289,6 +294,37 @@ public class LoginFragment extends BaseFragment {
                             Toast.makeText(context, "🎉 UNICHEM! 🎉", Toast.LENGTH_LONG).show();
                         }
                     }
+
+                    apiManager.fetchLokacije(new ApiManager.LokacijeCallback() {
+                        @Override
+                        public void onSuccess(List<Lokacija> response) {
+                            List<Lokacija> lokacije = response;
+
+                            // Get the stored location ID value from SharedPreferences
+                            String locationIdString = SharedPreferencesHelper.getInstance(context)
+                                    .getString(SharedPreferencesHelper.LocationID, "");
+
+                            // Check if it's not empty before parsing
+                            if (!locationIdString.isEmpty()) {
+                                int storedLocationId = parseInt(locationIdString);
+
+                                for (Lokacija l : lokacije) {
+                                    if (l.getId() == storedLocationId) {
+                                        SharedPreferencesHelper.getInstance(context)
+                                                .putString(SharedPreferencesHelper.Location, l.getNaziv());
+                                        break; // Exit loop once found
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            // Handle error
+                            Log.e("Lokacije", "Failed to fetch locations: " + errorMessage);
+                        }
+                    });
+
 
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.clearAllFragmentFromBackStack();

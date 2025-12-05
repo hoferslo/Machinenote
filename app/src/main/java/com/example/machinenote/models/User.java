@@ -19,22 +19,31 @@ public class User {
     @SerializedName("role")
     private Role role;
 
+    @SerializedName("lokacija_id")
+    private int lokacijaId;
+
+    @SerializedName("lokacija")
+    private String lokacija;
+
     // Constructors
     public User() {}
 
-    public User(String username, String password, int roleId, String apiKey) {
+    public User(String username, String password, int roleId, String apiKey, int lokacijaId) {
         this.username = username;
         this.password = password;
         this.roleId = roleId;
         this.apiKey = apiKey;
+        this.lokacijaId = lokacijaId;
     }
 
-    public User(String username, String password, int roleId, String apiKey, Role role) {
+    public User(String username, String password, int roleId, String apiKey, Role role, int lokacijaId, String lokacija) {
         this.username = username;
         this.password = password;
         this.roleId = roleId;
         this.apiKey = apiKey;
         this.role = role;
+        this.lokacijaId = lokacijaId;
+        this.lokacija = lokacija;
     }
 
     // Getters and Setters
@@ -78,6 +87,14 @@ public class User {
         this.role = role;
     }
 
+    public void setLokacijaId(int lokacijaId) { this.lokacijaId = lokacijaId; }
+
+    public int getLokacijaId() { return lokacijaId; }
+
+    public String getLokacija(){return lokacija;}
+
+    public void setLokacija(String lokacija){this.lokacija = lokacija;}
+
     @Override
     public String toString() {
         return "User{" +
@@ -86,6 +103,8 @@ public class User {
                 ", roleId=" + roleId +
                 ", apiKey='" + apiKey + '\'' +
                 ", role=" + role +
+                ", lokacijaId=" + lokacijaId +
+                ", lokacija='" + lokacija + '\'' +
                 '}';
     }
 }

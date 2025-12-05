@@ -27,7 +27,9 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -62,11 +64,13 @@ public class ApiManager {
                     LoginResponse loginResponse = response.body();
                     String apiKey = loginResponse.getApiKey();
                     Role role = loginResponse.getRole();
+                    String locationId = String.valueOf(loginResponse.getLokacija());
                     Log.d("role", String.valueOf(role));
                     ApiClient.setApiKey(apiKey);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Token, apiKey);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Username, username);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Password, password);
+                    sharedPreferencesHelper.putString(String.valueOf(SharedPreferencesHelper.LocationID), locationId);
                     sharedPreferencesHelper.putRole(role);
                     Log.d("success", "Logged in with user " + username);
                     callback.onSuccess();
@@ -474,6 +478,31 @@ public class ApiManager {
                 String errorMsg = "Error fetching omare: " + t.getMessage();
                 Log.e("ApiManager", errorMsg, t);
                 callback.onFailure(errorMsg);
+            }
+        });
+    }
+
+    public void updateUserLocation(final int lokacija_id, final String username, final Callback<Void> callback){
+        Map<String, Object> body = new HashMap<>();
+        body.put("username", username);  // String
+        body.put("lokacija_id", lokacija_id);  // Integer
+
+        Call<Void> call = apiService.updateUserLocation(body);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response< Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("updateUser", "User location updated successfully");
+                    callback.onResponse(call, response);
+                } else {
+                    Log.e("updateUser", "Failed to update User location: " + response.message());
+                    callback.onFailure(call, new Throwable(response.message()));
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("updateUser", "Error: " + t.getMessage());
+                callback.onFailure(call, t);
             }
         });
     }

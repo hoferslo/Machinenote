@@ -321,9 +321,7 @@
                     android:gravity="top|start"
                     android:scrollbars="vertical" />
 
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

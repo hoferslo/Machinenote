@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     Log.d("ConnectionChecker", "Server is reachable: " + LocalDateTime.now());
                 }
+
                 //showLoadingBar(false, "");
                 showNoWifiBtn(false);
                 // Create a Handler to post the delayed task

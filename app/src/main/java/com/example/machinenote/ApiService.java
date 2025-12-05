@@ -21,6 +21,7 @@ import com.example.machinenote.models.Zastoj;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -234,6 +235,11 @@ public interface ApiService {
     Call<RegistrationResponse> createUser(@Body UserCreationRequest userRequest);
 
     @Headers("Content-Type: application/json")
+    @PUT("users.php/location")
+    Call<Void> updateUserLocation(@Body Map<String, Object> body);
+
+
+    @Headers("Content-Type: application/json")
     @GET("drobni_materiali.php")
     Call<List<DrobniMateriali>> getDrobniMateriali();
 
@@ -280,6 +286,7 @@ class LoginRequest {
 class LoginResponse {
     private String api_key;
     private Role role;
+    private int lokacija_id;
 
     public String getApiKey() {
         return api_key;
@@ -297,6 +304,7 @@ class LoginResponse {
         this.role = role;
     }
 
+    public int getLokacija() { return lokacija_id; }
 }
 
 class StockAdjustmentRequest {

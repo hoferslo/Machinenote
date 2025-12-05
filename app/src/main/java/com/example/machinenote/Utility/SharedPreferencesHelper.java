@@ -15,7 +15,8 @@ public class SharedPreferencesHelper {
     public static final String Username = "Username";
     public static final String Password = "Password";
     public static final String Token = "Token";
-    public static final String ROLE_KEY = "Role";  // Renamed to avoid confusion
+    public static final String ROLE_KEY = "Role";
+    public static final String LocationID = "LokacijaID";
     public static final String Location = "Lokacija";
 
     private static SharedPreferencesHelper instance;
@@ -98,7 +99,7 @@ public class SharedPreferencesHelper {
     }
 
     public String getLokacija() {
-        return getString(Location, "Sinja Gorica");
+        return getString(Location, "");
     }
 
 

@@ -483,7 +483,7 @@ public class RegisterFragment extends BaseFragment {
         int roleId = selectedRole.getRoleId();
 
         // Create updated user object
-        User updatedUser = new User(selectedUsername, null, roleId, null);
+        User updatedUser = new User(selectedUsername, null, roleId, null, 3);
 
         apiManager.updateUser(selectedUsername, updatedUser, new Callback<User>() {
             @Override
