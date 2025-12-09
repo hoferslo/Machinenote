@@ -67,10 +67,12 @@ public class ApiManager {
                     String locationId = String.valueOf(loginResponse.getLokacija());
                     Log.d("role", String.valueOf(role));
                     ApiClient.setApiKey(apiKey);
+                    Log.d("LoginApiManager", "Response body: " + response.body());
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Token, apiKey);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Username, username);
                     sharedPreferencesHelper.putString(SharedPreferencesHelper.Password, password);
                     sharedPreferencesHelper.putString(String.valueOf(SharedPreferencesHelper.LocationID), locationId);
+                    Log.d("LoginApiManager", SharedPreferencesHelper.LocationID + ": " + locationId);
                     sharedPreferencesHelper.putRole(role);
                     Log.d("success", "Logged in with user " + username);
                     callback.onSuccess();

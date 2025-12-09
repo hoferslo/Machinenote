@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -34,6 +36,7 @@ import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentLoginBinding;
 import com.example.machinenote.models.Lokacija;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -106,6 +109,22 @@ public class LoginFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+    private static void setCursorDrawable(EditText editText, int drawableRes) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // API 29+ use the official method
+            editText.setTextCursorDrawable(drawableRes);
+        } else {
+            // API 28 and below use reflection
+            try {
+                Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
+                field.setAccessible(true);
+                field.set(editText, drawableRes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void displayUserInput(){
         // Create a LinearLayout to hold both EditTexts
         LinearLayout layout = new LinearLayout(context);
@@ -113,16 +132,19 @@ public class LoginFragment extends BaseFragment {
         layout.setPadding(50, 40, 50, 10);
 
         // Create EditText for username
+        // Create EditText for username
         final EditText editTextUsername = new EditText(context);
         editTextUsername.setHint("Uporabniško ime");
         editTextUsername.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
-        editTextUsername.setTextCursorDrawable(null);
+        setCursorDrawable(editTextUsername, 0); // 0 means no cursor drawable
 
-        // Create EditText for password - VISIBLE TEXT (not hidden)
+// Create EditText for password - VISIBLE TEXT (not hidden)
         final EditText editTextPassword = new EditText(context);
         editTextPassword.setHint("Novo geslo");
         editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
-        editTextPassword.setTextCursorDrawable(null);
+        setCursorDrawable(editTextPassword, 0); // 0 means no cursor drawable
+
+// Helper method - add this to your class
 
         // Add both EditTexts to the layout
         layout.addView(editTextUsername);
@@ -303,15 +325,18 @@ public class LoginFragment extends BaseFragment {
                             // Get the stored location ID value from SharedPreferences
                             String locationIdString = SharedPreferencesHelper.getInstance(context)
                                     .getString(SharedPreferencesHelper.LocationID, "");
+                            Log.d("LokacijaLogin", "Stored location ID string: " + locationIdString);
 
                             // Check if it's not empty before parsing
                             if (!locationIdString.isEmpty()) {
                                 int storedLocationId = parseInt(locationIdString);
+                            Log.d("LokacijaLogin", "Stored location ID: " + storedLocationId);
 
                                 for (Lokacija l : lokacije) {
                                     if (l.getId() == storedLocationId) {
                                         SharedPreferencesHelper.getInstance(context)
                                                 .putString(SharedPreferencesHelper.Location, l.getNaziv());
+                                        Log.d("LokacijaLogin", "Stored location Naziv: " + l.getNaziv());
                                         break; // Exit loop once found
                                     }
                                 }

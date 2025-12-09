@@ -384,7 +384,7 @@ public class DashboardFragment extends BaseFragment {
 
         int circlesAdded = 0;
 
-        if (isAdmin) {
+        if (isAdmin || "Vse Lokacije".equals(userLocation)) {
             if (preventivniPreglediCountPonikva > 0) {
                 addCircleToContainer(container, "Pon\n" + String.valueOf(preventivniPreglediCountPonikva),
                         circleSize, Gravity.START | Gravity.TOP, 8, 8, 0, 0,
@@ -408,22 +408,24 @@ public class DashboardFragment extends BaseFragment {
         } else {
             int count = 0;
             int color = android.R.color.holo_blue_dark;
-
+            Log.d("DashboardLokacija", "User location: " + userLocation);
             if ("Ponikva".equalsIgnoreCase(userLocation)) {
                 count = preventivniPreglediCountPonikva;
                 color = android.R.color.holo_blue_dark;
-            } else if ("Logatec".equalsIgnoreCase(userLocation)) {
-                count = preventivniPreglediCountLogatec;
-                color = android.R.color.holo_orange_dark;
-            } else if ("Sinja Gorica".equalsIgnoreCase(userLocation)) {
-                count = preventivniPreglediCountSinjaGorica;
-                color = android.R.color.holo_green_dark;
-            }
+                if (count > 0) {
+                    addCircleToContainer(container, "Pon\n" + String.valueOf(count),
+                            circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0, color);
+                    circlesAdded++;
+                }
+            } else if ("Logatec".equalsIgnoreCase(userLocation) || "Sinja Gorica".equalsIgnoreCase(userLocation)) {
+                addCircleToContainer(container, "Log\n" + String.valueOf(preventivniPreglediCountLogatec),
+                        circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0,
+                        android.R.color.holo_orange_dark);
+                addCircleToContainer(container, "SG\n" + String.valueOf(preventivniPreglediCountSinjaGorica),
+                        circleSize, Gravity.START | Gravity.BOTTOM, 8, 0, 0, 8,
+                        android.R.color.holo_green_dark);
+                circlesAdded+=2;
 
-            if (count > 0) {
-                addCircleToContainer(container, String.valueOf(count),
-                        circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0, color);
-                circlesAdded++;
             }
         }
         container.requestLayout();
@@ -541,7 +543,7 @@ public class DashboardFragment extends BaseFragment {
                 @Override
                 public void onSuccess(List<Linija> response) {
                     linijeList = response;
-                    preventivniPreglediCountPonikva = 0;
+                    preventivniPreglediCountPonikva = 1;
                     preventivniPreglediCountSinjaGorica = 0;
                     preventivniPreglediCountLogatec = 0;
 
