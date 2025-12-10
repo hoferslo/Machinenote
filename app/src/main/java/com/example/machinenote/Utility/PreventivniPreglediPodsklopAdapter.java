@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.machinenote.R;
 import com.example.machinenote.models.SklopLinije;
+import com.example.machinenote.models.Linija;
 
 import java.util.List;
 
@@ -19,15 +20,18 @@ public class PreventivniPreglediPodsklopAdapter extends RecyclerView.Adapter<Pre
 
     private Context context;
     private List<SklopLinije> itemList;
+    private Linija linija; // DODAJ
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(SklopLinije sklop);
     }
 
-    public PreventivniPreglediPodsklopAdapter(Context context, List<SklopLinije> itemList) {
+    // POPRAVI konstruktor - dodaj Linija parameter
+    public PreventivniPreglediPodsklopAdapter(Context context, List<SklopLinije> itemList, Linija linija) {
         this.context = context;
         this.itemList = itemList;
+        this.linija = linija;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -79,7 +83,6 @@ public class PreventivniPreglediPodsklopAdapter extends RecyclerView.Adapter<Pre
             zadnjiPregled = itemView.findViewById(R.id.zadnjiPregled);
             naslednjiPregledTab = itemView.findViewById(R.id.naslednjiPregledTab);
 
-            // Set click listener
             itemView.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onItemClick(itemList.get(getAdapterPosition()));
@@ -90,17 +93,34 @@ public class PreventivniPreglediPodsklopAdapter extends RecyclerView.Adapter<Pre
         public void bind(SklopLinije sklop) {
             // Nastavi ime podsklopa
             if (sklop.getSklopLinije() != null && !sklop.getSklopLinije().isEmpty()) {
-                opisText.setText(sklop.getSklopLinije());
+                opisText.setText(sklop.getNazivPodsklopa() +" - "+sklop.getSklopLinije() );
             } else {
                 opisText.setText("Podsklop");
             }
 
-            // Skrij sklop text (ni potreben za podsklope)
-            sklopText.setVisibility(View.GONE);
+            // DODAJ: Prikaži lokacijo, prostor in linijo v sklopText
+            if (linija != null) {
+                StringBuilder lokacijaInfo = new StringBuilder();
 
-            // Nastavi ID podsklopa kot status
-            if (sklop.getId() != 0) {
-                statusText.setText("ID: " + sklop.getId());
+                if (linija.getLokacija_naziv() != null && !linija.getLokacija_naziv().isEmpty()) {
+                    lokacijaInfo.append(linija.getLokacija_naziv());
+                }
+
+
+
+                if (lokacijaInfo.length() > 0) {
+                    sklopText.setText(lokacijaInfo.toString());
+                    sklopText.setVisibility(View.VISIBLE);
+                } else {
+                    sklopText.setVisibility(View.GONE);
+                }
+            } else {
+                sklopText.setVisibility(View.GONE);
+            }
+
+            // Nastavi SAP kodo kot status
+            if (linija != null && linija.getLinija_SAP() != null && !linija.getLinija_SAP().isEmpty()) {
+                statusText.setText(linija.getLinija_SAP());
                 statusText.setVisibility(View.VISIBLE);
                 // Modra barva za podsklope
                 statusIndicator.setBackgroundTintList(
@@ -119,7 +139,6 @@ public class PreventivniPreglediPodsklopAdapter extends RecyclerView.Adapter<Pre
                 zadnjiPregledText.setText("0");
             }
 
-            // Skrij naslednji pregled tab (ni potreben za podsklope)
             naslednjiPregledTab.setVisibility(View.GONE);
         }
     }

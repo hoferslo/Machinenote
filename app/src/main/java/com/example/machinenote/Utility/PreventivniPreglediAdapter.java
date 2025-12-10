@@ -109,7 +109,11 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
             }
 
             // Nastavi sklop
-            if (pregled.getSklopLinije() != null && !pregled.getSklopLinije().isEmpty()) {
+
+            if (pregled.getSklopLinije() != null && !pregled.getSklopLinije().isEmpty() && pregled.getPodsklopLinije() != null) {
+                sklopText.setText(pregled.getNazivPodsklopa() +" "+pregled.getSklopLinije());
+                sklopText.setVisibility(View.VISIBLE);
+            } else if (pregled.getSklopLinije() != null && !pregled.getSklopLinije().isEmpty()) {
                 sklopText.setText(pregled.getSklopLinije());
                 sklopText.setVisibility(View.VISIBLE);
             } else {

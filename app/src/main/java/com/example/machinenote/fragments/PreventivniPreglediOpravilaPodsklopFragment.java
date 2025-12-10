@@ -107,7 +107,7 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Ustvari nov adapter
-        adapter = new PreventivniPreglediPodsklopAdapter(getContext(), new ArrayList<>());
+        adapter = new PreventivniPreglediPodsklopAdapter(getContext(), new ArrayList<>(), selectedLinija);
 
         // Nastavi click listener
         adapter.setOnItemClickListener(sklop -> {
@@ -122,7 +122,7 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
     private void setupToolbar() {
         // Nastavi naslov z informacijami o liniji
         if (selectedLinija != null) {
-            String title = TAG + " - Podsklopi";
+            String title = TAG;
             ((MainActivity) requireActivity()).binding.toolbarTitle.setText(title);
         } else {
             ((MainActivity) requireActivity()).binding.toolbarTitle.setText("Podsklopi");
@@ -206,6 +206,8 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
                     SklopLinije sklop = new SklopLinije();
                     sklop.setId(podsklopId);
                     sklop.setSklopLinije(pregled.getPodsklopLinije());
+                    // DODAJ naziv podsklopa
+                    sklop.setNazivPodsklopa(pregled.getNazivPodsklopa());
                     podsklopMap.put(podsklopId, sklop);
                     countMap.put(podsklopId, 0);
                 }
@@ -219,6 +221,7 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
         // Nastavi število opravil na vsak podsklop
         for (Map.Entry<Integer, SklopLinije> entry : podsklopMap.entrySet()) {
             entry.getValue().setOpravilaCount(countMap.get(entry.getKey()));
+
         }
 
         podsklopList = new ArrayList<>(podsklopMap.values());

@@ -92,6 +92,16 @@ public class SklopLinije {
         return String.valueOf(aktivna);
     }
 
+    private String nazivPodsklopa;
+
+    public String getNazivPodsklopa() {
+        return nazivPodsklopa;
+    }
+
+    public void setNazivPodsklopa(String nazivPodsklopa) {
+        this.nazivPodsklopa = nazivPodsklopa;
+    }
+
     @Override
     public String toString() {
         return "SklopLinije{" +

@@ -21,6 +21,7 @@ import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentPreventivniPreglediBinding;
 import com.example.machinenote.models.Linija;
 import com.example.machinenote.models.PreventivniPregled;
+import com.example.machinenote.models.Role;
 import com.example.machinenote.fragments.PreventivniPreglediOpravilaFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,9 +34,10 @@ public class PreventivniPreglediFragment extends BaseFragment {
     private FragmentPreventivniPreglediBinding binding;
     private ApiManager apiManager;
     private List<Linija> linijeList;
-    private List<Linija> allLinijeList; // Za filtriranje
+    private List<Linija> allLinijeList; // Vse linije iz API-ja
+    private List<Linija> filteredByLocationList; // Filtrirane po lokaciji uporabnika
     private PreventivniPreglediAdapter adapter;
-    private List<PreventivniPregled> allPreventivniPregledi; // Za preverjanje podsklopov
+    private List<PreventivniPregled> allPreventivniPregledi;
 
     public PreventivniPreglediFragment() {}
 
@@ -54,7 +56,7 @@ public class PreventivniPreglediFragment extends BaseFragment {
         setupRecyclerView();
         setupSearchView();
         fetchLinije();
-        fetchPreventivniPregledi(); // Naloži preventivne preglede za preverjanje podsklopov
+        fetchPreventivniPregledi();
 
         return binding.getRoot();
     }
@@ -63,7 +65,6 @@ public class PreventivniPreglediFragment extends BaseFragment {
         RecyclerView recyclerView = binding.scrollLv;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Uporabi novi adapter
         adapter = new PreventivniPreglediAdapter(getContext(), new ArrayList<>());
 
         adapter.setOnItemClickListener(new PreventivniPreglediAdapter.OnItemClickListener() {
@@ -88,19 +89,16 @@ public class PreventivniPreglediFragment extends BaseFragment {
     private void handleLinijaClick(Linija linija) {
         MainActivity mainActivity = (MainActivity) requireActivity();
 
-        // Preveri če ima linija podsklope
         if (allPreventivniPregledi != null &&
                 PreventivniPreglediOpravilaPodsklopFragment.linijaHasPodsklopi(allPreventivniPregledi, linija)) {
 
             Log.d(TAG, "Linija " + linija.getLinija_SAP() + " has podsklopi - opening PodsklopFragment");
-            // Ima podsklope → odpri PodsklopFragment
             PreventivniPreglediOpravilaPodsklopFragment fragment =
                     PreventivniPreglediOpravilaPodsklopFragment.newInstance(getContext(), linija);
             mainActivity.loadFragment(fragment);
 
         } else {
             Log.d(TAG, "Linija " + linija.getLinija_SAP() + " has NO podsklopi - opening OpravilaFragment directly");
-            // Nima podsklopov → odpri direktno OpravilaFragment
             PreventivniPreglediOpravilaFragment fragment =
                     PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
             mainActivity.loadFragment(fragment);
@@ -136,16 +134,19 @@ public class PreventivniPreglediFragment extends BaseFragment {
             apiManager.fetchLinije(new ApiManager.LinijeCallback() {
                 @Override
                 public void onSuccess(List<Linija> response) {
-                    linijeList = response;
-                    allLinijeList = new ArrayList<>(response); // Copy for filtering
+                    allLinijeList = new ArrayList<>(response);
+
+                    // Filtriraj po lokaciji uporabnika
+                    filterByUserLocation();
+
                     adapter.updateList(new ArrayList<Object>(linijeList));
 
-                    // Shrani podatke v cache
-                    String json = new Gson().toJson(linijeList);
+                    // Shrani v cache
+                    String json = new Gson().toJson(allLinijeList);
                     sharedPreferencesHelper.putString("LinijeList", json);
 
                     Toast.makeText(getContext(),
-                            "Naloženih " + response.size() + " linij",
+                            "Naloženih " + linijeList.size() + " linij",
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -162,6 +163,52 @@ public class PreventivniPreglediFragment extends BaseFragment {
             Toast.makeText(getContext(), "Ni povezave s strežnikom - naloženi lokalni podatki",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void filterByUserLocation() {
+        SharedPreferencesHelper prefs = SharedPreferencesHelper.getInstance(requireContext());
+        String userLocation = prefs.getLokacija();
+        Role role = prefs.getRole();
+        boolean isAdmin = role.isRegister();
+
+        Log.d(TAG, "Filtering by user location: " + userLocation + ", isAdmin: " + isAdmin);
+
+        // Če je admin ali "Vse Lokacije", prikaži vse linije
+        if (isAdmin || "Vse Lokacije".equals(userLocation)) {
+            filteredByLocationList = new ArrayList<>(allLinijeList);
+            linijeList = new ArrayList<>(allLinijeList);
+            Log.d(TAG, "Admin or 'Vse Lokacije' - showing all " + linijeList.size() + " linij");
+            return;
+        }
+
+        List<Linija> filtered = new ArrayList<>();
+        for (Linija linija : allLinijeList) {
+            String linijaLokacija = linija.getLokacija_naziv();
+
+            // Če je linija "Vse Lokacije", jo vedno vključi
+            if ("Vse Lokacije".equalsIgnoreCase(linijaLokacija)) {
+                filtered.add(linija);
+                Log.d(TAG, "Including linija: " + linija.getLinija_SAP() + " (lokacija: " + linijaLokacija + ")");
+                continue;
+            }
+
+            // Logatec in Sinja Gorica sta v isti skupini
+            boolean isLogatecGroup = "Logatec".equalsIgnoreCase(userLocation) || "Sinja Gorica".equalsIgnoreCase(userLocation);
+            boolean isLinijaLogatecGroup = "Logatec".equalsIgnoreCase(linijaLokacija) || "Sinja Gorica".equalsIgnoreCase(linijaLokacija);
+
+            if (isLogatecGroup && isLinijaLogatecGroup) {
+                filtered.add(linija);
+                Log.d(TAG, "Including linija: " + linija.getLinija_SAP() + " (lokacija: " + linijaLokacija + ")");
+            } else if (userLocation.equalsIgnoreCase(linijaLokacija)) {
+                // Za ostale lokacije - direktno ujemanje
+                filtered.add(linija);
+                Log.d(TAG, "Including linija: " + linija.getLinija_SAP() + " (lokacija: " + linijaLokacija + ")");
+            }
+        }
+
+        filteredByLocationList = new ArrayList<>(filtered);
+        linijeList = new ArrayList<>(filtered);
+        Log.d(TAG, "Filtered to " + linijeList.size() + " linij for location: " + userLocation);
     }
 
     private void fetchPreventivniPregledi() {
@@ -215,11 +262,14 @@ public class PreventivniPreglediFragment extends BaseFragment {
         if (json != null) {
             try {
                 Type type = new TypeToken<List<Linija>>() {}.getType();
-                linijeList = new Gson().fromJson(json, type);
-                if (linijeList != null && !linijeList.isEmpty()) {
-                    allLinijeList = new ArrayList<>(linijeList); // Copy for filtering
+                allLinijeList = new Gson().fromJson(json, type);
+
+                if (allLinijeList != null && !allLinijeList.isEmpty()) {
+                    // Filtriraj po lokaciji uporabnika
+                    filterByUserLocation();
+
                     adapter.updateList(new ArrayList<Object>(linijeList));
-                    Log.i(TAG, "Loaded " + linijeList.size() + " linij from cache");
+                    Log.i(TAG, "Loaded " + linijeList.size() + " linij from cache (after location filter)");
                 } else {
                     Log.e(TAG, "Parsed linijeList is empty or null.");
                     showEmptyState();
@@ -236,24 +286,26 @@ public class PreventivniPreglediFragment extends BaseFragment {
 
     private void showEmptyState() {
         linijeList = new ArrayList<>();
-        allLinijeList = new ArrayList<>();
+        filteredByLocationList = new ArrayList<>();
         adapter.updateList(new ArrayList<Object>(linijeList));
         Toast.makeText(getContext(), "Ni podatkov za prikaz", Toast.LENGTH_SHORT).show();
     }
 
     private void filterLinije(String query) {
-        if (allLinijeList == null) {
-            Log.w(TAG, "allLinijeList is null, cannot filter");
+        if (filteredByLocationList == null) {
+            Log.w(TAG, "filteredByLocationList is null, cannot filter");
             return;
         }
 
         List<Linija> filtered;
 
         if (query == null || query.trim().isEmpty()) {
-            filtered = new ArrayList<>(allLinijeList);
+            // Če ni search query-ja, uporabi linije filtrirane po lokaciji
+            filtered = new ArrayList<>(filteredByLocationList);
         } else {
+            // Išči samo med linijami ki so že filtrirane po lokaciji
             String lowerQuery = query.toLowerCase().trim();
-            filtered = allLinijeList.stream()
+            filtered = filteredByLocationList.stream()
                     .filter(l ->
                             (l.getLinija_SAP() != null && l.getLinija_SAP().toLowerCase().contains(lowerQuery)) ||
                                     (l.getNaziv_linije() != null && l.getNaziv_linije().toLowerCase().contains(lowerQuery)) ||
@@ -265,7 +317,7 @@ public class PreventivniPreglediFragment extends BaseFragment {
 
         linijeList = filtered;
         adapter.updateList(new ArrayList<Object>(filtered));
-        Log.d(TAG, "Filtered " + filtered.size() + " items from " + allLinijeList.size());
+        Log.d(TAG, "Filtered " + filtered.size() + " items from " + filteredByLocationList.size());
     }
 
     @Override
