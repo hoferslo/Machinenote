@@ -10,6 +10,12 @@ public class SklopLinije {
     private int linija_id;           // This is the line ID (integer foreign key)
     private String sklop_linije;     // This is the assembly name
     private boolean aktivna;         // This is the active status (boolean)
+    private int opravilaCount = -1;  // Count of opravila (-1 means not applicable/not set)
+
+    // Default constructor
+    public SklopLinije() {
+        this.opravilaCount = -1;
+    }
 
     // Constructor
     public SklopLinije(int id, int linijaId, String sklopLinije, boolean aktivna) {
@@ -17,6 +23,7 @@ public class SklopLinije {
         this.linija_id = linijaId;
         this.sklop_linije = sklopLinije;
         this.aktivna = aktivna;
+        this.opravilaCount = -1;  // Default: not applicable
     }
 
     // Getter for id
@@ -59,6 +66,21 @@ public class SklopLinije {
         this.aktivna = aktivna;
     }
 
+    // Getter for opravila count
+    public int getOpravilaCount() {
+        return opravilaCount;
+    }
+
+    // Setter for opravila count
+    public void setOpravilaCount(int count) {
+        this.opravilaCount = count;
+    }
+
+    // Check if this is a podsklop (has count set)
+    public boolean hasOpravilaCount() {
+        return opravilaCount >= 0;
+    }
+
     // Legacy getter methods (for compatibility if used elsewhere)
     @Deprecated
     public String getIdLinije() {
@@ -77,6 +99,7 @@ public class SklopLinije {
                 ", linijaId=" + linija_id +
                 ", sklopLinije='" + sklop_linije + '\'' +
                 ", aktivna=" + aktivna +
+                ", opravilaCount=" + (opravilaCount >= 0 ? opravilaCount : "N/A") +
                 '}';
     }
 

@@ -42,6 +42,9 @@ public class PregledOpravilo implements DisplayableItem {
     @SerializedName("Vzdrzevalec")
     private String vzdrzevalec;
 
+    @SerializedName("Podsklop_Linije_ID")
+    private Integer podsklopLinijeId;
+
     // Constructors
     public PregledOpravilo() {}
 
@@ -149,12 +152,28 @@ public class PregledOpravilo implements DisplayableItem {
         this.vzdrzevalec = vzdrzevalec;
     }
 
+    public Integer getPodsklopLinijeId() {
+        return podsklopLinijeId;
+    }
+
+    public void setPodsklopLinijeId(Integer podsklopLinijeId) {
+        this.podsklopLinijeId = podsklopLinijeId;
+    }
+
+
+
     @Override
     public Map<String, String> getDisplayFields() {
         Map<String, String> fields = new HashMap<>();
         fields.put("OpisOpravila", opisOpravila != null ? opisOpravila : "");
         fields.put("Status", getStatusWithIcon());
         fields.put("Sklop_Linije", sklopLinije != null ? sklopLinije : "");
+
+        // Dodaj podsklop, če obstaja
+        if (podsklopLinijeId != null && podsklopLinijeId != 0) {
+            fields.put("Podsklop_Linije_ID", String.valueOf(podsklopLinijeId));
+        }
+
         fields.put("Trajanje_STD_Min", trajanjeStdMin + " min");
         fields.put("ActVredParameter", actVredParameter != null ? actVredParameter : stdVrednostLastnosti);
         return fields;
@@ -191,12 +210,14 @@ public class PregledOpravilo implements DisplayableItem {
         return "Preskoceno".equals(status);
     }
 
+
     @Override
     public String toString() {
         return "PregledOpravilo{" +
                 "id=" + id +
                 ", opisOpravila='" + opisOpravila + '\'' +
                 ", sklopLinije='" + sklopLinije + '\'' +
+                ", podsklopLinijeId='" + podsklopLinijeId + '\'' +
                 ", status='" + status + '\'' +
                 ", actVredParameter='" + actVredParameter + '\'' +
                 '}';

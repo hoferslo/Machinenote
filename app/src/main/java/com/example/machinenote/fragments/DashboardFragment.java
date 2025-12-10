@@ -543,7 +543,7 @@ public class DashboardFragment extends BaseFragment {
                 @Override
                 public void onSuccess(List<Linija> response) {
                     linijeList = response;
-                    preventivniPreglediCountPonikva = 1;
+                    preventivniPreglediCountPonikva = 0;
                     preventivniPreglediCountSinjaGorica = 0;
                     preventivniPreglediCountLogatec = 0;
 

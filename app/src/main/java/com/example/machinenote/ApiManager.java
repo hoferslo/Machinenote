@@ -144,6 +144,7 @@ public class ApiManager {
     public void executePreventivniPregled(PreventivniPregled selectedPregled,
                                           int trajanje, String vzdrzevalec,
                                           String datum, String opombe, String dejanskaVrednost,
+                                          Integer podsklopLinijeId,
                                           final PregledExecutionCallback callback) {
 
         // Ustvari PregledOpravilo objekt z ustreznimi podatki
@@ -159,8 +160,15 @@ public class ApiManager {
         pregledOpravilo.setActVredParameter(dejanskaVrednost); // Dejanska vrednost
         pregledOpravilo.setStatus("V teku"); // Status med izvajanjem
 
+        // Dodaj podsklop_linije_id samo če obstaja (ni null)
+        if (podsklopLinijeId != null && podsklopLinijeId != 0) {
+            pregledOpravilo.setPodsklopLinijeId(podsklopLinijeId);
+        }
+
         // Debug log
-        Log.d("ApiManager", "Sending PregledOpravilo: opombe='" + opombe + "', actVredParameter='" + dejanskaVrednost + "'");
+        Log.d("ApiManager", "Sending PregledOpravilo: opombe='" + opombe +
+                "', actVredParameter='" + dejanskaVrednost +
+                "', podsklopLinijeId=" + podsklopLinijeId);
 
         // Dodajte tudi standardne podatke, če so na voljo
         pregledOpravilo.setTrajanjeStdMin(selectedPregled.getTrajanjeStdMin());

@@ -47,10 +47,19 @@ public class PreventivniPregled implements DisplayableItem {
     private String sklopLinije;
 
     @SerializedName("naslednji_pregled")
-    private String naslenjniPregled;
+    private String naslednjniPregled;
 
     @SerializedName("dni_zamude")
     private int dniZamude;
+
+    @SerializedName("podsklop_linije_id")
+    private int podsklopLinijeId;
+
+    @SerializedName("podsklop_linije")
+    private String podsklopLinije;
+
+    @SerializedName("naziv_podsklopa")
+    private String nazivPodsklopa;
 
     // Constructors
     public PreventivniPregled() {}
@@ -160,12 +169,12 @@ public class PreventivniPregled implements DisplayableItem {
         this.sklopLinije = sklopLinije;
     }
 
-    public String getNaslenjniPregled() {
-        return naslenjniPregled;
+    public String getNaslednjniPregled() {
+        return naslednjniPregled;
     }
 
-    public void setNaslenjniPregled(String naslenjniPregled) {
-        this.naslenjniPregled = naslenjniPregled;
+    public void setNaslednjniPregled(String naslednjniPregled) {
+        this.naslednjniPregled = naslednjniPregled;
     }
 
     public int getDniZamude() {
@@ -174,6 +183,29 @@ public class PreventivniPregled implements DisplayableItem {
 
     public void setDniZamude(int dniZamude) {
         this.dniZamude = dniZamude;
+    }
+
+    public String getPodsklopLinije() {
+        return podsklopLinije;
+    }
+
+    public void setPodsklopLinije(String podsklopLinije) {
+        this.podsklopLinije = podsklopLinije;
+    }
+
+    public String getNazivPodsklopa() {
+        return nazivPodsklopa;
+    }
+
+    public void setNazivPodsklopa(String nazivPodsklopa) {
+        this.nazivPodsklopa = nazivPodsklopa;
+    }
+
+    public int getPodsklopLinijeId() {
+        return podsklopLinijeId;
+    }
+    public void setPodsklopLinijeId(int podsklopLinijeId) {
+        this.podsklopLinijeId = podsklopLinijeId;
     }
 
     @Override
@@ -185,6 +217,7 @@ public class PreventivniPregled implements DisplayableItem {
                 ", datum='" + datum + '\'' +
                 ", nazivLinije='" + nazivLinije + '\'' +
                 ", dniZamude=" + dniZamude +
+                ", podsklopLinije='" + podsklopLinije + '\'' +
                 '}';
     }
 
@@ -198,10 +231,20 @@ public class PreventivniPregled implements DisplayableItem {
         fields.put("Frekvenca", frekvenca > 0 ? frekvenca + " dni" : "");
         fields.put("Trajanje", trajanjeStdMin > 0 ? trajanjeStdMin + " min" : "");
         fields.put("Status", getStatusText());
-        fields.put("Naslednji pregled", naslenjniPregled != null ? naslenjniPregled : "");
+        fields.put("Naslednji pregled", naslednjniPregled != null ? naslednjniPregled : "");
         fields.put("SAP Koda", linijaSap != null ? linijaSap : "");
         fields.put("Naziv Linije", nazivLinije != null ? nazivLinije : "");
         fields.put("Sklop", sklopLinije != null ? sklopLinije : "");
+
+        // Dodaj podsklop, če obstaja
+        if (podsklopLinije != null && !podsklopLinije.isEmpty()) {
+            fields.put("Podsklop", podsklopLinije);
+            if (nazivPodsklopa != null && !nazivPodsklopa.isEmpty()) {
+                fields.put("Naziv podsklopa", nazivPodsklopa);
+            }
+            fields.put("Id podsklopa", String.valueOf(podsklopLinijeId));
+        }
+
         fields.put("Zadnji pregled", datum != null ? datum : "");
         fields.put("Lastnost", lastnost != null && !lastnost.isEmpty() ? lastnost : "");
         fields.put("Std. vrednost", stdVrednost != null && !stdVrednost.isEmpty() ? stdVrednost : "");
@@ -213,11 +256,11 @@ public class PreventivniPregled implements DisplayableItem {
     // Helper metode
     public String getStatusText() {
         if (dniZamude > 0) {
-            return "Zamuda: " + dniZamude + " dni";
+            return "⚠️ Zamuda: " + dniZamude + " dni";
         } else if (dniZamude == 0) {
-            return "Danes";
+            return "🔔 Danes";
         } else {
-            return "Prihajajoč";
+            return "✅ Prihajajoč";
         }
     }
 
@@ -231,5 +274,9 @@ public class PreventivniPregled implements DisplayableItem {
             location.append(prostorNaziv);
         }
         return location.toString();
+    }
+
+    public boolean hasPodsklop() {
+        return podsklopLinije != null && !podsklopLinije.isEmpty();
     }
 }

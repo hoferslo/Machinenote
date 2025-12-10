@@ -234,11 +234,18 @@ public class PregledExecutionFragment extends BaseFragment {
             dejanskaVrednost = binding.etDejanskavrednost.getText().toString().trim();
         }
 
-        Log.d(TAG, "Sending data: opombe='" + opombe + "', dejanskaVrednost='" + dejanskaVrednost + "'");
+        // Pridobi podsklop_linije_id če obstaja
+        Integer podsklopLinijeId = null;
+        if (selectedPregled.getPodsklopLinijeId() != 0) {
+            podsklopLinijeId = selectedPregled.getPodsklopLinijeId();
+        }
 
-        // Call API z modifikacijo ApiManager signature
+        Log.d(TAG, "Sending data: opombe='" + opombe + "', dejanskaVrednost='" + dejanskaVrednost +
+                "', podsklopLinijeId=" + podsklopLinijeId);
+
+        // Call API z dodanim podsklopLinijeId parametrom
         apiManager.executePreventivniPregled(selectedPregled, trajanje, vzdrzevalec,
-                datum, opombe, dejanskaVrednost, new ApiManager.PregledExecutionCallback() {
+                datum, opombe, dejanskaVrednost, podsklopLinijeId, new ApiManager.PregledExecutionCallback() {
                     @Override
                     public void onSuccess(List<PregledOpravilo> response) {
                         if (getActivity() == null) return;

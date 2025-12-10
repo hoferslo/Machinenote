@@ -24,6 +24,7 @@ import com.example.machinenote.Utility.PreventivniPreglediAdapter;
 import com.example.machinenote.databinding.FragmentPreventivniPreglediBinding;
 import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.SklopLinije;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -40,6 +41,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
     private List<PreventivniPregled> allPreventivniPreglediList; // Za filtriranje
     private PreventivniPreglediAdapter adapter;
     private Linija selectedLinija;
+    private SklopLinije selectedSklop;
 
     public PreventivniPreglediOpravilaFragment() {}
 
@@ -68,6 +70,20 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
         return fragment;
     }
 
+    public static PreventivniPreglediOpravilaFragment newInstanceWithSklop(Context context, Linija linija, SklopLinije sklop) {
+        PreventivniPreglediOpravilaFragment fragment = new PreventivniPreglediOpravilaFragment();
+        fragment.apiManager = new ApiManager(context);
+        fragment.selectedLinija = linija;
+        fragment.selectedSklop = sklop;
+
+        String tagName = sklop.getSklopLinije();
+        if (tagName.length() > 23) {
+            tagName = tagName.substring(0, 23);
+        }
+
+        fragment.TAG = tagName;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -163,28 +179,33 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
     }
 
     private void handleApiSuccess(List<PreventivniPregled> response, SharedPreferencesHelper sharedPreferencesHelper) {
-        // Filtriraj preglede za izbrano linijo
         List<PreventivniPregled> filteredPregledi = new ArrayList<>();
         for (PreventivniPregled pregled : response) {
-            if (pregled.getLinijaSap() != null &&
-                    pregled.getLinijaSap().equals(selectedLinija.getLinija_SAP())) {
+            boolean matchesLinija = pregled.getLinijaSap() != null &&
+                    pregled.getLinijaSap().equals(selectedLinija.getLinija_SAP());
+
+            // Če imamo selectedSklop, filtriraj tudi po podsklop_linije_id
+            boolean matchesSklop = selectedSklop == null ||
+                    (pregled.getPodsklopLinije() != null &&
+                            pregled.getPodsklopLinijeId() == selectedSklop.getId());
+
+            if (matchesLinija && matchesSklop) {
                 filteredPregledi.add(pregled);
             }
         }
 
         preventivniPreglediList = filteredPregledi;
-        allPreventivniPreglediList = new ArrayList<>(filteredPregledi); // Copy for filtering
+        allPreventivniPreglediList = new ArrayList<>(filteredPregledi);
         adapter.updateList(new ArrayList<Object>(preventivniPreglediList));
 
-        // Shrani podatke v cache z ključem, ki vsebuje linija_sap
         savePregledToCache(filteredPregledi, sharedPreferencesHelper);
 
-        Toast.makeText(getContext(),
-                "Naloženih " + filteredPregledi.size() + " pregledov za linijo " + selectedLinija.getLinija_SAP(),
-                Toast.LENGTH_SHORT).show();
+        String message = selectedSklop != null ?
+                "Naloženih " + filteredPregledi.size() + " opravil za sklop " + selectedSklop.getSklopLinije() :
+                "Naloženih " + filteredPregledi.size() + " pregledov za linijo " + selectedLinija.getLinija_SAP();
 
-        Log.d(TAG, "Successfully loaded " + filteredPregledi.size() + " preventivni pregledi for linija " + selectedLinija.getLinija_SAP() +
-                " (filtered from " + response.size() + " total)");
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Successfully loaded " + filteredPregledi.size() + " preventivni pregledi");
     }
 
     private void handleApiFailure(String errorMessage, SharedPreferencesHelper sharedPreferencesHelper) {
@@ -343,8 +364,8 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
             details.append("Zadnji pregled: ").append(pregled.getDatum()).append("\n");
         }
 
-        if (pregled.getNaslenjniPregled() != null) {
-            details.append("Naslednji pregled: ").append(pregled.getNaslenjniPregled()).append("\n");
+        if (pregled.getNaslednjniPregled() != null) {
+            details.append("Naslednji pregled: ").append(pregled.getNaslednjniPregled()).append("\n");
         }
 
         if (pregled.getStatusText() != null) {

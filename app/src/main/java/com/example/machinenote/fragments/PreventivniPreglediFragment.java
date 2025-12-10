@@ -8,12 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
@@ -22,21 +20,22 @@ import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentPreventivniPreglediBinding;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.PreventivniPregled;
+import com.example.machinenote.fragments.PreventivniPreglediOpravilaFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PreventivniPreglediFragment extends BaseFragment {
-
     private FragmentPreventivniPreglediBinding binding;
     private ApiManager apiManager;
     private List<Linija> linijeList;
     private List<Linija> allLinijeList; // Za filtriranje
     private PreventivniPreglediAdapter adapter;
+    private List<PreventivniPregled> allPreventivniPregledi; // Za preverjanje podsklopov
 
     public PreventivniPreglediFragment() {}
 
@@ -55,6 +54,7 @@ public class PreventivniPreglediFragment extends BaseFragment {
         setupRecyclerView();
         setupSearchView();
         fetchLinije();
+        fetchPreventivniPregledi(); // Naloži preventivne preglede za preverjanje podsklopov
 
         return binding.getRoot();
     }
@@ -70,29 +70,41 @@ public class PreventivniPreglediFragment extends BaseFragment {
             @Override
             public void onItemClick(Object item) {
                 if (item instanceof Linija) {
-                    Linija linija = (Linija) item;
-                    // Navigacija na fragment s preventivnimi pregledi za to linijo
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    PreventivniPreglediOpravilaFragment pregledFragment =
-                            PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
-                    mainActivity.loadFragment(pregledFragment);
+                    handleLinijaClick((Linija) item);
                 }
             }
 
             @Override
             public void onButtonClick(Object item) {
                 if (item instanceof Linija) {
-                    Linija linija = (Linija) item;
-                    // Hitro dejanje - odpri preventivne preglede
-                    MainActivity mainActivity = (MainActivity) requireActivity();
-                    PreventivniPreglediOpravilaFragment pregledFragment =
-                            PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
-                    mainActivity.loadFragment(pregledFragment);
+                    handleLinijaClick((Linija) item);
                 }
             }
         });
 
         recyclerView.setAdapter(adapter);
+    }
+
+    private void handleLinijaClick(Linija linija) {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+
+        // Preveri če ima linija podsklope
+        if (allPreventivniPregledi != null &&
+                PreventivniPreglediOpravilaPodsklopFragment.linijaHasPodsklopi(allPreventivniPregledi, linija)) {
+
+            Log.d(TAG, "Linija " + linija.getLinija_SAP() + " has podsklopi - opening PodsklopFragment");
+            // Ima podsklope → odpri PodsklopFragment
+            PreventivniPreglediOpravilaPodsklopFragment fragment =
+                    PreventivniPreglediOpravilaPodsklopFragment.newInstance(getContext(), linija);
+            mainActivity.loadFragment(fragment);
+
+        } else {
+            Log.d(TAG, "Linija " + linija.getLinija_SAP() + " has NO podsklopi - opening OpravilaFragment directly");
+            // Nima podsklopov → odpri direktno OpravilaFragment
+            PreventivniPreglediOpravilaFragment fragment =
+                    PreventivniPreglediOpravilaFragment.newInstance(getContext(), linija);
+            mainActivity.loadFragment(fragment);
+        }
     }
 
     private void setupSearchView() {
@@ -149,6 +161,52 @@ public class PreventivniPreglediFragment extends BaseFragment {
             loadLinijeFromPrefs(sharedPreferencesHelper);
             Toast.makeText(getContext(), "Ni povezave s strežnikom - naloženi lokalni podatki",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void fetchPreventivniPregledi() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(requireContext());
+
+        if (mainActivity.serverConnection) {
+            apiManager.getPreventivniPregledi(new ApiManager.PreventivniPreglediCallback() {
+                @Override
+                public void onSuccess(List<PreventivniPregled> response) {
+                    allPreventivniPregledi = response;
+
+                    // Shrani v cache
+                    String json = new Gson().toJson(response);
+                    sharedPreferencesHelper.putString("AllPreventivniPreglediList", json);
+
+                    Log.d(TAG, "Loaded " + response.size() + " preventivni pregledi for podsklop checking");
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Log.e(TAG, "Failed to load preventivni pregledi: " + errorMessage);
+                    loadPreventivniPreglediFromPrefs(sharedPreferencesHelper);
+                }
+            });
+        } else {
+            loadPreventivniPreglediFromPrefs(sharedPreferencesHelper);
+        }
+    }
+
+    private void loadPreventivniPreglediFromPrefs(SharedPreferencesHelper prefs) {
+        String json = prefs.getString("AllPreventivniPreglediList", null);
+        if (json != null && !json.isEmpty()) {
+            try {
+                Type type = new TypeToken<List<PreventivniPregled>>() {}.getType();
+                allPreventivniPregledi = new Gson().fromJson(json, type);
+                Log.d(TAG, "Loaded " + (allPreventivniPregledi != null ? allPreventivniPregledi.size() : 0) +
+                        " preventivni pregledi from cache");
+            } catch (Exception e) {
+                Log.e(TAG, "Error parsing cached preventivni pregledi: " + e.getMessage());
+                allPreventivniPregledi = new ArrayList<>();
+            }
+        } else {
+            Log.w(TAG, "No cached preventivni pregledi found");
+            allPreventivniPregledi = new ArrayList<>();
         }
     }
 

@@ -133,8 +133,8 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
             }
 
             // Nastavi naslednji pregled
-            if (pregled.getNaslenjniPregled() != null && !pregled.getNaslenjniPregled().isEmpty()) {
-                naslenjdiPregledText.setText(pregled.getNaslenjniPregled());
+            if (pregled.getNaslednjniPregled() != null && !pregled.getNaslednjniPregled().isEmpty()) {
+                naslenjdiPregledText.setText(pregled.getNaslednjniPregled());
             } else {
                 naslenjdiPregledText.setText("Ni podatka");
             }
