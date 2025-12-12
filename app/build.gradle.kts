@@ -52,7 +52,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.barcode.scanning)
-
+    implementation(libs.zxing.android.embedded)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.core)
     implementation(libs.camera.camera2)

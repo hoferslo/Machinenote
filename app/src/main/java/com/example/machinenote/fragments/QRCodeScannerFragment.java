@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
@@ -20,11 +22,13 @@ import androidx.fragment.app.Fragment;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentQRCodeScannerBinding;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
-import com.google.mlkit.vision.barcode.BarcodeScanning;
-import com.google.mlkit.vision.barcode.common.Barcode;
-import com.google.mlkit.vision.common.InputImage;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
 
+import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 
 public class QRCodeScannerFragment extends Fragment {
@@ -55,7 +59,7 @@ public class QRCodeScannerFragment extends Fragment {
         this.qrCodeScanCallback = callback;
     }
 
-    public interface QRCodeScannerListener { //todo maybe throw this out, its not being used (only in mainActivity)
+    public interface QRCodeScannerListener {
         void onQRCodeScanned(String result);
         void onScanCancelled();
     }
@@ -119,49 +123,67 @@ public class QRCodeScannerFragment extends Fragment {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
 
-        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), imageProxy -> {
-            scanQRCode(imageProxy);
-        });
+        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), this::scanQRCode);
 
         CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
 
         cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
     }
 
+    @OptIn(markerClass = ExperimentalGetImage.class)
     private void scanQRCode(ImageProxy imageProxy) {
-        if (!scanned) {
-            @NonNull ImageProxy.PlaneProxy[] planes = imageProxy.getPlanes();
-            if (planes.length > 0) {
-                InputImage image = InputImage.fromMediaImage(imageProxy.getImage(), imageProxy.getImageInfo().getRotationDegrees());
+        if (!scanned && imageProxy.getImage() != null) {
+            try {
+                // Pridobi YUV byte array iz ImageProxy
+                byte[] data = imageProxyToByteArray(imageProxy);
+                int width = imageProxy.getWidth();
+                int height = imageProxy.getHeight();
 
-                BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
-                        .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                        .build();
+                // Uporabi ZXing za dekodiranje (pravilno handla encoding!)
+                PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(
+                        data, width, height, 0, 0, width, height, false);
 
-                BarcodeScanning.getClient(options)
-                        .process(image)
-                        .addOnSuccessListener(barcodes -> {
-                            for (Barcode barcode : barcodes) {
-                                if (barcode.getRawValue() != null && qrCodeScanCallback != null) {
-                                    listener.onQRCodeScanned(barcode.getRawValue());
-                                    qrCodeScanCallback.onQRCodeScanned(barcode.getRawValue());
-                                    ((MainActivity) context).clearLastFragmentFromBackStack();
-                                    scanned = true;
-                                    break;
-                                }
-                            }
-                        })
-                        .addOnFailureListener(Throwable::printStackTrace)
-                        .addOnCompleteListener(task -> imageProxy.close());
-            } else {
+                BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                MultiFormatReader reader = new MultiFormatReader();
+
+                try {
+                    Result result = reader.decode(bitmap);
+                    String qrValue = result.getText();
+
+                    android.util.Log.d(TAG, "ZXing decoded: " + qrValue);
+
+                    if (qrValue != null && qrCodeScanCallback != null) {
+                        requireActivity().runOnUiThread(() -> {
+                            listener.onQRCodeScanned(qrValue);
+                            qrCodeScanCallback.onQRCodeScanned(qrValue);
+                            ((MainActivity) context).clearLastFragmentFromBackStack();
+                        });
+                        scanned = true;
+                    }
+                } catch (Exception e) {
+                    // QR koda ni najdena v tem frame-u, nadaljuj skeniranje
+                }
+            } catch (Exception e) {
+                android.util.Log.e(TAG, "Scan error: " + e.getMessage());
+            } finally {
                 imageProxy.close();
             }
+        } else {
+            imageProxy.close();
         }
+    }
+
+    // Helper metoda za konverzijo ImageProxy v byte array
+    private byte[] imageProxyToByteArray(ImageProxy imageProxy) {
+        ImageProxy.PlaneProxy yPlane = imageProxy.getPlanes()[0];
+        ByteBuffer yBuffer = yPlane.getBuffer();
+        byte[] data = new byte[yBuffer.remaining()];
+        yBuffer.get(data);
+        return data;
     }
 
     public interface QRCodeScanCallback {
         void onQRCodeScanned(String qrCode);
         void onScanCancelled();
     }
-
 }

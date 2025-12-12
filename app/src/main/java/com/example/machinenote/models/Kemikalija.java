@@ -41,17 +41,23 @@ public class Kemikalija {
     @SerializedName("Polica_ID")
     private int polica_ID;
 
-    // Additional fields for joined data
+    @SerializedName("Polica")
     private String polica;
+
+    @SerializedName("Omara_ime")
     private String omara;
+
+    @SerializedName("Ime_programa")
     private String program;
+
 
     public Kemikalija() {
     }
 
     public Kemikalija(int id, String ime_SLO, String ime_ENG, String formula, String cas_stevilo,
                       String firma, Date rok_uporabe, String teza, String agregatno_stanje,
-                      int ident_Unichem, String opombe, int polica_ID) {
+                      int ident_Unichem, String opombe, int polica_ID, String polica, String omara,
+                      String program) {
         this.id = id;
         this.ime_SLO = ime_SLO;
         this.ime_ENG = ime_ENG;
@@ -64,6 +70,9 @@ public class Kemikalija {
         this.ident_Unichem = ident_Unichem;
         this.opombe = opombe;
         this.polica_ID = polica_ID;
+        this.polica = polica;
+        this.omara = omara;
+        this.program = program;
     }
 
     // Getters and Setters

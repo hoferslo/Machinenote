@@ -33,7 +33,6 @@ public class KemikalijeAddFragment extends BaseFragment {
     private Date selectedDate;
     private Calendar calendar;
 
-    // Lists to hold data from database
     private List<PolicaKemikalije> policaKemikalijeList = new ArrayList<>();
     private List<OmaraKemikalije> omaraKemikalijeList = new ArrayList<>();
     private List<PolicaKemikalije> filteredPolicaList = new ArrayList<>();
@@ -208,7 +207,7 @@ public class KemikalijeAddFragment extends BaseFragment {
 
     private void updateDateButton() {
         if (selectedDate != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault());
             binding.rokIzteka.setText(dateFormat.format(selectedDate));
         }
     }

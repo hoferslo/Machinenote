@@ -79,7 +79,7 @@ public interface ApiService {
     Call<Kemikalija> getKemikalijaById(@Path("id") int id);
 
     @Headers("Content-Type: application/json")
-    @POST("Razvoj/kemikalije.php.php")
+    @POST("Razvoj/kemikalije.php")
     Call<Void> createKemikalija(@Body Kemikalija kemikalija);
 
     @Headers("Content-Type: application/json")
