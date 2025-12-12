@@ -378,7 +378,7 @@ public class DashboardFragment extends BaseFragment {
         button.setElevation(4f);
 
         int circleSize = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 32,
+                TypedValue.COMPLEX_UNIT_DIP, 34,
                 context.getResources().getDisplayMetrics()
         );
 
@@ -438,7 +438,7 @@ public class DashboardFragment extends BaseFragment {
         TextView circle = new TextView(context);
         circle.setText(text);
         circle.setTextColor(context.getResources().getColor(android.R.color.white));
-        circle.setTextSize(10);
+        circle.setTextSize(12);
         circle.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
         circle.setGravity(Gravity.CENTER);
         circle.setElevation(8f); // Higher than button

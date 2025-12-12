@@ -1,0 +1,61 @@
+<resources>
+    <dimen name="fab_margin">14dp</dimen>
+
+    <!-- Button dimensions -->
+    <dimen name="button_min_height">44dp</dimen>
+    <dimen name="button_padding_horizontal">12dp</dimen>
+    <dimen name="button_padding_vertical">8dp</dimen>
+    <dimen name="button_text_size">@dimen/text_size_medium</dimen>
+    <dimen name="button_elevation">2dp</dimen>
+
+    <!-- Icon button dimensions -->
+    <dimen name="icon_button_min_size">44dp</dimen>
+    <dimen name="icon_button_padding">14dp</dimen>
+    <dimen name="icon_button_elevation">2dp</dimen>
+    <dimen name="icon_width">24dp</dimen>
+    <dimen name="icon_height">46dp</dimen>
+    <dimen name="icon_text_width">48dp</dimen>
+
+    <!-- Camera button dimensions -->
+    <dimen name="camera_button_min_height">68dp</dimen>
+    <dimen name="camera_button_padding_vertical">14dp</dimen>
+    <dimen name="camera_button_elevation">4dp</dimen>
+
+    <!-- Tab button dimensions -->
+    <dimen name="tab_button_min_height">56dp</dimen>
+    <dimen name="tab_button_padding_horizontal">8dp</dimen>
+    <dimen name="tab_button_text_size">10sp</dimen>
+
+    <!-- Toggle button dimensions -->
+    <dimen name="toggle_button_min_height">60dp</dimen  >
+
+    <!-- Input dimensions -->
+    <dimen name="input_text_size">@dimen/text_size_medium</dimen>
+    <dimen name="input_padding">14dp</dimen>
+    <dimen name="input_margin_bottom">8dp</dimen>
+    <dimen name="input_min_height">44dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_extra_small">8sp</dimen>
+    <dimen name="text_size_small">10sp</dimen>
+    <dimen name="text_size_medium">12sp</dimen>
+    <dimen name="text_size_large">14sp</dimen>
+    <dimen name="text_size_extra_large">16sp</dimen>
+    <dimen name="text_size_xxl">20sp</dimen>
+
+    <dimen name="text_size_big_small">24sp</dimen>
+    <dimen name="text_size_big_medium">26sp</dimen>
+    <dimen name="text_size_big_large">28sp</dimen>
+
+    <!-- Common Spacing-->
+    <dimen name="spacing_xs">2dp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">6dp</dimen>
+    <dimen name="spacing_large">10dp</dimen>
+    <dimen name="spacing_xl">14dp</dimen>
+
+    <!-- Minimum Touch Targets -->
+    <dimen name="min_touch_target">44dp</dimen>
+    <dimen name="min_touch_target_large">48dp</dimen>
+
+</resources>

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:focusable="true"
     android:clickable="true"
-    android:padding="12dp"
+    android:padding="@dimen/spacing_large"
     tools:context=".fragments.KnjizenjeFragment">
 
     <!-- Article Name Header - Compact -->
@@ -15,8 +15,8 @@
         android:id="@+id/articleNameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:padding="12dp"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:padding="@dimen/spacing_large"
         android:background="@drawable/bg_card_interactive"
         android:clickable="true"
         android:focusable="true"
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_medium"
             android:fontFamily="@font/nunito_semibold"
             android:textColor="@color/content_primary"
             android:text="@string/request_for_article_scan"
@@ -40,9 +40,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/spacing_medium"
         android:background="@drawable/bg_card_primary"
-        android:padding="12dp"
+        android:padding="@dimen/spacing_medium"
         android:orientation="horizontal">
 
         <!-- Info Items in Grid Layout -->
@@ -56,7 +56,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/spacing_medium"
                 android:orientation="horizontal">
 
                 <!-- Rack Info -->
@@ -64,8 +64,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:padding="8dp"
+                    android:layout_marginEnd="@dimen/spacing_xs"
+                    android:padding="@dimen/spacing_medium"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -76,7 +76,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/rack_label"
-                        android:textSize="11sp"
+                        android:textSize="@dimen/text_size_small"
                         android:maxLines="1" />
 
                     <TextView
@@ -86,7 +86,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/text_size_xxl"
                         android:maxLines="1" />
 
                 </LinearLayout>
@@ -96,8 +96,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:padding="8dp"
+                    android:layout_marginStart="@dimen/spacing_xs"
+                    android:padding="@dimen/spacing_medium"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -108,7 +108,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/warehouse_label"
-                        android:textSize="11sp"
+                        android:textSize="@dimen/text_size_small"
                         android:maxLines="1" />
 
                     <TextView
@@ -118,7 +118,7 @@
                         android:fontFamily="@font/nunito_semibold"
                         android:maxLines="1"
                         android:textColor="@color/content_primary"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/text_size_xxl"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -137,8 +137,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:padding="8dp"
+                    android:layout_marginEnd="@dimen/spacing_xs"
+                    android:padding="@dimen/spacing_medium"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -150,7 +150,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="ID"
-                        android:textSize="11sp"
+                        android:textSize="@dimen/text_size_small"
                         android:maxLines="1" />
 
                     <TextView
@@ -160,7 +160,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/text_size_xxl"
                         android:maxLines="1" />
 
                 </LinearLayout>
@@ -171,8 +171,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:padding="8dp"
+                    android:layout_marginStart="@dimen/spacing_xs"
+                    android:padding="@dimen/spacing_medium"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -183,7 +183,7 @@
                         android:textColor="@color/content_secondary"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/article_minimum"
-                        android:textSize="11sp"
+                        android:textSize="@dimen/text_size_small"
                         android:maxLines="1" />
 
                     <TextView
@@ -193,7 +193,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/content_primary"
                         android:fontFamily="@font/nunito_semibold"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/text_size_xxl"
                         android:maxLines="1" />
 
                 </LinearLayout>
@@ -208,7 +208,7 @@
             style="@style/Button.Icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="@dimen/spacing_large"
             android:layout_gravity="center_vertical"
             android:visibility="gone"
             android:contentDescription="@string/send"
@@ -221,9 +221,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/spacing_medium"
         android:background="@drawable/bg_card_primary"
-        android:padding="12dp">
+        android:padding="@dimen/spacing_medium">
 
         <TextView
             android:layout_width="0dp"
@@ -232,7 +232,7 @@
             android:layout_gravity="center_vertical"
             android:textAllCaps="true"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_xxl"
             android:fontFamily="@font/nunito_semibold"
             android:textColor="@color/content_primary"
             android:text="@string/stock_label"
@@ -240,10 +240,10 @@
 
         <TextView
             android:id="@+id/article_stock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:padding="16dp"
+            android:layout_width="@dimen/icon_text_width"
+            android:layout_height="@dimen/icon_height"
+            android:textSize="@dimen/text_size_extra_large"
+            android:padding="@dimen/spacing_large"
             android:fontFamily="@font/nunito_semibold"
             android:text="0"
             style="@style/primaryButton"
@@ -255,23 +255,30 @@
     <TextView
         android:id="@+id/allDataSv"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_medium"
         style="@style/Input.Base"
         android:text="Prikaži več informacij o artiklu"
         android:textColor="@color/content_secondary"
         android:fontFamily="@font/nunito_semibold"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_medium"
         android:drawableEnd="@drawable/ic_chevron_right"
         android:drawableTint="@color/content_tertiary"
         android:drawablePadding="12dp"
         android:gravity="center_vertical"
         android:clickable="true"
         android:focusable="true"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
+        android:paddingHorizontal="@dimen/spacing_xl"
+        android:paddingVertical="@dimen/spacing_large"
         android:minHeight="48dp" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        >
 
     <!-- QR Scanner Button - Big and prominent -->
     <LinearLayout
@@ -279,25 +286,24 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_card_primary"
         android:orientation="vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="@dimen/spacing_medium">
 
         <!-- Naslov/besedilo nad gumbovi -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upravljanje zaloge"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
             android:gravity="center"
-            android:padding="12dp"
+            android:paddingTop="@dimen/spacing_large"
             android:textColor="@color/action_primary" />
 
         <!-- Stock Control Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:padding="12dp"
+            android:padding="@dimen/spacing_large"
             android:orientation="horizontal">
 
             <Button
@@ -306,8 +312,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:textSize="18sp"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:textSize="@dimen/text_size_large"
                 android:text="-"
                 android:minHeight="44dp" />
 
@@ -317,8 +323,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:textSize="24sp"
+                android:layout_marginHorizontal="@dimen/spacing_small"
+                android:textSize="@dimen/text_size_xxl"
                 android:layout_marginBottom="0dp"
                 android:text="1"
                 android:inputType="number"
@@ -332,8 +338,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:textSize="18sp"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:textSize="@dimen/text_size_large"
                 android:text="+"
                 android:minHeight="44dp" />
 
@@ -344,7 +350,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/spacing_medium"
         >
 
         <EditText
@@ -353,7 +359,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.8"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="@dimen/spacing_small"
             android:hint="@string/enter_id"
             android:inputType="number"
             android:gravity="center_vertical"
@@ -364,10 +370,10 @@
         <ImageButton
             android:id="@+id/getArticelDataByIdBtn"
             style="@style/Button.Icon"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_height="@dimen/icon_height"
+            android:layout_width="@dimen/icon_width"
             android:layout_weight="0.1"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="@dimen/spacing_small"
             android:contentDescription="@string/photo_button"
             android:src="?attr/homeAsUpIndicator"
             android:rotation="180"
@@ -378,13 +384,12 @@
             android:id="@+id/scanQRBtn"
             style="@style/Button.Icon"
             android:layout_weight="0.1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/icon_width"
+            android:layout_height="@dimen/icon_height"
             android:contentDescription="@string/scan_qr_code"
             android:src="@mipmap/qr_code_scanner"
             app:tint="@color/content_inverse"
             android:layout_gravity="center_vertical"/>
-
     </LinearLayout>
 
     <!-- Cancel Button -->
@@ -395,5 +400,6 @@
         android:layout_height="wrap_content"
         android:text="@string/cancel"
         android:minHeight="44dp" />
+    </LinearLayout>
 
 </LinearLayout>
