@@ -39,7 +39,7 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
     private FragmentPreventivniPreglediBinding binding;
     private ApiManager apiManager;
     private List<SklopLinije> podsklopList;
-    private List<SklopLinije> allPodsklopList; // Za filtriranje
+    private List<SklopLinije> allPodsklopList;
     private PreventivniPreglediPodsklopAdapter adapter;
     private Linija selectedLinija;
 
@@ -206,7 +206,6 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
                     SklopLinije sklop = new SklopLinije();
                     sklop.setId(podsklopId);
                     sklop.setSklopLinije(pregled.getPodsklopLinije());
-                    // DODAJ naziv podsklopa
                     sklop.setNazivPodsklopa(pregled.getNazivPodsklopa());
                     podsklopMap.put(podsklopId, sklop);
                     countMap.put(podsklopId, 0);
