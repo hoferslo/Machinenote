@@ -432,8 +432,21 @@ public class NarocilaAddFragment extends BaseFragment {
                     getActivity().runOnUiThread(() -> {
                         locationAdapter.notifyDataSetChanged();
 
-                        // Če imamo lokacije, nastavimo prvo kot privzeto
-                        if (!locations.isEmpty()) {
+                        // Dobimo shranjeno lokacijo uporabnika
+                        String savedLocationName = sharedPreferencesHelper.getLokacija();
+
+                        // Poiščemo pozicijo te lokacije v seznamu
+                        if (!savedLocationName.isEmpty() && !locations.isEmpty()) {
+                            int position = locations.indexOf(savedLocationName);
+                            if (position >= 0) {
+                                // Nastavimo uporabnikovo lokacijo
+                                binding.lokacijaSpinner.setSelection(position);
+                            } else {
+                                // Če shranjene lokacije ni v seznamu, izberemo prvo
+                                binding.lokacijaSpinner.setSelection(0);
+                            }
+                        } else if (!locations.isEmpty()) {
+                            // Če ni shranjene lokacije, izberemo prvo
                             binding.lokacijaSpinner.setSelection(0);
                         }
                     });

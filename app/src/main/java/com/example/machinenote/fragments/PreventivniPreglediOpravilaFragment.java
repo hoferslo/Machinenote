@@ -346,6 +346,10 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
                     .append(" - ").append(selectedLinija.getNaziv_linije()).append("\n");
         }
 
+        if (pregled.getPodsklopLinije() != null && !pregled.getPodsklopLinije().isEmpty()) {
+            details.append("Podsklop: ").append(pregled.getNazivPodsklopa()).append("\n");
+        }
+
         details.append("Opis: ").append(pregled.getOpis() != null ? pregled.getOpis() : "Ni opisa").append("\n");
 
         if (pregled.getFullLocation() != null) {

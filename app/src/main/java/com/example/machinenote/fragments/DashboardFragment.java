@@ -25,6 +25,7 @@ import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
 import com.example.machinenote.models.Linija;
+import com.example.machinenote.models.Narocila;
 import com.example.machinenote.models.Role;
 import com.google.android.material.button.MaterialButton;
 
@@ -43,6 +44,7 @@ public class DashboardFragment extends BaseFragment {
     private int preventivniPreglediCountPonikva = 0;
     private int preventivniPreglediCountSinjaGorica = 0;
     private int preventivniPreglediCountLogatec = 0;
+    private int aktivnaNarocilaCount = 0;
     private final Map<String, MaterialButton> buttonMap = new HashMap<>();
 
     // Button configuration data
@@ -108,6 +110,7 @@ public class DashboardFragment extends BaseFragment {
         }
 
         fetchLinije();
+        fetchNarocila();
         initButtons();
         return binding.getRoot();
     }
@@ -256,11 +259,6 @@ public class DashboardFragment extends BaseFragment {
         makeOnline(mainActivity.serverConnection);
     }
 
-
-    private void getNalogeCount() {
-        //todo naredi najprej naloge tab, potem šele to
-    }
-
     public void makeOnline(boolean online) {
         for (MaterialButton button : buttonMap.values()) {
             if (button != null) {
@@ -269,14 +267,14 @@ public class DashboardFragment extends BaseFragment {
         }
 
         // Update for specific buttons
-        MaterialButton nalogeButton = buttonMap.get("Naloge");
-        if (nalogeButton != null) {
-            getNalogeCount();
-        }
-
         MaterialButton prevPreglediButton = buttonMap.get("Preventivni pregledi");
         if (prevPreglediButton != null) {
             updatePreventivniPregledi();
+        }
+
+        MaterialButton narocilaButton = buttonMap.get("Naročila");
+        if (narocilaButton != null) {
+            updateNarocila();
         }
     }
 
@@ -353,8 +351,6 @@ public class DashboardFragment extends BaseFragment {
             frameParams.setMargins(8, 8, 8, 8); // Add inner space
             button.setLayoutParams(frameParams);
 
-
-
             button.setBackgroundDrawable(Objects.requireNonNull(
                     ContextCompat.getDrawable(context, R.drawable.bg_button_secondary)));
             button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
@@ -382,40 +378,30 @@ public class DashboardFragment extends BaseFragment {
                 context.getResources().getDisplayMetrics()
         );
 
-        int circlesAdded = 0;
-
         if (isAdmin || "Vse Lokacije".equals(userLocation)) {
             if (preventivniPreglediCountPonikva > 0) {
                 addCircleToContainer(container, "Pon\n" + String.valueOf(preventivniPreglediCountPonikva),
                         circleSize, Gravity.START | Gravity.TOP, 8, 8, 0, 0,
                         android.R.color.holo_blue_dark);
-                circlesAdded++;
             }
 
             if (preventivniPreglediCountLogatec > 0) {
                 addCircleToContainer(container, "Log\n" + String.valueOf(preventivniPreglediCountLogatec),
                         circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0,
                         android.R.color.holo_orange_dark);
-                circlesAdded++;
             }
 
             if (preventivniPreglediCountSinjaGorica > 0) {
                 addCircleToContainer(container, "SG\n" + String.valueOf(preventivniPreglediCountSinjaGorica),
                         circleSize, Gravity.START | Gravity.BOTTOM, 8, 0, 0, 8,
                         android.R.color.holo_green_dark);
-                circlesAdded++;
             }
         } else {
-            int count = 0;
-            int color = android.R.color.holo_blue_dark;
-            Log.d("DashboardLokacija", "User location: " + userLocation);
             if ("Ponikva".equalsIgnoreCase(userLocation)) {
-                count = preventivniPreglediCountPonikva;
-                color = android.R.color.holo_blue_dark;
-                if (count > 0) {
-                    addCircleToContainer(container, "Pon\n" + String.valueOf(count),
-                            circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0, color);
-                    circlesAdded++;
+                if (preventivniPreglediCountPonikva > 0) {
+                    addCircleToContainer(container, "Pon\n" + String.valueOf(preventivniPreglediCountPonikva),
+                            circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0,
+                            android.R.color.holo_blue_dark);
                 }
             } else if ("Logatec".equalsIgnoreCase(userLocation) || "Sinja Gorica".equalsIgnoreCase(userLocation)) {
                 addCircleToContainer(container, "Log\n" + String.valueOf(preventivniPreglediCountLogatec),
@@ -424,10 +410,103 @@ public class DashboardFragment extends BaseFragment {
                 addCircleToContainer(container, "SG\n" + String.valueOf(preventivniPreglediCountSinjaGorica),
                         circleSize, Gravity.START | Gravity.BOTTOM, 8, 0, 0, 8,
                         android.R.color.holo_green_dark);
-                circlesAdded+=2;
-
             }
         }
+        container.requestLayout();
+    }
+
+    private void updateNarocila() {
+        MaterialButton button = buttonMap.get("Naročila");
+
+        if (button == null) {
+            Log.e(TAG, "ERROR: Naročila button is NULL");
+            return;
+        }
+
+        // Wrap button in FrameLayout if not already wrapped
+        ViewGroup parent = (ViewGroup) button.getParent();
+        FrameLayout container;
+
+        if (parent instanceof FrameLayout) {
+            container = (FrameLayout) parent;
+
+            // Remove existing circles
+            int childCount = container.getChildCount();
+            for (int i = childCount - 1; i >= 0; i--) {
+                View child = container.getChildAt(i);
+                if (child instanceof TextView && !(child instanceof MaterialButton)) {
+                    container.removeViewAt(i);
+                }
+            }
+
+        } else if (parent instanceof LinearLayout) {
+            LinearLayout linearParent = (LinearLayout) parent;
+            int index = linearParent.indexOfChild(button);
+            ViewGroup.LayoutParams buttonParams = button.getLayoutParams();
+
+            float weight = 0;
+            int originalHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+            int[] originalMargins = new int[4];
+
+            if (buttonParams instanceof LinearLayout.LayoutParams) {
+                LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) buttonParams;
+                weight = llp.weight;
+                originalHeight = llp.height;
+                originalMargins[0] = llp.leftMargin;
+                originalMargins[1] = llp.topMargin;
+                originalMargins[2] = llp.rightMargin;
+                originalMargins[3] = llp.bottomMargin;
+            }
+
+            linearParent.removeView(button);
+
+            container = new FrameLayout(context);
+            LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
+                    16,
+                    originalHeight + 16
+            );
+            containerParams.weight = weight;
+            containerParams.setMargins(originalMargins[0], originalMargins[1],
+                    originalMargins[2], originalMargins[3]);
+            container.setLayoutParams(containerParams);
+
+            FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            );
+            frameParams.setMargins(8, 8, 8, 8);
+            button.setLayoutParams(frameParams);
+
+            button.setBackgroundDrawable(Objects.requireNonNull(
+                    ContextCompat.getDrawable(context, R.drawable.bg_button_secondary)));
+            button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
+            button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
+            button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_orange_light));
+            button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
+            button.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+
+            container.addView(button);
+            linearParent.addView(container, index);
+        } else {
+            Log.e(TAG, "ERROR: Parent is neither FrameLayout nor LinearLayout!");
+            return;
+        }
+
+        button.setVisibility(View.VISIBLE);
+        button.setElevation(4f);
+
+        // Show count badge only if there are active orders
+        if (aktivnaNarocilaCount > 0) {
+            int circleSize = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 34,
+                    context.getResources().getDisplayMetrics()
+            );
+
+            addCircleToContainer(container, String.valueOf(aktivnaNarocilaCount),
+                    circleSize, Gravity.END | Gravity.TOP, 0, 8, 8, 0,
+                    android.R.color.holo_red_dark);
+        }
+
         container.requestLayout();
     }
 
@@ -441,7 +520,7 @@ public class DashboardFragment extends BaseFragment {
         circle.setTextSize(12);
         circle.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
         circle.setGravity(Gravity.CENTER);
-        circle.setElevation(8f); // Higher than button
+        circle.setElevation(8f);
         circle.setClickable(false);
         circle.setFocusable(false);
 
@@ -454,7 +533,6 @@ public class DashboardFragment extends BaseFragment {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(size, size);
         params.gravity = gravity;
 
-        // Convert DP to PX for margins
         int leftPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, left, context.getResources().getDisplayMetrics());
         int topPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, top, context.getResources().getDisplayMetrics());
         int rightPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, right, context.getResources().getDisplayMetrics());
@@ -469,24 +547,17 @@ public class DashboardFragment extends BaseFragment {
         button.setClickable(online);
 
         if (online) {
-            // Remove gray overlay by restoring original colors and full opacity
             button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
             button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
-            button.setAlpha(1.0f); // Full opacity
-
-            // Restore original icon color based on button text
+            button.setAlpha(1.0f);
             restoreIconColor(button);
         } else {
-            // Apply subtle gray overlay effect - keep original colors but reduce opacity
             button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.action_secondary));
             button.setTextColor(ContextCompat.getColorStateList(context, R.color.content_primary));
-            button.setAlpha(0.3f); // Reduced opacity creates gray overlay effect
-
-            // Keep the original icon color when offline too
+            button.setAlpha(0.3f);
             restoreIconColor(button);
         }
 
-        // Keep the original icon gravity
         button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_TOP);
     }
 
@@ -548,8 +619,6 @@ public class DashboardFragment extends BaseFragment {
                     preventivniPreglediCountLogatec = 0;
 
                     for (Linija linija : linijeList) {
-                        Log.d("Linija:", String.valueOf(linija));
-                        Log.d("Lokacija za to linijo:", linija.getLokacija_naziv());
                         if ("Ponikva".equalsIgnoreCase(linija.getLokacija_naziv())) {
                             preventivniPreglediCountPonikva += linija.getStevilo_sklopov();
                         } else if ("Sinja Gorica".equalsIgnoreCase(linija.getLokacija_naziv())) {
@@ -568,19 +637,47 @@ public class DashboardFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(String errorMessage) {
-                    Log.d("TAG", "onFailure: " + errorMessage);
+                    Log.d(TAG, "onFailure: " + errorMessage);
                 }
             });
         } else {
-            Log.d("TAG", "fetchLinije: offline");
+            Log.d(TAG, "fetchLinije: offline");
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    private void fetchNarocila() {
         MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.binding.toolbarTitle.setText(TAG);
-        mainActivity.showBackArrow();
+
+        if (mainActivity.serverConnection) {
+            apiManager.getNarocila(new ApiManager.NarocilaCallback() {
+                @Override
+                public void onSuccess(List<Narocila> response) {
+                    aktivnaNarocilaCount = 0;
+
+                    // Count active orders (novo, v_obdelavi, naroceno)
+                    for (Narocila narocilo : response) {
+                        String status = narocilo.getStatus();
+                        if (status != null) {
+                            String statusLower = status.toLowerCase().trim();
+                            if ("novo".equals(statusLower) ||
+                                    "v_obdelavi".equals(statusLower) ||
+                                    "naroceno".equals(statusLower)) {
+                                aktivnaNarocilaCount++;
+                            }
+                        }
+                    }
+
+                    Log.d(TAG, "Aktivna naročila count: " + aktivnaNarocilaCount);
+                    updateNarocila();
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Log.d(TAG, "fetchNarocila onFailure: " + errorMessage);
+                }
+            });
+        } else {
+            Log.d(TAG, "fetchNarocila: offline");
+        }
     }
 }

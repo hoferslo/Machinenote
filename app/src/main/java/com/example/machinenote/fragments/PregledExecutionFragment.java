@@ -1,5 +1,6 @@
 package com.example.machinenote.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.CustomDatePicker;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentPregledExecutionBinding;
@@ -24,6 +26,7 @@ import com.example.machinenote.models.Linija;
 import com.google.gson.JsonObject;
 import com.example.machinenote.models.PregledOpravilo;
 
+import java.util.Calendar;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,6 +86,9 @@ public class PregledExecutionFragment extends BaseFragment {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
+        // Nastavi date picker za datum polje
+        setupDatePicker();
+
         // Set up tab navigation if needed
         setupTabNavigation();
     }
@@ -117,12 +123,53 @@ public class PregledExecutionFragment extends BaseFragment {
         // Pre-fill some fields if available
     }
 
+    private void setupDatePicker() {
+        binding.etDatum.setOnClickListener(v -> {
+            CustomDatePicker datePicker = new CustomDatePicker(requireContext(),
+                    new CustomDatePicker.ICustomDateListener() {
+                        @Override
+                        public void onSet(Dialog dialog, Calendar calendarSelected,
+                                          Date dateSelected, int year, String monthFullName,
+                                          String monthShortName, int monthNumber, int day,
+                                          String weekDayFullName, String weekDayShortName) {
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            String dateString = dateFormat.format(dateSelected);
+                            binding.etDatum.setText(dateString);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            // Nič ne naredi
+                        }
+                    });
+
+            // Nastavi trenutni datum iz polja
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date currentDate = dateFormat.parse(binding.etDatum.getText().toString());
+                if (currentDate != null) {
+                    datePicker.setDate(currentDate);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error parsing date: " + e.getMessage());
+                datePicker.setDate(Calendar.getInstance());
+            }
+
+            datePicker.showDialog();
+        });
+    }
+
     private String buildPregledInfoText() {
         StringBuilder info = new StringBuilder();
 
         if (selectedLinija != null) {
             info.append("Linija: ").append(selectedLinija.getLinija_SAP())
                     .append(" - ").append(selectedLinija.getNaziv_linije()).append("\n");
+        }
+
+        // Dodaj podsklop, če obstaja
+        if (selectedPregled.getPodsklopLinije() != null && !selectedPregled.getPodsklopLinije().isEmpty()) {
+            info.append("Podsklop: ").append(selectedPregled.getNazivPodsklopa()).append("\n");
         }
 
         info.append("Opis: ").append(selectedPregled.getOpis() != null ? selectedPregled.getOpis() : "Ni opisa").append("\n");

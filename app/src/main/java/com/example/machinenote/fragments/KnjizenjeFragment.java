@@ -109,6 +109,7 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
             String body = "Pozdravljeni!\n\n" +
                     "Opozarjam vas, da je rezervni del pod minimalno zalogo:\n\n" +
                     "Artikel: " + rezervniDel.getArtikel() + "\n" +
+                    "ID Artikla: " + rezervniDel.getId() + "\n" +
                     "Trenutna zaloga: " + rezervniDel.getRealZalogo() + "\n" +
                     "Minimalna zaloga: " + rezervniDel.getMinimalna_zaloga() + "\n" +
                     "Dobavitelj: " + (rezervniDel.getDobavitelj() != null ? rezervniDel.getDobavitelj() : "Ni podatka") + "\n" +

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -76,24 +78,39 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
 
         // Fetch all chemicals on fragment creation
         fetchAllKemikalije();
+        int searchSrcTextId = binding.idOfDuty.getContext().getResources()
+                .getIdentifier("android:id/search_src_text", null, null);
+        View searchEditText = binding.idOfDuty.findViewById(searchSrcTextId);
 
-        // Search functionality - Focus listener
-        binding.idOfDuty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d("KemikalijeFragment", "Focus changed: " + hasFocus + ", allKemikalije size: " + allKemikalije.size());
-                if (hasFocus) {
-                    // Show all items when focused
-                    filteredKemikalije.clear();
-                    filteredKemikalije.addAll(allKemikalije);
-                    Log.d("KemikalijeFragment", "filteredKemikalije size: " + filteredKemikalije.size());
-                    updateDropdownAdapter();
-                    if (filteredKemikalije.size() > 0) {
-                        showDropdown();
+        if (searchEditText != null) {
+            searchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        if (allKemikalije.isEmpty()) {
+                            Toast.makeText(context, "Nalaganje kemikalij...", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Show all items when focused
+                        filteredKemikalije.clear();
+                        filteredKemikalije.addAll(allKemikalije);
+
+                        updateDropdownAdapter();
+
+                        // Dodaj delay za prikaz
+                        binding.idOfDuty.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showDropdown();
+                            }
+                        });
+                    } else {
+                        hideDropdown();
                     }
                 }
-            }
-        });
+            });
+        }
 
         // Search functionality - Query text listener
         binding.idOfDuty.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
@@ -120,13 +137,6 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
                     showDropdown();
                 }
                 return true;
-            }
-        });
-
-        // Hide dropdown when search view loses focus
-        binding.idOfDuty.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                hideDropdown();
             }
         });
 
@@ -183,6 +193,8 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         );
         dropdownPopup.setOutsideTouchable(true);
         dropdownPopup.setFocusable(false);
+        dropdownPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        dropdownPopup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         // Handle item clicks
         dropdownListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -203,7 +215,12 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         Log.d("KemikalijeFragment", "Updating dropdown adapter with " + filteredKemikalije.size() + " items");
         List<String> displayNames = new ArrayList<>();
         for (Kemikalija k : filteredKemikalije) {
-            String name = k.getIme_SLO() != null ? k.getIme_SLO() : "Neznano";
+            String name = "";
+            if (k.getIme_SLO() == null || Objects.equals(k.getIme_SLO(), "")){
+                name = k.getIme_ENG() != null ? k.getIme_ENG() : "Neznano";
+            } else {
+                name = k.getIme_SLO() != null ? k.getIme_SLO() : "Neznano";
+            }
             String cas = k.getCas_stevilo() != null ? " (CAS: " + k.getCas_stevilo() + ")" : "";
             String formula = k.getFormula() != null ? " - " + k.getFormula() : "";
             displayNames.add(name + cas + formula);
@@ -212,7 +229,6 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         dropdownAdapter.clear();
         dropdownAdapter.addAll(displayNames);
         dropdownAdapter.notifyDataSetChanged();
-        Log.d("KemikalijeFragment", "Adapter updated with " + displayNames.size() + " items");
     }
 
     private void showDropdown() {
@@ -220,7 +236,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         updateDropdownAdapter();
 
         // Calculate max height (show max 5 items)
-        int itemHeight = 120; // Approximate height per item in pixels
+        int itemHeight = 120;
         int maxHeight = Math.min(filteredKemikalije.size(), 5) * itemHeight;
         dropdownPopup.setHeight(maxHeight);
 
@@ -260,7 +276,21 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
                 filteredKemikalije.clear();
                 filteredKemikalije.addAll(allKemikalije);
                 Toast.makeText(context, "Naloženo " + allKemikalije.size() + " kemikalij", Toast.LENGTH_SHORT).show();
-                Log.d("KemikalijeFragment", "Loaded " + allKemikalije.size() + " chemicals");
+
+                // Če je search bar fokusiran, prikaži dropdown
+                int searchSrcTextId = binding.idOfDuty.getContext().getResources()
+                        .getIdentifier("android:id/search_src_text", null, null);
+                View searchEditText = binding.idOfDuty.findViewById(searchSrcTextId);
+
+                if (searchEditText != null && searchEditText.hasFocus()) {
+                    updateDropdownAdapter();
+                    binding.idOfDuty.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            showDropdown();
+                        }
+                    });
+                }
             }
 
             @Override
@@ -307,7 +337,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         if (kemikalija != null) {
             String subject = "Kemikalija - obvestilo: " + kemikalija.getIme_SLO();
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault());
             String rokUporabe = kemikalija.getRok_uporabe() != null ?
                     dateFormat.format(kemikalija.getRok_uporabe()) : "Ni podatka";
 
