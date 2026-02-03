@@ -10,14 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.example.machinenote.ApiManager;
 import com.example.machinenote.R;
 import com.example.machinenote.databinding.FragmentKemikalijeBottomSheetBinding;
 import com.example.machinenote.models.Kemikalija;
+import com.example.machinenote.models.OmaraKemikalije;
+import com.example.machinenote.models.PolicaKemikalije;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
@@ -28,6 +33,12 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
     private SimpleDateFormat dateFormat;
     private boolean isEditMode = false;
     private OnKemikalijaUpdateListener updateListener;
+    ApiManager apiManager;
+    private List<PolicaKemikalije> policaKemikalijeList = new ArrayList<>();
+    private List<OmaraKemikalije> omaraKemikalijeList = new ArrayList<>();
+    private List<PolicaKemikalije> filteredPolicaList = new ArrayList<>();
+    private ArrayAdapter<String> policaAdapter;
+    private ArrayAdapter<String> omaraAdapter;
 
     // Interface za callback ko se shrani
     public interface OnKemikalijaUpdateListener {
@@ -48,6 +59,7 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         binding = FragmentKemikalijeBottomSheetBinding.inflate(inflater, container, false);
         dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        apiManager = new ApiManager(context);
 
         // Nastavi spinnerje
         setupSpinners();
@@ -57,28 +69,121 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
 
         // Setup gumbov
         setupButtons();
+        loadOmaraData();
+        loadPolicaData();
 
         return binding.getRoot();
     }
 
     private void setupSpinners() {
-        // Enote
-        String[] enote = {"g", "kg", "mg", "L", "mL", "kom"};
-        ArrayAdapter<String> enotaAdapter = new ArrayAdapter<>(context, R.layout.item_spinner_layout, enote);
-        enotaAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
-        binding.enotaSpinner.setAdapter(enotaAdapter);
+        String[] units = {"g", "kg", "mg", "L", "mL", "mol"};
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(
+                context,
+                R.layout.item_spinner_layout,
+                units
+        );
+        unitAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
+        binding.enotaSpinner.setAdapter(unitAdapter);
 
-        // Omare
-        String[] omare = {"A", "B", "C", "D", "E", "F"};
-        ArrayAdapter<String> omaraAdapter = new ArrayAdapter<>(context, R.layout.item_spinner_layout, omare);
+        // Setup Omara (Cabinet) Spinner - will be populated from database
+        omaraAdapter = new ArrayAdapter<>(
+                context,
+                R.layout.item_spinner_layout,
+                new ArrayList<>()
+        );
         omaraAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.omaraSpinner.setAdapter(omaraAdapter);
 
-        // Police
-        String[] police = {"1", "2", "3", "4", "5", "6", "7", "8"};
-        ArrayAdapter<String> policaAdapter = new ArrayAdapter<>(context, R.layout.item_spinner_layout, police);
+        // Setup Polica (Shelf) Spinner - will be populated based on selected Omara
+        policaAdapter = new ArrayAdapter<>(
+                context,
+                R.layout.item_spinner_layout,
+                new ArrayList<>()
+        );
         policaAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.policaSpinner.setAdapter(policaAdapter);
+
+        // When Omara is selected, filter Police
+        binding.omaraSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                filterPolicaByOmara(position);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
+    private void loadPolicaData() {
+        apiManager.fetchAllPoliceKemikalije(new ApiManager.PoliceListCallback() {
+            @Override
+            public void onSuccess(List<PolicaKemikalije> police) {
+                policaKemikalijeList = police;
+                // Don't update spinner yet - wait for omara selection
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(context, "Napaka pri nalaganju polic: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadOmaraData() {
+        apiManager.fetchAllOmareKemikalije(new ApiManager.OmareListCallback() {
+            @Override
+            public void onSuccess(List<OmaraKemikalije> omare) {
+                omaraKemikalijeList = omare;
+                updateOmaraSpinner();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(context, "Napaka pri nalaganju omar: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateOmaraSpinner() {
+        List<String> omaraNames = new ArrayList<>();
+        for (OmaraKemikalije omaraKemikalije : omaraKemikalijeList) {
+            omaraNames.add(omaraKemikalije.getOmara_ime());
+        }
+
+        omaraAdapter.clear();
+        omaraAdapter.addAll(omaraNames);
+        omaraAdapter.notifyDataSetChanged();
+    }
+
+    private void updatePolicaSpinner() {
+        List<String> policaNames = new ArrayList<>();
+        for (PolicaKemikalije policaKemikalije : filteredPolicaList) {
+            policaNames.add(policaKemikalije.getPolica());
+        }
+
+        policaAdapter.clear();
+        policaAdapter.addAll(policaNames);
+        policaAdapter.notifyDataSetChanged();
+    }
+
+    private void filterPolicaByOmara(int omaraPosition) {
+        filteredPolicaList.clear();
+
+        if (omaraPosition >= 0 && omaraPosition < omaraKemikalijeList.size()) {
+            int selectedOmaraId = omaraKemikalijeList.get(omaraPosition).getId();
+
+            // Filter police that belong to selected omara
+            for (PolicaKemikalije polica : policaKemikalijeList) {
+                if (polica.getOmara_ID() != null && polica.getOmara_ID() == selectedOmaraId) {
+                    filteredPolicaList.add(polica);
+                }
+            }
+        }
+
+        updatePolicaSpinner();
     }
 
     private void displayData() {
@@ -197,7 +302,7 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
             binding.editButtonsContainer.setVisibility(View.GONE);
 
             binding.chemicalIdHeader.setText("Podrobnosti o kemikaliji");
-            // haha I HATE NIGGERS BRT CE TO NAJDES SI NAJVECJI GAY ASS NIGGA
+
             populateEditFields();
         }
     }
@@ -214,8 +319,18 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
         kemikalija.setCas_stevilo(binding.etCas.getText().toString().trim());
         kemikalija.setFirma(binding.etFirma.getText().toString().trim());
         kemikalija.setAgregatno_stanje(binding.etAgregatno.getText().toString().trim());
-        kemikalija.setOmara(binding.omaraSpinner.getSelectedItem().toString());
-        kemikalija.setPolica(binding.policaSpinner.getSelectedItem().toString());
+
+        int omaraPosition = binding.omaraSpinner.getSelectedItemPosition();
+        if (omaraPosition >= 0 && omaraPosition < omaraKemikalijeList.size()) {
+            kemikalija.setOmara(omaraKemikalijeList.get(omaraPosition).getOmara_ime());
+        }
+
+        int policaPosition = binding.policaSpinner.getSelectedItemPosition();
+        if (policaPosition >= 0 && policaPosition < filteredPolicaList.size()) {
+            PolicaKemikalije selectedPolica = filteredPolicaList.get(policaPosition);
+            kemikalija.setPolica_ID(selectedPolica.getId());
+            kemikalija.setPolica(selectedPolica.getPolica());
+        }
 
         // Teža
         String kolicina = binding.etKolicina.getText().toString().trim();

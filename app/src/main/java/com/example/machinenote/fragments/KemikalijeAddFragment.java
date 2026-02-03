@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
+import com.example.machinenote.R;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentKemikalijeAddBinding;
 import com.example.machinenote.models.Kemikalija;
@@ -38,6 +39,7 @@ public class KemikalijeAddFragment extends BaseFragment {
     private List<PolicaKemikalije> filteredPolicaList = new ArrayList<>();
     private ArrayAdapter<String> policaAdapter;
     private ArrayAdapter<String> omaraAdapter;
+
 
     public KemikalijeAddFragment() {
         // Required empty public constructor
@@ -79,28 +81,28 @@ public class KemikalijeAddFragment extends BaseFragment {
         String[] units = {"g", "kg", "mg", "L", "mL", "mol"};
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(
                 context,
-                android.R.layout.simple_spinner_item,
+                R.layout.item_spinner_layout,
                 units
         );
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.enotaSpinner.setAdapter(unitAdapter);
 
         // Setup Omara (Cabinet) Spinner - will be populated from database
         omaraAdapter = new ArrayAdapter<>(
                 context,
-                android.R.layout.simple_spinner_item,
+                R.layout.item_spinner_layout,
                 new ArrayList<>()
         );
-        omaraAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        omaraAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.omaraSpinner.setAdapter(omaraAdapter);
 
         // Setup Polica (Shelf) Spinner - will be populated based on selected Omara
         policaAdapter = new ArrayAdapter<>(
                 context,
-                android.R.layout.simple_spinner_item,
+                R.layout.item_spinner_layout,
                 new ArrayList<>()
         );
-        policaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        policaAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.policaSpinner.setAdapter(policaAdapter);
 
         // When Omara is selected, filter Police
@@ -255,11 +257,16 @@ public class KemikalijeAddFragment extends BaseFragment {
         kemikalija.setFormula(formula);
         kemikalija.setCas_stevilo(cas);
 
-        // Get selected Polica ID (from filtered list)
+        int omaraPosition = binding.omaraSpinner.getSelectedItemPosition();
+        if (omaraPosition >= 0 && omaraPosition < omaraKemikalijeList.size()) {
+            kemikalija.setOmara(omaraKemikalijeList.get(omaraPosition).getOmara_ime());
+        }
+        // Polica
         int policaPosition = binding.policaSpinner.getSelectedItemPosition();
         if (policaPosition >= 0 && policaPosition < filteredPolicaList.size()) {
             PolicaKemikalije selectedPolica = filteredPolicaList.get(policaPosition);
             kemikalija.setPolica_ID(selectedPolica.getId());
+            kemikalija.setPolica(selectedPolica.getPolica());
         }
 
         kemikalija.setRok_uporabe(selectedDate);
