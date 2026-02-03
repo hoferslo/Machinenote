@@ -39,6 +39,7 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
     private List<PolicaKemikalije> filteredPolicaList = new ArrayList<>();
     private ArrayAdapter<String> policaAdapter;
     private ArrayAdapter<String> omaraAdapter;
+    private boolean initialSetupComplete = false;
 
     // Interface za callback ko se shrani
     public interface OnKemikalijaUpdateListener {
@@ -108,6 +109,13 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
                 filterPolicaByOmara(position);
+                if (initialSetupComplete) {
+                    if (!filteredPolicaList.isEmpty()) {
+                        binding.policaSpinner.setSelection(0);
+                    }
+                } else {
+                    initialSetupComplete = true;
+                }
             }
 
             @Override
@@ -122,6 +130,7 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onSuccess(List<PolicaKemikalije> police) {
                 policaKemikalijeList = police;
+                selectInitialPolica();
                 // Don't update spinner yet - wait for omara selection
             }
 
@@ -138,6 +147,14 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
             public void onSuccess(List<OmaraKemikalije> omare) {
                 omaraKemikalijeList = omare;
                 updateOmaraSpinner();
+                if (kemikalija.getOmara() != null) {
+                    int omaraPos = omaraAdapter.getPosition(kemikalija.getOmara());
+                    if (omaraPos >= 0) {
+                        binding.omaraSpinner.setSelection(omaraPos);
+                    }
+                }
+
+                selectInitialPolica();
             }
 
             @Override
@@ -145,6 +162,24 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
                 Toast.makeText(context, "Napaka pri nalaganju omar: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void selectInitialPolica() {
+        // Both lists must be loaded and omara must already be selected
+        if (policaKemikalijeList.isEmpty() || omaraKemikalijeList.isEmpty()) return;
+
+        int omaraPos = binding.omaraSpinner.getSelectedItemPosition();
+        if (omaraPos < 0) return;
+
+        // Re-filter to make sure filteredPolicaList is up to date
+        filterPolicaByOmara(omaraPos);
+
+        if (kemikalija.getPolica() != null) {
+            int policaPos = policaAdapter.getPosition(kemikalija.getPolica());
+            if (policaPos >= 0) {
+                binding.policaSpinner.setSelection(policaPos);
+            }
+        }
     }
 
     private void updateOmaraSpinner() {
@@ -240,17 +275,6 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
         binding.etAgregatno.setText(kemikalija.getAgregatno_stanje());
         binding.etIdentUnichem.setText(kemikalija.getIdent_Unichem() > 0 ? String.valueOf(kemikalija.getIdent_Unichem()) : "");
         binding.etOpombe.setText(kemikalija.getOpombe());
-
-        // Nastavi spinner vrednosti
-        if (kemikalija.getOmara() != null) {
-            int omaraPos = ((ArrayAdapter<String>)binding.omaraSpinner.getAdapter()).getPosition(kemikalija.getOmara());
-            if (omaraPos >= 0) binding.omaraSpinner.setSelection(omaraPos);
-        }
-
-        if (kemikalija.getPolica() != null) {
-            int policaPos = ((ArrayAdapter<String>)binding.policaSpinner.getAdapter()).getPosition(kemikalija.getPolica());
-            if (policaPos >= 0) binding.policaSpinner.setSelection(policaPos);
-        }
 
         // Parsaj težo in enoto
         if (kemikalija.getTeza() != null && !kemikalija.getTeza().isEmpty()) {
