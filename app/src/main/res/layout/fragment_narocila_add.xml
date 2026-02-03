@@ -55,7 +55,7 @@
 
                 <Spinner
                     android:id="@+id/lokacijaSpinner"
-                    style="@style/Button.Secondary"
+                    style="@style/Button.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp" />
@@ -175,7 +175,7 @@
 
                     <Spinner
                         android:id="@+id/enotaSpinner"
-                        style="@style/Button.Secondary"
+                        style="@style/Button.Icon"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

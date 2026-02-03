@@ -22,7 +22,7 @@
     <!-- ===== BASE BUTTON STYLES h ===== -->
 
     <!-- Base button style with common properties -->
-    <style name="BaseButton" parent="Widget.AppCompat.Button">
+    <style name="BaseButton" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@null</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textSize">@dimen/button_text_size</item>

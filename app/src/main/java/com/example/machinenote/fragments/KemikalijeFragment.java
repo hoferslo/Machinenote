@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFragment.QRCodeScanCallback {
+public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFragment.QRCodeScanCallback, KemikalijeBottomSheetFragment.OnKemikalijaUpdateListener {
 
     FragmentKemikalijeBinding binding;
     Context context;
@@ -61,6 +61,28 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         return fragment;
     }
 
+    @Override
+    public void onKemikalijaUpdated(Kemikalija updatedKemikalija) {
+        // Posodobi lokalno kemikalijo
+        this.kemikalija = updatedKemikalija;
+
+        // Posodobi UI
+        updateUI();
+
+        apiManager.updateKemikalija(updatedKemikalija, new ApiManager.KemikalijaUpdateCallback() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(context, "Kemikalija uspešno posodobljena", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+                String errorMessage = throwable.getMessage() != null ? throwable.getMessage() : "Neznana napaka";
+                Toast.makeText(context, "Napaka pri shranjevanju: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Log.e("KemikalijeFragment", "Update failed: " + errorMessage);
+            }
+        });
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -406,6 +428,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
             }
         } else {
             binding.articleWarehouse.setText("-");
+
         }
 
         binding.articleId.setText(kemikalija.getCas_stevilo() != null ? kemikalija.getCas_stevilo() : "-");
@@ -422,7 +445,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
     private void showKemikalijeBottomSheet() {
         if (kemikalija != null) {
             KemikalijeBottomSheetFragment bottomSheet =
-                    KemikalijeBottomSheetFragment.newInstance(getContext(), kemikalija);
+                    KemikalijeBottomSheetFragment.newInstance(getContext(), kemikalija, this);
             bottomSheet.show(getChildFragmentManager(), "KemikalijeBottomSheet");
         } else {
             Toast.makeText(getContext(), "Ni podatkov o kemikaliji", Toast.LENGTH_SHORT).show();

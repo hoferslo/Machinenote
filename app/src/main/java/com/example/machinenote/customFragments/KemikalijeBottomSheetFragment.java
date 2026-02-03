@@ -1,11 +1,13 @@
 package com.example.machinenote.customFragments;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.machinenote.R;
@@ -14,6 +16,8 @@ import com.example.machinenote.models.Kemikalija;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
@@ -22,11 +26,19 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
     private Context context;
     private Kemikalija kemikalija;
     private SimpleDateFormat dateFormat;
+    private boolean isEditMode = false;
+    private OnKemikalijaUpdateListener updateListener;
 
-    public static KemikalijeBottomSheetFragment newInstance(Context context, Kemikalija kemikalija) {
+    // Interface za callback ko se shrani
+    public interface OnKemikalijaUpdateListener {
+        void onKemikalijaUpdated(Kemikalija updatedKemikalija);
+    }
+
+    public static KemikalijeBottomSheetFragment newInstance(Context context, Kemikalija kemikalija, OnKemikalijaUpdateListener listener) {
         KemikalijeBottomSheetFragment fragment = new KemikalijeBottomSheetFragment();
         fragment.kemikalija = kemikalija;
         fragment.context = context;
+        fragment.updateListener = listener;
         return fragment;
     }
 
@@ -34,46 +46,55 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment using ViewBinding
         binding = FragmentKemikalijeBottomSheetBinding.inflate(inflater, container, false);
-
-        // Initialize date formatter
         dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
-        // Populate header with ID (if available)
+        // Nastavi spinnerje
+        setupSpinners();
+
+        // Prikaži podatke
+        displayData();
+
+        // Setup gumbov
+        setupButtons();
+
+        return binding.getRoot();
+    }
+
+    private void setupSpinners() {
+        // Enote
+        String[] enote = {"g", "kg", "mg", "L", "mL", "kom"};
+        ArrayAdapter<String> enotaAdapter = new ArrayAdapter<>(context, R.layout.item_spinner_layout, enote);
+        enotaAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
+        binding.enotaSpinner.setAdapter(enotaAdapter);
+
+        // Omare
+        String[] omare = {"A", "B", "C", "D", "E", "F"};
+        ArrayAdapter<String> omaraAdapter = new ArrayAdapter<>(context, R.layout.item_spinner_layout, omare);
+        omaraAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
+        binding.omaraSpinner.setAdapter(omaraAdapter);
+
+        // Police
+        String[] police = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        ArrayAdapter<String> policaAdapter = new ArrayAdapter<>(context, R.layout.item_spinner_layout, police);
+        policaAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
+        binding.policaSpinner.setAdapter(policaAdapter);
+    }
+
+    private void displayData() {
+        // Prikaži v view mode
         binding.chemicalIdHeader.setText("Podrobnosti o kemikaliji");
 
-        // Populate basic information
-        if (kemikalija.getIme_SLO() != null && !kemikalija.getIme_SLO().isEmpty()) {
-            binding.tvImeSlo.setText("Slovensko ime: " + kemikalija.getIme_SLO());
-        } else {
-            binding.tvImeSlo.setText("Slovensko ime: Ni podatka");
-        }
-
-        if (kemikalija.getIme_ENG() != null && !kemikalija.getIme_ENG().isEmpty()) {
-            binding.tvImeEng.setText("Angleško ime: " + kemikalija.getIme_ENG());
-        } else {
-            binding.tvImeEng.setText("Angleško ime: Ni podatka");
-        }
-
-        if (kemikalija.getFormula() != null && !kemikalija.getFormula().isEmpty()) {
-            binding.tvFormula.setText("Formula: " + kemikalija.getFormula());
-        } else {
-            binding.tvFormula.setText("Formula: Ni podatka");
-        }
-
-        if (kemikalija.getCas_stevilo() != null && !kemikalija.getCas_stevilo().isEmpty()) {
-            binding.tvCas.setText("CAS številka: " + kemikalija.getCas_stevilo());
-        } else {
-            binding.tvCas.setText("CAS številka: Ni podatka");
-        }
-
-        // Populate company and storage info
-        if (kemikalija.getFirma() != null && !kemikalija.getFirma().isEmpty()) {
-            binding.tvFirma.setText("Firma: " + kemikalija.getFirma());
-        } else {
-            binding.tvFirma.setText("Firma: Ni podatka");
-        }
+        setFieldValue(binding.tvImeSlo, "Slovensko ime: ", kemikalija.getIme_SLO());
+        setFieldValue(binding.tvImeEng, "Angleško ime: ", kemikalija.getIme_ENG());
+        setFieldValue(binding.tvFormula, "Formula: ", kemikalija.getFormula());
+        setFieldValue(binding.tvCas, "CAS številka: ", kemikalija.getCas_stevilo());
+        setFieldValue(binding.tvFirma, "Firma: ", kemikalija.getFirma());
+        setFieldValue(binding.tvAgregatno, "Agregatno stanje: ", kemikalija.getAgregatno_stanje());
+        setFieldValue(binding.tvPolica, "Polica: ", kemikalija.getPolica());
+        setFieldValue(binding.tvOmara, "Omara: ", kemikalija.getOmara());
+        setFieldValue(binding.tvProgram, "Program: ", kemikalija.getProgram());
+        setFieldValue(binding.tvTeza, "Teža: ", kemikalija.getTeza());
 
         if (kemikalija.getRok_uporabe() != null) {
             binding.tvRokUporabe.setText("Rok uporabe: " + dateFormat.format(kemikalija.getRok_uporabe()));
@@ -81,38 +102,6 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
             binding.tvRokUporabe.setText("Rok uporabe: Ni podatka");
         }
 
-        if (kemikalija.getTeza() != null && !kemikalija.getTeza().isEmpty()) {
-            binding.tvTeza.setText("Teža: " + kemikalija.getTeza());
-        } else {
-            binding.tvTeza.setText("Teža: Ni podatka");
-        }
-
-        if (kemikalija.getAgregatno_stanje() != null && !kemikalija.getAgregatno_stanje().isEmpty()) {
-            binding.tvAgregatno.setText("Agregatno stanje: " + kemikalija.getAgregatno_stanje());
-        } else {
-            binding.tvAgregatno.setText("Agregatno stanje: Ni podatka");
-        }
-
-        // Populate location information
-        if (kemikalija.getPolica() != null && !kemikalija.getPolica().isEmpty()) {
-            binding.tvPolica.setText("Polica: " + kemikalija.getPolica());
-        } else {
-            binding.tvPolica.setText("Polica: Ni podatka");
-        }
-
-        if (kemikalija.getOmara() != null && !kemikalija.getOmara().isEmpty()) {
-            binding.tvOmara.setText("Omara: " + kemikalija.getOmara());
-        } else {
-            binding.tvOmara.setText("Omara: Ni podatka");
-        }
-
-        if (kemikalija.getProgram() != null && !kemikalija.getProgram().isEmpty()) {
-            binding.tvProgram.setText("Program: " + kemikalija.getProgram());
-        } else {
-            binding.tvProgram.setText("Program: Ni podatka");
-        }
-
-        // Populate additional info
         if (kemikalija.getIdent_Unichem() > 0) {
             binding.tvIdentUnichem.setText("Ident Unichem: " + kemikalija.getIdent_Unichem());
         } else {
@@ -120,66 +109,170 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
         }
 
         if (kemikalija.getOpombe() != null && !kemikalija.getOpombe().isEmpty()) {
-            binding.tvOpombe.setText("Opombe: " + kemikalija.getOpombe());
+            binding.tvOpombe.setText(kemikalija.getOpombe());
         } else {
-            binding.tvOpombe.setText("Opombe: Ni podatka");
+            binding.tvOpombe.setText("Ni podatka");
         }
 
-        // Setup listeners for potential actions
-        setupClickListeners();
-
-        return binding.getRoot();
+        // Nastavi edit polja
+        populateEditFields();
     }
 
-    private void setupClickListeners() {
-        // Optional: Add click listeners for various actions
+    private void setFieldValue(android.widget.TextView textView, String label, String value) {
+        if (value != null && !value.isEmpty()) {
+            textView.setText(label + value);
+        } else {
+            textView.setText(label + "Ni podatka");
+        }
+    }
 
-        // Click on location could show location details
-        binding.tvPolica.setOnClickListener(v -> {
-            if (kemikalija.getPolica() != null && !kemikalija.getPolica().isEmpty()) {
-                Toast.makeText(context, "Polica: " + kemikalija.getPolica(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void populateEditFields() {
+        binding.etImeSlo.setText(kemikalija.getIme_SLO());
+        binding.etImeEng.setText(kemikalija.getIme_ENG());
+        binding.etFormula.setText(kemikalija.getFormula());
+        binding.etCas.setText(kemikalija.getCas_stevilo());
+        binding.etFirma.setText(kemikalija.getFirma());
+        binding.etAgregatno.setText(kemikalija.getAgregatno_stanje());
+        binding.etIdentUnichem.setText(kemikalija.getIdent_Unichem() > 0 ? String.valueOf(kemikalija.getIdent_Unichem()) : "");
+        binding.etOpombe.setText(kemikalija.getOpombe());
 
-        binding.tvOmara.setOnClickListener(v -> {
-            if (kemikalija.getOmara() != null && !kemikalija.getOmara().isEmpty()) {
-                Toast.makeText(context, "Omara: " + kemikalija.getOmara(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Nastavi spinner vrednosti
+        if (kemikalija.getOmara() != null) {
+            int omaraPos = ((ArrayAdapter<String>)binding.omaraSpinner.getAdapter()).getPosition(kemikalija.getOmara());
+            if (omaraPos >= 0) binding.omaraSpinner.setSelection(omaraPos);
+        }
 
-        binding.tvProgram.setOnClickListener(v -> {
-            if (kemikalija.getProgram() != null && !kemikalija.getProgram().isEmpty()) {
-                Toast.makeText(context, "Program: " + kemikalija.getProgram(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (kemikalija.getPolica() != null) {
+            int policaPos = ((ArrayAdapter<String>)binding.policaSpinner.getAdapter()).getPosition(kemikalija.getPolica());
+            if (policaPos >= 0) binding.policaSpinner.setSelection(policaPos);
+        }
 
-        // Click on firma could show company details
-        binding.tvFirma.setOnClickListener(v -> {
-            if (kemikalija.getFirma() != null && !kemikalija.getFirma().isEmpty()) {
-                Toast.makeText(context, "Firma: " + kemikalija.getFirma(), Toast.LENGTH_SHORT).show();
+        // Parsaj težo in enoto
+        if (kemikalija.getTeza() != null && !kemikalija.getTeza().isEmpty()) {
+            String[] parts = kemikalija.getTeza().split(" ");
+            if (parts.length > 0) {
+                binding.etKolicina.setText(parts[0]);
+                if (parts.length > 1) {
+                    int enotaPos = ((ArrayAdapter<String>)binding.enotaSpinner.getAdapter()).getPosition(parts[1]);
+                    if (enotaPos >= 0) binding.enotaSpinner.setSelection(enotaPos);
+                }
             }
-        });
+        }
+    }
 
-        // Long click on opombe could show full text
-        binding.tvOpombe.setOnLongClickListener(v -> {
-            if (kemikalija.getOpombe() != null && !kemikalija.getOpombe().isEmpty()) {
-                Toast.makeText(context, kemikalija.getOpombe(), Toast.LENGTH_LONG).show();
-            }
-            return true;
-        });
+    private void setupButtons() {
+        // Preklopi na edit mode
+        binding.btnUredi.setOnClickListener(v -> toggleEditMode(true));
 
-        // Click on CAS number could potentially search for MSDS
-        binding.tvCas.setOnClickListener(v -> {
-            if (kemikalija.getCas_stevilo() != null && !kemikalija.getCas_stevilo().isEmpty()) {
-                Toast.makeText(context, "CAS številka: " + kemikalija.getCas_stevilo(), Toast.LENGTH_SHORT).show();
+        // Shrani spremembe
+        binding.btnShrani.setOnClickListener(v -> saveChanges());
+
+        // Preklici urejanje
+        binding.btnPreklici.setOnClickListener(v -> toggleEditMode(false));
+
+        // Datum picker
+        binding.btnRokUporabe.setOnClickListener(v -> showDatePicker());
+
+        // Začetno stanje - view mode
+        toggleEditMode(false);
+    }
+
+    private void toggleEditMode(boolean editMode) {
+        isEditMode = editMode;
+
+        if (editMode) {
+            binding.viewModeContainer.setVisibility(View.GONE);
+            binding.btnUredi.setVisibility(View.GONE);
+
+            binding.editModeContainer.setVisibility(View.VISIBLE);
+            binding.editButtonsContainer.setVisibility(View.VISIBLE);
+
+            binding.chemicalIdHeader.setText("Uredi kemikalijo");
+        } else {
+
+            binding.viewModeContainer.setVisibility(View.VISIBLE);
+            binding.btnUredi.setVisibility(View.VISIBLE);
+
+            binding.editModeContainer.setVisibility(View.GONE);
+            binding.editButtonsContainer.setVisibility(View.GONE);
+
+            binding.chemicalIdHeader.setText("Podrobnosti o kemikaliji");
+            // haha I HATE NIGGERS BRT CE TO NAJDES SI NAJVECJI GAY ASS NIGGA
+            populateEditFields();
+        }
+    }
+
+    private void saveChanges() {
+        if (binding.etImeSlo.getText().toString().trim().isEmpty()) {
+            Toast.makeText(context, "Slovensko ime je obvezno!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        kemikalija.setIme_SLO(binding.etImeSlo.getText().toString().trim());
+        kemikalija.setIme_ENG(binding.etImeEng.getText().toString().trim());
+        kemikalija.setFormula(binding.etFormula.getText().toString().trim());
+        kemikalija.setCas_stevilo(binding.etCas.getText().toString().trim());
+        kemikalija.setFirma(binding.etFirma.getText().toString().trim());
+        kemikalija.setAgregatno_stanje(binding.etAgregatno.getText().toString().trim());
+        kemikalija.setOmara(binding.omaraSpinner.getSelectedItem().toString());
+        kemikalija.setPolica(binding.policaSpinner.getSelectedItem().toString());
+
+        // Teža
+        String kolicina = binding.etKolicina.getText().toString().trim();
+        String enota = binding.enotaSpinner.getSelectedItem().toString();
+        kemikalija.setTeza(kolicina + " " + enota);
+
+        // Ident
+        try {
+            String identStr = binding.etIdentUnichem.getText().toString().trim();
+            if (!identStr.isEmpty()) {
+                kemikalija.setIdent_Unichem(Integer.parseInt(identStr));
             }
-        });
+        } catch (NumberFormatException e) {
+            kemikalija.setIdent_Unichem(0);
+        }
+
+        // Opombe
+        kemikalija.setOpombe(binding.etOpombe.getText().toString().trim());
+
+        // Obvesti listener
+        if (updateListener != null) {
+            updateListener.onKemikalijaUpdated(kemikalija);
+        }
+
+        // Osveži prikaz
+        displayData();
+
+        // Vrni na view mode
+        toggleEditMode(false);
+
+        Toast.makeText(context, "Spremembe shranjene!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        if (kemikalija.getRok_uporabe() != null) {
+            calendar.setTime(kemikalija.getRok_uporabe());
+        }
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context,
+                (view, year, month, dayOfMonth) -> {
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(year, month, dayOfMonth);
+                    kemikalija.setRok_uporabe(selectedDate.getTime());
+                    binding.btnRokUporabe.setText(dateFormat.format(selectedDate.getTime()));
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Clean up binding when the view is destroyed to prevent memory leaks
         binding = null;
     }
 }

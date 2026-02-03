@@ -107,15 +107,15 @@ public class NarocilaAddFragment extends BaseFragment {
     private void setupSpinners() {
         // Setup Location Spinner - inicializiramo prazen adapter
         locationAdapter = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item, locations);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.item_spinner_layout, locations);
+        locationAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.lokacijaSpinner.setAdapter(locationAdapter);
 
         // Setup Unit Spinner
         String[] units = {"kg", "kom", "m", "m²", "m³", "l"};
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item, units);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.item_spinner_layout, units);
+        unitAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.enotaSpinner.setAdapter(unitAdapter);
     }
 

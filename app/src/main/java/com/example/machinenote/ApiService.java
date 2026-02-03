@@ -55,16 +55,8 @@ public interface ApiService {
     Call<User> updateUser(@Path("username") String username, @Body User user);
 
     @Headers("Content-Type: application/json")
-    @DELETE("users.php/{username}")
-    Call<Void> deleteUser(@Path("username") String username);
-
-    @Headers("Content-Type: application/json")
     @GET("preventivni_pregledi.php")
     Call<List<PreventivniPregled>> getPreventivniPregledi();
-
-    @Headers("Content-Type: application/json")
-    @GET("opravila.php/{pregledId}")
-    Call<List<PregledOpravilo>> getOpravilaForPregled(@Path("pregledId") int pregledId);
 
     @Headers("Content-Type: application/json")
     @GET("rezervni_deli.php")
@@ -83,6 +75,10 @@ public interface ApiService {
     Call<Void> createKemikalija(@Body Kemikalija kemikalija);
 
     @Headers("Content-Type: application/json")
+    @PUT("Razvoj/kemikalije.php")
+    Call<Void> updateKemikalija(@Body Kemikalija kemikalija);
+
+    @Headers("Content-Type: application/json")
     @GET("Razvoj/polica.php")
     Call<List<PolicaKemikalije>> fetchAllPoliceKemikalije();
 
@@ -90,31 +86,14 @@ public interface ApiService {
     @GET("Razvoj/omara.php")
     Call<List<OmaraKemikalije>> fetchAllOmareKemikalije();
 
-    @Headers("Content-Type: application/json")
-    @POST("rezervni_deli.php")
-    Call<Void> createRezervniDeli(@Body RezervniDel rezervniDel);
-
-    @Headers("Content-Type: application/json")
-    @PUT("rezervni_deli.php/{id}")
-    Call<Void> updateRezervniDel(@Path("id") int id, @Body RezervniDel rezervniDel);
 
     @Headers("Content-Type: application/json")
     @GET("rezervni_deli.php/{id}")
     Call<RezervniDel> getRezervniDelById(@Path("id") int id);
 
 
-    @Headers("Content-Type: application/json")
-    @GET("zastoji.php")
-        // Update with the correct endpoint
-    Call<List<Zastoj>> getZastoji();
-
-    @Headers("Content-Type: application/json")
-    @POST("zastoji.php")
-    Call<Void> createZastoj(@Body Zastoj zastoj);
-
     @Multipart
     @POST("zastoji.php")
-        //figure this out
     Call<Void> sendZastojWithImages(
             @Part("zastoj") RequestBody zastoj,
             @Part List<MultipartBody.Part> images
@@ -132,10 +111,6 @@ public interface ApiService {
     Call<List<Linija>> getLinije(@Query("action") String action);
 
     @Headers("Content-Type: application/json")
-    @GET("helpers.php/{id}")
-    Call<Linija> getLinijaById(@Query("action") String action, @Query("prostor_id") int prostorId);
-
-    @Headers("Content-Type: application/json")
     @GET("sklop_linije.php")
     Call<List<SklopLinije>> getSklopeLinij();
 
@@ -144,35 +119,13 @@ public interface ApiService {
     Call<List<Sifrant>> getSifrants();
 
     @Headers("Content-Type: application/json")
-    @GET("sifrant.php/{id}")
-    Call<Sifrant> getSifrantById(@Path("id") int id);
-
-    @Headers("Content-Type: application/json")
     @PUT("rezervni_deli.php/{id}/adjust")
     Call<Void> adjustStock(@Path("id") int id, @Body StockAdjustmentRequest stockAdjustmentRequest);
 
-    // New endpoints for imenik
     @Headers("Content-Type: application/json")
     @GET("imenik.php")
     Call<List<Imenik>> getImenik();
 
-    @Headers("Content-Type: application/json")
-    @POST("imenik.php")
-    Call<Void> createImenik(@Body Imenik imenik);
-
-    @Headers("Content-Type: application/json")
-    @PUT("imenik.php/{id}")
-    Call<Void> updateImenik(@Path("id") int id, @Body Imenik imenik);
-
-    @Headers("Content-Type: application/json")
-    @DELETE("imenik.php/{id}")
-    Call<Void> deleteImenik(@Path("id") int id);
-
-    @Headers("Content-Type: application/json")
-    @GET("imenik.php/{id}")
-    Call<Imenik> getImenikById(@Path("id") int id);
-
-    // New endpoints for naloge
     @Headers("Content-Type: application/json")
     @GET("naloge.php")
     Call<List<Naloga>> getNaloge();
@@ -180,7 +133,7 @@ public interface ApiService {
     @Multipart
     @POST("naloge.php")
     Call<Void> sendNalogaWithImages(
-            @Part("naloga") RequestBody naloga,  // Changed from "naloge" to "naloga"
+            @Part("naloga") RequestBody naloga,
             @Part List<MultipartBody.Part> images
     );
 
@@ -192,7 +145,6 @@ public interface ApiService {
             @Part List<MultipartBody.Part> completionImages
     );
 
-    // New endpoints for narocila
     @Headers("Content-Type: application/json")
     @GET("narocila.php")
     Call<List<Narocila>> getNarocilaApi();
@@ -200,7 +152,7 @@ public interface ApiService {
     @Multipart
     @POST("narocila.php")
     Call<Void> sendNarocilaWithImages(
-            @Part("narocila") RequestBody narocila,  // Changed from "naloge" to "naloga"
+            @Part("narocila") RequestBody narocila,
             @Part List<MultipartBody.Part> images
     );
 
@@ -216,20 +168,10 @@ public interface ApiService {
     @GET("roles.php")
     Call<List<Role>> getRoles();
 
-    // Create a new role
     @Headers("Content-Type: application/json")
     @POST("roles.php")
     Call<RoleResponse> createRole(@Body RoleRequest roleRequest);
 
-    @Headers("Content-Type: application/json")
-    @PUT("roles.php/{roleId}")
-    Call<Role> updateRole(@Path("roleId") int roleId, @Body Role role);
-
-    @Headers("Content-Type: application/json")
-    @DELETE("roles.php/{roleId}")
-    Call<Void> deleteRole(@Path("roleId") int roleId);
-
-    // Create a new user (modify existing createUser to accept registration data)
     @Headers("Content-Type: application/json")
     @POST("users.php/register")
     Call<RegistrationResponse> createUser(@Body UserCreationRequest userRequest);
