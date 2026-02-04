@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Highlight circle/rectangle around target view -->
+    <View
+        android:id="@+id/guide_highlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/guide_highlight_shape" />
+
+    <!-- Guide text container -->
+    <LinearLayout
+        android:id="@+id/guide_text_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/guide_background"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Step counter -->
+        <TextView
+            android:id="@+id/guide_step_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="1 / 5"
+            android:textColor="#9E9E9E"
+            android:textSize="10sp" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/guide_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Guide Title"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/guide_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Guide description goes here"
+            android:textColor="#E0E0E0"
+            android:textSize="12sp" />
+
+        <!-- Buttons container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <!-- Skip button -->
+            <Button
+                android:id="@+id/guide_skip_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:minHeight="0dp"
+                android:padding="8dp"
+                android:text="Skip"
+                android:textColor="#9E9E9E"
+                android:textSize="12sp" />
+
+            <!-- Spacer -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Previous button -->
+            <Button
+                android:id="@+id/guide_prev_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/guide_button_secondary"
+                android:minHeight="0dp"
+                android:padding="8dp"
+                android:text="Previous"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <!-- Next button -->
+            <Button
+                android:id="@+id/guide_next_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/guide_button_primary"
+                android:minHeight="0dp"
+                android:padding="8dp"
+                android:text="Next"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

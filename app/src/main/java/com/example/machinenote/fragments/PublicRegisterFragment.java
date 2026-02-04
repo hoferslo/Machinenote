@@ -10,10 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.machinenote.Utility.GuideManager;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.RegistrationRequest;
+import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentPublicRegisterBinding;
 
@@ -60,6 +68,25 @@ public class PublicRegisterFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(mainActivity);
+            boolean hasSeenGuide = helper.getBoolean("has_seen_register_guide", false);
+
+            if (!hasSeenGuide) {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (isAdded() && getActivity() != null) {
+                        showRegistrationGuide();
+                    }
+                }, 600);
+            }
+        }
+    }
+
     private void setupPasswordVisibilityToggles() {
         // Password visibility toggle
         binding.togglePasswordVisibility.setOnClickListener(v -> {
@@ -96,6 +123,14 @@ public class PublicRegisterFragment extends BaseFragment {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.getSupportFragmentManager().popBackStack();
             }
+        });
+
+        binding.helpButton.setOnClickListener(v -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (isAdded() && getActivity() != null) {
+                    showRegistrationGuide();
+                }
+            }, 600);
         });
     }
 
@@ -234,5 +269,65 @@ public class PublicRegisterFragment extends BaseFragment {
             // Hide navigation icon for registration screen
             mainActivity.binding.toolbar.setNavigationIcon(null);
         }
+    }
+
+    private void showRegistrationGuide() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity == null) return;
+
+        GuideManager guideManager = new GuideManager(mainActivity);
+
+        guideManager
+                // Step 1: Username field
+                .addStep(
+                        binding.editTextUsername,
+                        "Uporabniško ime",
+                        "Izberite uporabniško ime (vsaj 3 znake). To ime boste uporabljali za prijavo."
+                )
+
+                // Step 2: Password field
+                .addStep(
+                        binding.editTextPassword,
+                        "Geslo",
+                        "Ustvarite varno geslo: vsaj 8 znakov, ena velika črka, ena mala črka in ena številka."
+                )
+
+                // Step 3: Password visibility toggle
+                .addStep(
+                        binding.togglePasswordVisibility,
+                        "Prikaz gesla",
+                        "Kliknite ikono očesa za prikaz ali skritje gesla."
+                )
+
+                // Step 4: Confirm password
+                .addStep(
+                        binding.editTextConfirmPassword,
+                        "Potrditev gesla",
+                        "Ponovno vnesite geslo za potrditev. Gesli se morata ujemati."
+                )
+
+                // Step 5: Register button
+                .addStep(
+                        binding.registerButton,
+                        "Registracija",
+                        "Ko ste izpolnili vse podatke, kliknite tukaj za registracijo. Po uspešni registraciji se lahko prijavite."
+                )
+
+                // Step 6: Back to login
+                .addStep(
+                        binding.backToLoginButton,
+                        "Nazaj na prijavo",
+                        "Če že imate račun, se vrnite na prijavno stran."
+                )
+
+                .setOnCompleteListener(() -> {
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (activity != null) {
+                        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(activity);
+                        helper.putBoolean("has_seen_register_guide", true);
+                        Toast.makeText(context, "Dobrodošli! Zdaj lahko izpolnite obrazec.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .start();
     }
 }

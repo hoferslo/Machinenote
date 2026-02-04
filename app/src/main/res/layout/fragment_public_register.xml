@@ -27,16 +27,32 @@
                 android:padding="24dp">
 
                 <!-- Title -->
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Registracija"
-                    android:textSize="24sp"
-                    android:textColor="@color/content_primary"
-                    android:fontFamily="@font/nunito"
+                    android:orientation="horizontal"
+                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="24dp" />
+                    android:layout_marginBottom="24dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Registracija"
+                        android:textSize="24sp"
+                        android:textColor="@color/content_primary"
+                        android:fontFamily="@font/nunito"
+                        android:layout_marginEnd="12dp" />
+
+                    <ImageButton
+                        android:id="@+id/helpButton"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/baseline_help_24"
+                        android:contentDescription="Info"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:padding="4dp" />
+                </LinearLayout>
                 <!-- Username Input -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,7 +61,7 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/bg_card_primary"
                     android:padding="16dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="8dp">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -75,16 +91,6 @@
                 </LinearLayout>
 
                 <!-- Username Requirements -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="• Najmanj 3 znaki"
-                    android:textColor="@color/content_secondary"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/nunito"
-                    android:layout_marginBottom="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
 
                 <!-- Password Input -->
                 <LinearLayout
@@ -214,7 +220,6 @@
                     android:layout_height="wrap_content"
                     android:text="Nazaj na prijavo"
                     android:minHeight="48dp" />
-
             </LinearLayout>
 
             <!-- Info Text -->
