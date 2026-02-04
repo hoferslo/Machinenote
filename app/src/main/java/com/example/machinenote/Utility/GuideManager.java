@@ -3,6 +3,7 @@ package com.example.machinenote.Utility;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.machinenote.R;
 
@@ -153,6 +155,15 @@ public class GuideManager {
         Button skipButton = guideLayout.findViewById(R.id.guide_skip_btn);
         View highlightView = guideLayout.findViewById(R.id.guide_highlight);
 
+        View textContainer = guideLayout.findViewById(R.id.guide_text_container);
+
+// highlight je nad dimom
+        highlightView.setElevation(10f);
+
+// text box mora biti NAD highlightom
+        textContainer.setElevation(30f);
+
+
         titleText.setText(step.title);
         descText.setText(step.description);
         stepCounter.setText((currentStep + 1) + " / " + steps.size());
@@ -195,14 +206,16 @@ public class GuideManager {
     private void positionHighlight(View highlightView, Rect targetRect) {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) highlightView.getLayoutParams();
 
-        int padding = 16; // Slightly less padding for tighter highlight
+        int padding = (int) activity.getResources().getDimension(R.dimen.spacing_xl);
         params.width = targetRect.width() + (padding * 2);
         params.height = targetRect.height() + (padding * 2);
         params.leftMargin = targetRect.left - padding;
         params.topMargin = targetRect.top - padding;
 
-        // Add white glow effect behind the highlight
-        highlightView.setElevation(10); // Raise above other elements
+        // Add strong elevation for visibility
+        highlightView.setElevation(16); // Povečaj iz 10 na 16
+        highlightView.setOutlineProvider(android.view.ViewOutlineProvider.BACKGROUND);
+        highlightView.setClipToOutline(false); // Pomembno za glow effect
 
         highlightView.setLayoutParams(params);
     }
@@ -217,54 +230,56 @@ public class GuideManager {
         int screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
         int screenWidth = activity.getResources().getDisplayMetrics().widthPixels;
 
+        int spacingXl = (int) activity.getResources().getDimension(R.dimen.spacing_xl);
+        int spacingLarge = (int) activity.getResources().getDimension(R.dimen.spacing_large);
+        int highlightPadding = spacingXl; // Same as positionHighlight
+
         // Measure the text container to know its height
+        int horizontalMargins = spacingXl * 2;
         textContainer.measure(
-                View.MeasureSpec.makeMeasureSpec(screenWidth, View.MeasureSpec.AT_MOST),
+                View.MeasureSpec.makeMeasureSpec(screenWidth - horizontalMargins, View.MeasureSpec.AT_MOST),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         );
         int textContainerHeight = textContainer.getMeasuredHeight();
 
-        int margin = 20; // Reduced margin
-        int safetyPadding = 10; // Extra padding to ensure no overlap
+        // Calculate actual space available
+        int spaceBelow = screenHeight - (targetRect.bottom + highlightPadding);
+        int spaceAbove = targetRect.top - highlightPadding;
 
-        // Check if there's more space below or above the target
-        int spaceBelow = screenHeight - targetRect.bottom;
-        int spaceAbove = targetRect.top;
+        // Calculate minimum space needed (text height + margin for breathing room)
+        int minSpaceNeeded = textContainerHeight + spacingLarge;
 
-        // Ensure text box doesn't cover the highlighted element
-        if (spaceBelow > textContainerHeight + margin + safetyPadding) {
-            // Position below target - plenty of space
-            params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            params.topMargin = targetRect.bottom + margin;
-            params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            params.bottomMargin = 0;
-        } else if (spaceAbove > textContainerHeight + margin + safetyPadding) {
-            // Position above target - plenty of space
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            params.bottomMargin = screenHeight - targetRect.top + margin;
-            params.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
-            params.topMargin = 0;
+        // Clear all positioning rules first
+        params.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.topMargin = 0;
+        params.bottomMargin = 0;
+
+        // Position based on available space
+        if (spaceBelow >= minSpaceNeeded) {
+            // Plenty of space below - position below the target
+            params.topMargin = targetRect.bottom + highlightPadding + spacingLarge;
+
+        } else if (spaceAbove >= minSpaceNeeded) {
+            // Plenty of space above - position above the target
+
+            params.topMargin = targetRect.top - highlightPadding - spacingLarge - textContainerHeight;
+
         } else {
-            // Not enough space on either side - position where there's more space
-            // but ensure it doesn't overlap with target
-            if (spaceBelow >= spaceAbove) {
-                // Position below, but push further down if needed
-                params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                params.topMargin = targetRect.bottom + margin;
-                params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                params.bottomMargin = 0;
+            // Tight on space - use whichever side has more room
+            if (spaceAbove > spaceBelow) {
+                // Position above, push toward top if needed
+                int maxTopMargin = Math.max(spacingXl, targetRect.top - highlightPadding - textContainerHeight - spacingLarge);
+                params.topMargin = maxTopMargin;
             } else {
-                // Position above, but push further up if needed
-                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                params.bottomMargin = screenHeight - targetRect.top + margin;
-                params.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
-                params.topMargin = 0;
+                // Position below, allow it to use available space
+                params.topMargin = targetRect.bottom + highlightPadding + spacingLarge;
             }
         }
 
-        // Center horizontally with margins
-        params.leftMargin = 16;
-        params.rightMargin = 16;
+        // Horizontal margins
+        params.leftMargin = spacingXl;
+        params.rightMargin = spacingXl;
 
         textContainer.setLayoutParams(params);
     }

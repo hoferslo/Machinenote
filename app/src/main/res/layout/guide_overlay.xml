@@ -40,7 +40,7 @@
             android:layout_marginTop="4dp"
             android:text="Guide Title"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold" />
 
         <!-- Description -->
@@ -51,7 +51,7 @@
             android:layout_marginTop="4dp"
             android:text="Guide description goes here"
             android:textColor="#E0E0E0"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_size_medium" />
 
         <!-- Buttons container -->
         <LinearLayout
