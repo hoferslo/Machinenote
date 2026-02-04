@@ -162,9 +162,6 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
             // Load SettingsFragment
             loadFragment(new SettingsFragment());
-
-            // Show back arrow since we're navigating to a new fragment
-            showBackArrow();
         });
 
         binding.noWifiBtn.setOnClickListener(view -> {
@@ -211,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
             public void onFailure(String errorMessage) {
                 // Handle connection failure
                 Log.e("ConnectionChecker", "Server is not reachable: " + errorMessage);
-                //showLoadingBar(true, "Ni povezave do strežnika, preveri wifi");
+                //showLoadingBar(true, "Ni povezava do strežnika, preveri wifi");
                 showNoWifiBtn(true);
                 new Thread(connectionChecker).start();
                 if (serverConnection) {
@@ -260,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
     public void initDrawerInfo() {
         enableDrawer();
-        binding.drawerUserNameTv.setText(sharedPreferencesHelper.getString("Username", "Ni povezave"));
+        binding.drawerUserNameTv.setText(sharedPreferencesHelper.getString("Username", "Ni povezava"));
         binding.drawerUserRoleTv.setText(sharedPreferencesHelper.getRole().getRole());
     }
 
@@ -334,6 +331,13 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                 }
 
                 fragmentTransaction.commitAllowingStateLoss(); // Use commitAllowingStateLoss for better safety
+
+                // Automatically show back arrow or drawer icon based on fragment type
+                if (fragment instanceof DashboardFragment || fragment instanceof LoginFragment) {
+                    showDrawerIcon();
+                } else {
+                    showBackArrow();
+                }
             } catch (Exception e) {
                 Log.e("MainActivity", "Error loading fragment: " + e.getMessage());
             }
@@ -367,7 +371,25 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     public void clearLastFragmentFromBackStack() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate();
+        // After popping, update the toolbar icon for the fragment that is now visible
+        updateToolbarForCurrentFragment();
         triggerOnResumeOnLastFragment();
+    }
+
+    /**
+     * After popping a fragment off the back stack, checks what fragment is now
+     * on top and updates the toolbar icon accordingly (back arrow vs drawer icon).
+     */
+    private void updateToolbarForCurrentFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (!fragmentManager.getFragments().isEmpty()) {
+            Fragment topFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+            if (topFragment instanceof DashboardFragment || topFragment instanceof LoginFragment) {
+                showDrawerIcon();
+            } else {
+                showBackArrow();
+            }
+        }
     }
 
     public void triggerOnResumeOnLastFragment() {
