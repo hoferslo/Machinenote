@@ -145,9 +145,6 @@ public class PreventivniPreglediFragment extends BaseFragment {
                     String json = new Gson().toJson(allLinijeList);
                     sharedPreferencesHelper.putString("LinijeList", json);
 
-                    Toast.makeText(getContext(),
-                            "Naloženih " + linijeList.size() + " linij",
-                            Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

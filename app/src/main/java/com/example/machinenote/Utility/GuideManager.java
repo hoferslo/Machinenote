@@ -102,6 +102,9 @@ public class GuideManager {
 
         // Add overlay container to root
         rootView.addView(overlayContainer);
+
+        // Animate overlay fade in using AnimationHelper
+        AnimationHelper.fadeIn(overlayContainer, 300);
     }
 
 
@@ -114,11 +117,27 @@ public class GuideManager {
             return;
         }
 
-        // Remove previous guide layout if exists
+        // Remove previous guide layout if exists with fade out
         if (guideLayout != null && guideLayout.getParent() != null) {
-            ((ViewGroup) guideLayout.getParent()).removeView(guideLayout);
+            View oldGuideLayout = guideLayout;
+            AnimationHelper.fadeOut(oldGuideLayout, 200);
+            oldGuideLayout.postDelayed(() -> {
+                if (oldGuideLayout.getParent() != null) {
+                    ((ViewGroup) oldGuideLayout.getParent()).removeView(oldGuideLayout);
+                }
+                // Show new step after old one fades out
+                showStepInternal(stepIndex);
+            }, 200);
+        } else {
+            // No previous layout, show immediately
+            showStepInternal(stepIndex);
         }
+    }
 
+    /**
+     * Internal method to actually show the step
+     */
+    private void showStepInternal(int stepIndex) {
         GuideStep step = steps.get(stepIndex);
         View targetView = step.targetView;
 
@@ -129,7 +148,7 @@ public class GuideManager {
 
         // Force layout if needed
         if (!targetView.isLaidOut()) {
-            targetView.post(() -> showStep(stepIndex));
+            targetView.post(() -> showStepInternal(stepIndex));
             return;
         }
 
@@ -152,10 +171,9 @@ public class GuideManager {
                 targetRect.bottom + padding
         );
 
-        float radius = activity.getResources().getDisplayMetrics().density * 12f; // or match your 8dp/whatever
+        float radius = activity.getResources().getDisplayMetrics().density * 12f;
 
         ((DimOverlayView) dimOverlay).setHole(hole, radius);
-
 
         // Create guide layout
         LayoutInflater inflater = LayoutInflater.from(activity);
@@ -169,15 +187,11 @@ public class GuideManager {
         Button prevButton = guideLayout.findViewById(R.id.guide_prev_btn);
         Button skipButton = guideLayout.findViewById(R.id.guide_skip_btn);
         View highlightView = guideLayout.findViewById(R.id.guide_highlight);
-
         View textContainer = guideLayout.findViewById(R.id.guide_text_container);
 
-// highlight je nad dimom
+        // Set elevations
         highlightView.setElevation(10f);
-
-// text box mora biti NAD highlightom
         textContainer.setElevation(30f);
-
 
         titleText.setText(step.title);
         descText.setText(step.description);
@@ -191,14 +205,16 @@ public class GuideManager {
 
         // Set up button visibility and listeners
         prevButton.setVisibility(currentStep > 0 ? View.VISIBLE : View.GONE);
-        nextButton.setText(currentStep == steps.size() - 1 ? "Done" : "Next");
+        nextButton.setText(currentStep == steps.size() - 1 ? "Končaj" : "Naprej");
 
         prevButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             currentStep--;
             showStep(currentStep);
         });
 
         nextButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (currentStep == steps.size() - 1) {
                 finish();
             } else {
@@ -207,12 +223,39 @@ public class GuideManager {
             }
         });
 
-        skipButton.setOnClickListener(v -> finish());
+        skipButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
+            finish();
+        });
 
         overlayContainer.addView(guideLayout);
 
-        // Don't bring target view to front - let it stay in its position
-        // This prevents buttons from moving around
+        // Animate the new guide layout using AnimationHelper
+        animateGuideIn(highlightView, textContainer, targetView);
+    }
+
+    /**
+     * Animate guide elements in using AnimationHelper
+     */
+    private void animateGuideIn(View highlightView, View textContainer, View targetView) {
+        // Highlight pulses in with pop
+        AnimationHelper.popIn(highlightView, 400);
+
+        // Text container slides in from bottom
+        textContainer.setTranslationY(300f);
+        textContainer.setAlpha(0f);
+        textContainer.postDelayed(() -> {
+            AnimationHelper.fadeIn(textContainer, 300);
+            textContainer.animate()
+                    .translationY(0f)
+                    .setDuration(400)
+                    .start();
+        }, 200);
+
+        // Wiggle the target view to draw attention
+        targetView.postDelayed(() -> {
+            AnimationHelper.bounce(targetView);
+        }, 100);
     }
 
     /**
@@ -227,10 +270,9 @@ public class GuideManager {
         params.leftMargin = targetRect.left - padding;
         params.topMargin = targetRect.top - padding;
 
-        // Add strong elevation for visibility
-        highlightView.setElevation(16); // Povečaj iz 10 na 16
+        highlightView.setElevation(16);
         highlightView.setOutlineProvider(android.view.ViewOutlineProvider.BACKGROUND);
-        highlightView.setClipToOutline(false); // Pomembno za glow effect
+        highlightView.setClipToOutline(false);
 
         highlightView.setLayoutParams(params);
     }
@@ -247,9 +289,8 @@ public class GuideManager {
 
         int spacingXl = (int) activity.getResources().getDimension(R.dimen.spacing_xl);
         int spacingLarge = (int) activity.getResources().getDimension(R.dimen.spacing_large);
-        int highlightPadding = spacingXl; // Same as positionHighlight
+        int highlightPadding = spacingXl;
 
-        // Measure the text container to know its height
         int horizontalMargins = spacingXl * 2;
         textContainer.measure(
                 View.MeasureSpec.makeMeasureSpec(screenWidth - horizontalMargins, View.MeasureSpec.AT_MOST),
@@ -257,42 +298,29 @@ public class GuideManager {
         );
         int textContainerHeight = textContainer.getMeasuredHeight();
 
-        // Calculate actual space available
         int spaceBelow = screenHeight - (targetRect.bottom + highlightPadding);
         int spaceAbove = targetRect.top - highlightPadding;
 
-        // Calculate minimum space needed (text height + margin for breathing room)
         int minSpaceNeeded = textContainerHeight + spacingLarge;
 
-        // Clear all positioning rules first
         params.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
         params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         params.topMargin = 0;
         params.bottomMargin = 0;
 
-        // Position based on available space
         if (spaceBelow >= minSpaceNeeded) {
-            // Plenty of space below - position below the target
             params.topMargin = targetRect.bottom + highlightPadding + spacingLarge;
-
         } else if (spaceAbove >= minSpaceNeeded) {
-            // Plenty of space above - position above the target
-
             params.topMargin = targetRect.top - highlightPadding - spacingLarge - textContainerHeight;
-
         } else {
-            // Tight on space - use whichever side has more room
             if (spaceAbove > spaceBelow) {
-                // Position above, push toward top if needed
                 int maxTopMargin = Math.max(spacingXl, targetRect.top - highlightPadding - textContainerHeight - spacingLarge);
                 params.topMargin = maxTopMargin;
             } else {
-                // Position below, allow it to use available space
                 params.topMargin = targetRect.bottom + highlightPadding + spacingLarge;
             }
         }
 
-        // Horizontal margins
         params.leftMargin = spacingXl;
         params.rightMargin = spacingXl;
 
@@ -304,11 +332,21 @@ public class GuideManager {
      */
     private void finish() {
         if (overlayContainer != null && overlayContainer.getParent() != null) {
-            ((ViewGroup) overlayContainer.getParent()).removeView(overlayContainer);
-        }
+            // Fade out animation using AnimationHelper before removing
+            AnimationHelper.fadeOut(overlayContainer, 300);
+            overlayContainer.postDelayed(() -> {
+                if (overlayContainer.getParent() != null) {
+                    ((ViewGroup) overlayContainer.getParent()).removeView(overlayContainer);
+                }
 
-        if (completeListener != null) {
-            completeListener.onGuideComplete();
+                if (completeListener != null) {
+                    completeListener.onGuideComplete();
+                }
+            }, 300);
+        } else {
+            if (completeListener != null) {
+                completeListener.onGuideComplete();
+            }
         }
     }
 

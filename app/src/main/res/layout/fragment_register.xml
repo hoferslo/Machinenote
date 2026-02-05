@@ -12,11 +12,38 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/spacing_xl">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/spacing_large">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Uporabnik in vloga"
+                    android:textSize="@dimen/text_size_large"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:textColor="@color/content_primary" />
+
+                <ImageButton
+                    android:id="@+id/helpButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/baseline_help_24"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Pomoč"
+                    android:tint="@color/action_primary"/>
+            </LinearLayout>
 
             <!-- User Mode -->
             <LinearLayout
@@ -274,4 +301,5 @@
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
     </LinearLayout>
+
 </LinearLayout>

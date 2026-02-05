@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.AnimationHelper;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentDashboardBinding;
@@ -130,7 +131,8 @@ public class DashboardFragment extends BaseFragment {
                 MaterialButton button = addButtonToLayout(config);
                 Log.d(TAG, config.name + " button created and added to layout");
 
-                button.setOnClickListener(view -> {
+                button.setOnClickListener(view-> {
+                    AnimationHelper.bounceClick(view);
                     MainActivity mainActivity = (MainActivity) requireActivity();
                     mainActivity.loadFragment(getFragmentForButton(config.name));
                 });

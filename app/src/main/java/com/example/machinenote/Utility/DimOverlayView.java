@@ -30,7 +30,7 @@ public class DimOverlayView extends View {
 
     private void init() {
         // 25% black dim like you had
-        dimPaint.setColor(0x40000000);
+        dimPaint.setColor(0xBF000000);
 
         // This paint will "punch" a transparent hole
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));

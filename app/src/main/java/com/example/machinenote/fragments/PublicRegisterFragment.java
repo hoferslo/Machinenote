@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.machinenote.Utility.AnimationHelper;
 import com.example.machinenote.Utility.GuideManager;
 import android.os.Handler;
 import android.os.Looper;
@@ -90,6 +91,7 @@ public class PublicRegisterFragment extends BaseFragment {
     private void setupPasswordVisibilityToggles() {
         // Password visibility toggle
         binding.togglePasswordVisibility.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (isPasswordVisible) {
                 binding.editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 binding.togglePasswordVisibility.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.visibility_off, 0);
@@ -103,6 +105,7 @@ public class PublicRegisterFragment extends BaseFragment {
 
         // Confirm password visibility toggle
         binding.toggleConfirmPasswordVisibility.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (isConfirmPasswordVisible) {
                 binding.editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 binding.toggleConfirmPasswordVisibility.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.visibility_off, 0);
@@ -116,9 +119,12 @@ public class PublicRegisterFragment extends BaseFragment {
     }
 
     private void setupButtons() {
-        binding.registerButton.setOnClickListener(v -> attemptRegistration());
+        binding.registerButton.setOnClickListener(v -> {attemptRegistration();
+            AnimationHelper.bounceClick(v);
+        });
 
         binding.backToLoginButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (getActivity() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.getSupportFragmentManager().popBackStack();
@@ -126,6 +132,7 @@ public class PublicRegisterFragment extends BaseFragment {
         });
 
         binding.helpButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (isAdded() && getActivity() != null) {
                     showRegistrationGuide();
@@ -325,7 +332,6 @@ public class PublicRegisterFragment extends BaseFragment {
                     if (activity != null) {
                         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(activity);
                         helper.putBoolean("has_seen_register_guide", true);
-                        Toast.makeText(context, "Dobrodošli! Zdaj lahko izpolnite obrazec.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .start();

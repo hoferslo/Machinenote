@@ -229,8 +229,6 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
 
         savePodsklopiToCache(podsklopList, sharedPreferencesHelper);
 
-        String message = "Naloženih " + podsklopList.size() + " podsklopov za linijo " + selectedLinija.getLinija_SAP();
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "Successfully loaded " + podsklopList.size() + " podsklopi");
     }
 
@@ -308,10 +306,6 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
             Toast.makeText(getContext(), "Napaka: podsklop ni izbran", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Toast.makeText(getContext(),
-                "Nalagam opravila za: " + sklop.getSklopLinije(),
-                Toast.LENGTH_SHORT).show();
 
         Log.d(TAG, "Navigating to opravila for podsklop ID: " + sklop.getId());
 

@@ -204,7 +204,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
                 "Naloženih " + filteredPregledi.size() + " opravil za sklop " + selectedSklop.getSklopLinije() :
                 "Naloženih " + filteredPregledi.size() + " pregledov za linijo " + selectedLinija.getLinija_SAP();
 
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
         Log.d(TAG, "Successfully loaded " + filteredPregledi.size() + " preventivni pregledi");
     }
 
@@ -305,10 +305,6 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
             Toast.makeText(getContext(), "Napaka: pregled ni izbran", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Toast.makeText(getContext(),
-                "Začenjam pregled: " + (pregled.getOpis() != null ? pregled.getOpis() : "Pregled"),
-                Toast.LENGTH_SHORT).show();
 
         Log.d(TAG, "Starting execution for pregled ID: " + pregled.getId());
 

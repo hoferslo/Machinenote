@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.AnimationHelper;
 import com.example.machinenote.Utility.ImageCaptureHelper;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.ConfettiHelper;
@@ -81,9 +82,13 @@ public class LoginFragment extends BaseFragment {
         ImageCaptureHelper imageCaptureHelper = new ImageCaptureHelper(context);
         imageCaptureHelper.deleteAllImages();
 
-        binding.loginBtn.setOnClickListener(v -> loginUsingTextviewUsernameAndPassword());
+        binding.loginBtn.setOnClickListener(v -> {
+                loginUsingTextviewUsernameAndPassword();
+                AnimationHelper.bounceClick(v);
+         });
 
         binding.togglePasswordVisibility.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (isPasswordVisible) {
                 binding.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 binding.togglePasswordVisibility.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.visibility_off, 0);
@@ -97,6 +102,7 @@ public class LoginFragment extends BaseFragment {
 
         // Add register button click listener
         binding.registerButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (getActivity() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.loadFragment(PublicRegisterFragment.newInstance(context));
@@ -104,8 +110,9 @@ public class LoginFragment extends BaseFragment {
         });
 
         binding.forgotPassword.setOnClickListener(
-                v -> displayUserInput()
-        );
+                v -> { displayUserInput();
+                AnimationHelper.bounceClick(v);
+        });
 
         return binding.getRoot();
     }
@@ -153,12 +160,16 @@ public class LoginFragment extends BaseFragment {
         }
 
         // Handle cancel button
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+            AnimationHelper.bounceClick(v);
+        });
 
         // Handle submit button
         btnSubmit.setOnClickListener(v -> {
             String username = editTextUsername.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
+            AnimationHelper.bounceClick(v);
 
             // Clear previous errors
             editTextUsername.setError(null);

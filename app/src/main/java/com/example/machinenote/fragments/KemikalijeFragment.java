@@ -223,7 +223,6 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
             if (position < filteredKemikalije.size()) {
                 kemikalija = filteredKemikalije.get(position);
                 updateUI();
-                Toast.makeText(context, "Izbrano: " + kemikalija.getIme_SLO(), Toast.LENGTH_SHORT).show();
 
                 // Clear search and hide dropdown
                 binding.idOfDuty.setQuery("", false);
@@ -296,8 +295,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
             public void onSuccess(List<Kemikalija> kemikalije) {
                 allKemikalije = kemikalije;
                 filteredKemikalije.clear();
-                filteredKemikalije.addAll(allKemikalije);
-                Toast.makeText(context, "Naloženo " + allKemikalije.size() + " kemikalij", Toast.LENGTH_SHORT).show();
+                filteredKemikalije.addAll(allKemikalije);;
 
                 // Če je search bar fokusiran, prikaži dropdown
                 int searchSrcTextId = binding.idOfDuty.getContext().getResources()
@@ -467,7 +465,6 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
                     }
                 }
             };
-            Toast.makeText(context, "Stock adjustment: " + change, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "Ni podatkov o kemikaliji", Toast.LENGTH_SHORT).show();
         }

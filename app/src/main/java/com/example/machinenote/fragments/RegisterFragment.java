@@ -1,10 +1,12 @@
 package com.example.machinenote.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.AnimationHelper;
+import com.example.machinenote.Utility.GuideManager;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.databinding.FragmentRegisterBinding;
 import com.example.machinenote.RegistrationRequest;
@@ -43,11 +47,14 @@ public class RegisterFragment extends BaseFragment {
     private List<Role> availableRoles = new ArrayList<>();
     private Map<String, Chip> permissionChips = new HashMap<>();
 
+    // Guide
+    private GuideManager guideManager;
+    private boolean shouldShowGuide = false;
+
     // Mode tracking
-    private boolean isUserMode = true; // true = user registration, false = role creation
+    private boolean isUserMode = true;
 
     public RegisterFragment() {
-        // Required empty public constructor
     }
 
     public static RegisterFragment newInstance(Context context) {
@@ -69,25 +76,75 @@ public class RegisterFragment extends BaseFragment {
         context = getContext();
 
         initializePermissionChips();
+        setupChipAnimations();
+        setupSpinnerAnimations();
         setupModeToggleButtons();
         setupCancelButton();
         loadRolesFromApi();
         setupRegisterButton();
         loadUsersFromApi();
+        setupGuide();
+        setupHelpButton();
 
-        // Set initial mode
         setUserMode();
+        animateHelpButtonIn();
 
         return view;
     }
 
+    private void setupSpinnerAnimations() {
+        binding.userSpinner.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                AnimationHelper.bounceClick(v);
+            }
+            return false; // Let the click event continue
+        });
+
+        binding.roleSpinner.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                AnimationHelper.bounceClick(v);
+            }
+            return false; // Let the click event continue
+        });
+    }
+
+    private void setupGuide() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        boolean hasSeenGuide = prefs.getBoolean("register_guide_seen", false);
+
+        if (!hasSeenGuide) {
+            shouldShowGuide = true;
+        }
+    }
+
+    private void animateHelpButtonIn() {
+        AnimationHelper.popInAndWiggle(binding.helpButton, 200, R.color.action_primary);
+    }
+
+    private void setupHelpButton() {
+        binding.helpButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
+
+            if (isUserMode) {
+                showUserModeGuide();
+            } else {
+                showRoleModeGuide();
+            }
+        });
+    }
+
     private void setupModeToggleButtons() {
-        binding.btnUserMode.setOnClickListener(v -> setUserMode());
-        binding.btnRoleMode.setOnClickListener(v -> setRoleMode());
+        binding.btnUserMode.setOnClickListener(v -> {setUserMode();
+        AnimationHelper.bounceClick(v);
+        });
+        binding.btnRoleMode.setOnClickListener(v -> { setRoleMode();
+                AnimationHelper.bounceClick(v);
+        });
     }
 
     private void setupCancelButton() {
         binding.cancelBtn.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (getActivity() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.getSupportFragmentManager().popBackStack();
@@ -98,54 +155,44 @@ public class RegisterFragment extends BaseFragment {
     private void setUserMode() {
         isUserMode = true;
 
-        // Check the user mode button in toggle group
         binding.toggleGroup.check(binding.btnUserMode.getId());
 
-        // Show/hide sections
         binding.userSection.setVisibility(View.VISIBLE);
         binding.roleSection.setVisibility(View.GONE);
 
-        // Update register button text
         binding.registerButton.setText("Dodeli vlogo");
 
-        // Restore permissions for the currently selected role
         restoreSelectedRolePermissions();
         disableAllChips();
+        animateHelpButtonIn();
 
-        // Update toolbar title
         updateToolbarTitle("Dodeli vlogo uporabniku");
     }
 
     private void setRoleMode() {
         isUserMode = false;
 
-        // Check the role mode button in toggle group
         binding.toggleGroup.check(binding.btnRoleMode.getId());
 
-        // Show/hide sections
         binding.userSection.setVisibility(View.GONE);
         binding.roleSection.setVisibility(View.VISIBLE);
 
-        // Update register button text
         binding.registerButton.setText("Ustvari novo vlogo");
 
-        // Clear all chips and enable them for role creation
         clearAllChips();
         enableAllChips();
+        animateHelpButtonIn();
 
-        // Update toolbar title
         updateToolbarTitle("Ustvari novo vlogo");
     }
 
     private void restoreSelectedRolePermissions() {
-        // Only restore if we have a selected role
         if (!TextUtils.isEmpty(selectedRole)) {
             Role selectedRoleObj = findRoleByName(selectedRole);
             if (selectedRoleObj != null) {
                 setPermissionsForRole(selectedRoleObj);
             }
         } else {
-            // No role selected, clear all chips
             clearAllChips();
         }
     }
@@ -157,7 +204,6 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void initializePermissionChips() {
-        // Create a map for easier management of chips
         permissionChips.put("Knjiženje", binding.chipKnjizenje);
         permissionChips.put("Zastoji", binding.chipZastoji);
         permissionChips.put("Rezervni deli", binding.chipRezervniDeli);
@@ -186,7 +232,6 @@ public class RegisterFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<List<Role>> call, Throwable t) {
-                // Fallback to default roles if API fails
                 setupSpinnerWithDefaults();
                 Toast.makeText(context, "Napaka pri nalaganju vlog: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -205,7 +250,6 @@ public class RegisterFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                // Handle error
                 Log.e("Error", "Failed to get users: " + t.getMessage());
             }
         });
@@ -213,7 +257,7 @@ public class RegisterFragment extends BaseFragment {
 
     private void setupUserSpinner() {
         List<String> userNames = new ArrayList<>();
-        userNames.add("Izberi uporabnika..."); // Default option
+        userNames.add("Izberi uporabnika...");
         for (User user : users) {
             userNames.add(user.getUsername());
         }
@@ -223,30 +267,31 @@ public class RegisterFragment extends BaseFragment {
         adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.userSpinner.setAdapter(adapter);
 
+
         binding.userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    // Default "Izberi uporabnika..." selected
                     return;
                 }
 
-                // Optional: You could load the user's current role here
+                if (view != null) {
+                    AnimationHelper.bounceClick(view);
+                }
+
                 String selectedUsername = parent.getItemAtPosition(position).toString();
-                // Find user and set their current role in the role spinner if needed
                 loadCurrentUserRole(selectedUsername);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Handle case where nothing is selected
             }
         });
     }
 
     private void setupRoleSpinner() {
         List<String> roleNames = new ArrayList<>();
-        roleNames.add("Izberi vlogo..."); // Default option
+        roleNames.add("Izberi vlogo...");
 
         for (Role role : availableRoles) {
             roleNames.add(role.getRole());
@@ -261,8 +306,11 @@ public class RegisterFragment extends BaseFragment {
         binding.roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (view != null) {
+                    AnimationHelper.bounceClick(view);
+                }
                 if (position == 0) {
-                    // Default "Izberi vlogo..." selected
                     selectedRole = "";
                     clearAllChips();
                     if (isUserMode) {
@@ -274,7 +322,6 @@ public class RegisterFragment extends BaseFragment {
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 selectedRole = selectedItem;
 
-                // Find the selected role and set permissions accordingly
                 Role selectedRoleObj = findRoleByName(selectedItem);
 
                 if (selectedRoleObj != null) {
@@ -283,7 +330,6 @@ public class RegisterFragment extends BaseFragment {
                     setDefaultPermissionsForRole(selectedItem);
                 }
 
-                // Only disable chips in user mode
                 if (isUserMode) {
                     disableAllChips();
                 }
@@ -301,7 +347,6 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void loadCurrentUserRole(String username) {
-        // Find the user object
         User selectedUser = null;
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -311,10 +356,8 @@ public class RegisterFragment extends BaseFragment {
         }
 
         if (selectedUser != null && selectedUser.getRoleId() != 0) {
-            // Find role by ID and select it in spinner
             for (int i = 0; i < availableRoles.size(); i++) {
                 if (availableRoles.get(i).getRoleId() == selectedUser.getRoleId()) {
-                    // Set the role spinner to show current role
                     String currentRoleName = availableRoles.get(i).getRole();
                     ArrayAdapter<String> adapter = (ArrayAdapter<String>) binding.roleSpinner.getAdapter();
                     int rolePosition = adapter.getPosition(currentRoleName);
@@ -338,6 +381,10 @@ public class RegisterFragment extends BaseFragment {
         binding.roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (view != null) {
+                    AnimationHelper.bounceClick(view);
+                }
                 if (position == 0) {
                     selectedRole = "";
                     clearAllChips();
@@ -368,6 +415,15 @@ public class RegisterFragment extends BaseFragment {
         });
     }
 
+    private void setupChipAnimations() {
+        for (Chip chip : permissionChips.values()) {
+            chip.setOnClickListener(v -> {
+                AnimationHelper.bounceClick(v);
+                // The chip's checked state changes automatically
+            });
+        }
+    }
+
     private Role findRoleByName(String roleName) {
         for (Role role : availableRoles) {
             if (role.getRole().equals(roleName)) {
@@ -378,10 +434,10 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void setPermissionsForRole(Role role) {
-        // Clear all chips first
         clearAllChips();
 
-        // Set permissions based on role
+        List<Chip> chipsToAnimate = new ArrayList<>();
+
         if (role.isKnjizenje()) binding.chipKnjizenje.setChecked(true);
         if (role.isZastoji()) binding.chipZastoji.setChecked(true);
         if (role.isRezervniDeli()) binding.chipRezervniDeli.setChecked(true);
@@ -396,29 +452,27 @@ public class RegisterFragment extends BaseFragment {
         if (role.isDodajanjeNarocil()) binding.chipDodajanjeNarocil.setChecked(true);
         if (role.isUpravljanjeNarocil()) binding.chipUpravljanjeNarocil.setChecked(true);
         if (role.isKemikalije()) binding.chipKemikalije.setChecked(true);
+        for (int i = 0; i < chipsToAnimate.size(); i++) {
+            final Chip chip = chipsToAnimate.get(i);
+            chip.postDelayed(() -> AnimationHelper.popIn(chip, 200), i * 50);
+        }
     }
 
     private void setDefaultPermissionsForRole(String roleName) {
-        // Clear all chips first
         clearAllChips();
 
-        // Set default permissions based on role name
-        // You can customize this based on your needs
         switch (roleName) {
             case "Admin":
-                // Admin has all permissions
                 for (Chip chip : permissionChips.values()) {
                     chip.setChecked(true);
                 }
                 break;
             case "Vzdrževanje":
-                // Vzdrževanje has limited permissions
                 binding.chipKnjizenje.setChecked(true);
                 binding.chipZastoji.setChecked(true);
                 binding.chipRezervniDeli.setChecked(true);
                 break;
             case "Gost":
-                // Gost has read-only permissions
                 binding.chipImenik.setChecked(true);
                 break;
         }
@@ -446,6 +500,7 @@ public class RegisterFragment extends BaseFragment {
 
     private void setupRegisterButton() {
         binding.registerButton.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (isUserMode) {
                 attemptUserUpdate();
             } else {
@@ -455,23 +510,19 @@ public class RegisterFragment extends BaseFragment {
     }
 
     public void attemptUserUpdate() {
-        // Check if user is selected
         if (binding.userSpinner.getSelectedItemPosition() == 0) {
             Toast.makeText(context, "Izberi uporabnika", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Check if role is selected
         if (binding.roleSpinner.getSelectedItemPosition() == 0) {
             Toast.makeText(context, "Izberi vlogo", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Get selected user and role
         String selectedUsername = binding.userSpinner.getSelectedItem().toString();
         String roleName = binding.roleSpinner.getSelectedItem().toString();
 
-        // Find the role ID
         Role selectedRole = findRoleByName(roleName);
         if (selectedRole == null) {
             Toast.makeText(context, "Napaka: vloga ni najdena", Toast.LENGTH_SHORT).show();
@@ -480,7 +531,6 @@ public class RegisterFragment extends BaseFragment {
 
         int roleId = selectedRole.getRoleId();
 
-        // Create updated user object
         User updatedUser = new User(selectedUsername, null, roleId, null, 3);
 
         apiManager.updateUser(selectedUsername, updatedUser, new Callback<User>() {
@@ -503,7 +553,6 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void attemptRoleCreation() {
-        // Reset errors
         binding.addARole.setError(null);
 
         String roleName = binding.addARole.getText().toString().trim();
@@ -514,7 +563,6 @@ public class RegisterFragment extends BaseFragment {
             return;
         }
 
-        // Check if role already exists
         if (findRoleByName(roleName) != null) {
             binding.addARole.setError("Vloga s tem imenom že obstaja");
             binding.addARole.requestFocus();
@@ -553,7 +601,7 @@ public class RegisterFragment extends BaseFragment {
                 Toast.makeText(context, "Vloga '" + roleName + "' uspešno ustvarjena", Toast.LENGTH_SHORT).show();
                 clearRoleForm();
                 resetButton();
-                loadRolesFromApi(); // Refresh the roles list
+                loadRolesFromApi();
             }
 
             @Override
@@ -567,7 +615,6 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private String getDisplayErrorMessage(String errorMessage) {
-        // Convert API error messages to user-friendly Slovenian messages
         if (errorMessage == null) return "Neznana napaka";
 
         String lowerError = errorMessage.toLowerCase();
@@ -615,6 +662,76 @@ public class RegisterFragment extends BaseFragment {
         }
     }
 
+    // ============ GUIDE METHODS ============
+
+    private void showUserModeGuide() {
+        if (!isUserMode) setUserMode();
+
+        binding.getRoot().postDelayed(() -> {
+            guideManager = new GuideManager(requireActivity());
+            guideManager
+                    .addStep(binding.toggleGroup, "Izbira načina",
+                            "S tema gumboma preklapljate med dvema načinoma:\n\n" +
+                                    "• UPORABNIK - Za dodelitev vloge obstoječemu uporabniku\n" +
+                                    "• VLOGA - Za ustvarjanje nove vloge z dovoljenji")
+                    .addStep(binding.userSpinner, "Izbira uporabnika",
+                            "Najprej izberite uporabnika kateremu želite spremeniti ali dodeliti vlogo.\n\n" +
+                                    "Seznam prikazuje vse registrirane uporabnike v sistemu.")
+                    .addStep(binding.roleSpinner, "Izbira vloge",
+                            "Izberite vlogo ki jo želite dodeliti uporabniku.\n\n" +
+                                    "Če uporabnik že ima vlogo, se bo ta prikazala kot trenutno izbrana.\n\n" +
+                                    "Dovoljenja izbrane vloge se bodo prikazala spodaj (samo za ogled).")
+                    .addStep(binding.chipGroupPermissions, "Dovoljenja vloge",
+                            "Tukaj so prikazana dovoljenja izbrane vloge.\n\n" +
+                                    "V načinu UPORABNIK so dovoljenja samo za pregled - ne morete jih spreminjati.\n\n" +
+                                    "Vsaka vloga ima svoj nabor dovoljenj ki določajo kaj lahko uporabnik dela v aplikaciji.")
+                    .addStep(binding.registerButton, "Dodeli vlogo",
+                            "Ko ste izbrali uporabnika in vlogo, kliknite 'Dodeli vlogo' za shranitev.\n\n" +
+                                    "Uporabnik bo takoj dobil nova dovoljenja.")
+
+                    .start();
+        }, 200);
+    }
+
+    private void showRoleModeGuide() {
+        if (isUserMode) setRoleMode();
+
+        binding.getRoot().postDelayed(() -> {
+            guideManager = new GuideManager(requireActivity());
+            guideManager
+                    .addStep(binding.toggleGroup, "Način VLOGA",
+                            "V načinu VLOGA lahko ustvarite nove vloge z različnimi dovoljenji.\n\n" +
+                                    "Uporabite gumb UPORABNIK za dodelitev vlog obstoječim uporabnikom.")
+                    .addStep(binding.addARole, "Ime nove vloge",
+                            "Vnesite ime za novo vlogo.\n\n" +
+                                    "Primeri: 'Skladiščnik', 'Vodja izmene', 'Tehnični direktor'...")
+                    .addStep(binding.chipGroupPermissions, "Izbira dovoljenj",
+                            "Izberite dovoljenja za novo vlogo s klikom na posamezne čipe.\n\n" +
+                                    "V načinu VLOGA lahko prosto izbirate in spreminjate dovoljenja.\n\n" +
+                                    "Izbrana dovoljenja (modra) bodo na voljo uporabnikom s to vlogo.")
+                    .addStep(binding.chipKnjizenje, "Primeri dovoljenj",
+                            "Dovoljenja kot so:\n" +
+                                    "• Knjiženje - vnos delovnih ur\n" +
+                                    "• Zastoji - beleženje zastojev\n" +
+                                    "• Naročila - ogled naročil\n" +
+                                    "• Upravljanje naročil - urejanje naročil\n\n" +
+                                    "Kombinacija dovoljenj določa kaj lahko vloga dela.")
+                    .addStep(binding.registerButton, "Ustvari novo vlogo",
+                            "Ko ste izbrali ime in dovoljenja, kliknite 'Ustvari novo vlogo'.\n\n" +
+                                    "Nova vloga bo takoj na voljo za dodelitev uporabnikom.")
+                    .addStep(binding.cancelBtn, "Prekliči",
+                            "Če želite zapreti ta pogled brez shranjevanja, uporabite gumb Prekliči.")
+
+                    .start();
+        }, 200);
+    }
+
+    private void startAutoGuide() {
+        binding.getRoot().postDelayed(() -> {
+            showUserModeGuide();
+        }, 300);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -622,6 +739,14 @@ public class RegisterFragment extends BaseFragment {
             updateToolbarTitle("Dodeli vlogo uporabniku");
         } else {
             updateToolbarTitle("Ustvari novo vlogo");
+        }
+
+        if (shouldShowGuide && binding != null) {
+            startAutoGuide();
+            shouldShowGuide = false;
+
+            SharedPreferences prefs = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+            prefs.edit().putBoolean("register_guide_seen", true).apply();
         }
     }
 }
