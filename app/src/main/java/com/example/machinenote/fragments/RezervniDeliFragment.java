@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.AnimationHelper;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.FilterDialogBuilder;
@@ -42,6 +43,7 @@ public class RezervniDeliFragment extends BaseFragment {
     private ApiManager apiManager;
     private List<RezervniDel> rezervniDelList;
     private GenericAdapter<RezervniDel> adapter;
+    Context context;
     private GenericFilter<RezervniDel> filter;
     private String currentSearchQuery = "";
 
@@ -49,6 +51,7 @@ public class RezervniDeliFragment extends BaseFragment {
 
     public static RezervniDeliFragment newInstance(Context context) {
         RezervniDeliFragment fragment = new RezervniDeliFragment();
+        fragment.context = context;
         fragment.apiManager = new ApiManager(context);
         fragment.TAG = context.getString(R.string.tag_rezervni_deli);
         return fragment;
@@ -184,11 +187,16 @@ public class RezervniDeliFragment extends BaseFragment {
 
     private void setupTabNavigation() {
         binding.tabSmallMaterialsBtn.setOnClickListener(v -> {
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-            fragmentManager.popBackStack();
-            Fragment drobniMaterialiFragment = com.example.machinenote.fragments.DrobniMaterialiFragment.newInstance(mainActivity);
-            mainActivity.loadFragment(drobniMaterialiFragment);
+            AnimationHelper.bounceClick(v);
+                // Switch to DodajNalogoFragment
+                if (getActivity() instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.loadFragment(DrobniMaterialiFragment.newInstance(context));
+                }
+        });
+
+        binding.tabRezervniDeliBtn.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
         });
     }
 

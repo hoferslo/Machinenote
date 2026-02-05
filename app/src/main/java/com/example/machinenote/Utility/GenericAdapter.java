@@ -249,8 +249,14 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
             }
 
             buttonAction.setVisibility(View.GONE);
-            itemView.setOnClickListener(v -> onItemClickListener.onItemClick(item));
-            buttonAction.setOnClickListener(v -> onItemClickListener.onButtonClick(item));
+            itemView.setOnClickListener(v -> {
+                AnimationHelper.bounceClick(v);
+                onItemClickListener.onItemClick(item);
+            });
+            buttonAction.setOnClickListener(v -> {
+                AnimationHelper.bounceClick(v);
+                onItemClickListener.onButtonClick(item);
+            });
         }
     }
 }

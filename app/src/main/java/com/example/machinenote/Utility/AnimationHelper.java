@@ -129,8 +129,8 @@ public class AnimationHelper {
      */
     public static void bounceClick(View view) {
         view.animate()
-                .scaleX(0.95f)
-                .scaleY(0.95f)
+                .scaleX(0.925f)
+                .scaleY(0.925f)
                 .setDuration(100)
                 .withEndAction(() -> {
                     view.animate()

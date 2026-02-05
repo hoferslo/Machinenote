@@ -84,6 +84,7 @@ public class PreventivniPreglediPodsklopAdapter extends RecyclerView.Adapter<Pre
             naslednjiPregledTab = itemView.findViewById(R.id.naslednjiPregledTab);
 
             itemView.setOnClickListener(v -> {
+                AnimationHelper.bounceClick(v);
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onItemClick(itemList.get(getAdapterPosition()));
                 }

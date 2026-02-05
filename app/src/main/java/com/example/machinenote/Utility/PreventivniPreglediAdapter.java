@@ -87,6 +87,7 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
 
             // Set click listeners
             itemView.setOnClickListener(v -> {
+                AnimationHelper.bounceClick(v);
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onItemClick(itemList.get(getAdapterPosition()));
                 }
@@ -94,6 +95,7 @@ public class PreventivniPreglediAdapter extends RecyclerView.Adapter<Preventivni
 
             // Click listener za status/SAP text
             statusText.setOnClickListener(v -> {
+                AnimationHelper.bounceClick(v);
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onButtonClick(itemList.get(getAdapterPosition()));
                 }

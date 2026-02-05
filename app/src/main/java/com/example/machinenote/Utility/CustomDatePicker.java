@@ -53,7 +53,10 @@ public class CustomDatePicker implements View.OnClickListener {
                 });
 
         custom.setDate(Calendar.getInstance());
-        textDate.setOnClickListener(v -> custom.showDialog());
+        textDate.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
+            custom.showDialog();
+        });
         return custom;
     }
 
@@ -69,6 +72,7 @@ public class CustomDatePicker implements View.OnClickListener {
 
         // Set button
         binding.btnSet.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (iCustomDateListener != null) {
                 int month = binding.datePicker.getMonth();
                 int year = binding.datePicker.getYear();
@@ -93,6 +97,7 @@ public class CustomDatePicker implements View.OnClickListener {
 
         // Cancel button
         binding.btnCancel.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (iCustomDateListener != null) {
                 iCustomDateListener.onCancel();
             }

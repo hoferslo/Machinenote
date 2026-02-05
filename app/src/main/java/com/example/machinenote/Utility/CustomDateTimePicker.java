@@ -67,8 +67,14 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
         custom.set24HourFormat(is24HourView);
         custom.setDate(Calendar.getInstance());
-        clock.setOnClickListener(v -> custom.showDialog());
-        textTime.setOnClickListener(v -> custom.showDialog());
+        clock.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
+            custom.showDialog();
+        });
+        textTime.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
+            custom.showDialog();
+        });
         return custom;
     }
 
@@ -135,6 +141,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
         // Set date button
         binding.btnSetDate.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (binding.viewSwitcher.getCurrentView() != binding.datePicker) {
                 binding.viewSwitcher.showPrevious();
             }
@@ -142,6 +149,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
         // Set time button
         binding.btnSetTime.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (binding.viewSwitcher.getCurrentView() == binding.datePicker) {
                 binding.viewSwitcher.showNext();
                 applyTimePickerFixes();
@@ -150,6 +158,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
         // Set button
         binding.btnSet.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (iCustomDateTimeListener != null) {
                 int month = binding.datePicker.getMonth();
                 int year = binding.datePicker.getYear();
@@ -179,6 +188,7 @@ public class CustomDateTimePicker implements View.OnClickListener {
 
         // Cancel button
         binding.btnCancel.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
             if (iCustomDateTimeListener != null) {
                 iCustomDateTimeListener.onCancel();
             }

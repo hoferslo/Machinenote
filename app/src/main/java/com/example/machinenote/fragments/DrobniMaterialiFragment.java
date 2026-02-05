@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.AnimationHelper;
 import com.example.machinenote.Utility.FilterDialogBuilder;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.GenericFilter;
@@ -44,6 +45,7 @@ public class DrobniMaterialiFragment extends BaseFragment {
     private ApiManager apiManager;
     private List<DrobniMateriali> drobniMaterialiList;
     private GenericFilter<DrobniMateriali> filter;
+    Context context;
     private GenericAdapter<DrobniMateriali> adapter;
     private String currentSearchQuery = "";
 
@@ -51,6 +53,7 @@ public class DrobniMaterialiFragment extends BaseFragment {
 
     public static DrobniMaterialiFragment newInstance(Context context) {
         DrobniMaterialiFragment fragment = new DrobniMaterialiFragment();
+        fragment.context = context;
         fragment.apiManager = new ApiManager(context);
         fragment.TAG = context.getString(R.string.tag_drobni_materiali);
         return fragment;
@@ -125,11 +128,18 @@ public class DrobniMaterialiFragment extends BaseFragment {
 
     private void setupTabNavigation() {
         binding.tabRezervniDeliBtn.setOnClickListener(v -> {
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-            fragmentManager.popBackStack();
-            Fragment RezervniDeliFragment = com.example.machinenote.fragments.RezervniDeliFragment.newInstance(mainActivity);
-            mainActivity.loadFragment(RezervniDeliFragment);
+            AnimationHelper.bounceClick(v);
+            if (getActivity() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) requireActivity();
+                FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+                fragmentManager.popBackStack();
+                Fragment RezervniDeliFragment = com.example.machinenote.fragments.RezervniDeliFragment.newInstance(mainActivity);
+                mainActivity.loadFragment(RezervniDeliFragment);
+            }
+        });
+
+        binding.tabSmallMaterialsBtn.setOnClickListener(v -> {
+            AnimationHelper.bounceClick(v);
         });
     }
     private void fetchDrobniMateriali() {
