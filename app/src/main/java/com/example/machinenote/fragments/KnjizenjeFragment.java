@@ -80,7 +80,7 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
             adjustStock(Integer.parseInt(binding.stockChangeValue.getText().toString()));
         });
 
-        binding.cancelBtn.setOnClickListener(view -> {a i
+        binding.cancelBtn.setOnClickListener(view -> {
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.onBackPressed();
         });
