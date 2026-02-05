@@ -147,7 +147,13 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
         binding.logout.setOnClickListener(view -> {
             clearAllFragmentFromBackStack();
+            boolean hasSeenGuide = sharedPreferencesHelper.getBoolean(
+                    "has_seen_register_guide", false
+            );
+
             sharedPreferencesHelper.clear();
+
+            sharedPreferencesHelper.putBoolean("has_seen_register_guide", hasSeenGuide);
             disableDrawer();
             showDrawerIcon();
             loadFragment(LoginFragment.newInstance(this));
@@ -444,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         });
 
         builder.setNegativeButton("Ne", (dialog, which) -> {
+            dialog.dismiss();
             dialog.dismiss();
         });
 

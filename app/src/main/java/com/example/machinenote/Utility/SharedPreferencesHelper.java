@@ -18,6 +18,8 @@ public class SharedPreferencesHelper {
     public static final String ROLE_KEY = "Role";
     public static final String LocationID = "LokacijaID";
     public static final String Location = "Lokacija";
+    public static final String HAS_SEEN_REGISTER_GUIDE = "has_seen_register_guide";
+
 
     private static SharedPreferencesHelper instance;
     private SharedPreferences sharedPreferences;

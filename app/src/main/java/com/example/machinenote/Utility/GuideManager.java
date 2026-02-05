@@ -3,6 +3,7 @@ package com.example.machinenote.Utility;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -88,21 +89,21 @@ public class GuideManager {
         ));
         overlayContainer.setClickable(true);
 
-        // Create dim overlay - TRANSPARENT for light background
-        dimOverlay = new View(activity);
+        // Create dim overlay with cutout
+        dimOverlay = new DimOverlayView(activity);
         RelativeLayout.LayoutParams dimParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
         dimOverlay.setLayoutParams(dimParams);
-        dimOverlay.setBackgroundColor(Color.parseColor("#40000000")); // Very light dim (25% opacity)
         dimOverlay.setClickable(false);
 
         overlayContainer.addView(dimOverlay);
 
-        // Add overlay to root view
+        // Add overlay container to root
         rootView.addView(overlayContainer);
     }
+
 
     /**
      * Show a specific step
@@ -141,6 +142,20 @@ public class GuideManager {
                 location[0] + targetView.getWidth(),
                 location[1] + targetView.getHeight()
         );
+
+        int padding = (int) activity.getResources().getDimension(R.dimen.spacing_xl);
+
+        RectF hole = new RectF(
+                targetRect.left - padding,
+                targetRect.top - padding,
+                targetRect.right + padding,
+                targetRect.bottom + padding
+        );
+
+        float radius = activity.getResources().getDisplayMetrics().density * 12f; // or match your 8dp/whatever
+
+        ((DimOverlayView) dimOverlay).setHole(hole, radius);
+
 
         // Create guide layout
         LayoutInflater inflater = LayoutInflater.from(activity);
