@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +21,7 @@ import com.example.machinenote.databinding.FragmentRegisterBinding;
 import com.example.machinenote.RegistrationRequest;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.User;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class RegisterFragment extends BaseFragment {
     private List<User> users;
     private String selectedRole = "";
     private List<Role> availableRoles = new ArrayList<>();
-    private Map<String, CheckBox> permissionCheckBoxes = new HashMap<>();
+    private Map<String, Chip> permissionChips = new HashMap<>();
 
     // Mode tracking
     private boolean isUserMode = true; // true = user registration, false = role creation
@@ -68,7 +68,7 @@ public class RegisterFragment extends BaseFragment {
         View view = binding.getRoot();
         context = getContext();
 
-        initializePermissionCheckBoxes();
+        initializePermissionChips();
         setupModeToggleButtons();
         setupCancelButton();
         loadRolesFromApi();
@@ -110,7 +110,7 @@ public class RegisterFragment extends BaseFragment {
 
         // Restore permissions for the currently selected role
         restoreSelectedRolePermissions();
-        disableAllCheckboxes();
+        disableAllChips();
 
         // Update toolbar title
         updateToolbarTitle("Dodeli vlogo uporabniku");
@@ -129,9 +129,9 @@ public class RegisterFragment extends BaseFragment {
         // Update register button text
         binding.registerButton.setText("Ustvari novo vlogo");
 
-        // Clear all checkboxes and enable them for role creation
-        clearAllCheckboxes();
-        enableAllCheckboxes();
+        // Clear all chips and enable them for role creation
+        clearAllChips();
+        enableAllChips();
 
         // Update toolbar title
         updateToolbarTitle("Ustvari novo vlogo");
@@ -143,12 +143,10 @@ public class RegisterFragment extends BaseFragment {
             Role selectedRoleObj = findRoleByName(selectedRole);
             if (selectedRoleObj != null) {
                 setPermissionsForRole(selectedRoleObj);
-            } else {
-                setDefaultPermissionsForRole(selectedRole);
             }
         } else {
-            // No role selected, clear all checkboxes
-            clearAllCheckboxes();
+            // No role selected, clear all chips
+            clearAllChips();
         }
     }
 
@@ -158,22 +156,22 @@ public class RegisterFragment extends BaseFragment {
         }
     }
 
-    private void initializePermissionCheckBoxes() {
-        // Create a map for easier management of checkboxes
-        permissionCheckBoxes.put("Knjiženje", binding.checkBoxKnjizenje);
-        permissionCheckBoxes.put("Zastoji", binding.checkBoxZastoji);
-        permissionCheckBoxes.put("Rezervni deli", binding.checkBoxRezervniDelo);
-        permissionCheckBoxes.put("Preventivni pregledi", binding.checkBoxPreventivniPregledi);
-        permissionCheckBoxes.put("Imenik", binding.checkBoxImenik);
-        permissionCheckBoxes.put("Naloge", binding.checkBoxNaloge);
-        permissionCheckBoxes.put("Dodajanje nalog", binding.checkBoxDodajanjeNalog);
-        permissionCheckBoxes.put("Remonti", binding.checkBoxRemonti);
-        permissionCheckBoxes.put("Orodja", binding.checkBoxOrodja);
-        permissionCheckBoxes.put("Register", binding.checkBoxRegister);
-        permissionCheckBoxes.put("Naročila", binding.checkBoxNarocila);
-        permissionCheckBoxes.put("Dodajanje Naročil", binding.checkBoxDodajanjeNarocil);
-        permissionCheckBoxes.put("Upravljanje Naročil", binding.checkBoxUpravljanjeNarocil);
-        permissionCheckBoxes.put("Kemikalije", binding.checkBoxKemikalije);
+    private void initializePermissionChips() {
+        // Create a map for easier management of chips
+        permissionChips.put("Knjiženje", binding.chipKnjizenje);
+        permissionChips.put("Zastoji", binding.chipZastoji);
+        permissionChips.put("Rezervni deli", binding.chipRezervniDeli);
+        permissionChips.put("Preventivni pregledi", binding.chipPreventivniPregledi);
+        permissionChips.put("Imenik", binding.chipImenik);
+        permissionChips.put("Naloge", binding.chipNaloge);
+        permissionChips.put("Dodajanje nalog", binding.chipDodajanjeNalog);
+        permissionChips.put("Remonti", binding.chipRemonti);
+        permissionChips.put("Orodja", binding.chipOrodja);
+        permissionChips.put("Register", binding.chipRegister);
+        permissionChips.put("Naročila", binding.chipNarocila);
+        permissionChips.put("Dodajanje Naročil", binding.chipDodajanjeNarocil);
+        permissionChips.put("Upravljanje Naročil", binding.chipUpravljanjeNarocil);
+        permissionChips.put("Kemikalije", binding.chipKemikalije);
     }
 
     private void loadRolesFromApi() {
@@ -212,7 +210,7 @@ public class RegisterFragment extends BaseFragment {
             }
         });
     }
-    // 3. Add user spinner listener to handle user selection
+
     private void setupUserSpinner() {
         List<String> userNames = new ArrayList<>();
         userNames.add("Izberi uporabnika..."); // Default option
@@ -225,7 +223,6 @@ public class RegisterFragment extends BaseFragment {
         adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.userSpinner.setAdapter(adapter);
 
-        // ADD THIS LISTENER
         binding.userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -267,9 +264,9 @@ public class RegisterFragment extends BaseFragment {
                 if (position == 0) {
                     // Default "Izberi vlogo..." selected
                     selectedRole = "";
-                    clearAllCheckboxes();
+                    clearAllChips();
                     if (isUserMode) {
-                        disableAllCheckboxes();
+                        disableAllChips();
                     }
                     return;
                 }
@@ -286,18 +283,18 @@ public class RegisterFragment extends BaseFragment {
                     setDefaultPermissionsForRole(selectedItem);
                 }
 
-                // Only disable checkboxes in user mode
+                // Only disable chips in user mode
                 if (isUserMode) {
-                    disableAllCheckboxes();
+                    disableAllChips();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedRole = "";
-                clearAllCheckboxes();
+                clearAllChips();
                 if (isUserMode) {
-                    disableAllCheckboxes();
+                    disableAllChips();
                 }
             }
         });
@@ -343,9 +340,9 @@ public class RegisterFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     selectedRole = "";
-                    clearAllCheckboxes();
+                    clearAllChips();
                     if (isUserMode) {
-                        disableAllCheckboxes();
+                        disableAllChips();
                     }
                     return;
                 }
@@ -356,16 +353,16 @@ public class RegisterFragment extends BaseFragment {
                 setDefaultPermissionsForRole(selectedItem);
 
                 if (isUserMode) {
-                    disableAllCheckboxes();
+                    disableAllChips();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedRole = "";
-                clearAllCheckboxes();
+                clearAllChips();
                 if (isUserMode) {
-                    disableAllCheckboxes();
+                    disableAllChips();
                 }
             }
         });
@@ -381,68 +378,69 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void setPermissionsForRole(Role role) {
-        // Clear all checkboxes first
-        clearAllCheckboxes();
+        // Clear all chips first
+        clearAllChips();
 
         // Set permissions based on role
-        if (role.isKnjizenje()) binding.checkBoxKnjizenje.setChecked(true);
-        if (role.isZastoji()) binding.checkBoxZastoji.setChecked(true);
-        if (role.isRezervniDeli()) binding.checkBoxRezervniDelo.setChecked(true);
-        if (role.isPreventivniPregledi()) binding.checkBoxPreventivniPregledi.setChecked(true);
-        if (role.isDodajanjeNalog()) binding.checkBoxDodajanjeNalog.setChecked(true);
-        if (role.isImenik()) binding.checkBoxImenik.setChecked(true);
-        if (role.isNaloge()) binding.checkBoxNaloge.setChecked(true);
-        if (role.isRemonti()) binding.checkBoxRemonti.setChecked(true);
-        if (role.isOrodja()) binding.checkBoxOrodja.setChecked(true);
-        if (role.isRegister()) binding.checkBoxRegister.setChecked(true);
-        if (role.isNarocila()) binding.checkBoxNarocila.setChecked(true);
-        if (role.isDodajanjeNarocil()) binding.checkBoxDodajanjeNarocil.setChecked(true);
-        if (role.isUpravljanjeNarocil()) binding.checkBoxUpravljanjeNarocil.setChecked(true);
-        if (role.isKemikalije()) binding.checkBoxKemikalije.setChecked(true);
+        if (role.isKnjizenje()) binding.chipKnjizenje.setChecked(true);
+        if (role.isZastoji()) binding.chipZastoji.setChecked(true);
+        if (role.isRezervniDeli()) binding.chipRezervniDeli.setChecked(true);
+        if (role.isPreventivniPregledi()) binding.chipPreventivniPregledi.setChecked(true);
+        if (role.isDodajanjeNalog()) binding.chipDodajanjeNalog.setChecked(true);
+        if (role.isImenik()) binding.chipImenik.setChecked(true);
+        if (role.isNaloge()) binding.chipNaloge.setChecked(true);
+        if (role.isRemonti()) binding.chipRemonti.setChecked(true);
+        if (role.isOrodja()) binding.chipOrodja.setChecked(true);
+        if (role.isRegister()) binding.chipRegister.setChecked(true);
+        if (role.isNarocila()) binding.chipNarocila.setChecked(true);
+        if (role.isDodajanjeNarocil()) binding.chipDodajanjeNarocil.setChecked(true);
+        if (role.isUpravljanjeNarocil()) binding.chipUpravljanjeNarocil.setChecked(true);
+        if (role.isKemikalije()) binding.chipKemikalije.setChecked(true);
     }
 
     private void setDefaultPermissionsForRole(String roleName) {
-        // Clear all checkboxes first
-        clearAllCheckboxes();
+        // Clear all chips first
+        clearAllChips();
 
-        // Set default permissions for built-in roles
+        // Set default permissions based on role name
+        // You can customize this based on your needs
         switch (roleName) {
             case "Admin":
                 // Admin has all permissions
-                for (CheckBox checkBox : permissionCheckBoxes.values()) {
-                    checkBox.setChecked(true);
+                for (Chip chip : permissionChips.values()) {
+                    chip.setChecked(true);
                 }
                 break;
             case "Vzdrževanje":
-                // Maintenance role has specific permissions
-                binding.checkBoxZastoji.setChecked(true);
-                binding.checkBoxRezervniDelo.setChecked(true);
-                binding.checkBoxPreventivniPregledi.setChecked(true);
-                binding.checkBoxNaloge.setChecked(true);
-                binding.checkBoxRemonti.setChecked(true);
-                binding.checkBoxOrodja.setChecked(true);
+                // Vzdrževanje has limited permissions
+                binding.chipKnjizenje.setChecked(true);
+                binding.chipZastoji.setChecked(true);
+                binding.chipRezervniDeli.setChecked(true);
                 break;
             case "Gost":
-                // Guest has no permissions - already cleared
+                // Gost has read-only permissions
+                binding.chipImenik.setChecked(true);
                 break;
         }
     }
 
-    private void enableAllCheckboxes() {
-        for (CheckBox checkBox : permissionCheckBoxes.values()) {
-            checkBox.setEnabled(true);
+    private void enableAllChips() {
+        for (Chip chip : permissionChips.values()) {
+            chip.setEnabled(true);
+            chip.setClickable(true);
         }
     }
 
-    private void disableAllCheckboxes() {
-        for (CheckBox checkBox : permissionCheckBoxes.values()) {
-            checkBox.setEnabled(false);
+    private void disableAllChips() {
+        for (Chip chip : permissionChips.values()) {
+            chip.setEnabled(false);
+            chip.setClickable(false);
         }
     }
 
-    private void clearAllCheckboxes() {
-        for (CheckBox checkBox : permissionCheckBoxes.values()) {
-            checkBox.setChecked(false);
+    private void clearAllChips() {
+        for (Chip chip : permissionChips.values()) {
+            chip.setChecked(false);
         }
     }
 
@@ -504,7 +502,6 @@ public class RegisterFragment extends BaseFragment {
         });
     }
 
-
     private void attemptRoleCreation() {
         // Reset errors
         binding.addARole.setError(null);
@@ -533,11 +530,10 @@ public class RegisterFragment extends BaseFragment {
         performRoleCreation(roleName, permissions);
     }
 
-
     private List<String> collectPermissions() {
         List<String> permissions = new ArrayList<>();
 
-        for (Map.Entry<String, CheckBox> entry : permissionCheckBoxes.entrySet()) {
+        for (Map.Entry<String, Chip> entry : permissionChips.entrySet()) {
             if (entry.getValue().isChecked()) {
                 permissions.add(entry.getKey());
             }
@@ -545,7 +541,6 @@ public class RegisterFragment extends BaseFragment {
 
         return permissions;
     }
-
 
     private void performRoleCreation(String roleName, List<String> permissions) {
         binding.registerButton.setEnabled(false);
@@ -598,16 +593,16 @@ public class RegisterFragment extends BaseFragment {
 
     private void clearRoleForm() {
         binding.addARole.setText("");
-        clearAllCheckboxes();
+        clearAllChips();
     }
 
     private void clearUserForm() {
         binding.userSpinner.setSelection(0);
         binding.roleSpinner.setSelection(0);
         selectedRole = "";
-        clearAllCheckboxes();
+        clearAllChips();
         if (isUserMode) {
-            disableAllCheckboxes();
+            disableAllChips();
         }
     }
 

@@ -80,7 +80,7 @@ public class DashboardFragment extends BaseFragment {
             new ButtonConfig("Registracija", R.drawable.person_add, android.R.color.holo_orange_light, Role::isRegister),
             new ButtonConfig("Naročila", R.drawable.assignment_icon, android.R.color.holo_orange_light, Role::isNarocila),
             new ButtonConfig("Kemikalije", R.drawable.ic_science, android.R.color.holo_blue_light, Role::isKemikalije),
-            new ButtonConfig("KemikalijeAdd", R.drawable.ic_science, android.R.color.holo_blue_light, Role::isKemikalije)
+            new ButtonConfig("Dodaj kemikalijo", R.drawable.ic_science, android.R.color.holo_blue_light, Role::isKemikalije)
     };
 
     public DashboardFragment() {
@@ -163,7 +163,7 @@ public class DashboardFragment extends BaseFragment {
             case "Registracija": return RegisterFragment.newInstance(context);
             case "Naročila": return NarocilaFragment.newInstance(context);
             case "Kemikalije": return KemikalijeFragment.newInstance(context);
-            case "KemikalijeAdd": return KemikalijeAddFragment.newInstance(context);
+            case "Dodaj kemikalijo": return KemikalijeAddFragment.newInstance(context);
             default: return null;
         }
     }
@@ -597,7 +597,7 @@ public class DashboardFragment extends BaseFragment {
             case "Kemikalije":
                 button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
                 break;
-            case "KemikalijeAdd":
+            case "Dodaj kemikalijo":
                 button.setIconTint(ContextCompat.getColorStateList(context, android.R.color.holo_blue_light));
                 break;
             default:

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -125,49 +126,37 @@ public class LoginFragment extends BaseFragment {
         }
     }
 
-    private void displayUserInput(){
-        // Create a LinearLayout to hold both EditTexts
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 40, 50, 10);
+    private void displayUserInput() {
+        // Inflate custom layout
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_password_reset, null);
 
-        // Create EditText for username
-        // Create EditText for username
-        final EditText editTextUsername = new EditText(context);
-        editTextUsername.setHint("Uporabniško ime");
-        editTextUsername.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
-        setCursorDrawable(editTextUsername, 0); // 0 means no cursor drawable
+        // Get references to views
+        EditText editTextUsername = dialogView.findViewById(R.id.editTextUsername);
+        EditText editTextPassword = dialogView.findViewById(R.id.editTextPassword);
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+        Button btnSubmit = dialogView.findViewById(R.id.btnSubmit);
 
-// Create EditText for password - VISIBLE TEXT (not hidden)
-        final EditText editTextPassword = new EditText(context);
-        editTextPassword.setHint("Novo geslo");
-        editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
-        setCursorDrawable(editTextPassword, 0); // 0 means no cursor drawable
+        // Set cursor drawable
+        setCursorDrawable(editTextUsername, 0);
+        setCursorDrawable(editTextPassword, 0);
 
-// Helper method - add this to your class
+        // Create dialog without default buttons
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
 
-        // Add both EditTexts to the layout
-        layout.addView(editTextUsername);
-        layout.addView(editTextPassword);
+        // Make dialog background transparent so custom layout background shows
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
 
-        // Create and show the AlertDialog
-        AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(context)
-                .setTitle("Pozabljeno geslo")
-                .setMessage("Vnesite svoje podatke za ponastavitev gesla:")
-                .setView(layout)
-                .setPositiveButton("Pošlji", null)
-                .setNegativeButton("Prekliči", null)
-                .show();
+        // Handle cancel button
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        // Request focus and show keyboard for username field
-        editTextUsername.requestFocus();
-        editTextUsername.postDelayed(() -> {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(editTextUsername, InputMethodManager.SHOW_IMPLICIT);
-        }, 200);
-
-        // Override the positive button to prevent dialog from closing on validation error
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+        // Handle submit button
+        btnSubmit.setOnClickListener(v -> {
             String username = editTextUsername.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
 
@@ -193,6 +182,18 @@ public class LoginFragment extends BaseFragment {
             sendPasswordResetEmail(username, password);
             dialog.dismiss();
         });
+
+        // Show dialog
+        dialog.show();
+
+        // Request focus and show keyboard for username field
+        editTextUsername.requestFocus();
+        editTextUsername.postDelayed(() -> {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(editTextUsername, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 200);
     }
 
     private boolean isValidPassword(String password) {

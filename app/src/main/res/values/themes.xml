@@ -249,17 +249,17 @@
     <!-- Add this to your styles.xml -->
     <style name="Button.MaterialTab" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textSize">@dimen/tab_button_text_size</item>
-        <item name="backgroundTint">@color/neutral_75</item>
+        <item name="backgroundTint">@color/action_primary</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/content_primary</item>
+        <item name="android:textColor">@color/content_inverse</item>
         <item name="android:minHeight">@dimen/tab_button_min_height</item>
         <item name="android:paddingLeft">@dimen/tab_button_padding_horizontal</item>
         <item name="android:paddingRight">@dimen/tab_button_padding_horizontal</item>
         <item name="strokeWidth">0dp</item>
         <item name="iconGravity">top</item>
         <item name="iconSize">24dp</item>
-        <item name="iconTint">@color/content_primary</item>
+        <item name="iconTint">@color/content_inverse</item>
         <item name="iconPadding">0dp</item>
     </style>
 
@@ -281,6 +281,13 @@
         <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 
+    <style name="ChipTheme" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="android:textColor">@color/content_inverse</item>
+        <item name="chipBackgroundColor">@color/action_primary</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="checkedIconTint">@color/content_inverse</item>
+    </style>
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_card_secondary</item>
     </style>
