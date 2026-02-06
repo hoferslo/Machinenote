@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
-import com.example.machinenote.Utility.AnimationHelper;
+// Animation was here AnimationHelper.bounceClick(view);
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.FilterDialogBuilder;
@@ -187,7 +187,7 @@ public class RezervniDeliFragment extends BaseFragment {
 
     private void setupTabNavigation() {
         binding.tabSmallMaterialsBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
                 // Switch to DodajNalogoFragment
                 if (getActivity() instanceof MainActivity) {
                     MainActivity mainActivity = (MainActivity) getActivity();
@@ -196,7 +196,7 @@ public class RezervniDeliFragment extends BaseFragment {
         });
 
         binding.tabRezervniDeliBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
         });
     }
 

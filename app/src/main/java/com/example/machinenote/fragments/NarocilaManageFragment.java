@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -97,11 +101,13 @@ public class NarocilaManageFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentNarocilaManageBinding.inflate(getLayoutInflater());
-        setupApiCalls();
         setupSpinners();
         setupClickListeners();
         initializeViews();
-        loadNarociloData();
+        setupAmountInputValidation();
+
+        // Najprej naložimo lokacije, potem pa naročilo podatke
+        setupApiCalls();
 
         return binding.getRoot();
     }
@@ -121,11 +127,70 @@ public class NarocilaManageFragment extends BaseFragment {
         binding.lokacijaSpinner.setAdapter(locationAdapter);
 
         // Setup Unit Spinner
-        String[] units = {"kg", "kom", "m", "m²", "m³", "l"};
+        String[] units = {"kg", "kom", "kos", "m", "m²", "m³", "l"};
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(context,
                 R.layout.item_spinner_layout, units);
         unitAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.enotaSpinner.setAdapter(unitAdapter);
+
+        // Add listener to unit spinner to change input type based on selection
+        binding.enotaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedUnit = units[position];
+                updateAmountInputType(selectedUnit);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
+    private void setupAmountInputValidation() {
+        // Add TextWatcher to handle comma decimal separator
+        binding.amountOfArticle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString();
+
+                // Replace period with comma for decimal separator
+                if (text.contains(".")) {
+                    int cursorPosition = binding.amountOfArticle.getSelectionStart();
+                    String newText = text.replace(".", ",");
+                    binding.amountOfArticle.removeTextChangedListener(this);
+                    binding.amountOfArticle.setText(newText);
+                    binding.amountOfArticle.setSelection(Math.min(cursorPosition, newText.length()));
+                    binding.amountOfArticle.addTextChangedListener(this);
+                }
+            }
+        });
+    }
+
+    private void updateAmountInputType(String unit) {
+        if ("kom".equals(unit) || "kos".equals(unit)) {
+            // For kom and kos, allow only integers
+            binding.amountOfArticle.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+            // Clear any decimal values if switching to integer-only unit
+            String currentText = binding.amountOfArticle.getText().toString();
+            if (currentText.contains(",")) {
+                String integerPart = currentText.split(",")[0];
+                binding.amountOfArticle.setText(integerPart);
+            }
+        } else {
+            // For other units, allow decimals with comma separator
+            binding.amountOfArticle.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
     }
 
     private void initializeActivityLaunchers() {
@@ -213,11 +278,34 @@ public class NarocilaManageFragment extends BaseFragment {
 
             // Load article info
             binding.articleName.setText(currentNarocilo.getNaziv());
-            binding.amountOfArticle.setText(currentNarocilo.getKolicina());
+
+            // Format amount with comma for display
+            String kolicina = currentNarocilo.getKolicina();
+            if (kolicina != null && kolicina.contains(".")) {
+                kolicina = kolicina.replace(".", ",");
+            }
+            binding.amountOfArticle.setText(kolicina);
+
             binding.technicalInfo.setText(currentNarocilo.getTehnicniPodatki());
 
-            // Set unit spinner
-            binding.enotaSpinner.setSelection(Integer.parseInt(currentNarocilo.getEnota()));
+            // Set unit spinner - POPRAVLJENA VERZIJA
+            String enotaValue = currentNarocilo.getEnota();
+            if (enotaValue != null && !enotaValue.isEmpty()) {
+                try {
+                    // Če je enota shranjena kot številka (indeks)
+                    int unitPosition = Integer.parseInt(enotaValue);
+                    if (unitPosition >= 0 && unitPosition < binding.enotaSpinner.getAdapter().getCount()) {
+                        binding.enotaSpinner.setSelection(unitPosition);
+                    }
+                } catch (NumberFormatException e) {
+                    // Če enota ni številka, poskusimo najti po vrednosti
+                    setSpinnerSelection(binding.enotaSpinner, enotaValue);
+                }
+
+                // Update input type based on loaded unit
+                String selectedUnit = binding.enotaSpinner.getSelectedItem().toString();
+                updateAmountInputType(selectedUnit);
+            }
 
             // Load status
             setSpinnerSelection(binding.statusSpinner, currentNarocilo.getStatus());
@@ -240,12 +328,27 @@ public class NarocilaManageFragment extends BaseFragment {
     }
 
     private void setSpinnerSelection(android.widget.Spinner spinner, String value) {
+        if (spinner == null || value == null) return;
+
         ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter();
-        if (adapter != null && value != null) {
+        if (adapter != null) {
+            // Poskusi najti točno ujemanje
             int position = adapter.getPosition(value);
             if (position >= 0) {
                 spinner.setSelection(position);
+                return;
             }
+
+            // Če točno ujemanje ni najdeno, poskusi case-insensitive iskanje
+            for (int i = 0; i < adapter.getCount(); i++) {
+                String item = adapter.getItem(i).toString();
+                if (item.equalsIgnoreCase(value)) {
+                    spinner.setSelection(i);
+                    return;
+                }
+            }
+
+            Log.w(TAG, "Vrednost '" + value + "' ni bila najdena v spinnerju");
         }
     }
 
@@ -413,18 +516,32 @@ public class NarocilaManageFragment extends BaseFragment {
         String narocnik = binding.nameOfShipper.getText().toString().trim();
         String naziv = binding.articleName.getText().toString().trim();
         String tehnicniPodatki = binding.technicalInfo.getText().toString().trim();
-        String kolicina = binding.amountOfArticle.getText().toString().trim();
+        String kolicinaInput = binding.amountOfArticle.getText().toString().trim();
         String status = binding.statusSpinner.getSelectedItem() != null ?
                 binding.statusSpinner.getSelectedItem().toString() : currentNarocilo.getStatus();
         String adminOpombe = binding.adminOpombe.getText().toString().trim();
 
+        String enotaStr = "";
+        if (binding.enotaSpinner.getSelectedItem() != null) {
+            enotaStr = binding.enotaSpinner.getSelectedItem().toString().trim();
+        }
+
         // Validate required fields
-        if (narocnik.isEmpty() || naziv.isEmpty() || kolicina.isEmpty()) {
+        if (narocnik.isEmpty() || naziv.isEmpty() || kolicinaInput.isEmpty()) {
             Toast.makeText(context, "Prosimo, izpolnite vsa obvezna polja", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Get unit
+        // Validate that kom/kos units have integer values
+        if (("kom".equals(enotaStr) || "kos".equals(enotaStr)) && kolicinaInput.contains(",")) {
+            Toast.makeText(context, "Za enoto " + enotaStr + " vnesite celoštevilčno vrednost", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Convert comma to period for database storage
+        String kolicina = kolicinaInput.replace(",", ".");
+
+        // Get unit - shranimo indeks spinnerja kot string
         String enota = String.valueOf(binding.enotaSpinner.getSelectedItemPosition());
 
         // Format dates
@@ -568,10 +685,8 @@ public class NarocilaManageFragment extends BaseFragment {
                     getActivity().runOnUiThread(() -> {
                         locationAdapter.notifyDataSetChanged();
 
-                        // Če imamo lokacije, nastavimo prvo kot privzeto
-                        if (!locations.isEmpty()) {
-                            binding.lokacijaSpinner.setSelection(0);
-                        }
+                        // POMEMBNO: Šele ko so lokacije naložene, naložimo podatke naročila
+                        loadNarociloData();
                     });
                 }
 
@@ -584,6 +699,8 @@ public class NarocilaManageFragment extends BaseFragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(context, "Napaka pri nalaganju lokacij: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        // Tudi ob napaki naložimo podatke naročila (ostali podatki bodo še vedno prikazani)
+                        loadNarociloData();
                     });
                 }
             }

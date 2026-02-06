@@ -3,14 +3,19 @@ package com.example.machinenote.Utility;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.ColorStateList;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 public class AnimationHelper {
 
@@ -88,6 +93,7 @@ public class AnimationHelper {
      * Pop-in + wiggle kombinirano z rdečim flash-om (icon tint)
      */
     public static void popInAndWiggle(View view, long delay, int originalColorRes) {
+        view.animate().cancel();
         view.setScaleX(0f);
         view.setScaleY(0f);
 
@@ -128,6 +134,7 @@ public class AnimationHelper {
      * Bounce click - ko uporabnik klikne gumb
      */
     public static void bounceClick(View view) {
+        view.animate().cancel();
         view.animate()
                 .scaleX(0.925f)
                 .scaleY(0.925f)

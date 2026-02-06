@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,9 @@ public class GuideManager {
     private View dimOverlay;
     private View guideLayout;
     private OnGuideCompleteListener completeListener;
+    private boolean isActive = false;
+    private static int activeGuideCount = 0;
+    private static GuideManager activeGuide = null;
 
     public interface OnGuideCompleteListener {
         void onGuideComplete();
@@ -69,7 +73,10 @@ public class GuideManager {
             return;
         }
 
+        activeGuide = this;
+        activeGuideCount++;
         currentStep = 0;
+        isActive = true;
         createOverlay();
         showStep(currentStep);
     }
@@ -88,6 +95,16 @@ public class GuideManager {
                 ViewGroup.LayoutParams.MATCH_PARENT
         ));
         overlayContainer.setClickable(true);
+        overlayContainer.setFocusable(true);
+
+        // Block all clicks by consuming them
+        overlayContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Consume click - do nothing
+                // This prevents clicks from passing through to views below
+            }
+        });
 
         // Create dim overlay with cutout
         dimOverlay = new DimOverlayView(activity);
@@ -96,7 +113,13 @@ public class GuideManager {
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
         dimOverlay.setLayoutParams(dimParams);
-        dimOverlay.setClickable(false);
+        dimOverlay.setClickable(true); // Block clicks on dim overlay too
+        dimOverlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Consume click
+            }
+        });
 
         overlayContainer.addView(dimOverlay);
 
@@ -106,7 +129,6 @@ public class GuideManager {
         // Animate overlay fade in using AnimationHelper
         AnimationHelper.fadeIn(overlayContainer, 300);
     }
-
 
     /**
      * Show a specific step
@@ -179,6 +201,15 @@ public class GuideManager {
         LayoutInflater inflater = LayoutInflater.from(activity);
         guideLayout = inflater.inflate(R.layout.guide_overlay, overlayContainer, false);
 
+        // Block clicks on guide layout background
+        guideLayout.setClickable(true);
+        guideLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Consume click
+            }
+        });
+
         // Set up guide content
         TextView titleText = guideLayout.findViewById(R.id.guide_title);
         TextView descText = guideLayout.findViewById(R.id.guide_description);
@@ -188,6 +219,15 @@ public class GuideManager {
         Button skipButton = guideLayout.findViewById(R.id.guide_skip_btn);
         View highlightView = guideLayout.findViewById(R.id.guide_highlight);
         View textContainer = guideLayout.findViewById(R.id.guide_text_container);
+
+        // Block clicks on text container
+        textContainer.setClickable(true);
+        textContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Consume click
+            }
+        });
 
         // Set elevations
         highlightView.setElevation(10f);
@@ -208,13 +248,13 @@ public class GuideManager {
         nextButton.setText(currentStep == steps.size() - 1 ? "Končaj" : "Naprej");
 
         prevButton.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             currentStep--;
             showStep(currentStep);
         });
 
         nextButton.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             if (currentStep == steps.size() - 1) {
                 finish();
             } else {
@@ -224,7 +264,7 @@ public class GuideManager {
         });
 
         skipButton.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             finish();
         });
 
@@ -331,6 +371,13 @@ public class GuideManager {
      * Finish and clean up the guide
      */
     private void finish() {
+        isActive = false;
+        activeGuideCount--;
+
+        if (activeGuide == this) {
+            activeGuide = null;
+        }
+
         if (overlayContainer != null && overlayContainer.getParent() != null) {
             // Fade out animation using AnimationHelper before removing
             AnimationHelper.fadeOut(overlayContainer, 300);
@@ -347,6 +394,19 @@ public class GuideManager {
             if (completeListener != null) {
                 completeListener.onGuideComplete();
             }
+        }
+    }
+
+    /**
+     * Check if guide is currently active
+     */
+    public static boolean isAnyGuideActive() {
+        return activeGuideCount > 0;
+    }
+
+    public static void closeActive() {
+        if (activeGuide != null) {
+            activeGuide.finish();
         }
     }
 

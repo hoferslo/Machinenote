@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.R;
+// Animation was here AnimationHelper.bounceClick(view);
 import com.example.machinenote.databinding.FragmentKemikalijeBottomSheetBinding;
 import com.example.machinenote.models.Kemikalija;
 import com.example.machinenote.models.OmaraKemikalije;
@@ -291,16 +292,28 @@ public class KemikalijeBottomSheetFragment extends BottomSheetDialogFragment {
 
     private void setupButtons() {
         // Preklopi na edit mode
-        binding.btnUredi.setOnClickListener(v -> toggleEditMode(true));
+        binding.btnUredi.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            toggleEditMode(true);
+        });
 
         // Shrani spremembe
-        binding.btnShrani.setOnClickListener(v -> saveChanges());
+        binding.btnShrani.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            saveChanges();
+        });
 
         // Preklici urejanje
-        binding.btnPreklici.setOnClickListener(v -> toggleEditMode(false));
+        binding.btnPreklici.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            toggleEditMode(false);
+        });
 
         // Datum picker
-        binding.btnRokUporabe.setOnClickListener(v -> showDatePicker());
+        binding.btnRokUporabe.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            showDatePicker();
+        });
 
         // Začetno stanje - view mode
         toggleEditMode(false);

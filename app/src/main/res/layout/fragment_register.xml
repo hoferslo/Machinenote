@@ -42,7 +42,8 @@
                     android:src="@drawable/baseline_help_24"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Pomoč"
-                    android:tint="@color/action_primary"/>
+                    app:tint="@color/action_primary"
+                    />
             </LinearLayout>
 
             <!-- User Mode -->
@@ -101,129 +102,212 @@
                 android:textColor="@color/content_primary"
                 android:layout_marginBottom="@dimen/spacing_large" />
 
-            <!-- Compact Chips -->
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupPermissions"
+            <!-- Permissions Grid Container -->
+            <LinearLayout
+                android:id="@+id/permissionsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:background="@drawable/bg_input"
-                android:padding="@dimen/spacing_medium"
-                app:chipSpacingHorizontal="@dimen/spacing_medium"
-                app:chipSpacingVertical="@dimen/spacing_xs">
+                android:padding="@dimen/spacing_medium">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipKnjizenje"
-                    android:layout_width="wrap_content"
+                <!-- Row 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Knjiženje"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_small">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipZastoji"
-                    android:layout_width="wrap_content"
+                    <CheckBox
+                        android:id="@+id/checkKnjizenje"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Knjiženje"
+                        android:textSize="14sp"
+                        android:padding="8dp"
+                        android:buttonTint="@color/action_primary"/>
+
+                    <CheckBox
+                        android:id="@+id/checkZastoji"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Zastoji"
+                        android:textSize="14sp"
+                        android:padding="8dp"
+                        android:buttonTint="@color/action_primary"/>
+                </LinearLayout>
+
+                <!-- Row 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Zastoji"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_small">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipRezervniDeli"
-                    android:layout_width="wrap_content"
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkRezervniDeli"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Rezervni deli"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkPreventivniPregledi"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Preventivni pregledi"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <!-- Row 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rezervni deli"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_small">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipPreventivniPregledi"
-                    android:layout_width="wrap_content"
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkImenik"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Imenik"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkNaloge"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Naloge"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <!-- Row 4 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Preventivni pregledi"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_small">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipImenik"
-                    android:layout_width="wrap_content"
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkDodajanjeNalog"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Dodajanje nalog"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkRemonti"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Remonti"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <!-- Row 5 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Imenik"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_small">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipNaloge"
-                    android:layout_width="wrap_content"
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkOrodja"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Orodja"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkRegister"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Register"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <!-- Row 6 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Naloge"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_small">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipDodajanjeNalog"
-                    android:layout_width="wrap_content"
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkNarocila"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Naročila"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkDodajanjeNarocil"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Dodajanje naročil"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <!-- Row 7 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dodajanje nalog"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_small">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipRemonti"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Remonti"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkUpravljanjeNarocil"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Upravljanje naročil"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipOrodja"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Orodja"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
+                    <CheckBox
+                        android:buttonTint="@color/action_primary"
+                        android:id="@+id/checkKemikalije"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Kemikalije"
+                        android:textSize="14sp"
+                        android:padding="8dp" />
+                </LinearLayout>
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipRegister"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Register"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipNarocila"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Naročila"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipDodajanjeNarocil"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dodajanje naročil"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipUpravljanjeNarocil"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Upravljanje naročil"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipKemikalije"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kemikalije"
-                    android:checkable="true"
-                    style="@style/ChipTheme" />
-
-            </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

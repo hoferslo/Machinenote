@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
-import com.example.machinenote.Utility.AnimationHelper;
+// Animation was here AnimationHelper.bounceClick(view);
 import com.example.machinenote.Utility.HandleQRCode;
 import com.example.machinenote.Utility.KeyboardUtils;
 import com.example.machinenote.Utility.MailHelper;
@@ -59,7 +59,7 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
         apiManager = new ApiManager(context);
 
         binding.getArticelDataByIdBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             String idStr = binding.idOfArticleEt.getText().toString();
             if (TextUtils.isEmpty(idStr)) {
                 Toast.makeText(context, "Please enter an ID", Toast.LENGTH_SHORT).show();
@@ -72,11 +72,11 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
         });
 
         binding.minusBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             adjustStock(-Integer.parseInt(binding.stockChangeValue.getText().toString()));
         });
         binding.plusBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             adjustStock(Integer.parseInt(binding.stockChangeValue.getText().toString()));
         });
 
@@ -88,23 +88,23 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
 
 
         binding.articleNameLayout.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             startQRCodeScanner();
         });
 
         // Nastavi click listener
         binding.allDataSv.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             showRezervniDeliBottomSheet();
         });
 
         binding.scanQRBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             startQRCodeScanner();
         });
 
         binding.sendGmail.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             openGmail();
         });
 
