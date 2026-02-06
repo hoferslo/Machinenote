@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.DrobniMateriali;
+import com.example.machinenote.models.Enota;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Kemikalija;
 import com.example.machinenote.models.Linija;
@@ -390,6 +391,34 @@ public class ApiManager {
         });
     }
 
+    /*     --- Enote ---     */
+
+    public interface EnoteCallBack {
+        void onSuccess(List<Enota> enote);
+
+        void onFailure(String errorMessage);
+    }
+
+    public void fetchEnote(EnoteCallBack callback) {
+        Call<List<Enota>> call = apiService.getEnote("enote");
+
+        call.enqueue(new Callback<List<Enota>>() {
+            @Override
+            public void onResponse(Call<List<Enota>> call, Response<List<Enota>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch enote");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Enota>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
     /*     --- Kemikalije ---     */
 
     public interface KemikalijeListCallback{
@@ -718,7 +747,7 @@ public class ApiManager {
         void onResponse(Call<Void> call, Response<Void> response);
     }
 
-    public void adjustStock(int id, int amount, final StockAdjustmentCallback callback) {
+    public void adjustStock(int id, double amount, final StockAdjustmentCallback callback) {
         StockAdjustmentRequest request = new StockAdjustmentRequest(amount);
         Call<Void> call = apiService.adjustStock(id, request);
         call.enqueue(new Callback<Void>() {

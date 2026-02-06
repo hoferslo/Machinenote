@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+// Animation was here AnimationHelper.bounceClick(view);
 import com.example.machinenote.Utility.HandleQRCode;
 import com.example.machinenote.Utility.KeyboardUtils;
 import com.example.machinenote.Utility.MailHelper;
@@ -164,15 +165,23 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
 
         // Filter/Sort button
         binding.filterSortToggleBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
             Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
         });
 
         // Stock adjustment buttons
-        binding.minusBtn.setOnClickListener(v -> adjustStock(-parseStockValue()));
-        binding.plusBtn.setOnClickListener(v -> adjustStock(parseStockValue()));
+        binding.minusBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            adjustStock(-parseStockValue());
+        });
+        binding.plusBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            adjustStock(parseStockValue());
+        });
 
         // Cancel button
         binding.cancelBtn.setOnClickListener(view -> {
+         // Animation was here AnimationHelper.bounceClick(view);
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.onBackPressed();
         });

@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -100,6 +105,7 @@ public class NarocilaAddFragment extends BaseFragment {
         setupSpinners();
         setupClickListeners();
         initializeViews();
+        setupAmountInputValidation();
 
         return binding.getRoot();
     }
@@ -112,11 +118,70 @@ public class NarocilaAddFragment extends BaseFragment {
         binding.lokacijaSpinner.setAdapter(locationAdapter);
 
         // Setup Unit Spinner
-        String[] units = {"kg", "kom", "m", "m²", "m³", "l"};
+        String[] units = {"kg", "kom", "kos", "m", "m²", "m³", "l"};
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(context,
                 R.layout.item_spinner_layout, units);
         unitAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_layout);
         binding.enotaSpinner.setAdapter(unitAdapter);
+
+        // Add listener to unit spinner to change input type based on selection
+        binding.enotaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedUnit = units[position];
+                updateAmountInputType(selectedUnit);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
+    private void setupAmountInputValidation() {
+        // Add TextWatcher to handle comma decimal separator
+        binding.amountOfArticle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString();
+
+                // Replace period with comma for decimal separator
+                if (text.contains(".")) {
+                    int cursorPosition = binding.amountOfArticle.getSelectionStart();
+                    String newText = text.replace(".", ",");
+                    binding.amountOfArticle.removeTextChangedListener(this);
+                    binding.amountOfArticle.setText(newText);
+                    binding.amountOfArticle.setSelection(Math.min(cursorPosition, newText.length()));
+                    binding.amountOfArticle.addTextChangedListener(this);
+                }
+            }
+        });
+    }
+
+    private void updateAmountInputType(String unit) {
+        if ("kom".equals(unit) || "kos".equals(unit)) {
+            // For kom and kos, allow only integers
+            binding.amountOfArticle.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+            // Clear any decimal values if switching to integer-only unit
+            String currentText = binding.amountOfArticle.getText().toString();
+            if (currentText.contains(",")) {
+                String integerPart = currentText.split(",")[0];
+                binding.amountOfArticle.setText(integerPart);
+            }
+        } else {
+            // For other units, allow decimals with comma separator
+            binding.amountOfArticle.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
     }
 
     private void initializeActivityLaunchers() {
@@ -250,7 +315,7 @@ public class NarocilaAddFragment extends BaseFragment {
         String narocnik = binding.nameOfShipper.getText().toString().trim();
         String naziv = binding.articleName.getText().toString().trim();
         String tehnicniPodatki = binding.technicalInfo.getText().toString().trim();
-        String kolicina = binding.amountOfArticle.getText().toString().trim();
+        String kolicinaInput = binding.amountOfArticle.getText().toString().trim();
 
         String enotaStr = "";
         if (binding.enotaSpinner.getSelectedItem() != null) {
@@ -273,8 +338,14 @@ public class NarocilaAddFragment extends BaseFragment {
             return;
         }
 
-        if (kolicina.isEmpty()) {
+        if (kolicinaInput.isEmpty()) {
             Toast.makeText(context, "Prosimo, vnesite količino", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validate that kom/kos units have integer values
+        if (("kom".equals(enotaStr) || "kos".equals(enotaStr)) && kolicinaInput.contains(",")) {
+            Toast.makeText(context, "Za enoto " + enotaStr + " vnesite celoštevilčno vrednost", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -283,7 +354,10 @@ public class NarocilaAddFragment extends BaseFragment {
             return;
         }
 
-        String enota = String.valueOf(binding.enotaSpinner.getSelectedItemPosition());
+        // Convert comma to period for database storage (if needed)
+        String kolicina = kolicinaInput.replace(",", ".");
+
+        String enota = String.valueOf(binding.enotaSpinner.getSelectedItem());
 
         // Format date for SQL (YYYY-MM-DD format)
         SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

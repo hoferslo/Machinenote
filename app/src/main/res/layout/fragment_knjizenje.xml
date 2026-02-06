@@ -240,14 +240,18 @@
 
         <TextView
             android:id="@+id/article_stock"
-            android:layout_width="@dimen/icon_text_width"
-            android:layout_height="@dimen/icon_height"
-            android:textSize="@dimen/text_size_extra_large"
-            android:padding="@dimen/spacing_large"
             android:fontFamily="@font/nunito_semibold"
             android:text="0"
-            style="@style/primaryButton"
-            android:maxLines="1" />
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/icon_height"
+            android:layout_height="@dimen/icon_height"
+            android:textSize="@dimen/text_size_extra_large"
+            style="@style/Button.Icon"
+            android:maxLines="1"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"/>
 
     </LinearLayout>
 
@@ -278,6 +282,7 @@
         android:orientation="vertical"
         android:layout_weight="1"
         android:gravity="bottom"
+
         >
 
     <!-- QR Scanner Button - Big and prominent -->
@@ -331,6 +336,8 @@
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:maxLines="1" />
+
+
 
             <Button
                 android:id="@+id/plusBtn"

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class RezervniDel implements DisplayableItem{
+public class RezervniDel implements DisplayableItem {
     @SerializedName("ID")
     private int id;
     private int skladišče;
@@ -16,10 +16,13 @@ public class RezervniDel implements DisplayableItem{
     private String proizvajalec;
     private String dobavitelj;
     private double znesek;
-    private int minimalna_zaloga;
-    private int dobava;
-    private int poraba;
+    private double minimalna_zaloga;
+    private double dobava;
+    private double poraba;
     private int inventura;
+    private int enota_id;               // ← nested objekt
+    private String enota_naziv;
+    private int enota_tip;
 
     // Default constructor
     public RezervniDel() {
@@ -27,8 +30,8 @@ public class RezervniDel implements DisplayableItem{
 
     // Parameterized constructor
     public RezervniDel(int ID, int skladišče, String regal, String artikel, int znaki, String artikelDolgiText,
-                       String proizvajalec, String dobavitelj, double znesek, int minimalnaZaloga,
-                       int dobava, int poraba, int inventura) {
+                       String proizvajalec, String dobavitelj, double znesek, double minimalnaZaloga,
+                       double dobava, double poraba, int inventura, int enota_id) {
         this.id = ID;
         this.skladišče = skladišče;
         this.regal = regal;
@@ -42,6 +45,7 @@ public class RezervniDel implements DisplayableItem{
         this.dobava = dobava;
         this.poraba = poraba;
         this.inventura = inventura;
+        this.enota_id = enota_id;
     }
 
     // Getters and Setters
@@ -117,31 +121,31 @@ public class RezervniDel implements DisplayableItem{
         this.znesek = znesek;
     }
 
-    public int getMinimalna_zaloga() {
+    public double getMinimalna_zaloga() {
         return minimalna_zaloga;
     }
 
-    public void setMinimalna_zaloga(int minimalna_zaloga) {
+    public void setMinimalna_zaloga(double minimalna_zaloga) {
         this.minimalna_zaloga = minimalna_zaloga;
     }
 
-    public int getDobava() {
+    public double getDobava() {
         return dobava;
     }
 
-    public void setDobava(int dobava) {
+    public void setDobava(double dobava) {
         this.dobava = dobava;
     }
 
-    public int getPoraba() {
+    public double getPoraba() {
         return poraba;
     }
 
-    public void setPoraba(int poraba) {
+    public void setPoraba(double poraba) {
         this.poraba = poraba;
     }
 
-    public int getRealZalogo() {
+    public double getRealZalogo() {
         return dobava - poraba;
     }
 
@@ -152,6 +156,24 @@ public class RezervniDel implements DisplayableItem{
     public void setInventura(int inventura) {
         this.inventura = inventura;
     }
+
+    public int getEnota() {
+        return enota_id;
+    }
+
+    public void setEnota(int enota_id) {
+        this.enota_id = enota_id;
+    }
+
+    public String getEnota_naziv() { return enota_naziv != null ? enota_naziv : ""; }
+    public void setEnota_naziv(String enota_naziv) { this.enota_naziv = enota_naziv; }
+
+    public int getEnota_tip() { return enota_tip; }
+    public void setEnota_tip(int enota_tip) { this.enota_tip = enota_tip; }
+
+    public boolean isEnotaDecimal() { return enota_tip == 1; }
+
+    public String getEnotaNaziv() { return getEnota_naziv(); }
 
     @Override
     public Map<String, String> getDisplayFields() {
@@ -165,11 +187,12 @@ public class RezervniDel implements DisplayableItem{
         fields.put("Proizvajalec", proizvajalec);
         fields.put("Dobavitelj", dobavitelj);
         fields.put("Znesek", String.format("%.2f", znesek));
-        fields.put("Minimalna Zaloga", String.valueOf(minimalna_zaloga));
-        fields.put("Dobava", String.valueOf(dobava));
-        fields.put("Poraba", String.valueOf(poraba));
-        fields.put("Realna Zaloga", String.valueOf(getRealZalogo()));
+        fields.put("Minimalna Zaloga", String.format("%.3f", minimalna_zaloga) + " " + getEnotaNaziv());
+        fields.put("Dobava", String.format("%.3f", dobava) + " " + getEnotaNaziv());
+        fields.put("Poraba", String.format("%.3f", poraba) + " " + getEnotaNaziv());
+        fields.put("Realna Zaloga", String.format("%.3f", getRealZalogo()) + " " + getEnotaNaziv());
         fields.put("Inventura", String.valueOf(inventura));
+        fields.put("Enota", getEnotaNaziv());
         return fields;
     }
 }

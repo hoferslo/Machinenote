@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+// Animation was here AnimationHelper.bounceClick(view);
 import com.example.machinenote.Utility.AnimationHelper;
 import com.example.machinenote.Utility.GuideManager;
 import com.example.machinenote.activities.MainActivity;
@@ -25,7 +27,6 @@ import com.example.machinenote.databinding.FragmentRegisterBinding;
 import com.example.machinenote.RegistrationRequest;
 import com.example.machinenote.models.Role;
 import com.example.machinenote.models.User;
-import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class RegisterFragment extends BaseFragment {
     private List<User> users;
     private String selectedRole = "";
     private List<Role> availableRoles = new ArrayList<>();
-    private Map<String, Chip> permissionChips = new HashMap<>();
+    private Map<String, CheckBox> permissionCheckBoxes = new HashMap<>();
 
     // Guide
     private GuideManager guideManager;
@@ -75,8 +76,8 @@ public class RegisterFragment extends BaseFragment {
         View view = binding.getRoot();
         context = getContext();
 
-        initializePermissionChips();
-        setupChipAnimations();
+        initializePermissionCheckBoxes();
+        setupCheckBoxAnimations();
         setupSpinnerAnimations();
         setupModeToggleButtons();
         setupCancelButton();
@@ -95,14 +96,14 @@ public class RegisterFragment extends BaseFragment {
     private void setupSpinnerAnimations() {
         binding.userSpinner.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                AnimationHelper.bounceClick(v);
+                // Animation was here AnimationHelper.bounceClick(v);
             }
             return false; // Let the click event continue
         });
 
         binding.roleSpinner.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                AnimationHelper.bounceClick(v);
+                // Animation was here AnimationHelper.bounceClick(v);
             }
             return false; // Let the click event continue
         });
@@ -123,7 +124,7 @@ public class RegisterFragment extends BaseFragment {
 
     private void setupHelpButton() {
         binding.helpButton.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
 
             if (isUserMode) {
                 showUserModeGuide();
@@ -135,16 +136,16 @@ public class RegisterFragment extends BaseFragment {
 
     private void setupModeToggleButtons() {
         binding.btnUserMode.setOnClickListener(v -> {setUserMode();
-        AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
         });
         binding.btnRoleMode.setOnClickListener(v -> { setRoleMode();
-                AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
         });
     }
 
     private void setupCancelButton() {
         binding.cancelBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             if (getActivity() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.getSupportFragmentManager().popBackStack();
@@ -163,7 +164,7 @@ public class RegisterFragment extends BaseFragment {
         binding.registerButton.setText("Dodeli vlogo");
 
         restoreSelectedRolePermissions();
-        disableAllChips();
+        disableAllCheckBoxes();
         animateHelpButtonIn();
 
         updateToolbarTitle("Dodeli vlogo uporabniku");
@@ -179,8 +180,8 @@ public class RegisterFragment extends BaseFragment {
 
         binding.registerButton.setText("Ustvari novo vlogo");
 
-        clearAllChips();
-        enableAllChips();
+        clearAllCheckBoxes();
+        enableAllCheckBoxes();
         animateHelpButtonIn();
 
         updateToolbarTitle("Ustvari novo vlogo");
@@ -193,7 +194,7 @@ public class RegisterFragment extends BaseFragment {
                 setPermissionsForRole(selectedRoleObj);
             }
         } else {
-            clearAllChips();
+            clearAllCheckBoxes();
         }
     }
 
@@ -203,21 +204,21 @@ public class RegisterFragment extends BaseFragment {
         }
     }
 
-    private void initializePermissionChips() {
-        permissionChips.put("Knjiženje", binding.chipKnjizenje);
-        permissionChips.put("Zastoji", binding.chipZastoji);
-        permissionChips.put("Rezervni deli", binding.chipRezervniDeli);
-        permissionChips.put("Preventivni pregledi", binding.chipPreventivniPregledi);
-        permissionChips.put("Imenik", binding.chipImenik);
-        permissionChips.put("Naloge", binding.chipNaloge);
-        permissionChips.put("Dodajanje nalog", binding.chipDodajanjeNalog);
-        permissionChips.put("Remonti", binding.chipRemonti);
-        permissionChips.put("Orodja", binding.chipOrodja);
-        permissionChips.put("Register", binding.chipRegister);
-        permissionChips.put("Naročila", binding.chipNarocila);
-        permissionChips.put("Dodajanje Naročil", binding.chipDodajanjeNarocil);
-        permissionChips.put("Upravljanje Naročil", binding.chipUpravljanjeNarocil);
-        permissionChips.put("Kemikalije", binding.chipKemikalije);
+    private void initializePermissionCheckBoxes() {
+        permissionCheckBoxes.put("Knjiženje", binding.checkKnjizenje);
+        permissionCheckBoxes.put("Zastoji", binding.checkZastoji);
+        permissionCheckBoxes.put("Rezervni deli", binding.checkRezervniDeli);
+        permissionCheckBoxes.put("Preventivni pregledi", binding.checkPreventivniPregledi);
+        permissionCheckBoxes.put("Imenik", binding.checkImenik);
+        permissionCheckBoxes.put("Naloge", binding.checkNaloge);
+        permissionCheckBoxes.put("Dodajanje nalog", binding.checkDodajanjeNalog);
+        permissionCheckBoxes.put("Remonti", binding.checkRemonti);
+        permissionCheckBoxes.put("Orodja", binding.checkOrodja);
+        permissionCheckBoxes.put("Register", binding.checkRegister);
+        permissionCheckBoxes.put("Naročila", binding.checkNarocila);
+        permissionCheckBoxes.put("Dodajanje Naročil", binding.checkDodajanjeNarocil);
+        permissionCheckBoxes.put("Upravljanje Naročil", binding.checkUpravljanjeNarocil);
+        permissionCheckBoxes.put("Kemikalije", binding.checkKemikalije);
     }
 
     private void loadRolesFromApi() {
@@ -276,7 +277,7 @@ public class RegisterFragment extends BaseFragment {
                 }
 
                 if (view != null) {
-                    AnimationHelper.bounceClick(view);
+                    // Animation was here AnimationHelper.bounceClick(view);
                 }
 
                 String selectedUsername = parent.getItemAtPosition(position).toString();
@@ -308,13 +309,13 @@ public class RegisterFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if (view != null) {
-                    AnimationHelper.bounceClick(view);
+                    // Animation was here AnimationHelper.bounceClick(view);
                 }
                 if (position == 0) {
                     selectedRole = "";
-                    clearAllChips();
+                    clearAllCheckBoxes();
                     if (isUserMode) {
-                        disableAllChips();
+                        disableAllCheckBoxes();
                     }
                     return;
                 }
@@ -331,16 +332,16 @@ public class RegisterFragment extends BaseFragment {
                 }
 
                 if (isUserMode) {
-                    disableAllChips();
+                    disableAllCheckBoxes();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedRole = "";
-                clearAllChips();
+                clearAllCheckBoxes();
                 if (isUserMode) {
-                    disableAllChips();
+                    disableAllCheckBoxes();
                 }
             }
         });
@@ -383,13 +384,13 @@ public class RegisterFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if (view != null) {
-                    AnimationHelper.bounceClick(view);
+                    // Animation was here AnimationHelper.bounceClick(view);
                 }
                 if (position == 0) {
                     selectedRole = "";
-                    clearAllChips();
+                    clearAllCheckBoxes();
                     if (isUserMode) {
-                        disableAllChips();
+                        disableAllCheckBoxes();
                     }
                     return;
                 }
@@ -400,26 +401,26 @@ public class RegisterFragment extends BaseFragment {
                 setDefaultPermissionsForRole(selectedItem);
 
                 if (isUserMode) {
-                    disableAllChips();
+                    disableAllCheckBoxes();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedRole = "";
-                clearAllChips();
+                clearAllCheckBoxes();
                 if (isUserMode) {
-                    disableAllChips();
+                    disableAllCheckBoxes();
                 }
             }
         });
     }
 
-    private void setupChipAnimations() {
-        for (Chip chip : permissionChips.values()) {
-            chip.setOnClickListener(v -> {
+    private void setupCheckBoxAnimations() {
+        for (CheckBox checkBox : permissionCheckBoxes.values()) {
+            checkBox.setOnClickListener(v -> {
                 AnimationHelper.bounceClick(v);
-                // The chip's checked state changes automatically
+                // The checkbox's checked state changes automatically
             });
         }
     }
@@ -434,73 +435,74 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void setPermissionsForRole(Role role) {
-        clearAllChips();
+        clearAllCheckBoxes();
 
-        List<Chip> chipsToAnimate = new ArrayList<>();
+        List<CheckBox> checkBoxesToAnimate = new ArrayList<>();
 
-        if (role.isKnjizenje()) binding.chipKnjizenje.setChecked(true);
-        if (role.isZastoji()) binding.chipZastoji.setChecked(true);
-        if (role.isRezervniDeli()) binding.chipRezervniDeli.setChecked(true);
-        if (role.isPreventivniPregledi()) binding.chipPreventivniPregledi.setChecked(true);
-        if (role.isDodajanjeNalog()) binding.chipDodajanjeNalog.setChecked(true);
-        if (role.isImenik()) binding.chipImenik.setChecked(true);
-        if (role.isNaloge()) binding.chipNaloge.setChecked(true);
-        if (role.isRemonti()) binding.chipRemonti.setChecked(true);
-        if (role.isOrodja()) binding.chipOrodja.setChecked(true);
-        if (role.isRegister()) binding.chipRegister.setChecked(true);
-        if (role.isNarocila()) binding.chipNarocila.setChecked(true);
-        if (role.isDodajanjeNarocil()) binding.chipDodajanjeNarocil.setChecked(true);
-        if (role.isUpravljanjeNarocil()) binding.chipUpravljanjeNarocil.setChecked(true);
-        if (role.isKemikalije()) binding.chipKemikalije.setChecked(true);
-        for (int i = 0; i < chipsToAnimate.size(); i++) {
-            final Chip chip = chipsToAnimate.get(i);
-            chip.postDelayed(() -> AnimationHelper.popIn(chip, 200), i * 50);
+        if (role.isKnjizenje()) binding.checkKnjizenje.setChecked(true);
+        if (role.isZastoji()) binding.checkZastoji.setChecked(true);
+        if (role.isRezervniDeli()) binding.checkRezervniDeli.setChecked(true);
+        if (role.isPreventivniPregledi()) binding.checkPreventivniPregledi.setChecked(true);
+        if (role.isDodajanjeNalog()) binding.checkDodajanjeNalog.setChecked(true);
+        if (role.isImenik()) binding.checkImenik.setChecked(true);
+        if (role.isNaloge()) binding.checkNaloge.setChecked(true);
+        if (role.isRemonti()) binding.checkRemonti.setChecked(true);
+        if (role.isOrodja()) binding.checkOrodja.setChecked(true);
+        if (role.isRegister()) binding.checkRegister.setChecked(true);
+        if (role.isNarocila()) binding.checkNarocila.setChecked(true);
+        if (role.isDodajanjeNarocil()) binding.checkDodajanjeNarocil.setChecked(true);
+        if (role.isUpravljanjeNarocil()) binding.checkUpravljanjeNarocil.setChecked(true);
+        if (role.isKemikalije()) binding.checkKemikalije.setChecked(true);
+
+        for (int i = 0; i < checkBoxesToAnimate.size(); i++) {
+            final CheckBox checkBox = checkBoxesToAnimate.get(i);
+            checkBox.postDelayed(() -> AnimationHelper.popIn(checkBox, 200), i * 50);
         }
     }
 
     private void setDefaultPermissionsForRole(String roleName) {
-        clearAllChips();
+        clearAllCheckBoxes();
 
         switch (roleName) {
             case "Admin":
-                for (Chip chip : permissionChips.values()) {
-                    chip.setChecked(true);
+                for (CheckBox checkBox : permissionCheckBoxes.values()) {
+                    checkBox.setChecked(true);
                 }
                 break;
             case "Vzdrževanje":
-                binding.chipKnjizenje.setChecked(true);
-                binding.chipZastoji.setChecked(true);
-                binding.chipRezervniDeli.setChecked(true);
+                binding.checkKnjizenje.setChecked(true);
+                binding.checkZastoji.setChecked(true);
+                binding.checkRezervniDeli.setChecked(true);
                 break;
             case "Gost":
-                binding.chipImenik.setChecked(true);
+                binding.checkImenik.setChecked(true);
                 break;
         }
     }
 
-    private void enableAllChips() {
-        for (Chip chip : permissionChips.values()) {
-            chip.setEnabled(true);
-            chip.setClickable(true);
+    private void enableAllCheckBoxes() {
+        for (CheckBox checkBox : permissionCheckBoxes.values()) {
+            checkBox.setEnabled(true);
+            checkBox.setClickable(true);
         }
     }
 
-    private void disableAllChips() {
-        for (Chip chip : permissionChips.values()) {
-            chip.setEnabled(false);
-            chip.setClickable(false);
+    private void disableAllCheckBoxes() {
+        for (CheckBox checkBox : permissionCheckBoxes.values()) {
+            checkBox.setEnabled(false);
+            checkBox.setClickable(false);
         }
     }
 
-    private void clearAllChips() {
-        for (Chip chip : permissionChips.values()) {
-            chip.setChecked(false);
+    private void clearAllCheckBoxes() {
+        for (CheckBox checkBox : permissionCheckBoxes.values()) {
+            checkBox.setChecked(false);
         }
     }
 
     private void setupRegisterButton() {
         binding.registerButton.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             if (isUserMode) {
                 attemptUserUpdate();
             } else {
@@ -581,7 +583,7 @@ public class RegisterFragment extends BaseFragment {
     private List<String> collectPermissions() {
         List<String> permissions = new ArrayList<>();
 
-        for (Map.Entry<String, Chip> entry : permissionChips.entrySet()) {
+        for (Map.Entry<String, CheckBox> entry : permissionCheckBoxes.entrySet()) {
             if (entry.getValue().isChecked()) {
                 permissions.add(entry.getKey());
             }
@@ -640,16 +642,16 @@ public class RegisterFragment extends BaseFragment {
 
     private void clearRoleForm() {
         binding.addARole.setText("");
-        clearAllChips();
+        clearAllCheckBoxes();
     }
 
     private void clearUserForm() {
         binding.userSpinner.setSelection(0);
         binding.roleSpinner.setSelection(0);
         selectedRole = "";
-        clearAllChips();
+        clearAllCheckBoxes();
         if (isUserMode) {
-            disableAllChips();
+            disableAllCheckBoxes();
         }
     }
 
@@ -681,7 +683,7 @@ public class RegisterFragment extends BaseFragment {
                             "Izberite vlogo ki jo želite dodeliti uporabniku.\n\n" +
                                     "Če uporabnik že ima vlogo, se bo ta prikazala kot trenutno izbrana.\n\n" +
                                     "Dovoljenja izbrane vloge se bodo prikazala spodaj (samo za ogled).")
-                    .addStep(binding.chipGroupPermissions, "Dovoljenja vloge",
+                    .addStep(binding.permissionsContainer, "Dovoljenja vloge",
                             "Tukaj so prikazana dovoljenja izbrane vloge.\n\n" +
                                     "V načinu UPORABNIK so dovoljenja samo za pregled - ne morete jih spreminjati.\n\n" +
                                     "Vsaka vloga ima svoj nabor dovoljenj ki določajo kaj lahko uporabnik dela v aplikaciji.")
@@ -705,11 +707,11 @@ public class RegisterFragment extends BaseFragment {
                     .addStep(binding.addARole, "Ime nove vloge",
                             "Vnesite ime za novo vlogo.\n\n" +
                                     "Primeri: 'Skladiščnik', 'Vodja izmene', 'Tehnični direktor'...")
-                    .addStep(binding.chipGroupPermissions, "Izbira dovoljenj",
-                            "Izberite dovoljenja za novo vlogo s klikom na posamezne čipe.\n\n" +
+                    .addStep(binding.permissionsContainer, "Izbira dovoljenj",
+                            "Izberite dovoljenja za novo vlogo s klikom na posamezne okvirčke.\n\n" +
                                     "V načinu VLOGA lahko prosto izbirate in spreminjate dovoljenja.\n\n" +
-                                    "Izbrana dovoljenja (modra) bodo na voljo uporabnikom s to vlogo.")
-                    .addStep(binding.chipKnjizenje, "Primeri dovoljenj",
+                                    "Izbrana dovoljenja (obkljukana) bodo na voljo uporabnikom s to vlogo.")
+                    .addStep(binding.checkKnjizenje, "Primeri dovoljenj",
                             "Dovoljenja kot so:\n" +
                                     "• Knjiženje - vnos delovnih ur\n" +
                                     "• Zastoji - beleženje zastojev\n" +

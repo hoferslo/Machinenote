@@ -30,7 +30,7 @@ public class RezervniDeliBottomSheetFragment extends BottomSheetDialogFragment {
         return fragment;
     }
 
-    @SuppressLint("StringFormatInvalid")
+    @SuppressLint({"StringFormatInvalid", "SetTextI18n"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +42,8 @@ public class RezervniDeliBottomSheetFragment extends BottomSheetDialogFragment {
 
         // Populate header with ID
         binding.partIdHeader.setText(getString(R.string.id_rezervnega_dela) + ": " + rezervniDel.getId());
+
+        String enota = rezervniDel.getEnotaNaziv();
         //Log.d("WOW", "RezervniDel ID: " + getString(R.string.id_rezervnega_dela, rezervniDel.getId()));
         // Populate location data
         binding.warehouse.setText(String.valueOf(rezervniDel.getSkladišče()));
@@ -77,21 +79,22 @@ public class RezervniDeliBottomSheetFragment extends BottomSheetDialogFragment {
 
         // Populate stock data
         if (rezervniDel.getMinimalna_zaloga() > 0) {
-            binding.minStock.setText(String.valueOf(rezervniDel.getMinimalna_zaloga()));
+            binding.minStock.setText(rezervniDel.getMinimalna_zaloga() + " " + enota);
         }
         if (rezervniDel.getDobava() > 0) {
-            binding.supply.setText(String.valueOf(rezervniDel.getDobava()));
+            binding.supply.setText(rezervniDel.getDobava() + " " + enota);
         }
         if (rezervniDel.getPoraba() > 0) {
-            binding.consumption.setText(String.valueOf(rezervniDel.getPoraba()));
+            binding.consumption.setText(rezervniDel.getPoraba() + " " + enota);
         }
         if (rezervniDel.getInventura() > 0) {
             binding.inventory.setText(String.valueOf(rezervniDel.getInventura()));
         }
 
         // Populate actual stock (real stock) with color coding
-        int realStock = rezervniDel.getRealZalogo();
-        binding.actualStock.setText(String.valueOf(realStock));
+        double realStock = rezervniDel.getRealZalogo();
+
+        binding.actualStock.setText(String.valueOf(realStock) + " " + enota);
 
         // Color code based on minimum stock
         if (realStock < rezervniDel.getMinimalna_zaloga()) {
@@ -141,7 +144,7 @@ public class RezervniDeliBottomSheetFragment extends BottomSheetDialogFragment {
 
         // Click on actual stock could show stock history or allow editing
         binding.actualStock.setOnClickListener(v -> {
-            int realStock = rezervniDel.getRealZalogo();
+            double realStock = rezervniDel.getRealZalogo();
             String stockInfo = getString(R.string.dejanska_zaloga) + ": " + realStock;
             if (realStock < rezervniDel.getMinimalna_zaloga()) {
                 stockInfo += "\n" + getString(R.string.nizka_zaloga_opozorilo);

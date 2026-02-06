@@ -1,6 +1,7 @@
 package com.example.machinenote.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
@@ -281,20 +284,15 @@ public class SettingsFragment extends BaseFragment {
 
         // Listener za toggle teme
         binding.switchDarkTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Save theme
+            // Save theme preference
             SharedPreferencesHelper.getInstance(requireContext())
                     .putInt("theme_simple", isChecked ? 1 : 0);
 
-            // Set a fragment argument to remember the back arrow
-            Bundle args = new Bundle();
-            args.putBoolean("show_back_arrow", true);
-            setArguments(args);
-
-            // Apply the theme (forces activity recreation)
-            AppCompatDelegate.setDefaultNightMode(isChecked
-                    ? AppCompatDelegate.MODE_NIGHT_YES
-                    : AppCompatDelegate.MODE_NIGHT_NO
-            );
+            // Restart the app
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            Intent intent = mainActivity.getIntent();
+            mainActivity.finish();
+            startActivity(intent);
         });
     }
 
@@ -302,17 +300,9 @@ public class SettingsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
-        Bundle args = getArguments();
-        if (args != null && args.getBoolean("show_back_arrow", false)) {
-            mainActivity.showBackArrow();
-        }
+        mainActivity.showBackArrow();
         mainActivity.binding.toolbarTitle.setText(TAG);
-
-        // Omogoči nazaj gumb v toolbar
-        if (mainActivity.getSupportActionBar() != null) {
-            mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mainActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+        mainActivity.binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         // Nastavi click listener za nazaj gumb v toolbar
         mainActivity.binding.toolbar.setNavigationOnClickListener(v -> {
@@ -329,6 +319,12 @@ public class SettingsFragment extends BaseFragment {
         super.onPause();
         // Onemogoči nazaj gumb ko zapustimo fragment
         MainActivity mainActivity = (MainActivity) requireActivity();
+
+        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() <= 1) {
+            mainActivity.binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
         if (mainActivity.getSupportActionBar() != null) {
             mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             mainActivity.getSupportActionBar().setDisplayShowHomeEnabled(false);

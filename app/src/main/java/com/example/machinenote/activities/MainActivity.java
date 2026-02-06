@@ -24,8 +24,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.machinenote.ApiManager;
+import com.example.machinenote.BaseActivity;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.ConnectionChecker;
+import com.example.machinenote.Utility.GuideManager;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.Utility.UpdateManager;
 import com.example.machinenote.databinding.ActivityMainBinding;
@@ -37,7 +39,7 @@ import com.example.machinenote.fragments.SettingsFragment;
 import java.time.LocalDateTime;
 
 
-public class MainActivity extends AppCompatActivity implements QRCodeScannerFragment.QRCodeScannerListener {
+public class MainActivity extends BaseActivity implements QRCodeScannerFragment.QRCodeScannerListener {
 
     private AppBarConfiguration appBarConfiguration;
     public ActivityMainBinding binding;
@@ -53,10 +55,17 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     private ApiManager apiManager;
 
     @Override
+    public void onBackPressed() {
+        if (binding.loadingLl.getVisibility() != View.VISIBLE) {
+            handleBackPress();
+        }
+        // NE kliči super.onBackPressed() - s tem preprečiš avtomatski fragment handling
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("toolbar_title", binding.toolbarTitle.getText().toString());
-        outState.putBoolean("back_arrow_visible", binding.toolbar.getNavigationIcon() != null);
     }
 
     @Override
@@ -99,11 +108,6 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
 
         if (savedInstanceState != null) {
             binding.toolbarTitle.setText(savedInstanceState.getString("toolbar_title"));
-            if (savedInstanceState.getBoolean("back_arrow_visible")) {
-                showBackArrow();
-            } else {
-                showDrawerIcon();
-            }
         }
 
         sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
@@ -114,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
         setSupportActionBar(binding.toolbar);
 
         //backwards press logic
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 33+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34+
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                    OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                    OnBackInvokedDispatcher.PRIORITY_OVERLAY, // <-- Spremenjena prioriteta!
                     () -> {
                         if (binding.loadingLl.getVisibility() != View.VISIBLE) {
                             handleBackPress();
@@ -124,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                     }
             );
         } else {
+            // Za API 33 in nižje moraš uporabiti drugačen pristop
             getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
@@ -277,12 +282,27 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
     }
 
     private void handleBackPress() {
-        if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+        // First check if keyboard is open
+        if (isKeyboardVisible()) {
+            // Let the system handle closing the keyboard
+            View view = getCurrentFocus();
+            if (view != null) {
+                view.clearFocus();
+                android.view.inputmethod.InputMethodManager imm =
+                        (android.view.inputmethod.InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            return; // Stop here, don't process fragment navigation
+        }
+
+        if(GuideManager.isAnyGuideActive()){
+            GuideManager.closeActive();
+            Log.d("MainActivityGuide", "Guide closed");
+        } else if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);
         } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             clearLastFragmentFromBackStack();
         } else {
-            // Samo na dashboard-u pokažemo confirmation, drugače finish
             Fragment currentFragment = getCurrentFragment();
             if (currentFragment instanceof DashboardFragment) {
                 showExitConfirmation();
@@ -290,6 +310,18 @@ public class MainActivity extends AppCompatActivity implements QRCodeScannerFrag
                 finish();
             }
         }
+    }
+
+    // Add this helper method to check if keyboard is visible
+    private boolean isKeyboardVisible() {
+        View rootView = binding.getRoot();
+        android.graphics.Rect r = new android.graphics.Rect();
+        rootView.getWindowVisibleDisplayFrame(r);
+        int screenHeight = rootView.getRootView().getHeight();
+        int keypadHeight = screenHeight - r.bottom;
+
+        // If keyboard takes up more than 15% of the screen, it's visible
+        return keypadHeight > screenHeight * 0.15;
     }
 
     // Replace your existing loadFragment method with this safer version:

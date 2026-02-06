@@ -1,6 +1,7 @@
 package com.example.machinenote;
 
 import com.example.machinenote.models.DrobniMateriali;
+import com.example.machinenote.models.Enota;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Kemikalija;
 import com.example.machinenote.models.Linija;
@@ -117,6 +118,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("sifrant.php")
     Call<List<Sifrant>> getSifrants();
+
+    @Headers("Content-Type: application/json")
+    @GET("helpers.php")
+    Call<List<Enota>> getEnote(@Query("action") String action);
 
     @Headers("Content-Type: application/json")
     @PUT("rezervni_deli.php/{id}/adjust")
@@ -250,18 +255,18 @@ class LoginResponse {
 }
 
 class StockAdjustmentRequest {
-    private int amount;
+    private double amount;
 
-    public StockAdjustmentRequest(int amount) {
+    public StockAdjustmentRequest(double amount) {
         this.amount = amount;
     }
 
     // Getter and Setter
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+// Animation was here AnimationHelper.bounceClick(view);
 import com.example.machinenote.Utility.CustomDateTimePicker;
 import com.example.machinenote.Utility.DataPickerDialog;
 import com.example.machinenote.Utility.HandleQRCode;
@@ -110,6 +111,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
             binding.imeDelavca.setText(maintainerName);
         }
         binding.idOfLineBtn.setOnClickListener(view -> {
+         // Animation was here AnimationHelper.bounceClick(view);
             DataPickerDialog.showDialog(view, getString(R.string.pick_line),
                     linije.stream().map(Linija::getLinijeSapAndNames).toArray(String[]::new),
                     requireContext(), binding.idOfLineBtn, adapter, 5, selectedIndex -> {
@@ -122,6 +124,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         });
 
         binding.sifrantBtn.setOnClickListener(view -> {
+         // Animation was here AnimationHelper.bounceClick(view);
             DataPickerDialog.showDialog(view, getString(R.string.pick_sifrant),
                     sifranti.stream().map(Sifrant::getNaziv).toArray(String[]::new),
                     requireContext(), binding.sifrantBtn, adapter, 1, selectedIndex -> {
@@ -130,6 +133,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         });
 
         binding.cancelBtn.setOnClickListener(view -> {
+         // Animation was here AnimationHelper.bounceClick(view);
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.onBackPressed();
         });
@@ -137,6 +141,7 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         apiCalls();
 
         binding.sendBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
             try {
                 sendZastoj();
             } catch (ParseException e) {
@@ -145,8 +150,14 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
             }
         });
 
-        binding.tabEntryBtn.setOnClickListener(v -> handleTabPress(1));
-        binding.tabPicturesBtn.setOnClickListener(v -> handleTabPress(2));
+        binding.tabEntryBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            handleTabPress(1);
+        });
+        binding.tabPicturesBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            handleTabPress(2);
+        });
 
         imageCaptureHelper = new ImageCaptureHelper(requireContext(), cameraLauncher);
         imageCaptureHelper.setImageCaptureCallback(new ImageCaptureHelper.ImageCaptureCallback() {
@@ -170,8 +181,14 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         });
 
         // Both camera buttons now do the same thing - add to the single container
-        binding.cameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
-        binding.ImagesCameraBtn.setOnClickListener(v -> imageCaptureHelper.captureImage());
+        binding.cameraBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            imageCaptureHelper.captureImage();
+        });
+        binding.ImagesCameraBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            imageCaptureHelper.captureImage();
+        });
 
         CustomDateTimePicker.newInstance(context, binding.textBeforeTime, binding.analogClockBefore, adapter, binding.textBeforeTime, binding.textAfterTime);
         CustomDateTimePicker.newInstance(context, binding.textAfterTime, binding.analogClockAfter, adapter, binding.textBeforeTime, binding.textAfterTime);
@@ -181,9 +198,15 @@ public class ZastojiFragment extends BaseFragment implements QRCodeScannerFragme
         adapter.updateItemStatus(6, false);
         adapter.updateItemStatus(7, false);
 
-        binding.dezurstvoTv.setOnClickListener(v -> binding.dezurstvoCheckBox.setChecked(!binding.dezurstvoCheckBox.isChecked()));
+        binding.dezurstvoTv.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            binding.dezurstvoCheckBox.setChecked(!binding.dezurstvoCheckBox.isChecked());
+        });
 
-        binding.scanBtn.setOnClickListener(v -> startQRCodeScanner());
+        binding.scanBtn.setOnClickListener(v -> {
+            // Animation was here AnimationHelper.bounceClick(v);
+            startQRCodeScanner();
+        });
 
         TextWatcherUtil.handleHeightOfStoppages(context, binding.requiredItemsLl);
 

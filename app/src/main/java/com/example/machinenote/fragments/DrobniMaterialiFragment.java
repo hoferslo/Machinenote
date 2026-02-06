@@ -19,7 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
-import com.example.machinenote.Utility.AnimationHelper;
+// Animation was here AnimationHelper.bounceClick(view);
 import com.example.machinenote.Utility.FilterDialogBuilder;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.GenericFilter;
@@ -128,7 +128,7 @@ public class DrobniMaterialiFragment extends BaseFragment {
 
     private void setupTabNavigation() {
         binding.tabRezervniDeliBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
             if (getActivity() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) requireActivity();
                 FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
@@ -139,7 +139,7 @@ public class DrobniMaterialiFragment extends BaseFragment {
         });
 
         binding.tabSmallMaterialsBtn.setOnClickListener(v -> {
-            AnimationHelper.bounceClick(v);
+            // Animation was here AnimationHelper.bounceClick(v);
         });
     }
     private void fetchDrobniMateriali() {
