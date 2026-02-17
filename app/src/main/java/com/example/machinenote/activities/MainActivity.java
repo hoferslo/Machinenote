@@ -1,5 +1,6 @@
 package com.example.machinenote.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -54,12 +55,12 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
     public UpdateManager updateManager;
     private ApiManager apiManager;
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         if (binding.loadingLl.getVisibility() != View.VISIBLE) {
             handleBackPress();
         }
-        // NE kliči super.onBackPressed() - s tem preprečiš avtomatski fragment handling
     }
 
     @Override
