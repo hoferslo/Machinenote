@@ -78,6 +78,12 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
             mainActivity.onBackPressed();
         });
 
+        binding.getRoot().setOnTouchListener((v, event) -> {
+            KeyboardUtils.hideKeyboard(context);
+            binding.idOfArticleEt.clearFocus();
+            return false;
+        });
+
         binding.articleNameLayout.setOnClickListener(v -> startQRCodeScanner());
         binding.allDataSv.setOnClickListener(v -> showRezervniDeliBottomSheet());
         binding.scanQRBtn.setOnClickListener(v -> startQRCodeScanner());
@@ -125,12 +131,41 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
         binding.articleRack.setText(rezervniDel.getRegal());
         binding.articleId.setText(String.valueOf(rezervniDel.getId()));
         binding.articleWarehouse.setText(String.valueOf(rezervniDel.getSkladišče()));
-        binding.articleMinimumTv.setText(rezervniDel.getMinimalna_zaloga() + " " + rezervniDel.getEnotaNaziv());
-        binding.articleStock.setText(rezervniDel.getRealZalogo() + " " + rezervniDel.getEnotaNaziv());
-        hideMail();
 
+        String enotaNaziv = rezervniDel.getEnotaNaziv();
+        String zalogaStr = formatZaloga(rezervniDel.getRealZalogo(), rezervniDel.isEnotaDecimal());
+        String minimaStr = formatZaloga(rezervniDel.getMinimalna_zaloga(), rezervniDel.isEnotaDecimal());
+
+        binding.articleMinimumTv.setText(minimaStr + " " + enotaNaziv);
+        binding.articleStock.setText(zalogaStr + " " + enotaNaziv);
+
+        // EditText — dovoli decimale samo če enota to podpira
+        if (rezervniDel.isEnotaDecimal()) {
+            binding.stockChangeValue.setInputType(
+                    android.text.InputType.TYPE_CLASS_NUMBER |
+                            android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            );
+        } else {
+            binding.stockChangeValue.setInputType(
+                    android.text.InputType.TYPE_CLASS_NUMBER
+            );
+        }
+        // Resetiraj vrednost na 1
+        binding.stockChangeValue.setText("1");
+
+        hideMail();
         if (rezervniDel.getRealZalogo() < rezervniDel.getMinimalna_zaloga()) {
             showMail();
+        }
+    }
+
+    private String formatZaloga(double vrednost, boolean isDecimal) {
+        if (isDecimal) {
+            // Prikaži decimalno — odstrani nepotrebne ničle (npr. 1.50 → 1.5, 1.00 → 1.0)
+            return new java.text.DecimalFormat("0.##").format(vrednost);
+        } else {
+            // Prikaži kot celo število
+            return String.valueOf((int) vrednost);
         }
     }
 
