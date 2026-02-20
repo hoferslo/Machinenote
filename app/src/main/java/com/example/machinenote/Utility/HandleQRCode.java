@@ -26,9 +26,12 @@ public class HandleQRCode {
         }
     }
 
+    public static boolean isValidQRCodeKemikalije(String qr) {
+        return qr != null && qr.length() >= 3 && qr.startsWith("33");
+    }
+
     public static int getKemikalijaIdFromQR(String qr) {
-        if (qr == null || qr.length() <= 6) {
-            // Handle the case where the QR code string is null or too short
+        if (!isValidQRCodeKemikalije(qr)) {
             return 0;
         }
         // Return the substring starting from the fourth character (index 3)
