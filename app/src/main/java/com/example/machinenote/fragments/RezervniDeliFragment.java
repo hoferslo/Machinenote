@@ -246,6 +246,8 @@ public class RezervniDeliFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) requireActivity()).binding.toolbarTitle.setText(TAG);
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
     }
 }

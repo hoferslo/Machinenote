@@ -15,9 +15,7 @@ import android.window.OnBackInvokedDispatcher;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -46,7 +44,6 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
     public ActivityMainBinding binding;
     ActionBarDrawerToggle toggle;
     public boolean navigationForDrawerShown = true;
-    private Drawable originalNavigationIcon;
     SharedPreferencesHelper sharedPreferencesHelper;
     private ConnectionChecker connectionChecker;
     public boolean serverConnection = true;
@@ -72,8 +69,6 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Forward to UpdateManager
         if (updateManager != null) {
             updateManager.onActivityResult(requestCode, resultCode);
         }
@@ -82,8 +77,6 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Forward to UpdateManager
         if (updateManager != null) {
             updateManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -92,10 +85,9 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         scheduleUpdateCheck();
-        // ENOSTAVEN PRISTOP     za temo
+
         SharedPreferencesHelper prefsHelper = SharedPreferencesHelper.getInstance(this);
         boolean isDarkTheme = prefsHelper.getInt("theme_simple", 0) == 1;
-
         if (isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
@@ -113,15 +105,19 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
 
         sharedPreferencesHelper = SharedPreferencesHelper.getInstance(this);
 
+        // setSupportActionBar MUST come before toggle setup
+        setSupportActionBar(binding.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
         toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        setSupportActionBar(binding.toolbar);
-
-        //backwards press logic
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34+
+        // Back press logic
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                    OnBackInvokedDispatcher.PRIORITY_OVERLAY, // <-- Spremenjena prioriteta!
+                    OnBackInvokedDispatcher.PRIORITY_OVERLAY,
                     () -> {
                         if (binding.loadingLl.getVisibility() != View.VISIBLE) {
                             handleBackPress();
@@ -129,7 +125,6 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
                     }
             );
         } else {
-            // Za API 33 in nižje moraš uporabiti drugačen pristop
             getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
@@ -140,39 +135,25 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
             });
         }
 
-
-        originalNavigationIcon = binding.toolbar.getNavigationIcon();
-
         binding.navView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            // Handle navigation view item clicks here.
-            // You can use FragmentManager to switch between fragments
             binding.drawerLayout.closeDrawer(binding.navView);
             return true;
         });
 
         binding.logout.setOnClickListener(view -> {
             clearAllFragmentFromBackStack();
-            boolean hasSeenGuide = sharedPreferencesHelper.getBoolean(
-                    "has_seen_register_guide", false
-            );
-
+            boolean hasSeenGuide = sharedPreferencesHelper.getBoolean("has_seen_register_guide", false);
             sharedPreferencesHelper.clear();
-
             sharedPreferencesHelper.putBoolean("has_seen_register_guide", hasSeenGuide);
             disableDrawer();
             showDrawerIcon();
             loadFragment(LoginFragment.newInstance(this));
         });
 
-
         binding.settingsBtn.setOnClickListener(view -> {
-            // Close drawer if it's open
             if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
                 binding.drawerLayout.closeDrawer(binding.navView);
             }
-
-            // Load SettingsFragment
             loadFragment(new SettingsFragment());
         });
 
@@ -180,17 +161,11 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle(R.string.no_connection);
             builder.setMessage(getString(R.string.no_connection_explanation));
-
-            // Optionally add an OK button to dismiss the dialog
-            builder.setPositiveButton("OK", (dialog, which) -> {
-                dialog.dismiss();
-            });
-
-            // Create and show the dialog
+            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
         });
-        // Save a string value
+
         disableDrawer();
         if (savedInstanceState == null) {
             loadFragment(LoginFragment.newInstance(this));
@@ -199,14 +174,10 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
         connectionChecker = new ConnectionChecker(this, new ConnectionChecker.ConnectionCallback() {
             @Override
             public void onSuccess() {
-                // Handle successful connection
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     Log.d("ConnectionChecker", "Server is reachable: " + LocalDateTime.now());
                 }
-
-                //showLoadingBar(false, "");
                 showNoWifiBtn(false);
-                // Create a Handler to post the delayed task
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(() -> new Thread(connectionChecker).start(), 1500);
                 if (!serverConnection) {
@@ -218,9 +189,7 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
 
             @Override
             public void onFailure(String errorMessage) {
-                // Handle connection failure
                 Log.e("ConnectionChecker", "Server is not reachable: " + errorMessage);
-                //showLoadingBar(true, "Ni povezava do strežnika, preveri wifi");
                 showNoWifiBtn(true);
                 new Thread(connectionChecker).start();
                 if (serverConnection) {
@@ -230,13 +199,10 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
             }
         });
 
-        // Start checking the connection
         new Thread(connectionChecker).start();
         apiManager = new ApiManager(this);
         updateManager = new UpdateManager(this, apiManager);
     }
-
-
 
     private void checkForAppUpdate() {
         if (serverConnection) {
@@ -244,10 +210,8 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
         }
     }
 
-
     public void showLoadingBar(boolean b, String text) {
         binding.loadingLl.setVisibility(b ? View.VISIBLE : View.GONE);
-
     }
 
     public void showNoWifiBtn(boolean b) {
@@ -262,13 +226,11 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
-    // Method to enable the drawer
     private void enableDrawer() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     public void initDrawerInfo() {
-        enableDrawer();
         binding.drawerUserNameTv.setText(sharedPreferencesHelper.getString("Username", "Ni povezava"));
         binding.drawerUserRoleTv.setText(sharedPreferencesHelper.getRole().getRole());
     }
@@ -279,13 +241,11 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
             if (serverConnection) {
                 updateManager.checkForUpdate();
             }
-        }, 2000); // Check after 2 seconds
+        }, 2000);
     }
 
     private void handleBackPress() {
-        // First check if keyboard is open
         if (isKeyboardVisible()) {
-            // Let the system handle closing the keyboard
             View view = getCurrentFocus();
             if (view != null) {
                 view.clearFocus();
@@ -293,10 +253,10 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
                         (android.view.inputmethod.InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-            return; // Stop here, don't process fragment navigation
+            return;
         }
 
-        if(GuideManager.isAnyGuideActive()){
+        if (GuideManager.isAnyGuideActive()) {
             GuideManager.closeActive();
             Log.d("MainActivityGuide", "Guide closed");
         } else if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
@@ -313,22 +273,16 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
         }
     }
 
-    // Add this helper method to check if keyboard is visible
     private boolean isKeyboardVisible() {
         View rootView = binding.getRoot();
         android.graphics.Rect r = new android.graphics.Rect();
         rootView.getWindowVisibleDisplayFrame(r);
         int screenHeight = rootView.getRootView().getHeight();
         int keypadHeight = screenHeight - r.bottom;
-
-        // If keyboard takes up more than 15% of the screen, it's visible
         return keypadHeight > screenHeight * 0.15;
     }
 
-    // Replace your existing loadFragment method with this safer version:
-
     public void loadFragment(Fragment fragment) {
-        // Check if activity is still valid
         if (isFinishing() || isDestroyed()) {
             Log.w("MainActivity", "Activity is finishing/destroyed, cannot load fragment");
             return;
@@ -336,7 +290,6 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        // Check if fragment manager is available
         if (fragmentManager.isStateSaved()) {
             Log.w("MainActivity", "Fragment manager state is saved, cannot load fragment");
             return;
@@ -348,13 +301,12 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
             try {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(
-                        R.anim.fragment_slide_in_from_right,  // Enter animation
-                        R.anim.fragment_slide_out_to_left,    // Exit animation
-                        R.anim.fragment_slide_in_from_left,   // Pop enter animation
-                        R.anim.fragment_slide_out_to_right    // Pop exit animation
+                        R.anim.fragment_slide_in_from_right,
+                        R.anim.fragment_slide_out_to_left,
+                        R.anim.fragment_slide_in_from_left,
+                        R.anim.fragment_slide_out_to_right
                 );
 
-                // Safely pause the current fragment
                 if (!fragmentManager.getFragments().isEmpty()) {
                     Fragment currentFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
                     if (currentFragment != null && currentFragment.isAdded() && !currentFragment.isDetached()) {
@@ -364,19 +316,15 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
 
                 fragmentTransaction.replace(binding.fragmentContainer.getId(), fragment, fragment.getClass().getName());
 
-                // Ne dodaj DashboardFragment in LoginFragment v backstack
                 if (!(fragment instanceof DashboardFragment) && !(fragment instanceof LoginFragment)) {
                     fragmentTransaction.addToBackStack(null);
                 }
 
-                fragmentTransaction.commitAllowingStateLoss(); // Use commitAllowingStateLoss for better safety
+                fragmentTransaction.commitAllowingStateLoss();
 
-                // Automatically show back arrow or drawer icon based on fragment type
-                if (fragment instanceof DashboardFragment || fragment instanceof LoginFragment) {
-                    showDrawerIcon();
-                } else {
-                    showBackArrow();
-                }
+
+
+
             } catch (Exception e) {
                 Log.e("MainActivity", "Error loading fragment: " + e.getMessage());
             }
@@ -386,20 +334,49 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Stop checking when the activity is destroyed
-        //connectionChecker.stopChecking();
-    }
-
-    public void showDrawerIcon() {
-        binding.toolbar.setNavigationIcon(originalNavigationIcon);
-        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        binding.drawerLayout.addDrawerListener(toggle);
-        binding.toolbar.setTitle("");
     }
 
     public void showBackArrow() {
-        binding.toolbar.setNavigationIcon(R.mipmap.arrow_back);
-        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed()); // Handle back button click
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setToolbarNavigationClickListener(v -> onBackPressed());
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.arrow_back);
+        }
+        android.animation.ValueAnimator anim = android.animation.ValueAnimator.ofFloat(0f, 1f);
+        anim.addUpdateListener(valueAnimator ->
+                toggle.onDrawerSlide(binding.drawerLayout, (Float) valueAnimator.getAnimatedValue())
+        );
+        anim.setInterpolator(new android.view.animation.DecelerateInterpolator());
+        anim.setDuration(300);
+        anim.start();
+    }
+
+    public void showDrawerIcon() {
+        enableDrawer();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.setToolbarNavigationClickListener(null);
+        android.animation.ValueAnimator anim = android.animation.ValueAnimator.ofFloat(1f, 0f);
+        anim.addUpdateListener(valueAnimator ->
+                toggle.onDrawerSlide(binding.drawerLayout, (Float) valueAnimator.getAnimatedValue())
+        );
+        anim.addListener(new android.animation.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(android.animation.Animator animation) {
+                toggle.syncState();
+            }
+        });
+        anim.setInterpolator(new android.view.animation.DecelerateInterpolator());
+        anim.setDuration(300);
+        anim.start();
+    }
+
+    public void hideNavigationIcon() {
+        disableDrawer();
+        binding.toolbar.setNavigationIcon(null);
     }
 
     public Fragment getCurrentFragment() {
@@ -410,15 +387,10 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
     public void clearLastFragmentFromBackStack() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate();
-        // After popping, update the toolbar icon for the fragment that is now visible
         updateToolbarForCurrentFragment();
         triggerOnResumeOnLastFragment();
     }
 
-    /**
-     * After popping a fragment off the back stack, checks what fragment is now
-     * on top and updates the toolbar icon accordingly (back arrow vs drawer icon).
-     */
     private void updateToolbarForCurrentFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (!fragmentManager.getFragments().isEmpty()) {
@@ -433,13 +405,8 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
 
     public void triggerOnResumeOnLastFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-
-        // Check if there are any fragments currently loaded
         if (!fragmentManager.getFragments().isEmpty()) {
-            // Get the last fragment (current visible fragment)
             Fragment lastFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
-
-            // CRITICAL: Check if fragment is properly attached before calling onResume()
             if (lastFragment != null && lastFragment.isAdded() && !lastFragment.isDetached() && lastFragment.getActivity() != null) {
                 try {
                     lastFragment.onResume();
@@ -461,32 +428,23 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
         }
     }
 
-
     @Override
     public void onQRCodeScanned(String result) {
-
     }
 
     @Override
     public void onScanCancelled() {
-
     }
 
     private void showExitConfirmation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Zapri aplikacijo");
         builder.setMessage("Ali res želite zapreti aplikacijo?");
-
         builder.setPositiveButton("Da", (dialog, which) -> {
             dialog.dismiss();
             finish();
         });
-
-        builder.setNegativeButton("Ne", (dialog, which) -> {
-            dialog.dismiss();
-            dialog.dismiss();
-        });
-
+        builder.setNegativeButton("Ne", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -496,10 +454,8 @@ public class MainActivity extends BaseActivity implements QRCodeScannerFragment.
             finish();
             return;
         }
-
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Pritisnite znova za zapiranje aplikacije", Toast.LENGTH_SHORT).show();
-
         exitHandler.postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }

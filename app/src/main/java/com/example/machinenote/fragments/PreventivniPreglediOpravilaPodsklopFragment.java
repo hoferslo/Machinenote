@@ -346,6 +346,8 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.showBackArrow();
         setupToolbar();
     }
 

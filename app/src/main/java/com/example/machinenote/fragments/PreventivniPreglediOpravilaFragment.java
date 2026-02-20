@@ -133,6 +133,7 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
         } else {
             ((MainActivity) requireActivity()).binding.toolbarTitle.setText("Preventivni pregledi");
         }
+
     }
 
     private void setupSearchView() {
@@ -415,6 +416,8 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.showBackArrow();
         setupToolbar();
     }
 

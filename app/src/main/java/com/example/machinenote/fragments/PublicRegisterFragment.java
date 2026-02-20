@@ -282,6 +282,7 @@ public class PublicRegisterFragment extends BaseFragment {
 
             // Hide navigation icon for registration screen
             mainActivity.binding.toolbar.setNavigationIcon(null);
+            mainActivity.showBackArrow();
         }
     }
 

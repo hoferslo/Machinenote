@@ -3,6 +3,7 @@ package com.example.machinenote.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,6 +117,7 @@ public class KnjizenjeFragment extends BaseFragment implements QRCodeScannerFrag
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
     }
 
     private void updateUI() {

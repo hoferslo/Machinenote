@@ -290,6 +290,7 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
     }
 
     @Override

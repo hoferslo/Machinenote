@@ -361,6 +361,7 @@ public class CompletedNalogaFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
     }
 
     @Override

@@ -711,6 +711,7 @@ public class NarocilaManageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.showBackArrow();
         if (currentNarocilo != null) {
             mainActivity.binding.toolbarTitle.setText(TAG + " #" + currentNarocilo.getId());
         } else {

@@ -331,7 +331,9 @@ public class PregledExecutionFragment extends BaseFragment {
         if (selectedPregled != null) {
             String title = selectedPregled.getOpis() != null && !selectedPregled.getOpis().isEmpty() ?
                     selectedPregled.getOpis() : ("Pregled ID: " + selectedPregled.getId());
-            ((MainActivity) requireActivity()).binding.toolbarTitle.setText("Izvajanje: " + title);
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.binding.toolbarTitle.setText("Izvajanje: " + title);
+            mainActivity.showBackArrow();
         }
     }
 

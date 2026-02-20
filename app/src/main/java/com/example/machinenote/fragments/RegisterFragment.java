@@ -737,6 +737,9 @@ public class RegisterFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
         if (isUserMode) {
             updateToolbarTitle("Dodeli vlogo uporabniku");
         } else {

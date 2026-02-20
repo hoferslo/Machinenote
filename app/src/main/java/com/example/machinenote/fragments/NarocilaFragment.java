@@ -325,6 +325,7 @@ public class NarocilaFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
 
         // Refresh data when returning to this fragment
         fetchNarocila();

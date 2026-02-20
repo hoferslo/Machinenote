@@ -298,7 +298,7 @@ public class LoginFragment extends BaseFragment {
             mainActivity.binding.toolbarTitle.setText(TAG);
 
             // Skrij drawer ikono ali back arrow za login
-            mainActivity.binding.toolbar.setNavigationIcon(null);
+            mainActivity.hideNavigationIcon();
 
             if (binding.username.getText().toString().isEmpty()) {
                 loginUsingSharedPrefsUsernameAndPassword();

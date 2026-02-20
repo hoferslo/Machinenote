@@ -254,10 +254,7 @@ public class DashboardFragment extends BaseFragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.binding.toolbarTitle.setText(TAG);
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-        if (fragmentManager.getFragments().size() < 2) {
-            mainActivity.showDrawerIcon();
-        }
+        mainActivity.showDrawerIcon(); // Dashboard always shows hamburger
         makeOnline(mainActivity.serverConnection);
     }
 

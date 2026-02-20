@@ -296,7 +296,9 @@ public class RemontiFragment extends BaseFragment implements QRCodeScannerFragme
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) context).binding.toolbarTitle.setText(TAG);
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.binding.toolbarTitle.setText(TAG);
+        mainActivity.showBackArrow();
     }
 
     @Override

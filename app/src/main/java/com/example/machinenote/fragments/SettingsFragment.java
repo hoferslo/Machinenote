@@ -302,34 +302,6 @@ public class SettingsFragment extends BaseFragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.showBackArrow();
         mainActivity.binding.toolbarTitle.setText(TAG);
-        mainActivity.binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-        // Nastavi click listener za nazaj gumb v toolbar
-        mainActivity.binding.toolbar.setNavigationOnClickListener(v -> {
-            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
-                getParentFragmentManager().popBackStack();
-            } else {
-                requireActivity().onBackPressed();
-            }
-        });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // Onemogoči nazaj gumb ko zapustimo fragment
-        MainActivity mainActivity = (MainActivity) requireActivity();
-
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() <= 1) {
-            mainActivity.binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }
-
-        if (mainActivity.getSupportActionBar() != null) {
-            mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            mainActivity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-        }
-        mainActivity.binding.toolbar.setNavigationOnClickListener(null);
     }
 
     @Override
