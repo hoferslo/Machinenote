@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.machinenote.R;
 import com.example.machinenote.databinding.DialogDatePickerBinding;
@@ -16,20 +15,15 @@ import java.util.Locale;
 
 public class CustomDatePicker implements View.OnClickListener {
     private final DialogDatePickerBinding binding;
-
     private Calendar calendar_date = null;
-
     private final Context context;
     private ICustomDateListener iCustomDateListener = null;
-
     private final Dialog dialog;
-
     private boolean isAutoDismiss = true;
 
     public static CustomDatePicker newInstance(Context context, Button textDate, ListViewAdapter adapter) {
         CustomDatePicker custom = new CustomDatePicker(context,
                 new CustomDatePicker.ICustomDateListener() {
-
                     @Override
                     public void onSet(Dialog dialog, Calendar calendarSelected,
                                       Date dateSelected, int year, String monthFullName,
@@ -40,16 +34,13 @@ public class CustomDatePicker implements View.OnClickListener {
                         String dateString = dateFormat.format(date);
                         textDate.setText(dateString);
 
-                        // Trigger validation if needed
                         if (adapter != null) {
-                            // Add any validation logic here if needed
+                            // Tukaj dodaš poljubno validacijo, če je potrebna
                         }
                     }
 
                     @Override
-                    public void onCancel() {
-
-                    }
+                    public void onCancel() {}
                 });
 
         custom.setDate(Calendar.getInstance());
@@ -64,13 +55,16 @@ public class CustomDatePicker implements View.OnClickListener {
         context = a;
         iCustomDateListener = customDateListener;
 
+        // Inicializacija koledarja na trenutni čas, da nikoli ni null
+        calendar_date = Calendar.getInstance();
+
         dialog = new Dialog(context, R.style.CustomDialogTheme);
-        dialog.setOnDismissListener(dialog -> resetData());
+        // POPRAVEK: Odstranjen resetData(), da ne brišemo reference koledarja
 
         binding = DialogDatePickerBinding.inflate(dialog.getLayoutInflater());
         dialog.setContentView(binding.getRoot());
 
-        // Set button
+        // Gumb Potrdi
         binding.btnSet.setOnClickListener(v -> {
             AnimationHelper.bounceClick(v);
             if (iCustomDateListener != null) {
@@ -95,7 +89,7 @@ public class CustomDatePicker implements View.OnClickListener {
             }
         });
 
-        // Cancel button
+        // Gumb Prekliči
         binding.btnCancel.setOnClickListener(v -> {
             AnimationHelper.bounceClick(v);
             if (iCustomDateListener != null) {
@@ -109,9 +103,11 @@ public class CustomDatePicker implements View.OnClickListener {
 
     public void showDialog() {
         if (!dialog.isShowing()) {
-            if (calendar_date == null)
+            if (calendar_date == null) {
                 calendar_date = Calendar.getInstance();
+            }
 
+            // Osvežimo vizualni DatePicker na vrednosti iz koledarja pred prikazom
             binding.datePicker.updateDate(calendar_date.get(Calendar.YEAR),
                     calendar_date.get(Calendar.MONTH),
                     calendar_date.get(Calendar.DAY_OF_MONTH));
@@ -130,110 +126,64 @@ public class CustomDatePicker implements View.OnClickListener {
     }
 
     public void setDate(Calendar calendar) {
-        if (calendar != null)
-            calendar_date = calendar;
+        if (calendar != null) {
+            // Kloniramo ali kopiramo vrednosti, da preprečimo neželene stranske učinke referenc
+            if (calendar_date == null) calendar_date = Calendar.getInstance();
+            calendar_date.setTimeInMillis(calendar.getTimeInMillis());
+        }
     }
 
     public void setDate(Date date) {
         if (date != null) {
-            calendar_date = Calendar.getInstance();
+            if (calendar_date == null) calendar_date = Calendar.getInstance();
             calendar_date.setTime(date);
         }
     }
 
     public void setDate(int year, int month, int day) {
-        if (month < 12 && month >= 0 && day < 32 && day >= 0 && year > 100
-                && year < 3000) {
-            calendar_date = Calendar.getInstance();
+        if (month < 12 && month >= 0 && day < 32 && day >= 0 && year > 100 && year < 3000) {
+            if (calendar_date == null) calendar_date = Calendar.getInstance();
             calendar_date.set(year, month, day);
         }
     }
 
     @Override
-    public void onClick(View view) {
-
-    }
+    public void onClick(View view) {}
 
     public interface ICustomDateListener {
         void onSet(Dialog dialog, Calendar calendarSelected,
                    Date dateSelected, int year, String monthFullName,
                    String monthShortName, int monthNumber, int day,
                    String weekDayFullName, String weekDayShortName);
-
         void onCancel();
     }
 
-    public static String convertDate(String date, String fromFormat,
-                                     String toFormat) {
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fromFormat);
-            Date d = simpleDateFormat.parse(date);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(d);
-
-            simpleDateFormat = new SimpleDateFormat(toFormat);
-            simpleDateFormat.setCalendar(calendar);
-            date = simpleDateFormat.format(calendar.getTime());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return date;
-    }
-
+    // Pomožne metode za formate imen mesecev in dni ostanejo nespremenjene...
     private String getMonthFullName(int monthNumber) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, monthNumber);
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM");
-        simpleDateFormat.setCalendar(calendar);
-        String monthName = simpleDateFormat.format(calendar.getTime());
-
-        return monthName;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     private String getMonthShortName(int monthNumber) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, monthNumber);
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM");
-        simpleDateFormat.setCalendar(calendar);
-        String monthName = simpleDateFormat.format(calendar.getTime());
-
-        return monthName;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM", Locale.getDefault());
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     private String getWeekDayFullName(int weekDayNumber) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, weekDayNumber);
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
-        simpleDateFormat.setCalendar(calendar);
-        String weekName = simpleDateFormat.format(calendar.getTime());
-
-        return weekName;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     private String getWeekDayShortName(int weekDayNumber) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, weekDayNumber);
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
-        simpleDateFormat.setCalendar(calendar);
-        String weekName = simpleDateFormat.format(calendar.getTime());
-
-        return weekName;
-    }
-
-    private void resetData() {
-        calendar_date = null;
-    }
-
-    public static String pad(int integerToPad) {
-        if (integerToPad >= 10 || integerToPad < 0)
-            return String.valueOf(integerToPad);
-        else
-            return "0" + integerToPad;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE", Locale.getDefault());
+        return simpleDateFormat.format(calendar.getTime());
     }
 }

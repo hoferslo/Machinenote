@@ -122,17 +122,17 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
         String statusLower = status.toLowerCase().trim();
         switch (statusLower) {
             case "novo":
-                return ContextCompat.getColor(context, R.color.soonColor); // Orange - urgent/new
+                return ContextCompat.getColor(context, R.color.error_primary); // Orange - urgent/new
             case "naročeno":
             case "naroceno":
-                return ContextCompat.getColor(context, R.color.action_primary); // Primary blue - ordered
+                return ContextCompat.getColor(context, R.color.action_success_pressed); // Primary blue - ordered
             case "v obdelavi":
             case "v_obdelavi":
-                return ContextCompat.getColor(context, R.color.success_primary); // Green - in progress
+                return ContextCompat.getColor(context, R.color.soonColor); // Green - in progress
             case "dostavljeno":
-                return ContextCompat.getColor(context, R.color.finishedColor); // Gray - completed
+                return ContextCompat.getColor(context, R.color.action_primary); // Gray - completed
             case "preklicano":
-                return ContextCompat.getColor(context, R.color.error_primary); // Red - cancelled
+                return ContextCompat.getColor(context, R.color.finishedColor); // Red - cancelled
             default:
                 return ContextCompat.getColor(context, R.color.content_primary);
         }
@@ -152,13 +152,13 @@ public class GenericAdapter<T extends DisplayableItem> extends RecyclerView.Adap
                 switch (statusLower) {
                     case "novo":
                         // Light tinted background for new items
-                        return ContextCompat.getColor(context, R.color.surface_secondary);
+                        return ContextCompat.getColor(context, R.color.surface_primary);
                     case "naroceno":
                     case "naročeno":
                     case "v_obdelavi":
                     case "v obdelavi":
                         // Light tinted background for active items
-                        return ContextCompat.getColor(context, R.color.surface_tertiary);
+                        return ContextCompat.getColor(context, R.color.surface_primary);
                     case "dostavljeno":
                         // Neutral background for completed items
                         return ContextCompat.getColor(context, R.color.background_section);

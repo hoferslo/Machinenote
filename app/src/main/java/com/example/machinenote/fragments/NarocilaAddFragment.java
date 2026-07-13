@@ -251,10 +251,17 @@ public class NarocilaAddFragment extends BaseFragment {
     }
 
     private void initializeViews() {
-        // Set current date as default
+        // Zagotovimo, da je ob odpiranju fragmenta datum VEDNO današnji
+        selectedDate = Calendar.getInstance();
+
+        // Osvežimo prikaz teksta
         updateDateDisplay();
 
-        // Hide image preview container and remove button initially
+        if (customDatePicker != null) {
+            customDatePicker.setDate(selectedDate);
+        }
+
+        // Skrijemo slike
         binding.imagePreviewContainer.setVisibility(View.GONE);
         binding.odstranislikoBtn.setVisibility(View.GONE);
 
@@ -262,7 +269,6 @@ public class NarocilaAddFragment extends BaseFragment {
         if (maintainerName != null && !maintainerName.isEmpty()) {
             binding.nameOfShipper.setText(maintainerName);
         }
-
     }
 
     private void setupClickListeners() {
@@ -277,7 +283,6 @@ public class NarocilaAddFragment extends BaseFragment {
 
         // Date picker button
         binding.rokDobave.setOnClickListener(v -> {
-            // Open custom date picker
             if (customDatePicker != null) {
                 customDatePicker.showDialog();
             }
@@ -349,42 +354,46 @@ public class NarocilaAddFragment extends BaseFragment {
             return;
         }
 
-        if (selectedDate == null) {
-            Toast.makeText(context, "Prosimo, izberite rok dobave", Toast.LENGTH_SHORT).show();
-            return;
+        // VARNOSTNI POPRAVEK: Če je selectedDate null ali ima nesmiselno leto (npr. 0002), vsili današnji datum
+// 1. Če uporabnik ni izbral datuma, privzeto vzemi današnji dan za ROK DOBAVE
+        if (selectedDate == null || selectedDate.get(Calendar.YEAR) < 2000) {
+            selectedDate = Calendar.getInstance();
         }
 
-        // Convert comma to period for database storage (if needed)
-        String kolicina = kolicinaInput.replace(",", ".");
-
-        String enota = String.valueOf(binding.enotaSpinner.getSelectedItem());
-
-        // Format date for SQL (YYYY-MM-DD format)
+// 2. Formatiranje
         SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String rokForDatabase = sqlDateFormat.format(selectedDate.getTime());
-        String datumVnosa = sqlDateFormat.format(Calendar.getInstance().getTime());
+        String danesSQL = sqlDateFormat.format(Calendar.getInstance().getTime());
+        String rokSQL = sqlDateFormat.format(selectedDate.getTime());
 
-        // Create Narocila object using the SQL-formatted date
+        String kolicina = kolicinaInput.replace(",", ".");
+        String enota = String.valueOf(binding.enotaSpinner.getSelectedItemPosition());
+
+// 3. Kreiranje objekta:
+// Za datum_potrjene_dobave in datum_predvidene_dobave pošljemo dejanski null (brez narekovajev).
         Narocila narocilo = new Narocila(
-                0, // id (will be set by database)
-                lokacija,
-                narocnik,
-                naziv,
-                tehnicniPodatki,
-                kolicina,
-                enota,
-                "", // slike - will be set by server
-                datumVnosa, // datum_vnosa - current date
-                rokForDatabase, // rok_za_dobavo - selected date
-                "",
-                "",
-                "", // datum_potrjene_dobave - empty initially
-                "novo"// status - default to "novo"
+                0,                      // id
+                lokacija,               // lokacija
+                narocnik,               // narocnik
+                naziv,                  // naziv
+                tehnicniPodatki,        // tehnicni_podatki
+                kolicina,               // kolicina
+                enota,                  // enota
+                "",                     // slike
+                danesSQL,               // datum_vnosa (danes)
+                rokSQL,                 // rok_za_dobavo (rok, ki si ga izbral na koledarju)
+                null,                   // datum_potrjene_dobave -> NULL (ker še ni potrjeno)
+                "novo",                 // status
+                "",                     // admin_opomba
+                null                    // datum_predvidene_dobave -> NULL (ker še ni obdelano)
         );
 
-        // Debug log the narocilo object
-        Log.d("NarocilaAddFragment", "Narocilo object - Lokacija: '" + narocilo.getLokacija() + "'");
+// 4. Za vsak slučaj eksplicitno nastavimo z uporabo setterjev
+        narocilo.setDatumVnosa(danesSQL);
+        narocilo.setRokZaDobavo(rokSQL);
+        narocilo.setDatumPotrjeneDobave(null);
+        narocilo.setDatumPredvideneDobave(null);
 
+        Log.d("NarocilaAddFragment", "Dodajanje naročila: Rok dobave nastavljen na " + rokSQL + ", ostalo je NULL.");
         // Save narocilo with images
         apiManager.sendNarocilaWithImages(narocilo, selectedImages, new Callback<Void>() {
             @Override
@@ -439,24 +448,22 @@ public class NarocilaAddFragment extends BaseFragment {
     }
 
     private void resetForm() {
-        // Reset spinners to first item
         binding.lokacijaSpinner.setSelection(0);
         binding.enotaSpinner.setSelection(0);
 
-        // Clear all text fields
-        binding.nameOfShipper.setText("");
         binding.articleName.setText("");
         binding.technicalInfo.setText("");
         binding.amountOfArticle.setText("");
 
-        // Reset date to current date
+        String maintainerName = sharedPreferencesHelper.getUsername();
+        binding.nameOfShipper.setText(maintainerName != null ? maintainerName : "");
+
         selectedDate = Calendar.getInstance();
         updateDateDisplay();
         if (customDatePicker != null) {
             customDatePicker.setDate(selectedDate);
         }
 
-        // Clear images
         selectedImages.clear();
         binding.imagePreviewContainer.setVisibility(View.GONE);
         binding.odstranislikoBtn.setVisibility(View.GONE);

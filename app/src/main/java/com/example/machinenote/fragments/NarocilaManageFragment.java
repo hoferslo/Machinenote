@@ -354,30 +354,57 @@ public class NarocilaManageFragment extends BaseFragment {
 
     private void loadOriginalDeliveryDate() {
         try {
-            SimpleDateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            originalDeliveryDate.setTime(sqlFormat.parse(currentNarocilo.getRokZaDobavo()));
-            updateOriginalDateDisplay();
+            String rok = currentNarocilo.getRokZaDobavo();
+            if (rok != null && !rok.isEmpty()) {
+                SimpleDateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                java.util.Date parsedDate = sqlFormat.parse(rok);
+
+                // Preverimo, da rezultat parsiranja ni null
+                if (parsedDate != null) {
+                    originalDeliveryDate.setTime(parsedDate);
+                } else {
+                    originalDeliveryDate = Calendar.getInstance();
+                }
+            } else {
+                originalDeliveryDate = Calendar.getInstance();
+            }
         } catch (Exception e) {
             Log.e(TAG, "Error parsing original delivery date", e);
+            originalDeliveryDate = Calendar.getInstance();
         }
+        updateOriginalDateDisplay();
     }
 
     private void loadPredvidenaDate() {
-        // Load predvidena dostava if available, otherwise use original date
-        String predvidenaString = currentNarocilo.getDatumPotrjeneDobave();
-        if (predvidenaString != null && !predvidenaString.isEmpty()) {
+        String predvidenaString = currentNarocilo.getDatumPredvideneDobave();
+
+        // POPRAVEK: Preverimo null, prazen niz IN specifično "0000-00-00"
+        if (predvidenaString != null && !predvidenaString.isEmpty() && !predvidenaString.equals("0000-00-00")) {
             try {
                 SimpleDateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                selectedPredvidenaDate.setTime(sqlFormat.parse(predvidenaString));
+                java.util.Date parsedDate = sqlFormat.parse(predvidenaString);
+
+                if (parsedDate != null) {
+                    selectedPredvidenaDate.setTime(parsedDate);
+
+                    // VARNOSTNI PAS: Če je parsirano leto zaradi napak v bazi manjše od 2000, vsili današnji dan
+                    if (selectedPredvidenaDate.get(Calendar.YEAR) < 2000) {
+                        selectedPredvidenaDate = Calendar.getInstance();
+                    }
+                } else {
+                    selectedPredvidenaDate = Calendar.getInstance(); // Če parsiranje vrne null, odpri današnji dan
+                }
             } catch (Exception e) {
-                selectedPredvidenaDate = (Calendar) originalDeliveryDate.clone();
+                Log.e(TAG, "Error parsing predvidena date", e);
+                selectedPredvidenaDate = Calendar.getInstance(); // Ob napaki skoči na današnji dan
             }
         } else {
-            selectedPredvidenaDate = (Calendar) originalDeliveryDate.clone();
+            // Če je v bazi dejanski NULL, prazno ali "0000-00-00", postavi koledar na DANAŠNJI DAN
+            selectedPredvidenaDate = Calendar.getInstance();
         }
+
         updatePredvidenaDateDisplay();
 
-        // Update the CustomDatePicker with the loaded date
         if (customDatePicker != null) {
             customDatePicker.setDate(selectedPredvidenaDate);
         }
@@ -606,8 +633,16 @@ public class NarocilaManageFragment extends BaseFragment {
     }
 
     private void updatePredvidenaDateDisplay() {
+        // Če ima koledar nastavljeno leto 1900 ali je blizu trenutka kreiranja za stare zapise,
+        // lahko na gumb izpišeš opozorilo ali pa današnji datum
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        binding.predvidenaDostavaBtn.setText(dateFormat.format(selectedPredvidenaDate.getTime()));
+
+        String predvidenaString = currentNarocilo.getDatumPredvideneDobave();
+        if (predvidenaString == null || predvidenaString.isEmpty() || predvidenaString.equals("0000-00-00")) {
+            binding.predvidenaDostavaBtn.setText("Izberi datum"); // Namesto 30.11.0002 ali 1900 raje izpiši tekst
+        } else {
+            binding.predvidenaDostavaBtn.setText(dateFormat.format(selectedPredvidenaDate.getTime()));
+        }
     }
 
     private void updateTimestamps() {
