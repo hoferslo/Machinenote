@@ -20,6 +20,7 @@ import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 // Animation was here AnimationHelper.bounceClick(view);
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.FilterDialogBuilder;
@@ -56,6 +57,8 @@ public class RezervniDeliFragment extends BaseFragment {
         fragment.TAG = context.getString(R.string.tag_rezervni_deli);
         return fragment;
     }
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -161,22 +164,17 @@ public class RezervniDeliFragment extends BaseFragment {
 
         List<RezervniDel> currentData = filter.getCurrentFilteredList();
 
-        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
-            // Apply search on the already filtered data
-            String lowerQuery = currentSearchQuery.toLowerCase();
-            List<RezervniDel> searchFiltered = currentData.stream()
-                    .filter(d -> lowerQuery.isEmpty()
-                            || (d.getArtikel() != null && d.getArtikel().toLowerCase().contains(lowerQuery))
-                            || (d.getArtikel_dolgi_text() != null && d.getArtikel_dolgi_text().toLowerCase().contains(lowerQuery))
-                            || (String.valueOf(d.getId()) != null && String.valueOf(d.getId()).toLowerCase().contains(lowerQuery))
-                            || (String.valueOf(d.getSkladišče()) != null && String.valueOf(d.getSkladišče()).toLowerCase().contains(lowerQuery))
-                            || (d.getDobavitelj() != null && d.getDobavitelj().toLowerCase().contains(lowerQuery)))
-                    .collect(Collectors.toList());
+        List<RezervniDel> searchFiltered = FuzzySearchHelper.search(
+                currentData,
+                currentSearchQuery,
+                RezervniDel::getArtikel,
+                RezervniDel::getArtikel_dolgi_text,
+                d -> String.valueOf(d.getId()),
+                d -> String.valueOf(d.getSkladišče()),
+                RezervniDel::getDobavitelj
+        );
 
-            updateRecyclerView(searchFiltered);
-        } else {
-            updateRecyclerView(currentData);
-        }
+        updateRecyclerView(searchFiltered);
     }
 
     private void updateRecyclerView(List<RezervniDel> filteredData) {
