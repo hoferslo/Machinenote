@@ -37,8 +37,24 @@ public class FuzzySearchHelper {
         return dp[a.length()][b.length()];
     }
 
+    private static boolean tokenMatches(String haystackWord, String queryToken) {
+        if (haystackWord.isEmpty() || queryToken.isEmpty()) return false;
+
+        // Exact / substring hitri primer
+        if (haystackWord.contains(queryToken)) return true;
+
+        // Fuzzy prefix: primerjamo queryToken samo z začetkom haystackWord
+        // (dolžine queryToken + malo tolerance), ne s celo besedo
+        int allowedErrors = Math.max(1, queryToken.length() / 4);
+        int prefixLen = Math.min(haystackWord.length(), queryToken.length() + allowedErrors);
+        String prefix = haystackWord.substring(0, prefixLen);
+
+        return levenshtein(prefix, queryToken) <= allowedErrors
+                || fuzzyContains(haystackWord, queryToken); // za primer, ko beseda ni na začetku
+    }
+
     /**
-     * Fuzzy match "needle" znotraj "haystack" (oba morata biti že normalizirana).
+     * fuzzyContains ostane kot prej (drseče okno + levenshtein) - uporablja se kot fallback.
      */
     public static boolean fuzzyContains(String haystack, String needle) {
         if (needle.isEmpty()) return true;
@@ -59,19 +75,35 @@ public class FuzzySearchHelper {
     }
 
     /**
-     * Splošna generic search funkcija - poda se ji lista, query in seznam
-     * "field extractorjev" (funkcij, ki iz objekta izluščijo string, po katerem se išče).
-     *
-     * Primer uporabe:
-     * List<RezervniDel> result = FuzzySearchHelper.search(
-     *         currentData,
-     *         currentSearchQuery,
-     *         RezervniDel::getArtikel,
-     *         RezervniDel::getArtikel_dolgi_text,
-     *         d -> String.valueOf(d.getId()),
-     *         d -> String.valueOf(d.getSkladišče()),
-     *         RezervniDel::getDobavitelj
-     * );
+     * Preveri, ali se cel query (lahko več besed) ujema z enim poljem (haystack).
+     * Vsaka beseda iz query-ja mora najti ujemanje nekje v haystacku (AND logika).
+     */
+    public static boolean matchesAllTokens(String haystack, String query) {
+        if (query.isEmpty()) return true;
+
+        String[] haystackWords = haystack.split("\\s+");
+        String[] queryTokens = query.split("\\s+");
+
+        for (String qToken : queryTokens) {
+            if (qToken.isEmpty()) continue;
+
+            boolean found = false;
+            for (String hWord : haystackWords) {
+                if (tokenMatches(hWord, qToken)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                return false; // ta beseda iz query-ja se ni ujela nikjer -> ni zadetka
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Generic search: išče po VEČ POLJIH hkrati (npr. artikel + dobavitelj),
+     * tako da query besede lahko "razpadejo" po različnih poljih.
      */
     @SafeVarargs
     public static <T> List<T> search(List<T> data, String query, Function<T, String>... fieldExtractors) {
@@ -83,13 +115,16 @@ public class FuzzySearchHelper {
 
         return data.stream()
                 .filter(item -> {
+                    // Združimo VSA polja v en skupni haystack, da "pnev ventil"
+                    // lahko najde "pnev" v artiklu in "ventil" v opisu, ali oboje v enem polju.
+                    StringBuilder combined = new StringBuilder();
                     for (Function<T, String> extractor : fieldExtractors) {
                         String value = extractor.apply(item);
-                        if (value != null && fuzzyContains(normalizeText(value), normalizedQuery)) {
-                            return true;
+                        if (value != null) {
+                            combined.append(normalizeText(value)).append(" ");
                         }
                     }
-                    return false;
+                    return matchesAllTokens(combined.toString().trim(), normalizedQuery);
                 })
                 .collect(Collectors.toList());
     }
