@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.Utility.PreventivniPreglediAdapter;
@@ -386,16 +387,22 @@ public class PreventivniPreglediOpravilaFragment extends BaseFragment {
             return;
         }
 
-        List<PreventivniPregled> filtered;
-
-        if (query == null || query.trim().isEmpty()) {
-            filtered = new ArrayList<>(allPreventivniPreglediList);
-        } else {
-            String lowerQuery = query.toLowerCase().trim();
-            filtered = allPreventivniPreglediList.stream()
-                    .filter(p -> matchesFilter(p, lowerQuery))
-                    .collect(Collectors.toList());
-        }
+        // FuzzySearchHelper sam poskrbi za null/prazen query in vrne celoten seznam.
+        List<PreventivniPregled> filtered = FuzzySearchHelper.search(
+                allPreventivniPreglediList,
+                query,
+                PreventivniPregled::getOpis,
+                PreventivniPregled::getLinijaSap,
+                PreventivniPregled::getNazivLinije,
+                PreventivniPregled::getSklopLinije,
+                PreventivniPregled::getPodsklopLinije,
+                PreventivniPregled::getNazivPodsklopa,
+                PreventivniPregled::getLastnost,
+                PreventivniPregled::getStdVrednost,
+                PreventivniPregled::getOpombe,
+                PreventivniPregled::getLokacijaNaziv,
+                PreventivniPregled::getProstorNaziv
+        );
 
         preventivniPreglediList = filtered;
         adapter.updateList(new ArrayList<Object>(filtered));

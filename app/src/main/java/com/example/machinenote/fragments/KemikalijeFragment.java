@@ -18,6 +18,7 @@ import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 // Animation was here AnimationHelper.bounceClick(view);
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.HandleQRCode;
 import com.example.machinenote.Utility.KeyboardUtils;
 import com.example.machinenote.Utility.MailHelper;
@@ -333,25 +334,15 @@ public class KemikalijeFragment extends BaseFragment implements QRCodeScannerFra
     }
 
     private void searchKemikalije(String query) {
-        String searchQuery = query.toLowerCase().trim();
-
-        filteredKemikalije = allKemikalije.stream()
-                .filter(k -> {
-                    if (k.getIme_SLO() != null && k.getIme_SLO().toLowerCase().contains(searchQuery)) {
-                        return true;
-                    }
-                    if (k.getIme_ENG() != null && k.getIme_ENG().toLowerCase().contains(searchQuery)) {
-                        return true;
-                    }
-                    if (k.getCas_stevilo() != null && k.getCas_stevilo().toLowerCase().contains(searchQuery)) {
-                        return true;
-                    }
-                    if (k.getFormula() != null && k.getFormula().toLowerCase().contains(searchQuery)) {
-                        return true;
-                    }
-                    return false;
-                })
-                .collect(Collectors.toList());
+        // FuzzySearchHelper samodejno obravnava null/prazen query in vrne celoten seznam
+        filteredKemikalije = FuzzySearchHelper.search(
+                allKemikalije,
+                query,
+                Kemikalija::getIme_SLO,
+                Kemikalija::getIme_ENG,
+                Kemikalija::getCas_stevilo,
+                Kemikalija::getFormula
+        );
     }
 
     private int parseStockValue() {

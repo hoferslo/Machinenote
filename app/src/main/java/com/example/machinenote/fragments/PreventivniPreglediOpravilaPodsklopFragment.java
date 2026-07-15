@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
 import com.example.machinenote.Utility.PreventivniPreglediPodsklopAdapter;
@@ -322,16 +323,13 @@ public class PreventivniPreglediOpravilaPodsklopFragment extends BaseFragment {
             return;
         }
 
-        List<SklopLinije> filtered;
-
-        if (query == null || query.trim().isEmpty()) {
-            filtered = new ArrayList<>(allPodsklopList);
-        } else {
-            String lowerQuery = query.toLowerCase().trim();
-            filtered = allPodsklopList.stream()
-                    .filter(s -> matchesFilter(s, lowerQuery))
-                    .collect(Collectors.toList());
-        }
+        // FuzzySearchHelper samodejno obravnava prazen/null query in vrne celoten seznam
+        List<SklopLinije> filtered = FuzzySearchHelper.search(
+                allPodsklopList,
+                query,
+                SklopLinije::getSklopLinije,
+                SklopLinije::getNazivPodsklopa
+        );
 
         podsklopList = filtered;
         adapter.updateList(new ArrayList<>(filtered));

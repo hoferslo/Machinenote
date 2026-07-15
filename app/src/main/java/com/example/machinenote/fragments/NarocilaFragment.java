@@ -15,6 +15,7 @@ import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.FilterDialogBuilder;
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
@@ -300,24 +301,21 @@ public class NarocilaFragment extends BaseFragment {
 
         List<Narocila> currentData = filter.getCurrentFilteredList();
 
-        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
-            String lowerQuery = currentSearchQuery.toLowerCase();
-            List<Narocila> searchFiltered = currentData.stream()
-                    .filter(n -> lowerQuery.isEmpty()
-                            || String.valueOf(n.getId()).toLowerCase().contains(lowerQuery)
-                            || (n.getNaziv() != null && n.getNaziv().toLowerCase().contains(lowerQuery))
-                            || (n.getNarocnik() != null && n.getNarocnik().toLowerCase().contains(lowerQuery))
-                            || (n.getLokacija() != null && n.getLokacija().toLowerCase().contains(lowerQuery))
-                            || (n.getStatus() != null && n.getStatus().toLowerCase().contains(lowerQuery))
-                            || (n.getRokZaDobavo() != null && n.getRokZaDobavo().toLowerCase().contains(lowerQuery))
-                            || (n.getDatumPredvideneDobave() != null && n.getDatumPredvideneDobave().toLowerCase().contains(lowerQuery))
-                            || (n.getAdminOpomba() != null && n.getAdminOpomba().toLowerCase().contains(lowerQuery)))
-                    .collect(Collectors.toList());
+        // FuzzySearchHelper samodejno obravnava prazen/null query in vrne celoten seznam
+        List<Narocila> searchFiltered = FuzzySearchHelper.search(
+                currentData,
+                currentSearchQuery,
+                n -> n.getId() != 0 ? String.valueOf(n.getId()) : "",
+                Narocila::getNaziv,
+                Narocila::getNarocnik,
+                Narocila::getLokacija,
+                Narocila::getStatus,
+                Narocila::getRokZaDobavo,
+                Narocila::getDatumPredvideneDobave,
+                n -> n.getAdminOpomba() != null ? n.getAdminOpomba() : ""
+        );
 
-            updateRecyclerView(searchFiltered);
-        } else {
-            updateRecyclerView(currentData);
-        }
+        updateRecyclerView(searchFiltered);
     }
 
     @Override

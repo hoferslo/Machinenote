@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
@@ -157,12 +158,14 @@ public class ImenikFragment extends BaseFragment {
 
     private void filterImenik(String query) {
         if (imenikList != null) {
-            List<Imenik> filteredList = imenikList.stream()
-                    .filter(imenik -> (query == null || query.isEmpty()) ||
-                            (imenik.getNazivPodjetja() != null && imenik.getNazivPodjetja().toLowerCase().contains(query.toLowerCase())) ||
-                            (imenik.getKontaktnaOseba() != null && imenik.getKontaktnaOseba().toLowerCase().contains(query.toLowerCase())) ||
-                            (imenik.getMail() != null && imenik.getMail().toLowerCase().contains(query.toLowerCase())))
-                    .collect(Collectors.toList());
+            List<Imenik> filteredList = FuzzySearchHelper.search(
+                    imenikList,
+                    query,
+                    Imenik::getNazivPodjetja,
+                    Imenik::getKontaktnaOseba,
+                    Imenik::getMail
+            );
+
             adapter.updateList(filteredList);
         }
     }

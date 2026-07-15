@@ -15,6 +15,7 @@ import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
 import com.example.machinenote.Utility.FilterDialogBuilder;
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.GenericAdapter;
 import com.example.machinenote.Utility.GenericFilter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
@@ -201,15 +202,16 @@ public class NalogeFragment extends BaseFragment {
         List<Naloga> currentData = filter.getCurrentFilteredList();
 
         if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
-            String lowerQuery = currentSearchQuery.toLowerCase();
-            List<Naloga> searchFiltered = currentData.stream()
-                    .filter(n -> lowerQuery.isEmpty()
-                            || (String.valueOf(n.getId()) != null && String.valueOf(n.getId()).toLowerCase().contains(lowerQuery))
-                            || (n.getOpis() != null && n.getOpis().toLowerCase().contains(lowerQuery))
-                            || (n.getVzdrzevalec() != null && n.getVzdrzevalec().toLowerCase().contains(lowerQuery))
-                            || (n.getIzvedeno() != null && n.getIzvedeno().toLowerCase().contains(lowerQuery))
-                            || (n.getNaloga() != null && n.getNaloga().toString().toLowerCase().contains(lowerQuery)))
-                    .collect(Collectors.toList());
+            // Uporabimo FuzzySearchHelper za pametno iskanje po izbranih poljih nalog
+            List<Naloga> searchFiltered = FuzzySearchHelper.search(
+                    currentData,
+                    currentSearchQuery,
+                    nal -> nal.getId() != 0 ? String.valueOf(nal.getId()) : "",
+                    Naloga::getOpis,
+                    Naloga::getVzdrzevalec,
+                    Naloga::getIzvedeno,
+                    nal -> nal.getNaloga() != null ? nal.getNaloga().toString() : ""
+            );
 
             updateRecyclerView(searchFiltered);
         } else {

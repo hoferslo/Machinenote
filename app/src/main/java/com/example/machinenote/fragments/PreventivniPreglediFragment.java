@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.machinenote.ApiManager;
 import com.example.machinenote.BaseFragment;
 import com.example.machinenote.R;
+import com.example.machinenote.Utility.FuzzySearchHelper;
 import com.example.machinenote.Utility.PreventivniPreglediAdapter;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.activities.MainActivity;
@@ -294,23 +295,15 @@ public class PreventivniPreglediFragment extends BaseFragment {
             return;
         }
 
-        List<Linija> filtered;
-
-        if (query == null || query.trim().isEmpty()) {
-            // Če ni search query-ja, uporabi linije filtrirane po lokaciji
-            filtered = new ArrayList<>(filteredByLocationList);
-        } else {
-            // Išči samo med linijami ki so že filtrirane po lokaciji
-            String lowerQuery = query.toLowerCase().trim();
-            filtered = filteredByLocationList.stream()
-                    .filter(l ->
-                            (l.getLinija_SAP() != null && l.getLinija_SAP().toLowerCase().contains(lowerQuery)) ||
-                                    (l.getNaziv_linije() != null && l.getNaziv_linije().toLowerCase().contains(lowerQuery)) ||
-                                    (l.getLokacija_naziv() != null && l.getLokacija_naziv().toLowerCase().contains(lowerQuery)) ||
-                                    (l.getProstor_naziv() != null && l.getProstor_naziv().toLowerCase().contains(lowerQuery))
-                    )
-                    .collect(Collectors.toList());
-        }
+        // FuzzySearchHelper sam poskrbi za null/prazen query in vrne celoten seznam
+        List<Linija> filtered = FuzzySearchHelper.search(
+                filteredByLocationList,
+                query,
+                Linija::getLinija_SAP,
+                Linija::getNaziv_linije,
+                Linija::getLokacija_naziv,
+                Linija::getProstor_naziv
+        );
 
         linijeList = filtered;
         adapter.updateList(new ArrayList<Object>(filtered));
