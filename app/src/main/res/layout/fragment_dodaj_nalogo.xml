@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/padding_around_layout">>
 
             <!-- Vzdrzevalec Section -->
             <LinearLayout
@@ -29,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:padding="@dimen/padding_around_layout"
+                android:layout_marginBottom="@dimen/margin_bottom">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="@dimen/margin_bottom" />
 
                 <EditText
                     android:id="@+id/vzdrzevalecEditText"
@@ -57,8 +57,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:padding="@dimen/padding_around_layout"
+                android:layout_marginBottom="@dimen/margin_bottom">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="@dimen/margin_bottom" />
 
                 <EditText
                     android:id="@+id/naslovEditText"
@@ -86,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:padding="@dimen/padding_around_layout"
+                android:layout_marginBottom="@dimen/margin_bottom">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="@dimen/margin_bottom" />
 
                 <Button
                     android:id="@+id/rokEditText"
@@ -115,15 +115,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/margin_bottom"
                 android:background="@drawable/bg_card_primary"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/padding_around_layout">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/margin_bottom"
                     android:fontFamily="@font/nunito_semibold"
                     android:text="@string/opis_naloge"
                     android:textColor="@color/content_secondary"
@@ -148,8 +148,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card_primary"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:padding="@dimen/padding_around_layout"
+                android:layout_marginBottom="@dimen/margin_bottom">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -158,14 +158,14 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="@dimen/margin_bottom" />
 
                 <!-- Image Preview -->
                 <ImageView
                     android:id="@+id/imagePreview"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="@dimen/margin_bottom"
                     android:background="@drawable/bg_card_secondary"
                     android:scaleType="centerCrop"
                     android:visibility="gone"
@@ -213,7 +213,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="@dimen/padding_around_layout"
         android:background="@drawable/bg_card_primary">
 
         <Button

@@ -58,4 +58,5 @@ dependencies {
     implementation(libs.camera.camera2)
     implementation(libs.picasso)
     implementation(libs.simple.analog.clock)
+
 }

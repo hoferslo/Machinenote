@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:focusable="true"
     android:clickable="true"
-    android:padding="12dp"
+    android:padding="@dimen/padding_around_layout"
     tools:context=".fragments.KemikalijeFragment">
 
     <!-- Article Name Header - Compact -->
@@ -15,14 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="@dimen/margin_bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="1"
-            android:paddingRight="8dp">
+            android:paddingRight="@dimen/margin_bottom">
             <SearchView
                 android:id="@+id/idOfDuty"
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
         android:background="@drawable/bg_card_primary"
-        android:padding="8dp"
+        android:padding="@dimen/padding_around_layout"
         android:orientation="horizontal">
 
         <!-- Info Items in Grid Layout -->
@@ -65,7 +65,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="@dimen/margin_bottom"
                 android:orientation="horizontal">
 
                 <!-- Rack Info -->
@@ -74,7 +74,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="2dp"
-                    android:padding="6dp"
+                    android:padding="@dimen/padding_around_layout"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -106,7 +106,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
-                    android:padding="6dp"
+                    android:padding="@dimen/padding_around_layout"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -147,7 +147,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="2dp"
-                    android:padding="6dp"
+                    android:padding="@dimen/padding_around_layout"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -181,7 +181,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
-                    android:padding="6dp"
+                    android:padding="@dimen/padding_around_layout"
                     android:background="@drawable/bg_card_secondary"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -217,7 +217,7 @@
             style="@style/Button.Icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/margin_bottom"
             android:layout_gravity="center_vertical"
             android:visibility="gone"
             android:contentDescription="@string/send"
@@ -230,9 +230,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
         android:background="@drawable/bg_card_primary"
-        android:padding="10dp"
+        android:padding="@dimen/padding_around_layout"
         android:orientation="vertical">
 
         <!-- Chemical Name -->
@@ -245,7 +245,7 @@
             android:fontFamily="@font/nunito_semibold"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="@dimen/margin_bottom"
             android:maxLines="1"
             android:ellipsize="end" />
 
@@ -258,7 +258,7 @@
             android:textColor="@color/content_secondary"
             android:fontFamily="@font/nunito_semibold"
             android:textSize="12sp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/margin_bottom"
             android:maxLines="1"
             android:ellipsize="end" />
 
@@ -268,14 +268,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="6dp">
+            android:layout_marginBottom="@dimen/margin_bottom">
 
             <!-- Hazard symbols -->
             <ImageView
                 android:id="@+id/hazardSymbol1"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="@dimen/margin_bottom"
                 android:contentDescription="Hazard symbol 1"
                 android:src="@drawable/baseline_warning_amber_24" />
 
@@ -283,7 +283,7 @@
                 android:id="@+id/hazardSymbol2"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/margin_bottom"
                 android:contentDescription="Hazard symbol 2"
                 android:src="@drawable/baseline_warning_amber_24" />
 
@@ -312,7 +312,7 @@
             android:drawableEnd="@drawable/ic_chevron_right"
             android:drawablePadding="4dp"
             android:textAllCaps="false"
-            android:paddingStart="12dp"
+            android:paddingStart="@dimen/padding_around_layout"
             android:paddingEnd="8dp"
             android:minHeight="36dp"
             android:textSize="12sp" />
@@ -324,7 +324,7 @@
         android:id="@+id/allDataSv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
         style="@style/Input.Base"
         android:text="Prikaži več informacij o artiklu"
         android:textColor="@color/content_secondary"
@@ -348,9 +348,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_card_primary"
         android:orientation="vertical"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
 
-        android:padding="8dp">
+        android:padding="@dimen/padding_around_layout">
 
         <!-- Current stock display -->
         <LinearLayout
@@ -358,7 +358,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="6dp">
+            android:layout_marginBottom="@dimen/margin_bottom">
 
             <TextView
                 android:layout_width="0dp"
@@ -399,7 +399,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="@dimen/margin_bottom"
                 android:textSize="16sp"
                 android:text="-"
                 android:minHeight="40dp" />
@@ -410,7 +410,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginHorizontal="@dimen/margin_bottom"
                 android:textSize="18sp"
                 android:text="1"
                 android:inputType="number"
@@ -424,7 +424,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="@dimen/margin_bottom"
                 android:textSize="16sp"
                 android:text="+"
                 android:minHeight="40dp" />
@@ -446,7 +446,7 @@
             android:layout_weight="1"
             android:layout_height="56dp"
             android:text="@string/cancel"
-            android:layout_marginEnd="4dp" />
+            android:layout_marginEnd="@dimen/margin_bottom" />
 
         <!-- QR Scanner Button -->
         <ImageButton
@@ -455,7 +455,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="56dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/margin_bottom"
             android:contentDescription="@string/scan_qr_code"
             android:src="@mipmap/qr_code_scanner"
             app:tint="@color/content_inverse" />

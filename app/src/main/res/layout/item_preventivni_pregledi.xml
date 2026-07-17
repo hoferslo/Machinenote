@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="@dimen/spacing_large"
         android:background="@drawable/bg_card_list"
         >
 
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/margin_bottom"
             android:gravity="center_vertical">
 
             <!-- Status indicator dot -->
@@ -34,7 +34,7 @@
                 android:id="@+id/statusIndicator"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="@dimen/margin_bottom"
                 android:background="@drawable/status"
                 android:backgroundTint="@color/action_primary" />
 
@@ -76,7 +76,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="@dimen/margin_bottom">
 
                     <TextView
                         android:id="@+id/statusText"
@@ -88,8 +88,8 @@
                         android:textAllCaps="true"
                         android:textColor="@color/action_primary"
                         android:background="@drawable/bg_card_nav"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="6dp"
+                        android:paddingHorizontal="@dimen/spacing_large"
+                        android:paddingVertical="@dimen/spacing_large"
                         android:gravity="left"
                         android:layout_gravity="center"
                         android:layout_weight="2"
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/margin_bottom"
             android:baselineAligned="false">
 
             <!-- Zadnji Pregled -->
@@ -117,9 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="8dp"
+                android:padding="@dimen/spacing_large"
                 android:background="@drawable/bg_card_secondary"
-                android:layout_marginEnd="8dp">
+                android:layout_marginEnd="@dimen/margin_bottom">
 
                 <TextView
                     android:id="@+id/zadnjiPregled"
@@ -141,7 +141,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/content_primary"
                     android:gravity="center"
-                    android:layout_marginTop="6dp" />
+                    android:layout_marginTop="@dimen/margin_bottom" />
 
             </LinearLayout>
 
@@ -152,9 +152,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="8dp"
+                android:padding="@dimen/spacing_large"
                 android:background="@drawable/bg_card_secondary"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/margin_bottom"
                 android:visibility="visible">
 
                 <TextView
@@ -177,7 +177,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/action_primary"
                     android:gravity="center"
-                    android:layout_marginTop="6dp" />
+                    android:layout_marginTop="@dimen/margin_bottom" />
 
             </LinearLayout>
 

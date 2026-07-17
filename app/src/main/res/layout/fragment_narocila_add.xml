@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/padding_around_layout">
 
             <!-- Basic Information Section -->
             <LinearLayout
@@ -30,8 +30,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card_primary"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp"
+                android:padding="@dimen/padding_around_layout"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:elevation="1dp">
 
                 <TextView
@@ -41,7 +41,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <!-- Location Spinner -->
                 <TextView
@@ -58,7 +58,7 @@
                     style="@style/Button.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <!-- Naročnik Input -->
                 <TextView
@@ -68,7 +68,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <EditText
                     android:id="@+id/nameOfShipper"
@@ -79,7 +79,7 @@
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
                     android:gravity="start|center_vertical"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <!-- Delivery Date Button -->
                 <TextView
@@ -89,7 +89,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <Button
                     android:id="@+id/rokDobave"
@@ -110,8 +110,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card_primary"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp"
+                android:padding="@dimen/padding_around_layout"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:elevation="1dp">
 
                 <TextView
@@ -121,7 +121,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <!-- Article Name -->
                 <TextView
@@ -131,7 +131,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <EditText
                     android:id="@+id/articleName"
@@ -142,7 +142,7 @@
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:gravity="start|center_vertical"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <!-- Quantity and Unit Row -->
                 <TextView
@@ -152,13 +152,13 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/spacing_large">
 
                     <EditText
                         android:id="@+id/amountOfArticle"
@@ -166,7 +166,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginEnd="@dimen/spacing_large"
                         android:layout_marginBottom="0dp"
                         android:hint="@string/kolicina"
                         android:importantForAutofill="no"
@@ -191,7 +191,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/content_secondary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <EditText
                     android:id="@+id/technicalInfo"
@@ -213,8 +213,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card_primary"
-                android:padding="20dp"
-                android:layout_marginBottom="20dp"
+                android:padding="@dimen/padding_around_layout"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:elevation="1dp">
 
                 <TextView
@@ -224,7 +224,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/content_primary"
                     android:fontFamily="@font/nunito_semibold"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="@dimen/spacing_large" />
 
                 <!-- Image Preview Container -->
                 <LinearLayout
@@ -233,8 +233,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@drawable/bg_card_secondary"
-                    android:padding="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:padding="@dimen/padding_around_layout"
+                    android:layout_marginBottom="@dimen/spacing_large"
                     android:visibility="gone">
 
                     <ImageView
@@ -255,7 +255,7 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:background="@drawable/bg_card_secondary"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/spacing_large">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -280,7 +280,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="@dimen/spacing_large"
                         android:text="@string/dodaj_sliko"
                         android:drawableStart="@mipmap/photo_camera"
                         android:drawablePadding="8dp"
@@ -292,7 +292,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="@dimen/spacing_large"
                         android:text="@string/odstrani_sliko"
                         android:gravity="center"
                         android:visibility="gone" />
@@ -309,7 +309,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="@dimen/padding_around_layout"
         android:background="@drawable/bg_card_primary">
 
         <Button
@@ -318,7 +318,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.4"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/spacing_large"
             android:text="@string/preklici" />
 
         <Button
@@ -327,7 +327,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/spacing_large"
             android:text="@string/shrani_narocilo" />
 
     </LinearLayout>

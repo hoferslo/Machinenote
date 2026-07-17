@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp"
+            android:padding="@dimen/padding_around_layout"
             android:gravity="center_vertical">
 
 
@@ -26,11 +26,11 @@
                 android:id="@+id/cardSlikeLinij"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:background="@drawable/bg_card_primary"
                 android:clickable="true"
                 android:orientation="horizontal"
-                android:padding="20dp"
+                android:padding="@dimen/padding_around_layout"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -38,7 +38,7 @@
                     android:layout_height="48dp"
                     android:src="@drawable/ic_factory"
                     app:tint="@color/red_500"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginEnd="@dimen/spacing_large" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -60,7 +60,7 @@
                         android:text="Pregledaj slike vseh linij"
                         android:textSize="14sp"
                         android:textColor="@color/content_secondary"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="@dimen/spacing_large" />
 
                 </LinearLayout>
 
@@ -77,11 +77,11 @@
                 android:id="@+id/cardNavodila"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:background="@drawable/bg_card_primary"
                 android:clickable="true"
                 android:orientation="horizontal"
-                android:padding="20dp"
+                android:padding="@dimen/padding_around_layout"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -89,7 +89,7 @@
                     android:layout_height="48dp"
                     android:src="@drawable/ic_description"
                     app:tint="@color/green_500"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginEnd="@dimen/padding_around_layout" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -111,7 +111,7 @@
                         android:text="Dostop do navodil za vse linije"
                         android:textSize="14sp"
                         android:textColor="@color/content_secondary"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="@dimen/spacing_large" />
 
                 </LinearLayout>
 
@@ -128,11 +128,11 @@
                 android:id="@+id/cardVarnostni"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:background="@drawable/bg_card_primary"
                 android:clickable="true"
                 android:orientation="horizontal"
-                android:padding="20dp"
+                android:padding="@dimen/padding_around_layout"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -140,7 +140,7 @@
                     android:layout_height="48dp"
                     android:src="@drawable/ic_security"
                     app:tint="@color/warning_primary"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginEnd="@dimen/spacing_large" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -162,7 +162,7 @@
                         android:text="Pomembne varnostne informacije"
                         android:textSize="14sp"
                         android:textColor="@color/content_secondary"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="@dimen/spacing_large" />
 
                 </LinearLayout>
 
@@ -182,7 +182,7 @@
                 android:background="@drawable/bg_card_primary"
                 android:clickable="true"
                 android:orientation="horizontal"
-                android:padding="20dp"
+                android:padding="@dimen/padding_around_layout"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -190,7 +190,7 @@
                     android:layout_height="48dp"
                     android:src="@drawable/ic_play_circle"
                     app:tint="@color/blue_500"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginEnd="@dimen/spacing_large" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -212,7 +212,7 @@
                         android:text="Videoposnetki in izobraževalni materiali"
                         android:textSize="14sp"
                         android:textColor="@color/content_secondary"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="@dimen/spacing_large" />
 
                 </LinearLayout>
 

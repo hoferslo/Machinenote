@@ -27,23 +27,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/padding_around_layout">
 
                 <!-- Required Items Section -->
                 <LinearLayout
                     android:id="@+id/requiredItemsLl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/spacing_large"
                     android:background="@drawable/bg_card_primary"
                     android:elevation="1dp"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="@dimen/padding_around_layout">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/potrebni_podatki"
                         android:textColor="@color/content_primary"
@@ -61,17 +61,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/spacing_large"
                     android:background="@drawable/bg_card_primary"
                     android:elevation="1dp"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="@dimen/padding_around_layout">
 
                     <!-- Sifrant Button -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/sifrant"
                         android:textColor="@color/content_secondary"
@@ -82,7 +82,7 @@
                         style="@style/Button.Secondary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:drawableLeft="@drawable/assignment_icon"
                         android:drawablePadding="8dp"
                         android:gravity="start|center_vertical"
@@ -92,7 +92,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/ime_delavca"
                         android:textColor="@color/content_secondary"
@@ -103,7 +103,7 @@
                         style="@style/Input.Base"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="start|center_vertical"
                         android:hint="@string/vnesite_ime_delavca"
                         android:importantForAutofill="no"
@@ -113,7 +113,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/razlog_zastoja"
                         android:textColor="@color/content_secondary"
@@ -124,7 +124,7 @@
                         style="@style/Input.Base"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="start|center_vertical"
                         android:hint="@string/vnesite_razlog"
                         android:importantForAutofill="no"
@@ -134,7 +134,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/dodatne_opombe"
                         android:textColor="@color/content_secondary"
@@ -155,21 +155,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginEnd="@dimen/spacing_large"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:text="@string/linija_stroja"
                                 android:textColor="@color/content_secondary"
@@ -195,7 +195,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito"
                                 android:gravity="center"
                                 android:text="@string/skeniraj_qr"
@@ -217,7 +217,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -225,12 +225,12 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginEnd="@dimen/spacing_large"
                             android:layout_weight="1"
                             android:background="@drawable/bg_card_secondary"
                             android:gravity="start|center_vertical"
                             android:orientation="horizontal"
-                            android:padding="16dp">
+                            android:padding="@dimen/padding_around_layout">
 
                             <CheckBox
                                 android:id="@+id/dezurstvoCheckBox"
@@ -245,7 +245,7 @@
                                 android:id="@+id/dezurstvoTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
+                                android:layout_marginStart="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:text="@string/dezurstvo"
                                 android:textColor="@color/content_primary"
@@ -263,7 +263,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito"
                                 android:gravity="center"
                                 android:text="@string/dodaj_sliko"
@@ -287,7 +287,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/cas_zastoja"
                         android:textColor="@color/content_primary"
@@ -305,17 +305,17 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginEnd="@dimen/spacing_large"
                             android:layout_weight="1"
                             android:background="@drawable/bg_card_secondary"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="@dimen/padding_around_layout">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:text="@string/zacetek_zastoja"
@@ -337,7 +337,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:hint="@string/start_time"
@@ -350,7 +350,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="@dimen/spacing_large"
                             android:layout_weight="1"
                             android:background="@drawable/bg_card_secondary"
                             android:orientation="vertical"
@@ -360,7 +360,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:text="@string/konec_zastoja"
@@ -382,7 +382,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:hint="@string/end_time"
@@ -403,7 +403,7 @@
                     android:background="@drawable/bg_card_primary"
                     android:elevation="1dp"
                     android:orientation="vertical"
-                    android:padding="20dp"
+                    android:padding="@dimen/padding_around_layout"
                     android:visibility="gone" />
 
             </LinearLayout>
@@ -425,12 +425,12 @@
                 android:background="@color/surface_primary"
                 android:elevation="1dp"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="@dimen/padding_around_layout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="@dimen/spacing_large"
                     android:fontFamily="@font/nunito_semibold"
                     android:text="@string/slike_zastoja"
                     android:textColor="@color/content_primary"
@@ -450,7 +450,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:padding="20dp"
+                android:padding="@dimen/padding_around_layout"
                 android:scrollbars="none">
 
                 <!-- This will reference the same container -->
@@ -464,7 +464,7 @@
                         android:background="@drawable/bg_card_primary"
                         android:elevation="1dp"
                         android:orientation="vertical"
-                        android:padding="20dp">
+                        android:padding="@dimen/padding_around_layout">
 
                         <!-- This will show the same images as the main container -->
                         <TextView
@@ -474,7 +474,7 @@
                             android:text="Images will appear here"
                             android:textColor="@color/content_secondary"
                             android:gravity="center"
-                            android:padding="20dp" />
+                            android:padding="@dimen/padding_around_layout" />
 
                     </LinearLayout>
                 </ScrollView>

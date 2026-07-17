@@ -23,6 +23,8 @@ public class RezervniDel implements DisplayableItem {
     private int enota_id;               // ← nested objekt
     private String enota_naziv;
     private int enota_tip;
+    private String slikaUrl;
+
 
     // Default constructor
     public RezervniDel() {
@@ -31,7 +33,7 @@ public class RezervniDel implements DisplayableItem {
     // Parameterized constructor
     public RezervniDel(int ID, int skladišče, String regal, String artikel, int znaki, String artikelDolgiText,
                        String proizvajalec, String dobavitelj, double znesek, double minimalnaZaloga,
-                       double dobava, double poraba, int inventura, int enota_id) {
+                       double dobava, double poraba, int inventura, int enota_id, String slikaUrl) {
         this.id = ID;
         this.skladišče = skladišče;
         this.regal = regal;
@@ -46,6 +48,7 @@ public class RezervniDel implements DisplayableItem {
         this.poraba = poraba;
         this.inventura = inventura;
         this.enota_id = enota_id;
+        this.slikaUrl = slikaUrl;
     }
 
     // Getters and Setters
@@ -175,6 +178,9 @@ public class RezervniDel implements DisplayableItem {
 
     public String getEnotaNaziv() { return getEnota_naziv(); }
 
+    public String getSlikaUrl() { return slikaUrl; }
+    public void setSlikaUrl(String slikaUrl) { this.slikaUrl = slikaUrl; }
+
     @Override
     public Map<String, String> getDisplayFields() {
         Map<String, String> fields = new LinkedHashMap<>();
@@ -193,6 +199,7 @@ public class RezervniDel implements DisplayableItem {
         fields.put("Realna Zaloga", String.format("%.3f", getRealZalogo()) + " " + getEnotaNaziv());
         fields.put("Inventura", String.valueOf(inventura));
         fields.put("Enota", getEnotaNaziv());
+        fields.put("Slika", slikaUrl);
         return fields;
     }
 }

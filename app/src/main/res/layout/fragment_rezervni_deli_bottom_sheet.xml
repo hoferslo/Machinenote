@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     android:nestedScrollingEnabled="true">
 
@@ -32,6 +33,73 @@
                 android:textSize="24sp"
                 android:textColor="@color/content_primary"
                 android:fontFamily="@font/nunito_semibold" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_card_secondary"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Slika artikla"
+                android:textSize="16sp"
+                android:textColor="@color/content_secondary"
+                android:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/ic_factory"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableTint="?attr/colorControlNormal" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/bg_card_primary"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/partImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    tools:src="@drawable/ic_factory" />
+
+                <ProgressBar
+                    android:id="@+id/imageProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvImageCandidates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:nestedScrollingEnabled="false"
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:spanCount="3"
+                tools:listitem="@layout/item_image_candidate" />
+
+            <Button
+                android:id="@+id/btnNextImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="Prikaži druge slike"
+                android:textColor="@color/content_primary"
+                android:backgroundTint="@color/surface_primary"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

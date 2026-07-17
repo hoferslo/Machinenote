@@ -44,6 +44,9 @@ public class NarocilaFragment extends BaseFragment {
     private GenericFilter<Narocila> filter;
     private String currentSearchQuery = "";
 
+    private enum StatusCategory { ACTIVE, DELIVERED }
+    private StatusCategory currentCategory = StatusCategory.ACTIVE;
+
     public NarocilaFragment() {
     }
 
@@ -68,6 +71,7 @@ public class NarocilaFragment extends BaseFragment {
 
         setupRecyclerView();
         setupTabNavigation();
+        setupStatusToggle();
         fetchNarocila();
 
         return binding.getRoot();
@@ -165,6 +169,20 @@ public class NarocilaFragment extends BaseFragment {
         }
     }
 
+    private void setupStatusToggle() {
+        binding.statusToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (!isChecked) return;
+
+            if (checkedId == R.id.toggleActiveBtn) {
+                currentCategory = StatusCategory.ACTIVE;
+            } else if (checkedId == R.id.toggleDeliveredBtn) {
+                currentCategory = StatusCategory.DELIVERED;
+            }
+
+            applyCategoryFilter();
+        });
+    }
+
     private void fetchNarocila() {
         apiManager.getNarocila(new ApiManager.NarocilaCallback() {
             @Override
@@ -185,8 +203,7 @@ public class NarocilaFragment extends BaseFragment {
                     return compareDates(n1.getRokZaDobavo(), n2.getRokZaDobavo());
                 });
 
-                adapter.updateList(narocilaList);
-                setupFilter();
+                applyCategoryFilter();
             }
 
             @Override
@@ -194,6 +211,37 @@ public class NarocilaFragment extends BaseFragment {
                 Log.e(TAG, "Error: " + errorMessage);
             }
         });
+    }
+
+    /**
+     * Filtrira glavni seznam glede na izbrano kategorijo (aktivna / dostavljena)
+     * in ponovno vzpostavi filter/iskanje nad to podmnožico.
+     */
+    private void applyCategoryFilter() {
+        if (narocilaList == null) return;
+
+        List<Narocila> categoryFiltered = narocilaList.stream()
+                .filter(n -> currentCategory == StatusCategory.DELIVERED
+                        ? isDeliveredStatus(n.getStatus())
+                        : !isDeliveredStatus(n.getStatus()))
+                .collect(Collectors.toList());
+
+        adapter.updateList(categoryFiltered);
+        setupFilter(categoryFiltered);
+
+        // Če je uporabnik nekaj iskal, ponovno uporabi iskanje na novi podmnožici
+        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
+            applySearchAndFilter();
+        }
+    }
+
+    /**
+     * Ali status šteje kot "zaključen" (dostavljeno / preklicano)
+     */
+    private boolean isDeliveredStatus(String status) {
+        if (status == null) return false;
+        String s = status.toLowerCase().trim();
+        return s.equals("dostavljeno") || s.equals("preklicano");
     }
 
     /**
@@ -250,13 +298,14 @@ public class NarocilaFragment extends BaseFragment {
         }
     }
 
-    private void setupFilter() {
-        if (narocilaList == null || narocilaList.isEmpty()) {
+    private void setupFilter(List<Narocila> sourceList) {
+        if (sourceList == null || sourceList.isEmpty()) {
+            adapter.updateList(new ArrayList<>());
             return;
         }
 
         // Initialize the filter with callback to update the adapter
-        filter = new GenericFilter<>(narocilaList, filteredList -> {
+        filter = new GenericFilter<>(sourceList, filteredList -> {
             updateRecyclerView(filteredList);
         });
 

@@ -16,6 +16,7 @@
     <dimen name="icon_height">62dp</dimen>
     <dimen name="icon_text_width">64dp</dimen>
 
+
     <!-- Camera button dimensions -->
     <dimen name="camera_button_min_height">72dp</dimen>
     <dimen name="camera_button_padding_vertical">16dp</dimen>
@@ -48,14 +49,17 @@
     <dimen name="text_size_big_large">30sp</dimen>
 
     <!-- Common Spacing-->
-    <dimen name="spacing_xs">4dp</dimen>
-    <dimen name="spacing_small">6dp</dimen>
-    <dimen name="spacing_medium">8dp</dimen>
-    <dimen name="spacing_large">12dp</dimen>
-    <dimen name="spacing_xl">16dp</dimen>
+    <dimen name="spacing_xs">2dp</dimen>
+    <dimen name="spacing_small">3dp</dimen>
+    <dimen name="spacing_medium">4dp</dimen>
+    <dimen name="spacing_large">8dp</dimen>
+    <dimen name="spacing_xl">12dp</dimen>
 
     <!-- Minimum Touch Targets -->
     <dimen name="min_touch_target">44dp</dimen>
     <dimen name="min_touch_target_large">48dp</dimen>
+
+    <dimen name="padding_around_layout">8dp</dimen>
+    <dimen name="margin_bottom">4dp</dimen>
 
 </resources>

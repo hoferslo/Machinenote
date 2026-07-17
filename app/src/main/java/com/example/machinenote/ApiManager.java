@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.machinenote.Utility.SharedPreferencesHelper;
 import com.example.machinenote.models.DrobniMateriali;
 import com.example.machinenote.models.Enota;
+import com.example.machinenote.models.ImageResponse;
 import com.example.machinenote.models.Imenik;
 import com.example.machinenote.models.Kemikalija;
 import com.example.machinenote.models.Linija;
@@ -19,6 +20,7 @@ import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.Remont;
 import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
+import com.example.machinenote.models.SaveImageResponse;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.SklopLinije;
 import com.example.machinenote.models.UpdateResponse;
@@ -38,6 +40,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.annotation.NonNull;
 
 public class ApiManager {
     private final ApiService apiService;
@@ -163,6 +166,83 @@ public class ApiManager {
         });
     }
 
+    /*     --- AI Image Search --- */
+
+    // Vmesnik mora sprejeti celoten ImageResponse
+    public interface ImageSearchCallback {
+        void onSuccess(ImageResponse response);
+        void onFailure(String errorMessage);
+    }
+
+    // Metoda sprejme natanko 3 parametre, ki jih posreduje tvojemu ApiService
+    public void searchGoogleImage(String naziv, String proizvajalec, String fallbackQuery, final ImageSearchCallback callback) {
+        // Pokličemo ApiService s tremi Query parametri, ki jih zahteva tvoj GET klic
+        Call<ImageResponse> call = apiService.searchImage(naziv, proizvajalec, fallbackQuery);
+
+        call.enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
+                if (response.isSuccessful()) {
+                    ImageResponse imageResponse = response.body();
+                    if (imageResponse != null && imageResponse.getKandidati() != null) {
+                        // Uspešno vrnemo celoten objekt z rezultati v Fragment
+                        callback.onSuccess(imageResponse);
+                    } else {
+                        callback.onFailure("Strežnik ni vrnil seznama slik.");
+                    }
+                } else {
+                    callback.onFailure("Povezava spodletela: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    // 1. Dodaj ta vmesnik na dno ali vrh ApiManagerja (če ga še nimaš)
+    public interface SaveImageCallback {
+        void onSuccess(SaveImageResponse response);
+        void onFailure(String errorMessage);
+    }
+
+    // 2. Dodaj to metodo v ApiManager razred
+    public void saveImage(int id, String slikaUrl, final SaveImageCallback callback) {
+        // Ustvarimo request body objekt z usklajenimi podatki
+        SaveImageRequest request = new SaveImageRequest(id, slikaUrl);
+
+        // Izvedemo PUT klic na apiService
+        Call<SaveImageResponse> call = apiService.saveImage(request);
+
+        call.enqueue(new Callback<SaveImageResponse>() {
+            @Override
+            public void onResponse(Call<SaveImageResponse> call, Response<SaveImageResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // PHP vrne uspeh (200 OK)
+                    callback.onSuccess(response.body());
+                } else {
+                    // Če gre kaj narobe (npr. 400 Bad Request, 404 Not Found)
+                    String errorMsg = "Napaka pri shranjevanju";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg = response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        errorMsg = response.message();
+                    }
+                    callback.onFailure(errorMsg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SaveImageResponse> call, Throwable t) {
+                // Mrežna napaka
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
     /*     --- Preventivni Pregledi ---     */
 
     public interface PreventivniPreglediCallback {
@@ -198,6 +278,8 @@ public class ApiManager {
             }
         });
     }
+
+
 
     public interface PregledExecutionCallback {
         void onSuccess(List<PregledOpravilo> response);

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/surface_primary"
-    android:padding="16dp">
+    android:padding="@dimen/padding_around_layout">
 
     <!-- Company Name Header -->
     <LinearLayout
@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp">
+        android:padding="@dimen/padding_around_layout"
+        android:layout_marginBottom="@dimen/margin_bottom">
 
         <TextView
             android:id="@+id/companyName"
@@ -34,9 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
         android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
+        android:padding="@dimen/padding_around_layout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             android:fontFamily="@font/nunito_semibold"
             android:drawableStart="@mipmap/person"
             android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="@dimen/margin_bottom" />
 
         <TextView
             android:id="@+id/contactPerson"
@@ -67,9 +67,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
         android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
+        android:padding="@dimen/padding_around_layout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
             android:fontFamily="@font/nunito_semibold"
             android:drawableStart="@mipmap/mail"
             android:drawablePadding="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="@dimen/margin_bottom" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/content_primary"
                 android:fontFamily="@font/nunito_semibold"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="@dimen/margin_bottom" />
 
             <ImageButton
                 android:id="@+id/buttonEmail"
@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/bg_card_secondary"
-        android:padding="16dp">
+        android:padding="@dimen/padding_around_layout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
             android:fontFamily="@font/nunito_semibold"
             android:drawableStart="@mipmap/phone_iphone"
             android:drawablePadding="8dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="@dimen/margin_bottom" />
 
         <!-- Phone Number -->
         <LinearLayout
@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="@dimen/margin_bottom">
 
             <TextView
                 android:id="@+id/phoneNumber"
@@ -153,7 +153,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/content_primary"
                 android:fontFamily="@font/nunito_semibold"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="@dimen/margin_bottom" />
 
             <ImageButton
                 android:id="@+id/buttonPhoneNumber"
@@ -184,7 +184,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/content_primary"
                 android:fontFamily="@font/nunito_semibold"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="@dimen/margin_bottom" />
 
             <ImageButton
                 android:id="@+id/buttonGSM"

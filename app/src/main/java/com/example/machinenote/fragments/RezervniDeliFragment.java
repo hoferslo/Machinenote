@@ -93,16 +93,31 @@ public class RezervniDeliFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
 
         // Setup search functionality
+        // Handler in Runnable za debounce iskanja
+        android.os.Handler searchHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+        final Runnable[] searchRunnable = new Runnable[1];
+
+        // Setup search functionality s 300ms zakasnitvijo (Debounce)
         binding.idOfDuty.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                binding.idOfDuty.clearFocus();
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                currentSearchQuery = newText;
-                applySearchAndFilter();
+                // Odstranimo prejšnje čakajoče klike
+                if (searchRunnable[0] != null) {
+                    searchHandler.removeCallbacks(searchRunnable[0]);
+                }
+
+                // Nastavimo nov čakajoči klic iskanja čez 300 milisekund
+                searchRunnable[0] = () -> {
+                    currentSearchQuery = newText;
+                    applySearchAndFilter();
+                };
+                searchHandler.postDelayed(searchRunnable[0], 300);
                 return true;
             }
         });

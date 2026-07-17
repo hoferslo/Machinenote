@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:focusable="false"
     android:clickable="true"
-    android:padding="16dp"
+    android:padding="@dimen/padding_around_layout"
     tools:context=".fragments.ImenikFragment">
 
     <!-- Search Container -->
@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp">
+        android:padding="@dimen/padding_around_layout">
 
         <SearchView
             android:id="@+id/idOfDuty"
@@ -37,9 +37,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
         android:background="@drawable/bg_card_primary"
-        android:padding="16dp">
+        android:padding="@dimen/padding_around_layout">
 
         <ScrollView
             android:layout_width="match_parent"

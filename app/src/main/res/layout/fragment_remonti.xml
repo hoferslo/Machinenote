@@ -27,23 +27,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/padding_around_layout">
 
                 <!-- Required Items Section -->
                 <LinearLayout
                     android:id="@+id/requiredItemsLl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/spacing_large"
                     android:background="@drawable/bg_card_primary"
                     android:elevation="1dp"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="@dimen/padding_around_layout">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/potrebni_podatki"
                         android:textColor="@color/content_primary"
@@ -61,31 +61,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/spacing_large"
                     android:background="@drawable/bg_card_primary"
                     android:elevation="1dp"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="@dimen/padding_around_layout">
 
                     <!-- Line Selection and QR Code -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginEnd="@dimen/spacing_large"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:text="@string/line"
                                 android:textColor="@color/content_secondary"
@@ -111,7 +111,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito"
                                 android:gravity="center"
                                 android:text="@string/skeniraj_qr"
@@ -134,7 +134,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/sklop_linije"
                         android:textColor="@color/content_secondary"
@@ -145,7 +145,7 @@
                         style="@style/Button.Secondary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:drawablePadding="8dp"
                         android:gravity="start|center_vertical"
                         android:text="@string/sklop_linije" />
@@ -154,7 +154,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/zamenjani_deli"
                         android:textColor="@color/content_secondary"
@@ -165,7 +165,7 @@
                         style="@style/Input.Base"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="start|center_vertical"
                         android:hint="@string/zamenjani_deli"
                         android:importantForAutofill="no"
@@ -175,7 +175,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/opomba"
                         android:textColor="@color/content_secondary"
@@ -186,7 +186,7 @@
                         style="@style/Input.Base"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="top|start"
                         android:hint="@string/opomba"
                         android:importantForAutofill="no"
@@ -198,7 +198,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -216,7 +216,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito"
                                 android:gravity="center"
                                 android:text="@string/dodaj_sliko"
@@ -244,7 +244,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_large"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="@string/cas_remonta"
                         android:textColor="@color/content_primary"
@@ -262,17 +262,17 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginEnd="@dimen/spacing_large"
                             android:layout_weight="1"
                             android:background="@drawable/bg_card_secondary"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="@dimen/padding_around_layout">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:text="@string/zacetek_remonta"
@@ -294,7 +294,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:hint="@string/start_time"
@@ -307,17 +307,17 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="@dimen/spacing_large"
                             android:layout_weight="1"
                             android:background="@drawable/bg_card_secondary"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="@dimen/padding_around_layout">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginBottom="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:text="@string/konec_remonta"
@@ -339,7 +339,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="@dimen/spacing_large"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:gravity="center"
                                 android:hint="@string/end_time"
@@ -370,12 +370,12 @@
                 android:background="@color/surface_primary"
                 android:elevation="1dp"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="@dimen/padding_around_layout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="@dimen/spacing_large"
                     android:fontFamily="@font/nunito_semibold"
                     android:text="@string/slike_remonta"
                     android:textColor="@color/content_primary"
@@ -395,7 +395,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:padding="20dp"
+                android:padding="@dimen/padding_around_layout"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -405,7 +405,7 @@
                     android:background="@drawable/bg_card_primary"
                     android:elevation="1dp"
                     android:orientation="vertical"
-                    android:padding="20dp" />
+                    android:padding="@dimen/padding_around_layout" />
 
             </ScrollView>
 
@@ -414,7 +414,7 @@
                 style="@style/Button.Success"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/spacing_large"
                 android:contentDescription="@string/photo_button"
                 android:drawableStart="@mipmap/photo_camera"
                 android:drawablePadding="8dp"
@@ -431,7 +431,7 @@
             android:orientation="vertical"
             android:visibility="gone"
             android:background="@drawable/bg_card_primary"
-            android:padding="16dp" />
+            android:padding="@dimen/padding_around_layout" />
 
     </FrameLayout>
 
@@ -442,14 +442,14 @@
         android:background="@color/surface_primary"
         android:elevation="4dp"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="@dimen/padding_around_layout">
 
         <Button
             android:id="@+id/cancelBtn"
             style="@style/Button.Destructive"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/spacing_large"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/cancel" />
@@ -459,7 +459,7 @@
             style="@style/Button.Success"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/spacing_large"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/send" />

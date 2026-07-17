@@ -14,12 +14,14 @@ import com.example.machinenote.models.PregledOpravilo;
 import com.example.machinenote.models.PreventivniPregled;
 import com.example.machinenote.models.RezervniDel;
 import com.example.machinenote.models.Role;
+import com.example.machinenote.models.SaveImageResponse;
 import com.example.machinenote.models.Sifrant;
 import com.example.machinenote.models.SklopLinije;
 import com.example.machinenote.models.UpdateResponse;
 import com.example.machinenote.models.User;
 import com.example.machinenote.models.Zastoj;
 import com.google.gson.annotations.SerializedName;
+import com.example.machinenote.models.ImageResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -172,6 +174,17 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("roles.php")
     Call<List<Role>> getRoles();
+
+    @Headers("Content-Type: application/json")
+    @GET("search_image.php")
+    Call<ImageResponse> searchImage(
+            @Query("naziv") String naziv,
+            @Query("proizvajalec") String proizvajalec,
+            @Query("query") String fallbackQuery
+    );
+
+    @PUT("save_image.php")
+    Call<SaveImageResponse> saveImage(@Body SaveImageRequest request);
 
     @Headers("Content-Type: application/json")
     @POST("roles.php")
@@ -430,5 +443,18 @@ class UpdateRequest {
     // Getters
     public String getCurrentVersion() { return currentVersion; }
     public String getPackageName() { return packageName; }
+}
+
+class SaveImageRequest {
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("slika_url")
+    private String slikaUrl;
+
+    public SaveImageRequest(int id, String slikaUrl) {
+        this.id = id;
+        this.slikaUrl = slikaUrl;
+    }
 }
 

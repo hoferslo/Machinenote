@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/padding_around_layout">
 
         <!-- Search Section -->
         <!-- Search Section -->
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="4dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +53,34 @@
                 android:textAllCaps="false" />
 
         </LinearLayout>
+        <!-- Status Toggle -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/statusToggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@id/toggleActiveBtn">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/toggleActiveBtn"
+
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Aktivna naročila"
+                android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/toggleDeliveredBtn"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Dostavljena Naročila"
+                android:textAllCaps="false" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
         <!-- Content List Section -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +88,7 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="@drawable/bg_card_primary"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="4dp">
 
             <!-- List Header (Optional) -->
             <TextView
