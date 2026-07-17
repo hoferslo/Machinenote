@@ -230,7 +230,8 @@
                             android:background="@drawable/bg_card_secondary"
                             android:gravity="start|center_vertical"
                             android:orientation="horizontal"
-                            android:padding="@dimen/padding_around_layout">
+                            android:padding="@dimen/padding_around_layout"
+                            android:layout_marginTop="11dp">
 
                             <CheckBox
                                 android:id="@+id/dezurstvoCheckBox"
@@ -354,7 +355,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/bg_card_secondary"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="@dimen/padding_around_layout">
 
                             <TextView
                                 android:layout_width="wrap_content"

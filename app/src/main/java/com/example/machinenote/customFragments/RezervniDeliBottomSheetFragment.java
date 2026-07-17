@@ -173,6 +173,15 @@ public class RezervniDeliBottomSheetFragment extends BottomSheetDialogFragment {
     private void loadPartImage() {
         if (rezervniDel == null || apiManager == null) return;
 
+        // NOVO: Če rezervni del že ima shranjeno sliko (URL ni prazen), prekinemo izvajanje.
+        // Ne delamo Google iskanja in skrijemo gumb za naslednje slike.
+        if (rezervniDel.getSlikaUrl() != null && !rezervniDel.getSlikaUrl().isEmpty()) {
+            if (binding != null && binding.btnNextImages != null) {
+                binding.btnNextImages.setVisibility(View.GONE);
+            }
+            return; // Tukaj se metoda zaključi in SerpApi se sploh ne pokliče!
+        }
+
         // Pripravimo vse tri parametre za SerpApi iskanje
         String naziv = (rezervniDel.getArtikel() != null) ? rezervniDel.getArtikel() : "";
         String proizvajalec = (rezervniDel.getProizvajalec() != null) ? rezervniDel.getProizvajalec() : "";
@@ -240,26 +249,52 @@ public class RezervniDeliBottomSheetFragment extends BottomSheetDialogFragment {
     private void onImageCandidateSelected(ImageCandidate candidate) {
         if (candidate == null || candidate.getOriginal() == null) return;
 
-        // Uporabimo čisto wrapper metodo iz ApiManagerja
-        apiManager.saveImage(rezervniDel.getId(), candidate.getOriginal(), new ApiManager.SaveImageCallback() {
-            @Override
-            public void onSuccess(SaveImageResponse response) {
-                if (binding == null) return;
-                Toast.makeText(context, "Slika uspešno shranjena!", Toast.LENGTH_SHORT).show();
+        // 1. Prikaži potrditveno okno
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Izbira slike")
+                .setMessage("Ali želite izbrati to sliko za ta rezervni del?")
+                .setPositiveButton("Da", (dialog, which) -> {
 
-                // Posodobimo lokalno instanco modela s shranjenim URL naslovom slike
-                rezervniDel.setSlikaUrl(candidate.getOriginal());
+                    // 2. Če uporabnik potrdi (klikne DA), pošljemo zahtevo za shranjevanje
+                    apiManager.saveImage(rezervniDel.getId(), candidate.getOriginal(), new ApiManager.SaveImageCallback() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onSuccess(SaveImageResponse response) {
+                            if (binding == null) return;
+                            Toast.makeText(context, "Slika uspešno shranjena!", Toast.LENGTH_SHORT).show();
 
-                // Takoj posodobimo zgornji glavni ImageView
-                prikažiTrenutnoSliko();
-            }
+                            // Posodobimo lokalni model s shranjenim URL-jem slike
+                            rezervniDel.setSlikaUrl(candidate.getOriginal());
 
-            @Override
-            public void onFailure(String errorMessage) {
-                if (binding == null) return;
-                Toast.makeText(context, "Napaka pri shranjevanju: " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
+                            // Takoj posodobimo zgornjo glavno sliko
+                            prikažiTrenutnoSliko();
+
+                            // 3. Počistimo sezname in osvežimo adapter, da izginejo preostale slike
+                            vsiKandidati.clear();
+                            trenutnoPrikazani.clear();
+                            if (imageAdapter != null) {
+                                imageAdapter.notifyDataSetChanged();
+                            }
+
+                            // Skrijemo gumb za "Naslednje slike", ker jih ne potrebujemo več
+                            if (binding.btnNextImages != null) {
+                                binding.btnNextImages.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            if (binding == null) return;
+                            Toast.makeText(context, "Napaka pri shranjevanju: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                })
+                .setNegativeButton("Prekliči", (dialog, which) -> {
+                    // Če klikne Prekliči, zapremo le pogovorno okno in ne naredimo ničesar
+                    dialog.dismiss();
+                })
+                .show();
     }
 
     private void setupClickListeners() {
