@@ -26,11 +26,11 @@ INSERT INTO app_updates (
     file_size_bytes
 ) VALUES (
     'com.example.machinenote',
-    '1.2.0',
+    '1.4.2',
     'http://192.168.12.192/MachineNoteV2.apk',
     0,
     'Bug fixes and improvements',
-    15000000
+    43000000
 );
 ```
 
